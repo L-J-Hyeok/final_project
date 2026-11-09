@@ -31,6 +31,8 @@ server.on('listening', onListening);
 
 // DB 연결 실패 시 HTTP 서버를 열지 않는다. 스키마 자동 생성은 하지 않는다.
 database.connect().then(function () {
+  return require('../routes/recommendations').cleanupStaleProcessing().catch(function () {});
+}).then(function () {
   server.listen(port);
 }).catch(function (error) {
   console.error(database.publicCode(error));

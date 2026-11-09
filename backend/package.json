@@ -9,7 +9,10 @@
     "test:db": "node --test test/db.test.js test/env.test.js",
     "test:auth": "node --test test/auth.test.js test/auth.integration.test.js",
     "test:member": "node --test test/member.test.js test/member.integration.test.js",
-    "test:smartphone": "node --test test/smartphone.test.js test/smartphone.integration.test.js"
+    "test:smartphone": "node --test test/smartphone.test.js test/smartphone.integration.test.js",
+    "test:recommendation": "node --test test/recommendation.test.js test/recommendation.integration.test.js",
+    "test:upgrade": "node --test test/upgrade.test.js test/upgrade.integration.test.js",
+    "test:gemini-live": "node --test test/gemini-live.integration.test.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

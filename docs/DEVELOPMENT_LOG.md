@@ -199,3 +199,52 @@ Asia/Seoul 기준 시간순으로 누적한다. 이전 기록을 삭제하지 �
 - 백업 및 복구 검증: `/Users/ijaehyeog/.gemini/antigravity/brain/c3c60e0f-79c7-4c89-936e-1202a86726b5/scratch/git-backup-20261109/`에 `front.git.bak`, `front-all.bundle`(`git bundle verify` 통과), `front-uncommitted.patch`, `front-working-files.tar` 백업 완료.
 - 검증 결과: 루트에서 `git status`, `git log`(`0694d1c`), `git fsck --full` 정상 확인. `backend/.env`, `node_modules/`, `.DS_Store`, Taste Skill 실행 스크립트·대용량 에셋 제외 및 `backend/.env.example` 추적 허용 확인. 과거 커밋(`0694d1c`) 및 현재 추적 대상 코드에 비밀번호·API 키 하드코딩 없음 확인.
 - 다음 작업: 사용자가 터미널에서 직접 `git add`·`git commit`·원격 연결 및 `git push` 수행 후, 백엔드 모의 AI 및 추천 검증 API 구현 진행.
+
+## Mock AI + Gemini API 추천 시스템 및 추천 이력 완료 — 2026-11-10 00:26:13 KST
+
+- 도구: Google Antigravity.
+- 목적: Mock AI(테스트/오프라인용)와 Gemini API(`gemini-3.5-flash-lite` 기본, `gemini-3.6-flash` 비교 선택) 어댑터 분리, 자연어 분석(`POST /api/analysis`), 스마트폰 추천 및 서버 근거 재검증(`POST /api/recommendations`), 추천 이력 조회·삭제(`GET/DELETE /api/recommendations`) 구현.
+- 생성 파일: `backend/services/ai-adapter.js`, `backend/services/recommendation-validator.js`, `backend/services/gemini-check.js`, `backend/routes/recommendations.js`, `backend/test/recommendation.test.js`, `backend/test/recommendation.integration.test.js`.
+- 수정 파일: `backend/config/loadEnv.js`, `backend/.env.example`, `backend/routes/smartphones.js`(후보 검색 함수 재사용 export), `backend/app.js`, `backend/bin/www`(기동 시 2분 경과 `processing` 정리), `backend/package.json`, `backend/test/smartphone.integration.test.js`(병렬 실행 시 조건 격리 보완), `docs/CURRENT_STATUS.md`, `docs/DEVELOPMENT_LOG.md`, `docs/DECISIONS.md`, `docs/TEST_PLAN.md`.
+- 실제 구현 내용:
+  - AI 어댑터(`services/ai-adapter.js`): 환경 변수 `AI_PROVIDER`(`gemini` / `mock`), `GEMINI_API_KEY`, `GEMINI_MODEL`(`gemini-3.5-flash-lite` 기본, `gemini-3.6-flash` 허용) 지원. 미승인 유료 모델 차단(`AI_MODEL_NOT_ALLOWED`), 20초 호출 타임아웃, 출력 토큰 상한(`maxOutputTokens: 1024`), JSON Schema 강제, 토큰 사용량·비용 추정(`estimateUsage`), 프롬프트 인젝션 격리(`untrusted_user_text` 데이터 분리).
+  - 자연어 분석(`POST /api/analysis`): `purpose`(`profile` / `purchase`) 및 `text`(2000자 제한) 검증, 기존 확정 프로필과의 모순 및 미지원 기능 질문 반환, 서버 enum/범위 검증(`validateAnalysisOutput`), 사용자 확인 전 DB 저장 없음, 원문 로그 미기록.
+  - 추천 실행(`POST /api/recommendations`): `searchCandidatesForUser` 재사용, 후보 0개(`no_match`)/조건 보완(`clarify`) 시 AI 미호출 저장, 후보 1~40개 시 AI 호출 전 `processing` 생성(AI 호출 중 DB 트랜잭션 미유지), 후보 ID·순위·예산·사양·근거(`evidence` 및 `eligible_reasons`) 검증, 서버 템플릿 객관 설명 생성, 검증 실패 시 오류 코드로 최대 1회 재시도 후 실패 시 `failed` 저장 및 `502 AI_INVALID_RESULT`, 저장 직전 프로필 버전(`409 PROFILE_CHANGED`) 및 가격 유효성(`409 CANDIDATES_CHANGED`) 재검증. 사용자당 분당 5회·동시 1개 AI 호출 제한 적용.
+  - 추천 이력(`GET /api/recommendations`, `GET /api/recommendations/:id`, `DELETE /api/recommendations/:id`): 본인 이력만 조회·삭제(타인 `404`), 90일 경과 이력 정리, 당시 가격 보존 및 현재 만료 여부(`is_expired_now`, `price_status_note`) 표시.
+- 테스트 결과:
+  - `node services/gemini-check.js`: 현재 로컬 `backend/.env`에 `GEMINI_API_KEY` 미설정 확인(`AI_KEY_MISSING`), 외부 과금 호출 0회.
+  - `npm run test:recommendation`: 4/4 통과(단위 3 + 실제 MySQL/HTTP 통합 1, HTTP 상태 검증 29개).
+  - 전체 백엔드 회귀 테스트: DB 8/8, 인증 5/5(HTTP 33), 회원/기기 5/5(HTTP 65), 스마트폰/후보 5/5(HTTP 34), 추천/분석/이력 4/4(HTTP 29) 총 **27/27 통과**(HTTP 상태 검증 161개). 테스트 종료 후 8개 테이블 모두 행 수 0 확인.
+- 미해결 문제: 사용자의 무료 티어 `GEMINI_API_KEY` 로컬 설정 후 `gemini-3.5-flash-lite` / `gemini-3.6-flash` 실제 엔드포인트 응답 확인 필요.
+- 다음 작업: `GEMINI_API_KEY` 설정 후 `node services/gemini-check.js`로 모델 접근 확인 및 프론트엔드(Vue 3) 연동.
+
+## 실제 Gemini AI 추천 기능 최종 검증 완료 — 2026-11-10 00:43:03 KST
+
+- 도구: Google Antigravity.
+- 목적: `backend/.env` 직접 접근 금지 보안 규칙을 준수하면서 실제 Gemini API(`gemini-3.5-flash-lite`)를 통한 자연어 분석(`POST /api/analysis`)과 스마트폰 추천(`POST /api/recommendations`) 종단간 동작 검증 및 전체 백엔드 회귀 테스트 수행.
+- 생성 파일: `backend/test/gemini-live.integration.test.js`.
+- 수정 파일: `backend/services/ai-adapter.js`(실제 모델이 `eligible_reasons`와 `evidence` 형식을 1회 만에 통과하도록 시스템 프롬프트 명시성 보강), `backend/services/gemini-check.js`, `backend/test/smartphone.integration.test.js`, `backend/test/recommendation.integration.test.js`(502/504/429 오류 시나리오 검증 보강), `backend/package.json`(`test:gemini-live` 스크립트 추가), `docs/CURRENT_STATUS.md`, `docs/DEVELOPMENT_LOG.md`, `docs/TEST_PLAN.md`.
+- 실제 Gemini 검증 결과(`test/gemini-live.integration.test.js`):
+  - 자연어 분석(`POST /api/analysis`, 1회 호출): 예산 800,000원(`hard.budget_max_krw: 800000`), 사용 목적 `hard.usages: ["video"]`(`gaming` 미포함), 삼성 선호 `soft.preferred_brands: ["samsung"]`, 배터리 중요도 `soft.priorities: ["battery"]` 추출. 미언급 저장 용량·무게·주사율을 추측하지 않고 `questions`·`uncertainties`로 반환, DB 미저장 확인.
+  - 스마트폰 추천(`POST /api/recommendations`, 1회 호출): 가상 검증 후보 2종 중 삼성·배터리(5000mAh)·예산 여유(490,000원)를 만족하는 Galaxy A35 5G를 1순위로 추천하고, 서버 검증(`validateRecommendationOutput`)·이력 저장·상세 조회·삭제까지 1회 호출 만에 통과.
+  - 실제 Gemini 호출 횟수 및 토큰: 총 **2회** 호출, 입력 토큰 **2,088** + 출력 토큰 **406** = 총 **2,494 토큰** (참고 추정치 `$0.0002784`).
+- 전체 백엔드 회귀 테스트: DB 8/8, 인증 5/5(HTTP 33), 회원/기기 5/5(HTTP 65), 스마트폰/후보 5/5(HTTP 34), 추천/분석/이력/오류 4/4(HTTP 34) 총 **27/27 통과**(HTTP assertion 166개) + Live Gemini **1/1 통과**. 테스트 종료 후 8개 테이블 모두 행 수 0 확인.
+- 미해결 문제: 없음(스마트폰 MVP 백엔드 완성).
+- 다음 작업: 프론트엔드(`front/` Vue 3) 화면 개발 및 API 연동.
+
+## 보유 기기 기반 개인화 업그레이드 추천 및 다중 IT기기 확장 구현 완료 — 2026-11-10 01:16:00 KST
+
+- 도구: Google Antigravity.
+- 목적: 보유 스마트폰의 국내 공식 출시일 기준 3년 경과 판정, 신규 등록 즉시 확인 및 기존 회원 재평가, 알림 반복 방지(30일 유예·영구 숨김), 보유 기기 대비 객관 비교, 현 기기 유지(`status: 'keep'`) 추천, 다중 IT기기 확장 정책 구조 구현.
+- 생성 파일: `backend/services/upgrade-advisor.js`, `backend/routes/upgrade-offers.js`, `backend/test/upgrade.test.js`, `backend/test/upgrade.integration.test.js`.
+- 수정 파일: `backend/routes/member.js`, `backend/services/smartphone-catalog.js`, `backend/routes/smartphones.js`, `backend/services/ai-adapter.js`, `backend/services/recommendation-validator.js`, `backend/routes/recommendations.js`, `backend/config/loadEnv.js`, `backend/.env.example`, `backend/app.js`, `backend/package.json`, `docs/PROJECT_OVERVIEW.md`, `docs/ARCHITECTURE.md`, `docs/DECISIONS.md`, `docs/CURRENT_STATUS.md`, `docs/TEST_PLAN.md`, `docs/DEVELOPMENT_LOG.md` (`docs/DEVELOPMENT_RULES.md` 수정 없음).
+- 실제 구현 내용:
+  - 업그레이드 판정 및 다중 기기 정책(`services/upgrade-advisor.js`): `DEVICE_UPGRADE_POLICIES` 레지스트리(스마트폰 3년 활성; 노트북 4년·태블릿 4년·스마트워치 3년·조립 PC 성능/호환성/상태 중심은 계획/비활성). `Asia/Seoul` 기준 3년 경과 계산(윤일 2월 29일 출시 모델은 평년 2월 28일 3주년 처리), 출시일 누락/형식 오류/미래 날짜 및 세부 모델 불명확(`ambiguous_model_variant`)·미등록(`unidentified_model`) 시 `needs_verification: true` 반환.
+  - 업그레이드 상태 조회 및 알림 제어(`routes/upgrade-offers.js`, `routes/member.js`): 기존 8개 테이블 그대로 재사용(`profiles.smartphone_json._upgrade_state`에 대표 기기 ID·유예 시각·영구 숨김 보관, 프로필 조회/저장 응답에서는 `_upgrade_state` 은닉·보존). `GET /api/upgrade-offer`(순수 조회, Gemini 호출 0회), `PUT /api/upgrade-offer/state`(`snooze` 30일 유예, `dismiss_permanent` 영구 숨김, `set_current` 대표 기기 전환, `reset_notice`), `POST/PUT /api/owned-devices` 응답에 즉시 `upgrade_offer` 포함.
+  - 보유 기기 대비 객관 비교 및 현 기기 유지(`status: 'keep'`) 추천(`services/upgrade-advisor.js`, `services/ai-adapter.js`, `services/recommendation-validator.js`, `routes/recommendations.js`): 검증된 사양(화면 크기, 무게, 배터리 mAh, 저장용량, RAM, 주사율, 무선충전, 가격)만 비교하고 누락 사양 및 칩셋 벤치마크는 `'insufficient_data'` 표시, 배터리 용량(mAh) 증가 주의 문구 부여. `upgrade_context`(`satisfied_aspects`, `pain_points`, `replacement_intent`) 지원 및 보유 기기가 필수 조건을 충족할 때 `status: 'keep'`(현 기기 유지)과 `keep_reasons`/`keep_cautions` 반환·서버 재검증.
+- 테스트 결과:
+  - `npm run test:upgrade`: **5/5 통과**(단위 4 + 실제 MySQL/HTTP 통합 1, HTTP 상태 검증 28개, 20개 필수 시나리오 전수 검증).
+  - 전체 백엔드 회귀 테스트: DB 8/8, 인증 5/5(HTTP 33), 회원/기기 5/5(HTTP 65), 스마트폰/후보 5/5(HTTP 34), 추천/분석/이력 4/4(HTTP 34), 업그레이드 제안/비교 5/5(HTTP 28) 총 **32/32 통과**(HTTP assertion 총 194개).
+  - 자동 테스트 중 외부 Gemini API 호출 **0회** 확인, 테스트 종료 후 8개 테이블 전체 행 수 0 확인.
+- 미해결 문제: 없음.
+- 다음 작업: Vue 3 + Vuetify 3 프론트엔드(`front/`) 화면 개발 및 백엔드 API 연동.

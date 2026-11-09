@@ -4,6 +4,8 @@ const express = require('express');
 const { QueryTypes } = require('sequelize');
 const connection = require('../db/connection');
 const catalog = require('../services/smartphone-catalog');
+const upgradeAdvisor = require('../services/upgrade-advisor');
+const memberRouter = require('./member');
 
 const router = express.Router();
 const wrap = fn => (req, res, next) => Promise.resolve().then(() => fn(req, res, next)).catch(next);
@@ -216,11 +218,8 @@ router.get('/smartphones/:variantId', wrap(async (req, res) => {
   });
 }));
 
-// POST /api/recommendation-candidates — Validate profile/owned devices, filter candidates by hard conditions,
-// handle 0 / >40 / clarify cases, and structure verified candidate payload for downstream AI recommendation.
-router.post('/recommendation-candidates', wrap(async (req, res) => {
-  const uid = req.session.user_id;
-  const now = new Date();
+// Core candidate search logic extracted for reuse by both POST /api/recommendation-candidates and POST /api/recommendations
+async function searchCandidatesForUser(uid, body, now = new Date()) {
   const { minDate, maxDate } = catalog.releaseWindowKst(now);
 
   const context = await db().transaction(async t => {
@@ -233,7 +232,9 @@ router.post('/recommendation-candidates', wrap(async (req, res) => {
       throw catalog.fail('PROFILE_INCOMPLETE', 409);
     }
 
-    const input = catalog.validateCandidateInput(req.body, p.smartphone_json || {});
+    const cleanPhonePrefs = memberRouter.stripInternalSmartphoneKeys(p.smartphone_json || {});
+    const input = catalog.validateCandidateInput(body, cleanPhonePrefs);
+    input.upgrade_context = upgradeAdvisor.validateUpgradeContextInput(input.upgrade_context);
     if (p.version !== input.expected_profile_version) {
       throw catalog.fail('PROFILE_CHANGED', 409);
     }
@@ -257,9 +258,13 @@ router.post('/recommendation-candidates', wrap(async (req, res) => {
              s.domestic_model_number,
              s.released_on_kr,
              s.os,
+             s.chipset,
+             s.screen_inches,
              s.refresh_hz,
              s.battery_mah,
              s.weight_g,
+             s.supports_5g,
+             s.wireless_charging,
              v.storage_gb,
              v.ram_gb,
              v.color,
@@ -288,7 +293,7 @@ router.post('/recommendation-candidates', wrap(async (req, res) => {
       profile: {
         version: p.version,
         common: p.common_json,
-        smartphone: p.smartphone_json,
+        smartphone: cleanPhonePrefs,
         confirmed_at: new Date(p.confirmed_at).toISOString()
       },
       input,
@@ -300,17 +305,16 @@ router.post('/recommendation-candidates', wrap(async (req, res) => {
 
   // 1. If required purchase conditions are missing or contradictory -> clarify
   if (input.clarify_questions.length > 0) {
-    return res.json({
-      data: {
-        status: 'clarify',
-        as_of: now.toISOString(),
-        profile_version: profile.version,
-        candidate_count: 0,
-        candidates: [],
-        questions: input.clarify_questions,
-        ai_context: null
-      }
-    });
+    return {
+      status: 'clarify',
+      as_of: now.toISOString(),
+      profile_version: profile.version,
+      input,
+      candidate_count: 0,
+      candidates: [],
+      questions: input.clarify_questions,
+      ai_context: null
+    };
   }
 
   // 2. Parameterized SELECT for hard spec conditions
@@ -373,6 +377,9 @@ router.post('/recommendation-candidates', wrap(async (req, res) => {
 
     const formatted = formatVariantRow(row, priceSummary, now);
     const eligibleReasons = catalog.buildEligibleReasons(formatted, h, input.soft, replacementDevice);
+    const comparison = replacementDevice
+      ? upgradeAdvisor.buildDeviceCandidateComparison(replacementDevice.product, formatted)
+      : null;
     matchedCandidates.push({
       variant_id: formatted.variant_id,
       smartphone_id: formatted.smartphone_id,
@@ -404,68 +411,93 @@ router.post('/recommendation-candidates', wrap(async (req, res) => {
         expires_at: formatted.price.expires_at,
         conditions_text: formatted.price.conditions_text
       },
-      eligible_reasons: eligibleReasons
+      eligible_reasons: eligibleReasons,
+      comparison_with_owned: comparison
     });
   }
 
+  const keepAssessment = replacementDevice
+    ? upgradeAdvisor.evaluateKeepCurrentDeviceOption({
+        ownedDevice: replacementDevice,
+        upgradeContext: input.upgrade_context,
+        hard: h,
+        candidates: matchedCandidates
+      })
+    : null;
+
   // 3. Zero candidates -> no_match with relaxation questions (never auto-relax)
   if (matchedCandidates.length === 0) {
-    return res.json({
-      data: {
-        status: 'no_match',
-        as_of: now.toISOString(),
-        profile_version: profile.version,
-        candidate_count: 0,
-        candidates: [],
-        questions: catalog.buildRelaxationQuestions(h),
-        ai_context: null
-      }
-    });
+    return {
+      status: 'no_match',
+      as_of: now.toISOString(),
+      profile_version: profile.version,
+      input,
+      candidate_count: 0,
+      candidates: [],
+      questions: catalog.buildRelaxationQuestions(h),
+      keep_current_evaluation: keepAssessment,
+      ai_context: null
+    };
   }
 
   // 4. More than 40 candidates -> clarify without arbitrary truncation
   if (matchedCandidates.length > 40) {
-    return res.json({
-      data: {
-        status: 'clarify',
-        as_of: now.toISOString(),
-        profile_version: profile.version,
-        candidate_count: matchedCandidates.length,
-        candidates: [],
-        questions: [
-          `조건을 만족하는 후보가 ${matchedCandidates.length}개로 너무 많습니다. 선호 제조사·저장 용량·예산 범위를 조금 더 구체화해 주세요.`
-        ],
-        ai_context: null
-      }
-    });
+    return {
+      status: 'clarify',
+      as_of: now.toISOString(),
+      profile_version: profile.version,
+      input,
+      candidate_count: matchedCandidates.length,
+      candidates: [],
+      questions: [
+        `조건을 만족하는 후보가 ${matchedCandidates.length}개로 너무 많습니다. 선호 제조사·저장 용량·예산 범위를 조금 더 구체화해 주세요.`
+      ],
+      keep_current_evaluation: keepAssessment,
+      ai_context: null
+    };
   }
 
   // 5. 1..40 candidates -> candidate_ready with structured AI input snapshot (no PII/secrets)
-  return res.json({
-    data: {
-      status: 'candidates_ready',
-      as_of: now.toISOString(),
-      profile_version: profile.version,
-      release_window_kr: { min_date: minDate, max_date: maxDate },
-      candidate_count: matchedCandidates.length,
-      candidates: matchedCandidates,
-      questions: [],
-      ai_context: {
-        profile_snapshot: {
-          version: profile.version,
-          common: profile.common,
-          smartphone: profile.smartphone
-        },
-        purchase_conditions: {
-          hard: h,
-          soft: input.soft,
-          purchase_reason: input.purchase_reason
-        },
-        replacement_device: replacementDevice,
-        candidates_snapshot: matchedCandidates
-      }
+  return {
+    status: 'candidates_ready',
+    as_of: now.toISOString(),
+    profile_version: profile.version,
+    release_window_kr: { min_date: minDate, max_date: maxDate },
+    input,
+    candidate_count: matchedCandidates.length,
+    candidates: matchedCandidates,
+    questions: [],
+    keep_current_evaluation: keepAssessment,
+    ai_context: {
+      profile_snapshot: {
+        version: profile.version,
+        common: profile.common,
+        smartphone: profile.smartphone
+      },
+      purchase_conditions: {
+        hard: h,
+        soft: input.soft,
+        purchase_reason: input.purchase_reason,
+        upgrade_context: input.upgrade_context
+      },
+      replacement_device: replacementDevice,
+      keep_current_evaluation: keepAssessment,
+      candidates_snapshot: matchedCandidates
     }
-  });
+  };
+}
+
+// POST /api/recommendation-candidates — Validate profile/owned devices, filter candidates by hard conditions,
+// handle 0 / >40 / clarify cases, and structure verified candidate payload for downstream AI recommendation.
+router.post('/recommendation-candidates', wrap(async (req, res) => {
+  const result = await searchCandidatesForUser(req.session.user_id, req.body, new Date());
+  const responseData = { ...result };
+  delete responseData.input;
+  res.json({ data: responseData });
 }));
+
+router.searchCandidatesForUser = searchCandidatesForUser;
+router.fetchPricesByVariantIds = fetchPricesByVariantIds;
+router.VARIANT_JOIN_SQL = VARIANT_JOIN_SQL;
 
 module.exports = router;

@@ -176,3 +176,56 @@ node --test test/db.test.js test/env.test.js: 8/8 통과. 임시 가짜 파일�
   - `GET /api/smartphones/:variantId`: 옵션별 용량·색상·국내 모델번호·출처, 판매처별 최신 관측 중 유효 최저가 선택 및 만료 가격(`is_expired=true`, `price=null`) 표시 확인.
   - `POST /api/recommendation-candidates`: 예산·최소 용량 충족 후보(1~40개) 조회 및 `ai_context`·`eligible_reasons` 반환, 후보 0개 시 `status='no_match'` 및 완화 질문 반환, 후보 40개 초과(42개) 시 임의 절단 없이 `status='clarify'` 반환 확인.
 - 회귀 및 정리: DB 8/8, 인증 5/5(HTTP 33), 회원/기기 5/5(HTTP 65), 스마트폰/후보 5/5(HTTP 34) 총 **23/23 통과**, `node db/check.js` 정상. 테스트 종료 후 8개 테이블 전체 행 수 0 확인.
+
+## Mock AI + Gemini 어댑터 및 추천·이력 검증 — 2026-11-10 00:26:13 KST
+
+- Google Antigravity. `npm run test:recommendation` (`test/recommendation.test.js` + `test/recommendation.integration.test.js`) **4/4 통과**, HTTP status assertion **29개** 통과.
+- 단위 검증(`test/recommendation.test.js`):
+  - AI 설정 검증: 기본 `gemini-3.5-flash-lite`, 선택 `gemini-3.6-flash`, 테스트 `mock` 허용 및 미승인 모델(`AI_MODEL_NOT_ALLOWED`)·공급자(`AI_CONFIG_INVALID`) 차단 확인.
+  - T03·T14·T18(자연어 분석): 예산/용도/선호 브랜드 추출, 미언급 항목 미추정 및 질문 반환, 기존 확정 프로필과의 브랜드/OS 충돌 질문, 미지원 기능(워치 호환·S펜) 불확실성 안내, 프롬프트 인젝션 문구(`DROP TABLE`, 시스템 지침 무시) 데이터 격리 확인.
+  - T07·T11(추천 검증기): 정상 후보 추천 및 서버 템플릿 문장 생성 통과, 후보 외 `variant_id`(`999`) 차단, 가격 변조(`PRICE_EVIDENCE_MISMATCH`) 차단, 해당 후보에 없는 근거 코드(`UNVERIFIED_REASON_FOR_CANDIDATE`) 차단, 사양 수치 조작(`SPEC_EVIDENCE_MISMATCH`) 차단 확인.
+- 실제 MySQL + HTTP 통합 검증(`test/recommendation.integration.test.js`):
+  - 비로그인 401, CSRF 누락 403, 잘못된 분석 요청 422, 분석 초안 호출 후 DB 미저장(`version=1, confirmed_at=null` 유지) 확인.
+  - `AI_PROVIDER=gemini`에서 `GEMINI_API_KEY` 미설정 시 `503 AI_KEY_MISSING` 및 로컬 설정 안내 메시지 반환 확인.
+  - `POST /api/recommendations`: 정상 추천(`201`, `status='recommend'`, 삼성 선호 반영 1순위 정렬), 후보 0개(`no_match`) 시 AI 미호출 검증, AI 환각 응답 시 정확히 1회 재시도(총 2회 호출) 후 `502 AI_INVALID_RESULT` 및 `failed` 상태 저장 검증, AI 응답 직전 가격 품절 변경 시 `409 CANDIDATES_CHANGED` 차단 검증.
+  - `GET /api/recommendations`, `GET /api/recommendations/:id`, `DELETE /api/recommendations/:id`: 본인 이력 목록/상세 조회, 스냅샷 만료 시 당시 가격 유지 및 `is_expired_now=true`·`price_status_note` 표시, 타인 이력 조회·삭제 시 `404` 격리, 본인 이력 삭제(`204`) 확인.
+- 전체 회귀 및 DB 정리: DB 8/8, 인증 5/5(HTTP 33), 회원/기기 5/5(HTTP 65), 스마트폰/후보 5/5(HTTP 34), 추천/분석/이력 4/4(HTTP 29) 총 **27/27 통과**(HTTP assertion 161개). 테스트 종료 후 8개 테이블 전체 행 수 0 확인.
+- 실제 Gemini API 호출 상태: 로컬 `backend/.env`에 `GEMINI_API_KEY`가 아직 설정되지 않아(`node services/gemini-check.js` → `AI_KEY_MISSING`), 외부 API 호출 없이 확인을 마쳤다. 키 설정 후 `node services/gemini-check.js`로 최소 토큰 확인 가능.
+
+## 실제 Gemini API (`gemini-3.5-flash-lite`) 종단간 검증 — 2026-11-10 00:43:03 KST
+
+- Google Antigravity. 사용자가 `node services/gemini-check.js`로 `gemini-3.5-flash-lite` 및 `gemini-3.6-flash` HTTP 200 연결을 확인한 뒤, `npm run test:gemini-live` (`test/gemini-live.integration.test.js`)로 실제 Gemini API 종단간 테스트 **1/1 통과**.
+- `POST /api/analysis` (실제 호출 1회, 604 토큰): 가상 입력 *"나는 게임을 거의 하지 않고 유튜브와 웹서핑을 주로 해. 배터리가 오래가는 삼성 갤럭시를 선호하고 예산은 80만 원 이하여야 해."* → `hard: { budget_max_krw: 800000, usages: ["video"] }`, `soft: { preferred_brands: ["samsung"], priorities: ["battery"] }`, 미언급 저장 용량·무게·주사율은 추측 없이 `questions`·`uncertainties`로 분리 반환, DB 미저장 확인.
+- `POST /api/recommendations` (실제 호출 1회, 1,890 토큰): 가상 검증 후보 2종(Galaxy A35 5G 5000mAh 490,000원 vs iPhone Budget 2018mAh 650,000원) 전달 → Galaxy A35 5G 1순위 선정, 후보 내 정확한 `variant_id`, `price_observation_id`, `total_krw`, `eligible_reasons` 일치 검증 통과, 추천 이력 저장·상세 조회(`GET /api/recommendations/:id`)·삭제(`DELETE /api/recommendations/:id`) 확인.
+- 오류 처리 및 전체 백엔드 회귀(`test/recommendation.integration.test.js` 포함 27/27 통과, HTTP assertion 166개):
+  - `AI_UNAVAILABLE`(502), `AI_TIMEOUT`(504), 사용자당 분당 5회 초과 `RATE_LIMITED`(429), `AI_INVALID_RESULT`(502), 후보 외 ID·가격/사양 변조 차단, 가격 품절/만료 시 `409 CANDIDATES_CHANGED`, 후보 0개 `no_match`(AI 미호출) 모두 통과.
+  - 테스트 종료 후 8개 테이블 전체 행 수 0 확인.
+
+## 보유 기기 기반 업그레이드 추천 및 다중 IT기기 확장 검증 — 2026-11-10 01:16:00 KST
+
+- Google Antigravity. `npm run test:upgrade` (`test/upgrade.test.js` + `test/upgrade.integration.test.js`) **5/5 통과**, HTTP status assertion **28개** 통과.
+- 20개 필수 시나리오 전수 검증 결과:
+  1. 신규 회원 스마트폰 등록 직후 출시일 즉시 판정(`POST /api/owned-devices` 응답 `upgrade_offer` 포함) 통과.
+  2. 기존 회원 재방문 시 현재 날짜 기준 재평가(`GET /api/upgrade-offer`) 통과.
+  3. 출시일 기준 정확히 3년 도래일(`2023-11-10` → `2026-11-10`) 업그레이드 대상 포함 통과.
+  4. 출시일 기준 3년 도래 하루 전(`2023-11-11` → `2026-11-10`) 업그레이드 대상 제외 통과.
+  5. 기존 회원의 기기가 시간이 지나 3년 경과 시 업그레이드 대상으로 전환 통과.
+  6. 보유 기기 수정(`PUT /api/owned-devices/:id`) 및 삭제(`DELETE /api/owned-devices/:id`) 시 업그레이드 상태 즉시 갱신 및 대표 기기 자동 승계 통과.
+  7. 다수 스마트폰 보유 시 현재 대표 스마트폰(`current_device`)만 판정하고 나머지는 `past_or_other_smartphones`로 분리 통과.
+  8. 출시일 누락/형식 오류/미래 날짜 모델의 `needs_verification: true`(`확인 필요`) 처리 통과.
+  9. 동일 모델명에 복수 세부 모델(`domestic_model_number`) 존재 시 `ambiguous_model_variant` 및 `needs_verification: true` 처리, 모델번호 명시 시 정확 식별(`identified_by_model_number`) 통과.
+  10. 카탈로그 미등록 수동 스마트폰(`unidentified_model`) 처리 및 3년 경과 임의 추측 방지 통과.
+  11. 최초 팝업 표시(`should_show_popup: true`) 및 `'snooze'`(‘나중에 보기’) 선택 시 30일(`UPGRADE_SNOOZE_DAYS`) 유예 억제 통과.
+  12. 30일 유예 만료 후 재방문 시 팝업 재표시 통과.
+  13. `'dismiss_permanent'`(‘이 기기에서는 다시 표시하지 않기’) 선택 시 해당 기기 영구 숨김 통과.
+  14. 타 사용자의 보유 기기 업그레이드 상태 조회·변경 시도 차단(`404 NOT_FOUND`) 통과.
+  15. 업그레이드 대상(3년 이상) 사용자의 추천 후보 조회 시 MySQL 내부 카탈로그 후보만 반환 통과.
+  16. 출시 3년 미만 스마트폰 보유 사용자의 일반 추천(`can_start_general_recommendation: true`) 정상 동작 통과.
+  17. 후보 0개(`no_match`) 시 조건 완화 안내 반환 및 AI 미호출 통과.
+  18. 현 기기 유지(`status: 'keep'`)가 유리할 때 유지 추천 및 근거(`keep_reasons`, `keep_cautions`) 반환 통과.
+  19. Gemini/AI 추천 결과가 후보 외 제품·가격·사양을 생성할 때 서버 검증기(`validateRecommendationOutput`) 차단 통과.
+  20. 업그레이드 대상 여부 조회(`GET /api/upgrade-offer`) 및 상태 변경 시 Gemini 호출 횟수 **0회** 확인 통과.
+- 향후 다중 IT기기(노트북 4년, 태블릿 4년, 스마트워치 3년, 데스크톱/조립 PC 성능·호환성·상태 중심) 확장 시 추가할 테스트 항목:
+  - 각 제품군 카탈로그 도입 및 정책 활성화(`active: true`) 시 기기군별 경계일(4년/3년) 단위·통합 검증.
+  - 조립 PC(PC-FIT 연동) 부품별 성능 병목·소켓/메모리/전원 호환성·상태 기반 업그레이드/유지 판정 회귀 테스트.
+- 전체 백엔드 회귀 및 DB 정리: DB 8/8, 인증 5/5(HTTP 33), 회원/기기 5/5(HTTP 65), 스마트폰/후보 5/5(HTTP 34), 추천/분석/이력 4/4(HTTP 34), 업그레이드 제안/비교 5/5(HTTP 28) 총 **32/32 통과**(HTTP assertion 총 194개). 테스트 종료 후 8개 테이블 전체 행 수 0 확인.

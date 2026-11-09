@@ -37,7 +37,8 @@ test('profile and owned-device HTTP CRUD, isolation, version and capacity concur
   check(await req(a,'PUT','/profile',{...save,expected_version:2,common:{...save.common,budget_max_krw:1}}),422);
   const update={...save,expected_version:2,common:{...save.common,lifestyle_note:'사용자가 확인한 짧은 메모'},smartphone:{preferred_brands:['apple'],priorities:['battery','camera'],preferred_os:'ios'}};
   const race=await Promise.all([req(a,'PUT','/profile',update),req(a,'PUT','/profile',update)]);assert.deepEqual(race.map(r=>r.status).sort(),[200,409]);checks+=2;
-  p=check(await req(a,'GET','/profile'),200);assert.equal(p.version,3);assert.equal(p.smartphone.preferred_os,'ios');assert.deepEqual((await m.profiles.findByPk(users[0])).smartphone_json,p.smartphone);
+  const memberRouter = require('../routes/member');
+  p=check(await req(a,'GET','/profile'),200);assert.equal(p.version,3);assert.equal(p.smartphone.preferred_os,'ios');assert.deepEqual(memberRouter.stripInternalSmartphoneKeys((await m.profiles.findByPk(users[0])).smartphone_json),p.smartphone);
   assert.deepEqual(check(await req(b,'GET','/profile'),200).common,{});
   check(await req(b,'GET','/profile?user_id='+users[0]),422);
   const ram={category:'ram',manual_brand:'test',manual_model_name:'kit',manual_specs_json:{capacity_gb:32,module_count:2,memory_standard:'DDR5'}};

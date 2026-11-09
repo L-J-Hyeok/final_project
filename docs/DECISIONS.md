@@ -101,3 +101,22 @@ D-015·D-016 계약을 유지하면서 실제 AI 연동 전 단계로 스마트�
 ## D-024 — 루트 단일 Git 저장소(모노레포) 통합 및 Taste 자산 제외 경계 (2026-11-09 23:52:04 KST)
 
 D-012의 프로젝트 Git 관리 범위를 확정하여 기존 `front/.git`(`master`, 초기 커밋 `0694d1c`)을 프로젝트 루트(`/Users/ijaehyeog/Desktop/final_project/.git`)로 이동해 `front/`, `backend/`, `docs/`, 루트 진입점 문서를 단일 저장소로 관리한다. 기존 커밋 이력을 재작성하지 않으므로 사용자가 첫 통합 커밋 시 Git이 `0694d1c`의 루트 기준 경로(`src/*` 등)에서 `front/src/*`로의 경로 이동(rename)과 Vuetify 미커밋 변경, 그리고 `backend/`·`docs/` 신규 추가를 함께 기록한다. 루트 `.gitignore`에서는 `.env` 비밀값과 `node_modules/`를 차단하되 `.env.example`은 허용하고, `.agents/skills/design-taste-frontend/` 중 실행이 금지된 `scripts/`·`*.mjs`·`*.js`와 약 37MB의 데모 이미지/컴포넌트(`assets/`)는 제외하며 읽기 전용 디자인 문서(`SKILL.md`, `references/`, `library/`)와 `skills-lock.json`만 보존한다.
+
+## D-025 — Mock AI 병행 어댑터 및 Gemini 3.5 Flash-Lite / 3.6 Flash 모델 선택 (2026-11-10 00:26:13 KST)
+
+D-007·D-016의 AI 공급자 및 추천 검증 구조를 구체화하여 `AI_PROVIDER`(`gemini` / `mock`) 기반 이중 어댑터로 구현한다.
+
+1. **모델 허용 목록과 과금 방지**: 신규 프로젝트에서 `gemini-2.5-flash-lite` 접근이 제한될 수 있으므로 기본 모델을 `gemini-3.5-flash-lite`로 설정하고, 추천 품질 비교용 선택 모델로 `gemini-3.6-flash`만 허용한다(`ALLOWED_GEMINI_MODELS`). 그 외 유료 전용 모델이나 미승인 모델명은 `AI_MODEL_NOT_ALLOWED`(503)로 즉시 차단한다.
+2. **외부 패키지 무설치 및 보안**: 불필요한 SDK 의존성을 설치하지 않고 Node 내장 `fetch`와 `AbortController`(20초 타임아웃), `responseSchema` 강제, `maxOutputTokens: 1024` 상한, `x-goog-api-key` 헤더(URL 쿼리 노출 방지)를 사용한다.
+3. **서버 측 사실 검증 및 재시도 상한**: AI는 후보 목록(`candidates_snapshot`) 안의 `variant_id`, 실제 사양/가격 `evidence`, 서버가 사전 계산한 `eligible_reasons` 안의 `reason_code`만 선택할 수 있으며, 사용자에게 노출되는 설명 문장은 서버 템플릿(`renderReasonTemplate`)으로 생성한다. 검증 실패 시 오류 코드만 전달해 최대 1회 재시도(총 2회 호출, 전체 45초 이내)하며 여전히 실패하면 `failed`로 기록하고 `502 AI_INVALID_RESULT`를 반환한다.
+
+## D-026 — 보유 스마트폰 출시 3년 경과 기반 업그레이드 제안·현 기기 유지(`keep`) 및 다중 IT기기 확장 설계 (2026-11-10 01:15:00 KST)
+
+D-006·D-015·D-016·D-025를 확장하여 보유 기기 기반 개인화 업그레이드 제안 시스템과 다중 IT기기 확장 기준을 다음과 같이 확정한다.
+
+1. **보유 스마트폰 출시 3년 경과 기준은 업그레이드 안내에만 적용**: 보유 스마트폰의 국내 공식 출시일(`released_on_kr`) 기준 3년 이상 경과 여부는 **업그레이드 제안 알림(`upgrade_offer_eligible`, `should_show_popup`)의 노출 기준**으로만 사용한다. 출시 3년 미만 스마트폰 보유자나 미등록 사용자도 일반 스마트폰 추천(`can_start_general_recommendation: true`)을 언제든 제한 없이 이용할 수 있다. 또한 이 기준은 개인 구매일·실사용 기간이 아닌 **제품 공식 출시 경과 기간**임을 명확히 구분한다.
+2. **신규 회원 즉시 확인 및 기존 회원 현재 날짜 기준 재평가**: 신규 회원이 스마트폰을 등록할 때(`POST /api/owned-devices`) 즉시 출시 3년 경과 여부를 계산해 반환하며, 기존 회원도 고정 플래그에 의존하지 않고 재방문·로그인(`GET /api/upgrade-offer`) 및 기기 수정·삭제(`PUT/DELETE /api/owned-devices/:id`) 시마다 현재 KST 날짜와 공식 출시일을 다시 비교한다.
+3. **기존 8개 테이블 재사용 및 무스키마 변경**: 새로운 테이블이나 컬럼을 추가하지 않고 `profiles.smartphone_json` 내부의 서버 관리 필드(`_upgrade_state`)에 대표 스마트폰 ID(`current_device_id`), 기기별 30일 유예 시각(`snoozed_until`, `UPGRADE_SNOOZE_DAYS`), 영구 숨김 여부(`dismissed_permanently`)를 저장한다. `GET/PUT /api/profile` 응답에서는 `_upgrade_state`를 은닉·보존하여 기존 프로필 API 계약을 그대로 유지한다.
+4. **Gemini는 내부 DB 후보만 사용하며 실시간 웹 검색 및 상태 조회 시 호출 금지**: 업그레이드 대상 여부 조회(`GET /api/upgrade-offer`)와 기기 등록/수정 시에는 Gemini를 절대 호출하지 않으며(0회), 사용자가 명시적으로 추천을 요청할 때(`POST /api/recommendations`)만 호출한다. Gemini API 요청에서는 실시간 웹 검색 및 Google Search Grounding 도구를 사용하지 않고 Express가 MySQL에서 검증해 전달한 후보 목록과 보유 기기 비교 컨텍스트만 사용한다.
+5. **현 기기 유지(`status: 'keep'`)를 정상 추천 결과로 인정**: 보유 기기가 이번 필수 조건을 모두 충족하고 사용자의 교체 의향이 낮거나(`low_or_keep_if_okay`) 불만 요소 대비 교체 체감 이득이 낮을 경우, 신제품 구매를 억지로 유도하지 않고 `status: 'keep'`(현 기기 유지 권장)과 검증된 유지 근거(`keep_reasons`, `keep_cautions`)를 반환한다. `recommendations.status`의 기존 CHECK 제약(`'recommend','keep','hold','no_match','clarify','failed','processing'`)을 그대로 활용한다.
+6. **다중 IT기기 공통 업그레이드 정책 레지스트리와 후속 검증 원칙**: `DEVICE_UPGRADE_POLICIES` 구조에 스마트폰(출시 3년, 현재 활성) 외에 노트북(출시 4년, 비활성), 태블릿(출시 4년, 비활성), 스마트워치(출시 3년, 비활성), 데스크톱/조립 PC(성능·호환성·부품 상태 중심, 비활성/PC-FIT 연동 예정)를 정의한다. 스마트폰 외 기기군의 구체적 연수·성능 기준은 해당 제품군 카탈로그 및 PC-FIT 통합 단계에서 실제 사양 데이터와 함께 재검증한 뒤 활성화한다.

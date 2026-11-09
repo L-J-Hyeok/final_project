@@ -12,6 +12,17 @@ router.use(['/profile','/owned-devices','/owned-device-options'],wrap(async(req,
 }));
 function db(){return connection.getDatabase();}
 function profileView(p){return {version:p.version,common:p.common_json,smartphone:p.smartphone_json,confirmed_at:p.confirmed_at};}
+function stripInternalSmartphoneKeys(s){
+ if(!s||typeof s!=='object')return {};
+ const copy={...s};delete copy._upgrade_state;return copy;
+}
+function mergeInternalSmartphoneKeys(prev,next){
+ const out={...(next||{})};
+ if(prev&&typeof prev==='object'&&prev._upgrade_state&&typeof prev._upgrade_state==='object'){
+  out._upgrade_state=prev._upgrade_state;
+ }
+ return out;
+}
 async function lockedProfile(uid,t){
  const user=await db().models.users.findByPk(uid,{transaction:t,lock:t.LOCK.UPDATE,attributes:['id']});
  if(!user)throw v.fail('AUTH_REQUIRED',401);
@@ -24,12 +35,12 @@ async function invalidate(uid,t){await db().models.recommendations.destroy({wher
 router.get('/profile',wrap(async(req,res)=>{
  v.object(req.query,[]);
  const p=await db().models.profiles.findByPk(req.session.user_id);
- if(!p)throw v.fail('NOT_FOUND',404);res.json({data:profileView(p)});
+ if(!p)throw v.fail('NOT_FOUND',404);res.json({data:{version:p.version,common:p.common_json,smartphone:stripInternalSmartphoneKeys(p.smartphone_json),confirmed_at:p.confirmed_at}});
 }));
 router.put('/profile',wrap(async(req,res)=>{
  const input=v.profile(req.body),uid=req.session.user_id;
- const p=await db().transaction(async t=>{const p=await lockedProfile(uid,t);if(p.version!==input.expected_version)throw v.fail('PROFILE_CHANGED',409);return increment(p,t,{common_json:input.common_json,smartphone_json:input.smartphone_json,confirmed_at:new Date()});});
- res.json({data:profileView(p)});
+ const p=await db().transaction(async t=>{const p=await lockedProfile(uid,t);if(p.version!==input.expected_version)throw v.fail('PROFILE_CHANGED',409);return increment(p,t,{common_json:input.common_json,smartphone_json:mergeInternalSmartphoneKeys(p.smartphone_json,input.smartphone_json),confirmed_at:new Date()});});
+ res.json({data:{version:p.version,common:p.common_json,smartphone:stripInternalSmartphoneKeys(p.smartphone_json),confirmed_at:p.confirmed_at}});
 }));
 router.delete('/profile',wrap(async(req,res)=>{
  v.object(req.body,['expected_version']);v.version(req.body.expected_version);const uid=req.session.user_id;
@@ -55,16 +66,36 @@ router.post('/owned-devices',wrap(async(req,res)=>{
  const result=await db().transaction(async t=>{const p=await lockedProfile(uid,t);
  if(await db().models.owned_devices.count({where:{user_id:uid},transaction:t})>=20)throw v.fail('DEVICE_LIMIT',409);
  if(input.variant_id&&!await variant(input.variant_id,t))throw v.fail('NOT_FOUND',404);
- const row=await db().models.owned_devices.create({...input,user_id:uid},{transaction:t});await increment(p,t);return {device:await deviceView(row,t),profile_version:p.version};});res.status(201).json({data:result});
+ const row=await db().models.owned_devices.create({...input,user_id:uid},{transaction:t});await increment(p,t);
+ const devView=await deviceView(row,t);
+ const upgradeOffer=devView.category==='smartphone'?await require('./upgrade-offers').buildUpgradeOfferStatus(uid,new Date(),t):null;
+ return {device:devView,profile_version:p.version,upgrade_offer:upgradeOffer};});res.status(201).json({data:result});
 }));
 router.put('/owned-devices/:id',wrap(async(req,res)=>{
  const id=v.id(req.params.id),uid=req.session.user_id,input=v.device(req.body);
  const result=await db().transaction(async t=>{const p=await lockedProfile(uid,t);const row=await db().models.owned_devices.findOne({where:{id,user_id:uid},transaction:t,lock:t.LOCK.UPDATE});if(!row)throw v.fail('NOT_FOUND',404);
  if(input.variant_id&&!await variant(input.variant_id,t))throw v.fail('NOT_FOUND',404);
- await row.update({...input,updated_at:new Date()},{transaction:t});await increment(p,t);await invalidate(uid,t);return {device:await deviceView(row,t),profile_version:p.version};});res.json({data:result});
+ const curJson=(p.smartphone_json&&typeof p.smartphone_json==='object')?{...p.smartphone_json}:{};
+ if(curJson._upgrade_state&&curJson._upgrade_state.devices&&curJson._upgrade_state.devices[String(id)]){
+  const nextDevices={...curJson._upgrade_state.devices};delete nextDevices[String(id)];
+  curJson._upgrade_state={...curJson._upgrade_state,devices:nextDevices};
+ }
+ await row.update({...input,updated_at:new Date()},{transaction:t});await increment(p,t,{smartphone_json:curJson});await invalidate(uid,t);
+ const devView=await deviceView(row,t);
+ const upgradeOffer=devView.category==='smartphone'?await require('./upgrade-offers').buildUpgradeOfferStatus(uid,new Date(),t):null;
+ return {device:devView,profile_version:p.version,upgrade_offer:upgradeOffer};});res.json({data:result});
 }));
 router.delete('/owned-devices/:id',wrap(async(req,res)=>{
  const id=v.id(req.params.id),uid=req.session.user_id;v.object(req.body||{},[]);
- await db().transaction(async t=>{const p=await lockedProfile(uid,t);const row=await db().models.owned_devices.findOne({where:{id,user_id:uid},transaction:t,lock:t.LOCK.UPDATE});if(!row)throw v.fail('NOT_FOUND',404);await row.destroy({transaction:t});await increment(p,t);await invalidate(uid,t);});res.status(204).end();
+ await db().transaction(async t=>{const p=await lockedProfile(uid,t);const row=await db().models.owned_devices.findOne({where:{id,user_id:uid},transaction:t,lock:t.LOCK.UPDATE});if(!row)throw v.fail('NOT_FOUND',404);
+ const curJson=(p.smartphone_json&&typeof p.smartphone_json==='object')?{...p.smartphone_json}:{};
+ if(curJson._upgrade_state){
+  const nextDevices={...(curJson._upgrade_state.devices||{})};delete nextDevices[String(id)];
+  const nextCurrent=String(curJson._upgrade_state.current_device_id)===String(id)?null:curJson._upgrade_state.current_device_id;
+  curJson._upgrade_state={...curJson._upgrade_state,current_device_id:nextCurrent,devices:nextDevices};
+ }
+ await row.destroy({transaction:t});await increment(p,t,{smartphone_json:curJson});await invalidate(uid,t);});res.status(204).end();
 }));
+router.stripInternalSmartphoneKeys=stripInternalSmartphoneKeys;
+router.mergeInternalSmartphoneKeys=mergeInternalSmartphoneKeys;
 module.exports=router;

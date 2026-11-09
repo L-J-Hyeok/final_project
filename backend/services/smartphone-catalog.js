@@ -214,7 +214,7 @@ function validateCatalogQuery(q) {
 // Semantic missing budget_max_krw or usages returns clarify questions instead of 422,
 // while invalid types/ranges/unknown keys throw 422 INVALID_INPUT.
 function validateCandidateInput(body, profileSmartphone = {}) {
-  object(body, ['expected_profile_version', 'hard', 'soft', 'replacement_device_id', 'purchase_reason', 'include_test']);
+  object(body, ['expected_profile_version', 'hard', 'soft', 'replacement_device_id', 'purchase_reason', 'upgrade_context', 'include_test']);
   const expected_profile_version = integer(body.expected_profile_version, 1, 4294967295);
   if (!isPlainObject(body.hard)) throw fail();
   object(body.hard, [
@@ -287,6 +287,7 @@ function validateCandidateInput(body, profileSmartphone = {}) {
     ? null
     : id(body.replacement_device_id);
   const purchase_reason = str(body.purchase_reason, 300, true);
+  const upgrade_context = body.upgrade_context === undefined ? null : body.upgrade_context;
 
   let include_test = false;
   if (body.include_test !== undefined) {
@@ -311,6 +312,7 @@ function validateCandidateInput(body, profileSmartphone = {}) {
     soft: mergedSoft,
     replacement_device_id,
     purchase_reason,
+    upgrade_context,
     include_test,
     clarify_questions: questions
   };

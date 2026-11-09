@@ -1,11 +1,11 @@
 # 현재 상태 및 인수인계
 
-최신 상태: 2026-11-09 23:52:04 KST — 전체 프로젝트 단일 Git 저장소(`.git`) 통합 및 루트 `.gitignore` 구성 완료(커밋·Push는 사용자 직접 수행 예정). 스마트폰 제품·가격 조회 및 후보 검색(23/23 테스트 통과) 유지.
+최신 상태: 2026-11-10 01:16:00 KST — 보유 스마트폰 출시 3년 경과 기반 개인화 업그레이드 제안(`GET /api/upgrade-offer`, `PUT /api/upgrade-offer/state`), 보유 기기 대비 객관 비교 및 현 기기 유지(`status: 'keep'`) 추천, 다중 IT기기 확장 정책 구조 구현 완료. 백엔드 전체 회귀 테스트 32/32(Live 포함 33/33) 통과. 프론트엔드(Vue 3) 개발에 필요한 모든 백엔드 API 준비 완료.
 
-- 마지막 작업: **2026-11-09 23:52:04 KST**.
+- 마지막 작업: **2026-11-10 01:16:00 KST**.
 - 작업 도구 전환: Codex Desktop → **Google Antigravity**.
 - Codex Desktop: 8테이블 마이그레이션 및 DB·HTTP 통합 검증 완료.
-- 기준: ARCHITECTURE.md 및 DECISIONS.md D-013~D-019. Express 4.16.4·MySQL 8.0.16+ 유지.
+- 기준: ARCHITECTURE.md 및 DECISIONS.md D-013~D-026. Express 4.16.4·MySQL 8.0.16+ 유지.
 
 ## 구현 상태
 
@@ -125,3 +125,43 @@ Codex Desktop: 이전 ZIP 연결·환경 로더·모델 초기화를 읽기 전�
 - 기존 `master` 브랜치 및 `0694d1c`(`init`) 커밋 객체·이력(`git fsck --full` 통과), `front/`의 미커밋 수정 8개 및 신규 파일(`logo.svg`, `src/plugins/*`)을 손실 없이 보존했다.
 - 루트 `.gitignore`로 `node_modules/`, `.env`·`.env.*`(`!.env.example` 예외), 빌드 산출물(`dist/`), 로그, OS 파일(`.DS_Store`), 그리고 Taste Skill의 실행 금지 스크립트·대용량 데모 자산(`.agents/skills/design-taste-frontend/scripts/`, `assets/`, `*.mjs`, `*.js` 약 38MB)을 제외하고 읽기 전용 디자인 문서(`SKILL.md`, `references/`, `library/`)만 추적 가능하도록 구성했다.
 - `git add`·`git commit`·`git push`·원격 변경은 수행하지 않았으며 사용자가 터미널에서 직접 수행한다.
+
+## Mock AI + Gemini API 추천 시스템 및 추천 이력 완료 — 2026-11-10 00:26:13 KST
+
+- Google Antigravity. 기존 8테이블·세션·CSRF·후보 검색 구조를 그대로 유지하면서 AI 어댑터(`services/ai-adapter.js`), 서버 검증기(`services/recommendation-validator.js`), 추천·분석·이력 라우터(`routes/recommendations.js`) 및 모델 접근 점검 스크립트(`services/gemini-check.js`)를 구현했다.
+- AI 공급자 및 모델: `AI_PROVIDER` 환경 변수로 `gemini`(기본 주력)와 `mock`(자동 테스트·오프라인 개발용)을 전환한다. 기본 모델은 `gemini-3.5-flash-lite`, 추천 품질 비교용 선택 모델은 `gemini-3.6-flash`만 허용하며 승인되지 않은 유료 모델은 `AI_MODEL_NOT_ALLOWED`(503)로 차단한다.
+- 현재 로컬 `backend/.env`에 `GEMINI_API_KEY`가 아직 설정되지 않은 것을 확인(`node services/gemini-check.js` → `AI_KEY_MISSING`). 키 미설정 시 `503 AI_KEY_MISSING`과 로컬 설정 안내를 반환하며, 자동 테스트는 모두 `AI_PROVIDER=mock`으로 실행해 외부 과금·호출 0회를 보장했다.
+- 구현 API:
+  - `POST /api/analysis`: 한국어 자연어 입력(`profile` 또는 `purchase`)을 구조화 초안(`draft`, `questions`, `uncertainties`)으로 분석. 기존 프로필과의 모순 및 미지원 조건은 질문으로 반환하며 사용자 확인 전까지 DB에 저장하지 않음. 자연어 원문은 로그/DB에 남기지 않음.
+  - `POST /api/recommendations`: 기존 후보 검색(`searchCandidatesForUser`) 재사용. 후보 0개(`no_match`) 및 조건 보완(`clarify`)은 AI 호출 없이 저장 후 반환. 후보 1~40개는 AI 호출 후 제품 ID·순위·예산·사양·근거(`evidence` 및 `eligible_reasons` 내 `reason_code`)를 검증하고 서버 템플릿 설명을 생성. 검증 실패 시 오류 코드만 전달해 최대 1회 재시도 후 실패 시 `failed` 기록 및 `502 AI_INVALID_RESULT` 반환. 저장 직전 프로필 버전(`409 PROFILE_CHANGED`) 및 가격 유효성(`409 CANDIDATES_CHANGED`) 재검증.
+  - `GET /api/recommendations`, `GET /api/recommendations/:id`, `DELETE /api/recommendations/:id`: 본인 추천 이력만 조회·삭제(타인 이력 `404`), 90일 경과 이력 자동 정리, 추천 당시 가격 보존 및 현재 만료 여부(`is_expired_now`, `price_status_note`) 표시.
+- 검증: 신규 `npm run test:recommendation` 4/4(단위 3 + 실제 MySQL/HTTP 통합 1, HTTP assertion 29개) 통과. 전체 백엔드 테스트 27/27 통과(HTTP assertion 총 161개) 및 테스트 종료 후 8개 테이블 전체 행 수 0 확인.
+- 다음 작업: 사용자가 `backend/.env`에 무료 티어 `GEMINI_API_KEY`를 설정한 뒤 `node services/gemini-check.js`로 `gemini-3.5-flash-lite` / `gemini-3.6-flash` 접근 확인 및 소량 실호출 검증, 이후 프론트엔드(Vue 3) 화면 연동 진행.
+
+## 실제 Gemini AI 추천 기능 최종 검증 완료 — 2026-11-10 00:43:03 KST
+
+- Google Antigravity. `backend/.env`를 직접 열거나 읽지 않고 보안 규칙을 준수한 상태에서 `npm run test:gemini-live` (`test/gemini-live.integration.test.js`)로 실제 `gemini-3.5-flash-lite` 모델을 최소 2회(자연어 분석 1회 + 추천 1회)만 호출하여 종단간(E2E) 검증을 완료했다.
+- 실제 자연어 분석(`POST /api/analysis`): 가상 입력 *"나는 게임을 거의 하지 않고 유튜브와 웹서핑을 주로 해. 배터리가 오래가는 삼성 갤럭시를 선호하고 예산은 80만 원 이하여야 해."*에 대해 `hard.budget_max_krw: 800000`, `hard.usages: ["video"]`(`gaming` 제외), `soft.preferred_brands: ["samsung"]`, `soft.priorities: ["battery"]`를 정확히 분리하고, 미언급 저장 용량·무게·주사율을 임의 추측하지 않고 `questions` 및 `uncertainties`로 반환함을 확인.
+- 실제 스마트폰 추천(`POST /api/recommendations`): 가상 후보 2종(Galaxy A35 5G 5000mAh 49만 원 vs iPhone Budget 2018mAh 65만 원) 중 1순위로 Galaxy A35 5G를 선정하고, 후보 내 정확한 `variant_id`, `price_observation_id`, `total_krw`, `eligible_reasons` 코드(`storage_meets_requirement`, `budget_headroom`, `preferred_brand_match`, `preferred_os_match`)만 인용하여 Express 검증 및 이력 저장·조회·삭제를 1회 호출 만에 통과.
+- 호출 횟수 및 토큰 사용량: 총 **2회** 호출 (`POST /api/analysis` 1회: 입력 454 / 출력 150 / 합계 604 토큰, `POST /api/recommendations` 1회: 입력 1,634 / 출력 256 / 합계 1,890 토큰 → 총 **2,494 토큰**, 참고 추정 비용 `$0.0002784`, 무료 티어 내 처리).
+- 오류 처리 및 전체 회귀: `AI_UNAVAILABLE`(502), `AI_TIMEOUT`(504), 분당 5회 초과 `RATE_LIMITED`(429), `AI_INVALID_RESULT`(502), 존재하지 않는 제품 ID·예산 초과·가격 만료(`409 CANDIDATES_CHANGED`)·후보 0개(`no_match`) 검증을 포함한 전체 백엔드 회귀 테스트 **27/27 통과**(HTTP status assertion 166개) 및 Live 테스트 **1/1 통과**. 테스트 종료 후 8개 테이블 전체 행 수 0 확인.
+- 다음 작업: 스마트폰 MVP 백엔드 전체 기능 및 실제 Gemini 연동 검증이 완료되었으므로 프론트엔드(`front/` Vue 3) 화면 개발 및 API 연동 시작 가능.
+
+## 보유 기기 기반 개인화 업그레이드 추천 및 다중 IT기기 확장 설계 완료 — 2026-11-10 01:16:00 KST
+
+- Google Antigravity. 기존 8개 MySQL 테이블을 그대로 재사용(DDL·신규 테이블/컬럼 변경 0건)하면서 보유 스마트폰 출시 3년 경과 판정 서비스(`services/upgrade-advisor.js`), 업그레이드 상태 조회·알림 제어 API(`routes/upgrade-offers.js`), 보유 기기 대비 객관 비교 및 현 기기 유지(`status: 'keep'`) 추천을 구현했다.
+- 구현된 업그레이드 제안 및 비교 기능:
+  - 신규 회원 스마트폰 등록(`POST /api/owned-devices`) 및 기기 수정(`PUT /api/owned-devices/:id`) 응답에 즉시 `upgrade_offer` 포함, 기존 회원 재방문·로그인 시 `GET /api/upgrade-offer`로 현재 KST 날짜 기준 재평가(Gemini 호출 0회, 단순 조회로 알림 상태 자동 해제 금지).
+  - 국내 공식 출시일(`released_on_kr`) 기준 정확히 3년 이상 경과(`currentKst >= anniversary3YKst`, 윤일 2월 29일은 평년 2월 28일) 시에만 `upgrade_offer_eligible: true` 판정. 개인 실사용 기간이 아닌 제품 출시 경과 기간임을 명시하며, 출시 3년 미만 사용자도 일반 추천(`can_start_general_recommendation: true`) 이용 가능.
+  - 수동 등록 스마트폰 식별: 국내 모델번호 정확 일치 또는 브랜드+모델명 단일 검증 모델 일치 시 출시일 확인, 복수 세부 모델(`ambiguous_model_variant`), 미등록 모델(`unidentified_model`), 출시일 누락/오류/미래 날짜는 `needs_verification: true`(`확인 필요`) 반환. 현재 대표 스마트폰(`current_device`)과 과거·기타 스마트폰(`past_or_other_smartphones`) 구분.
+  - 알림 반복 방지(`PUT /api/upgrade-offer/state`): `'snooze'`(`UPGRADE_SNOOZE_DAYS`, 기본 30일 유예 후 재노출), `'dismiss_permanent'`(해당 기기 영구 숨김), `'set_current'`(대표 스마트폰 변경), `'reset_notice'`. 상태는 `profiles.smartphone_json._upgrade_state`에 보관하며 `GET/PUT /api/profile` 응답에서는 은닉·보존.
+  - 보유 기기 대비 객관 비교(`comparison_with_owned`) 및 현 기기 유지(`status: 'keep'`) 추천: 화면 크기·무게·배터리(mAh)·저장용량·RAM·주사율·무선충전·가격만 객관 비교하고 누락 사양 및 칩셋 벤치마크는 `'insufficient_data'`(`정보 부족`)로 표시, 배터리 mAh 증가 주의 문구 포함. 보유 기기가 필수 조건을 충족하고 교체 의향이 낮으면 `status: 'keep'`과 유지 근거(`keep_reasons`, `keep_cautions`) 반환.
+  - 다중 IT기기 확장 정책 레지스트리(`DEVICE_UPGRADE_POLICIES`): 스마트폰(3년, 활성), 노트북(4년, 예정), 태블릿(4년, 예정), 스마트워치(3년, 예정), 데스크톱/조립 PC(성능·호환성·상태 중심, PC-FIT 연동 예정).
+- 프론트엔드 개발을 위해 준비된 백엔드 API 전체 목록:
+  - 인증/세션: `GET /api/auth/csrf`, `POST /api/auth/register`, `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/logout`
+  - 프로필/보유 기기: `GET/PUT/DELETE /api/profile`, `GET /api/owned-device-options`, `GET/POST /api/owned-devices`, `PUT/DELETE /api/owned-devices/:id`
+  - 업그레이드 제안/알림 제어: `GET /api/upgrade-offer`, `PUT /api/upgrade-offer/state`
+  - 스마트폰 카탈로그/후보 검색: `GET /api/smartphones`, `GET /api/smartphones/:variantId`, `POST /api/recommendation-candidates`
+  - AI 자연어 분석/추천/이력: `POST /api/analysis`, `POST /api/recommendations`, `GET /api/recommendations`, `GET /api/recommendations/:id`, `DELETE /api/recommendations/:id`
+- 검증: 신규 `npm run test:upgrade` 5/5(단위 4 + 실제 MySQL/HTTP 통합 1, HTTP status assertion 28개, 20개 필수 시나리오 전수 포함) 통과. 전체 백엔드 회귀 테스트 **32/32 통과**(HTTP status assertion 총 194개, Live 포함 33/33) 및 테스트 종료 후 8개 테이블 전체 행 수 0 확인.
+- 다음 작업: Vue 3 + Vuetify 3 프론트엔드(`front/`) 화면 개발 및 백엔드 API 연동.

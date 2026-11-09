@@ -268,4 +268,26 @@ backend/db/migrations/001-initial.sql에 8테이블·FK·UNIQUE·CHECK를 작성
 
 DB는 자동 생성하지 않는다. db/migrate.js --apply는 기존 빈 스키마만 허용하며 자동 sync·기존 테이블 변경·삭제·롤백 삭제·시드 생성은 없다. 업무 테이블 외 마이그레이션 메타 테이블도 추가하지 않았다. DDL 부분 실패 시 중단하며 후속 전진 마이그레이션이 필요하다.
 
-현 환경: Express 4.16.4, MySQL 실행 파일 8.0.45 확인. 기본 3306 리스너·기본 소켓은 확인되지 않았고 DB 환경 변수도 미설정. sequelize/mysql2 미설치로 실제 접속·DDL·모델 런타임은 미검증이다. 필요한 패키지는 보고만 했고 설치하지 않았다. 실행 안내는 backend/db/README.md에 있다.
+### 11. 보유 기기 기반 업그레이드 제안 및 다중 IT기기 확장 아키텍처 — 2026-11-10
+
+1. **업그레이드 판정 서비스 (`backend/services/upgrade-advisor.js`) 및 기기군별 정책 레지스트리 (`DEVICE_UPGRADE_POLICIES`)**:
+   - `smartphone`: `active: true`, `threshold_years: 3`, `criteria_type: 'release_date_elapsed'` (현재 MVP 활성화).
+   - `laptop`: `active: false`, `threshold_years: 4`, `criteria_type: 'release_date_elapsed'` (향후 확장 예정, 현재 미실행).
+   - `tablet`: `active: false`, `threshold_years: 4`, `criteria_type: 'release_date_elapsed'` (향후 확장 예정, 현재 미실행).
+   - `watch`: `active: false`, `threshold_years: 3`, `criteria_type: 'release_date_elapsed'` (향후 확장 예정, 현재 미실행).
+   - `pc`: `active: false`, `threshold_years: null`, `criteria_type: 'performance_compatibility_condition'` (단순 출시일이 아닌 성능·호환성·부품 상태 중심, PC-FIT 후속 연동 예정).
+
+2. **보유 스마트폰 식별 및 출시 3년 경과 판정 규칙**:
+   - 카탈로그 연결(`variant_id`) 기기는 연결된 `smartphones.released_on_kr`과 `verified` 여부를 직접 확인한다.
+   - 수동 등록(`manual_*`) 스마트폰은 내부 카탈로그에서 (1) `manual_model_number` 정확 일치 또는 (2) `manual_brand + manual_model_name` 단일 검증 모델 일치 시에만 출시일을 식별한다. 동일 모델명에 여러 세부 모델(`domestic_model_number`)이 존재하면 `ambiguous_model_variant`, 일치 모델이 없으면 `unidentified_model`, 출시일 누락/형식 오류/미래 날짜이면 `needs_verification: true`(`확인 필요`)를 반환하며 임의로 출시일을 추측하지 않는다.
+   - 경과 계산은 `Asia/Seoul` 달력 날짜 기준으로 수행하며, 출시일 `Y-M-D`의 3년 도래일(`Y+3-M-D`, 윤년 2월 29일 출시 모델은 평년 2월 28일)과 현재 KST 날짜를 비교해 `currentKst >= anniversary3YKst`일 때만 `three_years_elapsed: true`, `upgrade_offer_eligible: true`로 판정한다.
+   - 다수의 스마트폰을 등록한 경우 사용자가 명시적으로 지정한 대표 스마트폰(`current_device_id`) 또는 가장 최근 등록된 스마트폰(`id DESC`)을 `current_device`로 선정하고 나머지는 `past_or_other_smartphones`로 분리한다.
+
+3. **기존 8개 테이블 재사용 및 알림 표시·보류 상태 관리 (`routes/upgrade-offers.js`, `routes/member.js`)**:
+   - DDL이나 신규 테이블·컬럼 추가 없이 `profiles.smartphone_json` 내부의 서버 전용 메타데이터(`_upgrade_state: { current_device_id, devices: { [ownedDeviceId]: { snoozed_until, dismissed_permanently, updated_at } } }`)에 기기별 알림 상태를 저장한다.
+   - `GET /api/profile` 및 `PUT /api/profile`에서는 `_upgrade_state`를 외부 응답에서 제거하고 내부적으로 보존하여 기존 프로필 API 계약을 100% 유지한다.
+   - `GET /api/upgrade-offer`는 상태를 변경하지 않는 순수 조회(Gemini 호출 0회)이며, `PUT /api/upgrade-offer/state`를 통해 `'snooze'`(`UPGRADE_SNOOZE_DAYS`, 기본 30일 유예), `'dismiss_permanent'`(해당 기기 영구 숨김), `'set_current'`(대표 기기 전환), `'reset_notice'`를 처리한다. 보유 기기를 수정하거나 삭제하면 해당 기기의 알림 억제는 자동 초기화된다.
+
+4. **보유 기기 대비 객관 비교, 현 기기 유지(`status: 'keep'`) 판단 및 AI/서버 역할 분리**:
+   - **결정론적 서버 계산**: 출시 3년 경과 판정, 후보 검색(`searchCandidatesForUser`), 보유 기기 대비 화면·무게·배터리(mAh)·저장용량·RAM·주사율·무선충전·가격의 객관적 수치 비교(`buildDeviceCandidateComparison`), 현 기기 유지 가능 여부(`evaluateKeepCurrentDeviceOption`)는 모두 Express 서버가 결정론적으로 계산한다. 누락된 사양이나 벤치마크 테이블이 없는 칩셋 성능 차이는 `'insufficient_data'`(`정보 부족`)로 표시하고, 배터리 용량(mAh) 증가는 실사용 시간 증가를 보장하지 않는다는 주의 문구를 부여한다.
+   - **AI 판단 및 서버 재검증**: 사용자가 명시적으로 `POST /api/recommendations`를 호출할 때만 Mock AI 또는 Gemini API를 호출한다(실시간 웹 검색 및 Google Search Grounding 금지). 보유 기기가 이번 필수 조건을 모두 충족하고 사용자의 교체 의향이 낮거나 체감 업그레이드 이득이 낮으면 `status: 'keep'`과 검증된 유지 근거(`keep_reasons`, `keep_cautions`)를 반환하며, `recommendation-validator.js`가 보유 기기 사양 충족 사실과 후보 근거 일치 여부를 최종 검증한다.
