@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "db:check": "node db/check.js",
+    "db:migrate": "node db/migrate.js --apply",
+    "test:db": "node --test test/db.test.js test/env.test.js",
+    "test:auth": "node --test test/auth.test.js test/auth.integration.test.js",
+    "test:member": "node --test test/member.test.js test/member.integration.test.js",
+    "test:smartphone": "node --test test/smartphone.test.js test/smartphone.integration.test.js"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-session": "1.19.0",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1",
+    "mysql2": "3.22.3",
+    "sequelize": "6.37.8"
+  }
+}
