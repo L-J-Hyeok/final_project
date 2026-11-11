@@ -5,7 +5,7 @@ var path = require('path');
 var parseEnv = require('node:util').parseEnv;
 var keys = ['DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'DB_PASSWORD',
   'SESSION_SECRET', 'APP_ORIGIN', 'TRUST_PROXY_LOOPBACK',
-  'AI_PROVIDER', 'GEMINI_API_KEY', 'GEMINI_MODEL', 'UPGRADE_SNOOZE_DAYS'];
+  'AI_PROVIDER', 'GEMINI_API_KEY', 'GEMINI_MODEL', 'ALLOW_DEVELOPMENT_PRICES', 'UPGRADE_SNOOZE_DAYS'];
 
 // 허용된 서버 설정만 읽는다. 실행 환경의 명시적 값은 덮어쓰지 않는다.
 module.exports = function loadEnv(file, env) {

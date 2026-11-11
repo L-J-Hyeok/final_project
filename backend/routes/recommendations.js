@@ -5,6 +5,7 @@ const { Op, QueryTypes } = require('sequelize');
 const connection = require('../db/connection');
 const limiterFactory = require('../auth/limiter');
 const catalog = require('../services/smartphone-catalog');
+const pricePreview = require('../services/smartphone-price-preview');
 const memberVal = require('../services/member-validation');
 const validator = require('../services/recommendation-validator');
 const aiModule = require('../services/ai-adapter');
@@ -120,14 +121,34 @@ async function verifySnapshotFreshness(candidatesSnapshot, hard, checkTime) {
   for (const snap of candidatesSnapshot) {
     const currentRow = rowMap.get(String(snap.variant_id));
     if (!currentRow) return false;
+    // Reject stale specification evidence, even if a changed spec still meets the hard filter.
+    const numericFields = ['screen_inches','refresh_hz','battery_mah','weight_g','storage_gb','ram_gb'];
+    const booleanFields = ['supports_5g','wireless_charging'];
+    for (const key of ['smartphone_id','brand','model_name','domestic_model_number','released_on_kr','os','chipset','color',...numericFields,...booleanFields]) {
+      const normalize = value => value == null ? null : numericFields.includes(key) ? Number(value) : booleanFields.includes(key) ? value === true || value === 1 : String(value);
+      if (normalize(currentRow[key]) !== normalize(snap[key])) return false;
+    }
     const obsList = priceMap.get(String(snap.variant_id)) || [];
-    const priceSummary = catalog.selectBestPrice(obsList, checkTime);
+    const priceSummary = pricePreview.buildCandidatePriceObject(currentRow, obsList, process.env, checkTime);
     const best = priceSummary.selected;
     if (!best || !best.eligible) return false;
-    // 선택된 관측 ID 또는 총액이 달라졌으면 CANDIDATES_CHANGED
+
+    const snapObsId = snap.price.observation_id === null || snap.price.observation_id === undefined
+      ? null
+      : String(snap.price.observation_id);
+    const bestObsId = best.observation_id === null || best.observation_id === undefined
+      ? null
+      : String(best.observation_id);
+    const snapBasis = catalog.effectiveBudgetPriceKrw({ ...snap.price, eligible: true });
+    const bestBasis = catalog.effectiveBudgetPriceKrw(best);
+    const snapSource = snap.price.price_source || 'verified_sale';
+    const bestSource = best.price_source || 'verified_sale';
+
+    // 선택된 관측 ID, 가격 출처, 또는 예산 산정 기준 금액이 달라졌으면 CANDIDATES_CHANGED
     if (
-      String(best.observation_id) !== String(snap.price.observation_id) ||
-      Number(best.total_krw) !== Number(snap.price.total_krw)
+      bestObsId !== snapObsId ||
+      bestSource !== snapSource ||
+      Number(bestBasis) !== Number(snapBasis)
     ) {
       return false;
     }
@@ -344,6 +365,20 @@ function formatHistoricalRecommendation(row, now = new Date()) {
   const items = Array.isArray(resultJson.items)
     ? resultJson.items.map(item => {
         if (!item.price) return item;
+        if (item.price.development_only === true || (item.price.price_source && item.price.price_source !== 'verified_sale')) {
+          return {
+            ...item,
+            price: {
+              ...item.price,
+              is_expired_now: false,
+              price_status_note: item.price.warning || (
+                item.price.price_source === 'reference_sale'
+                  ? '개발용 참고 판매가(실제 구매 가능 가격·배송비 미검증)'
+                  : '개발용 국내 공식 출고가 폴백(현재 실제 판매가 아님)'
+              )
+            }
+          };
+        }
         const expMs = new Date(item.price.expires_at).getTime();
         const isExpiredNow = !Number.isFinite(expMs) || nowMs >= expMs;
         return {

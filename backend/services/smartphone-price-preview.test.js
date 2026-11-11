@@ -1,5 +1,6 @@
 'use strict';
-const test=require('node:test'),assert=require('node:assert/strict');const {selectPrice}=require('./smartphone-price-preview');
+const test=require('node:test'),assert=require('node:assert/strict');
+const {selectPrice,resolveCuratedPriceInputsForVariant,buildCandidatePriceObject,colorsStrictlyMatch}=require('./smartphone-price-preview');
 const candidate={variant_id:'1',phone_verified:true,variant_verified:true,storage_gb:256,ram_gb:12,color:'블랙'};
 const ref={variant_id:'1',mapping_verified:true,storage_gb:256,ram_gb:12,color:'블랙',amount_krw:100,shipping_krw:null,research_date:'2026-11-11'};
 const launch={variant_id:'1',mapping_verified:true,verified:true,amount_krw:200};
@@ -15,3 +16,12 @@ test('color or RAM mismatch cannot use another option price',()=>{for(const chan
 test('non DB/unverified candidates rejected',()=>{for(const c of [{...candidate,variant_id:null},{...candidate,phone_verified:false},{...candidate,variant_verified:false}])assert.equal(selectPrice({...args,candidate:c}).price_source,null)});
 test('null specs and source objects not mutated',()=>{const input={...args,candidate:{...candidate,battery_mah:null}};const before=JSON.stringify(input);selectPrice(input);assert.equal(JSON.stringify(input),before)});
 test('invalid observations and string false cannot become verified',()=>assert.equal(selectPrice({...args,environment:'production',observations:[{...sale,is_new:'false'},{...sale,observed_at:'bad'}]}).price_source,null));
+test('research-only color snapshots and pending launch metadata are not promoted to verified mappings',()=>{
+  const row={variant_id:'90000505',brand:'samsung',domestic_model_number:'SM-S947N',storage_gb:256,ram_gb:12,color:'블랙',launch_price_krw:1452000,phone_verified:true,variant_verified:true,launch_price_metadata_json:{status:'pending'}};
+  const resolved=resolveCuratedPriceInputsForVariant(row);
+  assert.equal(resolved.references.length,0);
+  assert.equal(resolved.launch,null);
+  assert.equal(buildCandidatePriceObject(row,[],{NODE_ENV:'development',ALLOW_DEVELOPMENT_PRICES:'true'}).selected,null);
+  assert.equal(colorsStrictlyMatch('블랙','Black'),true);
+  assert.equal(colorsStrictlyMatch('티타늄 그레이','티타늄 제트블랙'),false);
+});

@@ -78,6 +78,7 @@ test('owned smartphone upgrade offer eligibility, 3-year boundaries, snooze/dism
       source_url: 'https://example.invalid/s23',
       verified_at: verifiedAt,
       verified: true,
+      review_status: 'legacy',
       is_test: true
     });
     createdPhones.push(phoneExact3Y);
@@ -100,6 +101,7 @@ test('owned smartphone upgrade offer eligibility, 3-year boundaries, snooze/dism
       source_url: 'https://example.invalid/s23p',
       verified_at: verifiedAt,
       verified: true,
+      review_status: 'legacy',
       is_test: true
     });
     createdPhones.push(phoneOneDayShort);
@@ -122,6 +124,7 @@ test('owned smartphone upgrade offer eligibility, 3-year boundaries, snooze/dism
       source_url: 'https://example.invalid/s25',
       verified_at: verifiedAt,
       verified: true,
+      review_status: 'legacy',
       is_test: true
     });
     createdPhones.push(phoneRecentCandidate);
@@ -149,6 +152,7 @@ test('owned smartphone upgrade offer eligibility, 3-year boundaries, snooze/dism
       source_url: 'https://example.invalid/amb1',
       verified_at: verifiedAt,
       verified: true,
+      review_status: 'legacy',
       is_test: true
     });
     createdPhones.push(phoneDupA);
@@ -163,6 +167,7 @@ test('owned smartphone upgrade offer eligibility, 3-year boundaries, snooze/dism
       source_url: 'https://example.invalid/amb2',
       verified_at: verifiedAt,
       verified: true,
+      review_status: 'legacy',
       is_test: true
     });
     createdPhones.push(phoneDupB);
@@ -175,7 +180,8 @@ test('owned smartphone upgrade offer eligibility, 3-year boundaries, snooze/dism
       source_name: 'Samsung KR Official',
       source_url: 'https://example.invalid/v-s23',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vExact3Y);
 
@@ -187,7 +193,8 @@ test('owned smartphone upgrade offer eligibility, 3-year boundaries, snooze/dism
       source_name: 'Samsung KR Official',
       source_url: 'https://example.invalid/v-s23p',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vOneDayShort);
 
@@ -199,7 +206,8 @@ test('owned smartphone upgrade offer eligibility, 3-year boundaries, snooze/dism
       source_name: 'Samsung KR Official',
       source_url: 'https://example.invalid/v-s25',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vRecentCandidate);
 
@@ -363,9 +371,12 @@ test('owned smartphone upgrade offer eligibility, 3-year boundaries, snooze/dism
 
     // Test 6, 8, 9, 10: Modify device to missing release date, ambiguous model name, and unidentified manual model
     // Missing release date catalog model -> needs_verification=true, eligible=false
-    const modMissing = check(await req(a, 'PUT', '/owned-devices/' + devShortId, { variant_id: String(vMissingDate.id) }), 200);
-    assert.equal(modMissing.upgrade_offer.needs_verification, true);
-    assert.equal(modMissing.upgrade_offer.upgrade_offer_eligible, false);
+    check(await req(a, 'PUT', '/owned-devices/' + devShortId, { variant_id: String(vMissingDate.id) }), 404);
+    // Legacy ownership fixture: only this test user's row, not a public registration bypass.
+    await m.owned_devices.update({ variant_id: vMissingDate.id }, { where: { id: devShortId, user_id: users[0] } });
+    const modMissing = check(await req(a, 'GET', '/upgrade-offer'), 200);
+    assert.equal(modMissing.needs_verification, true);
+    assert.equal(modMissing.upgrade_offer_eligible, false);
 
     // Ambiguous manual model name (matches both SM-AMB1 and SM-AMB2) -> ambiguous_model_variant, needs_verification=true
     const modAmbiguous = check(await req(a, 'PUT', '/owned-devices/' + devShortId, {

@@ -186,3 +186,20 @@ D-033의 A/B/C분리를 유지. null은unknown이고0/false로대체금지; 기�
 - 테스트: 새10+기존24=34/34통과. 가격우선순위·운영/기본차단·명시적옵트인·24시간/만료·색상/RAM불일치·DB미검증후보차단·NULL보존·잘못된불리언거절. 병합계획44/33/11/8검사통과. SQL은정적검토만이며MySQL문법실행/동시성/실제API통합시험아님. 안전한분리테스트DB의존재·격리근거가없어어떤DB에도접속하지않음.
 - 공개정책: OS NULL 모델은등록준비가능하지만기존verified CHECK상true불가. member/일부catalog는false도조회할수있으므로미승인/보류모델은계속파일에격리. 실제적재전공개필터/승인입력기/ORM·마이그레이션검증필수. 가격대체허용은개발전용새정책이며운영의실판매가원칙을완화하지않음.
 - 다음: 33모델/2변형의운영검수와SQL테스트환경승인, 공개필터·실제쓰기실행부준비, DB조회결과에대한색상가격매핑및개발전용추천최종검증/이력연결. .env/웹검색/DB접속·적재/프론트/Git/PC-FIT변경없음.
+
+## D-035 — 실제 MySQL 카탈로그 기반 AI 추천 연동 및 개발 가격 안전 격리 확정 (2026-11-11 16:25:00 KST)
+
+1. **개발 가격 Fallback 정책 확정:**
+   - 개발 환경(`NODE_ENV=development` AND `ALLOW_DEVELOPMENT_PRICES=true`)에 한하여 실시간 판매가가 없는 카탈로그 모델에 대해 `reference_sale` 및 `official_launch` 가격을 추천 후보 평가에 임시 제공한다.
+   - 운영 환경(`NODE_ENV=production`)에서는 해당 옵션이 엄격히 무시되며 오직 24시간 이내 검증된 `verified_sale`만 사용된다.
+   - 개발 가격 대체 시 `price_observations` 테이블에 가짜 레코드를 영구 저장하지 않으며(`observation_id: null`), `recommendations` 테이블에는 `development_only: true` 및 경고 안내를 보존한다.
+2. **Sequelize ORM 모델 초기화 규칙:**
+   - 마이그레이션 002/003 적용 이후 `connection.js`에서 모델을 초기화할 때 항상 `{ extended: true }`를 전달한다. 이를 통해 `review_status`, `launch_price_krw`가 ORM 속성으로 인식되어 MySQL 8.0 CHECK 제약조건 위반을 방지한다.
+3. **통합 테스트 하니스 격리 원칙:**
+   - 통합 테스트 픽스처는 `is_test: true` 및 `review_status: 'legacy'`를 명시하여 생성한다.
+   - `include_test: true` 파라미터는 비운영 환경에서만 허용되며, 운영 환경에서는 422 오류로 즉시 거부된다.
+4. **신규 33개 pending 모델의 운영 승인 분리:**
+   - MySQL에 적재된 신규 33개 모델은 여전히 `pending` 및 `verified = false` 상태를 유지한다.
+   - 공식 사양(`os` 등)이 확인되지 않은 22개 모델 및 식별 보류 기기는 일괄 승인하지 않으며, 향후 모델별 개별 승인 절차를 따른다.
+5. **보안 규칙 엄수:**
+   - `.env` 및 API 키 원문, 일부 문자열, 해시값의 노출을 영구 금지하고, 개발 및 테스트는 오직 환경 변수 기반 비노출 방식으로 진행한다.

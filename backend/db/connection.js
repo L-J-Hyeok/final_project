@@ -23,7 +23,7 @@ function getDatabase() {
   config.options.dialectModule = mysql;
   database = new Sequelize(config.database, config.username, config.password, config.options);
   try {
-    require('./models')(database, require('sequelize').DataTypes);
+    require('./models')(database, require('sequelize').DataTypes, { extended: true });
   } catch (error) {
     var failed = database;
     database = undefined;

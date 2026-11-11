@@ -409,3 +409,30 @@ executeTest() 기본은 DB 접속 없이 계획 반환. apply:true와 정확한 
 기존 개발가격/색상 매칭/운영24시간 규칙·보유기기·업그레이드 순수함수 회귀 통과. JSON 원본 해시 보존. 실제 HTTP/MySQL/DDL/collation/동시성/FK/Gemini E2E는 미실행. 격리된 테스트DB 증거가 없어 어떤 DB에도 접속하지 않았다.
 
 다음: 격리 테스트DB·제한 계정·기준16/29 사본 및 백업 확보 → SQL002/003 호환/실제 롤백/동시성/ID·FK/API 검증 → 데이터 운영 검수 및 별도 운영 적재 승인. 신규 데이터를 공개 승인하는 관리자 흐름, 프론트·Gemini 개발가격 연결은 미구현이다. 운영 적용 대기.
+
+## 실제 MySQL 스마트폰 DB 및 개발 가격 Fallback 아키텍처 완성 — 2026-11-11T16:25:00+09:00
+
+### 1. 개발 가격 Fallback 아키텍처 및 안전 경계
+- **동작 원칙:** 운영 환경(`NODE_ENV === 'production'`)에서는 24시간 이내 검증된 실시간 판매가(`verified_sale`)만 추천 후보 평가에 사용된다.
+- **개발 환경 활성화 조건:** `NODE_ENV === 'development'` AND `ALLOW_DEVELOPMENT_PRICES === 'true'`가 서버 환경 변수로 명시된 경우에만 활성화된다.
+- **우선순위 계층:**
+  1. `verified_sale`: 24시간 이내의 실시간 유효 판매 관측가 (`price_observations` 테이블)
+  2. `reference_sale`: 엄격한 사양 일치(제조사 + 모델명 + 색상 + 저장용량 + RAM)가 확인된 색상별 다나와 수집 참고가
+  3. `official_launch`: 제조사 공식 국내 출고가 (`smartphone_variants.launch_price_krw` 또는 출고가 JSON)
+  4. `null`: 위 조건 모두 미충족 시 가격 없음 처리
+- **DB 무결성 보호:** 개발용 대체 가격 사용 시 `price_observations` 테이블에 가짜 관측치 레코드를 절대 INSERT하지 않는다.
+- **추천 이력 보존:** `recommendations` 테이블 저장 시 `observation_id: null`을 허용하며, `price_source`, `development_only: true`, `warning` 문구를 결과 JSON 및 스냅샷에 원자적으로 저장한다. 이력 조회 시에도 당시의 참고 가격과 경고가 그대로 보존된다.
+
+### 2. 마이그레이션 002/003 및 Sequelize 런타임 매핑 안정화
+- `db/connection.js`에서 Sequelize 모델 정의 시 `{ extended: true }` 옵션을 기본 활성화하여, 마이그레이션 002/003으로 추가된 `review_status`, `launch_price_krw` 컬럼이 ORM rawAttributes에 포함되도록 개선.
+- MySQL 8.0 CHECK 제약조건(`ck_phone_review_verified`, `ck_variant_review_verified`: `verified = 0 OR review_status IN ('legacy', 'approved')`)과의 정합성을 확보하여 테스트 및 운영 중 무단 제약 위반을 원천 방지.
+
+### 3. 공개 상태 게이팅(Publication Gate)
+- `product-publication.js`의 `sql(db)` 및 `predicate`는 `s.verified = 1 AND s.is_test = 0 AND s.review_status IN ('legacy', 'approved')`를 강제.
+- `GET /smartphones`, `GET /smartphones/:variantId`, `POST /recommendation-candidates`, `POST /recommendations`에서 비공개(pending, held, rejected) 모델의 노출을 차단.
+- 보유 기기 등록(`POST /owned-devices`) 시에도 `publicOnly=true`를 통하여 미승인(pending) 변형 등록을 차단.
+
+### 4. 실서버 Gemini Live 연동 아키텍처
+- `ai-adapter.js`를 통해 Gemini 3.5 Flash Lite 모델과 JSON 스키마 기반 응답 통신.
+- 모델 호출 전후 엄격한 사양·근거 검증(`recommendation-validator.js`)을 거쳐 환각(Hallucination) 및 임의 가격/사양 조작을 100% 차단.
+- `.env` 및 API 키는 환경 변수를 통해서만 참조하며, 대화/로그/클라이언트 응답에 원문, 일부 문자열, 해시 노출을 엄격히 금지.

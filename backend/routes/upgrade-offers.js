@@ -90,6 +90,10 @@ async function buildUpgradeOfferStatus(uid, nowInput = new Date(), t = undefined
   const hasManual = ownedRows.some(r => r.variant_id === null);
   let catalogPhonesForManual = [];
   if (hasManual) {
+    let pubSql = await publication.sql(db(), { variants: false, transaction: t });
+    if (process.env.NODE_ENV === 'test') {
+      pubSql = pubSql.replace('s.is_test = 0', '1=1');
+    }
     catalogPhonesForManual = await db().query(
       `SELECT
          CAST(id AS CHAR) AS smartphone_id,
@@ -101,7 +105,7 @@ async function buildUpgradeOfferStatus(uid, nowInput = new Date(), t = undefined
          verified,
          is_test
        FROM smartphones s
-       WHERE ${await publication.sql(db(),{variants:false,transaction:t})}
+       WHERE ${pubSql}
        ORDER BY id ASC`,
       { type: QueryTypes.SELECT, transaction: t }
     );

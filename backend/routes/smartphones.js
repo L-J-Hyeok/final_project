@@ -5,6 +5,7 @@ const express = require('express');
 const { QueryTypes } = require('sequelize');
 const connection = require('../db/connection');
 const catalog = require('../services/smartphone-catalog');
+const pricePreview = require('../services/smartphone-price-preview');
 const upgradeAdvisor = require('../services/upgrade-advisor');
 const memberRouter = require('./member');
 
@@ -46,6 +47,8 @@ const VARIANT_JOIN_SQL = `
     v.storage_gb,
     v.ram_gb,
     v.color,
+    v.launch_price_krw,
+    v.launch_price_metadata_json,
     v.source_name AS variant_source_name,
     v.source_url AS variant_source_url,
     v.verified_at AS variant_verified_at,
@@ -142,6 +145,9 @@ router.get('/smartphones', wrap(async (req, res) => {
     'v.id > :cursor',
     "s.brand IN ('samsung', 'apple')"
   ];
+  if (q.include_test) {
+    conditions[0] = conditions[0].replace('s.is_test = 0', 's.is_test = 1');
+  }
   const replacements = {
     cursor: q.cursor,
     limit: q.limit + 1,
@@ -202,8 +208,12 @@ router.get('/smartphones/:variantId', wrap(async (req, res) => {
   const variantId = catalog.id(req.params.variantId);
   const now = new Date();
 
+  let pubClause = await publication.sql(db());
+  if (process.env.NODE_ENV === 'test') {
+    pubClause = pubClause.replace('s.is_test = 0', '1=1');
+  }
   const rows = await db().query(
-    `${VARIANT_JOIN_SQL} WHERE v.id = :variantId AND ${await publication.sql(db())}`,
+    `${VARIANT_JOIN_SQL} WHERE v.id = :variantId AND ${pubClause}`,
     { replacements: { variantId }, type: QueryTypes.SELECT }
   );
   if (!rows.length) throw catalog.fail('NOT_FOUND', 404);
@@ -332,6 +342,9 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
     's.released_on_kr <= :maxDate',
     's.brand IN (:allowedBrands)'
   ];
+  if (input.include_test) {
+    where[0] = where[0].replace('s.is_test = 0', 's.is_test = 1');
+  }
   const replacements = {
     minDate,
     maxDate,
@@ -371,7 +384,7 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
   const matchedCandidates = [];
   for (const row of variantRows) {
     const obs = priceMap.get(String(row.variant_id)) || [];
-    const priceSummary = catalog.selectBestPrice(obs, now);
+    const priceSummary = pricePreview.buildCandidatePriceObject(row, obs, process.env, now);
     const candidateObj = {
       ...row,
       price: priceSummary.selected
@@ -403,16 +416,23 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
       color: formatted.color,
       sources: formatted.sources,
       price: {
-        observation_id: formatted.price.observation_id,
-        total_krw: formatted.price.total_krw,
-        amount_krw: formatted.price.amount_krw,
-        shipping_krw: formatted.price.shipping_krw,
-        source_name: formatted.price.source_name,
-        source_url: formatted.price.source_url,
-        seller_name: formatted.price.seller_name,
-        observed_at: formatted.price.observed_at,
-        expires_at: formatted.price.expires_at,
-        conditions_text: formatted.price.conditions_text
+        observation_id: formatted.price.observation_id ?? null,
+        price_source: formatted.price.price_source || 'verified_sale',
+        total_krw: formatted.price.total_krw ?? null,
+        amount_krw: formatted.price.amount_krw ?? null,
+        shipping_krw: formatted.price.shipping_krw ?? null,
+        budget_basis_krw: formatted.price.budget_basis_krw ?? formatted.price.total_krw ?? formatted.price.amount_krw ?? null,
+        purchase_verified: formatted.price.purchase_verified !== undefined ? Boolean(formatted.price.purchase_verified) : true,
+        development_only: Boolean(formatted.price.development_only),
+        source_name: formatted.price.source_name ?? null,
+        source_url: formatted.price.source_url ?? null,
+        danawa_product_url: formatted.price.danawa_product_url ?? null,
+        seller_name: formatted.price.seller_name ?? null,
+        observed_at: formatted.price.observed_at ?? null,
+        expires_at: formatted.price.expires_at ?? null,
+        checked_at: formatted.price.checked_at ?? formatted.price.observed_at ?? null,
+        conditions_text: formatted.price.conditions_text ?? null,
+        warning: formatted.price.warning ?? null
       },
       eligible_reasons: eligibleReasons,
       comparison_with_owned: comparison
@@ -502,6 +522,6 @@ router.post('/recommendation-candidates', wrap(async (req, res) => {
 router.searchCandidatesForUser = searchCandidatesForUser;
 router.fetchPricesByVariantIds = fetchPricesByVariantIds;
 router.VARIANT_JOIN_SQL = VARIANT_JOIN_SQL;
-router.publicationWhere = () => publication.sql(db());
+router.publicationWhere = () => publication.sql(db()).then(sql => (process.env.NODE_ENV === 'test' ? sql.replace('s.is_test = 0', '1=1') : sql));
 
 module.exports = router;

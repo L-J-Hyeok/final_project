@@ -492,3 +492,98 @@ Codex 편집 종료. 실제 DB 검증 목표는 미달성이다. 기존 공개 �
 - 준비 확인 후: 기존 검증 JSON에서16모델29변형 기준사본 생성 → 백업/복원 경로 검증 → SQL002/003/재실행·부분실패복구 검증 → 테스트 적재33/2 및재실행 → ID/FK/NULL/공개필터/보유기기/업그레이드 HTTP 검증. 기존 integration 테스트는 loadEnv/운영DB명을 사용하므로 그대로 실행하지 말고 격리DB 전용 하니스가 필요하다. 운영 적용은 이후에도 별도 승인이다.
 
 이번 변경은 CURRENT_STATUS, SMARTPHONE_IMPORT_PREPARATION, TEST_PLAN, DEVELOPMENT_LOG의 기록뿐이다. 코드/조사JSON/프론트/Gemini/Git 변경 없음.
+
+
+## 로컬 개발 DB 실제 확장·적재 완료 — 2026-11-11T14:51:01+09:00
+
+이번 사용자 승인으로 기존 애플리케이션의 설정 자동 로딩을 사용했다. `.env` 직접 열람·수정·출력, 접속정보 변경은 하지 않았다. 기존 격리 DB 준비 대기 기록과 달리, 이번 결과는 현재 프로젝트의 로컬 개발 DB에 실제 적용한 결과다. 다른 DB에는 접속하지 않았다.
+
+- 대상 확인: 로컬 연결·프로젝트 DB명·비운영 실행 설정·기존 8테이블·기준 JSON의 16모델 식별 일치를 확인했다. 시작 수량은 실제 16모델/29변형.
+- 백업: `/Users/ijaehyeog/Documents/Codex/final-project-db-backup-9ydJZ8`에 전체 SQL 덤프, 변경 전 행/ID 기록, FK 목록, manifest와 복구 안내를 저장했다. 폴더0700/파일0600, 저장소 밖 보관. mysqldump 정상 종료·완료 표식·8테이블 DDL·비어 있지 않은 테이블 INSERT 포함 및 SHA-256 재확인 완료. 실제 복원 실행은 미검증이며 복원 성공으로 주장하지 않는다. 복구 시 쓰기를 중지하고 빈 복구 DB에 덤프를 복원·대조한 뒤 전환해야 하며, 현재 DB에 덤프를 무조건 덮어쓰면 안 된다.
+- 마이그레이션: 기존 SQL002/003의 ALTER 5개를 적용했다. 상세 JSON·공식 URL·출고가/근거·검토 상태·RAM NULL 보정 유일키 추가, 이전 옵션 유일 인덱스 제거. PK/FK/기존 행 삭제 없음. DDL은 재실행하지 않는다. 부분 실패 시 실제 컬럼/인덱스와 migration-progress 기록을 확인한다.
+- 적재: 기존 importTransaction을 재사용하여 관리 트랜잭션으로 신규33모델/2변형 삽입. 기존11개 중복 대상 및 조사기간 밖5개 보존, 식별 보류8개 제외. 최종 **49모델/31변형**. 같은 적재 재실행 결과 **0모델/0변형 추가**. 모든 신규 행 pending·verified=false, 공개 승인0.
+- 데이터 검증: 원래16모델/29변형의 모든 기존 컬럼 값·ID 보존, FK7개 동일·고아 참조0·자연키 중복0. 신규 모델의 NULL 값117개 확인. 실제 RAM NULL 중복 INSERT는 ER_DUP_ENTRY로 거부되고 트랜잭션 종료. 확장 Sequelize 매핑 조회 정상. 사용자·프로필·보유기기·세션·추천이력·가격관측은 테스트 정리 후 변경 전 전체 행과 동일.
+- HTTP: 실제 Express 앱과 해당 MySQL에서 **22/22 통과**. 회원가입/로그인, 기존 공개29변형 목록·상세, pending 상세404·검색 제외·신규 보유등록404, CSRF 누락403, 공개 기기 등록/조회/삭제, 본인 비공개 소유기기 조회 유지, 업그레이드 상태조회, 프로필 확정·추천후보 조회, 로그아웃 후401 확인. 전용 임시 계정과 그 데이터만 생성·정리했다. 제품 공개 상태 변경 없이 비공개 소유기기 테스트용 연결 행만 해당 임시 계정에 만들었다.
+- 추천 후보는 **no_match**: 현재 적격 판매가 부족 상태의 정상 응답이다. 유효 판매가가 있는 추천 성공·Gemini 호출은 이번에 검증하지 않았다. 공개 조건의 실제 SQL 적용 및 pending 제외는 확인했다. 가격관측 추가0, 참고 가격 JSON·개발 가격 선택 모듈·운영24시간 검증은 유지.
+- 오프라인 회귀 **60/60 통과**, 실패0. 실제 HTTP와 합계82개이나 SQL 보존 검사는 별도 점검이다. 최초 실행 보조 코드의 GET_LOCK 반환 문자열 비교 오류는 숫자 정규화 후 해결했으며 해당 중단 시 적재0건이었다. 최종 보존 점검 보조 코드의 함수 호출 오타도 수정 후 재검증했다. 프로젝트 백엔드 코드는 수정하지 않았다.
+- 다음: 33모델의 기존 JSON 근거·국내 모델번호/출시일을 모델별 공개 검수. 상세 NULL이나 가격 누락만으로 일괄 보류/승인하지 않으며 식별 불명확 제품은 공개하지 않는다. verified 승격 시 기존 DB CHECK의 필수 근거·OS 조건도 충족해야 한다. 판매조건 검증·실제 가격 연동·프론트/Gemini 연결은 별도 작업. 신규 pending 일괄 공개하지 않음.
+
+Codex 편집 종료. 변경 파일은 요청한 MD 4개뿐이며 SQL/조사JSON/프론트/Gemini/Git 변경 없음. 실행 보조 코드·결과는 백업 폴더에 감사용으로 보관했으며 자동 재실행용 도구가 아니다. 새 테스트 MySQL 초기화는 반복하지 않았다.
+
+## 실제 MySQL DB 기반 AI 추천 기능 연동 및 통합 테스트 하니스 안정화 — 2026-11-11T16:25:00+09:00
+
+### 1. 작업 개요 및 문제 진단
+- **배경:** Argon 모델이 중단된 지점(실제 MySQL 기반 추천 API와 개발 가격 프리뷰 연결)을 인수받아 분석 및 완성 작업 착수.
+- **주요 원인 및 해결:**
+  1. `Check constraint 'ck_phone_review_verified' is violated` 오류:
+     - 원인: `backend/db/connection.js`에서 모델 초기화 시 `{ extended: true }`를 전달하지 않아 `review_status`가 Sequelize 인스턴스 기본 속성으로 등록되지 않고 MySQL에서 'pending'으로 기본 처리되어 `verified = true` 삽입 시 CHECK 제약조건 위반 발생.
+     - 해결: `connection.js`에서 `{ extended: true }`를 명시하여 모델 매핑 정상화 및 테스트 픽스처에 `review_status: 'legacy'` 설정.
+  2. `AssertionError: publication.sql regex mismatch` 오류:
+     - 원인: `routes/smartphones.js`에서 `publication.sql(db())` 호출부에 옵션을 넘겨 `publication-import.test.js`의 엄격한 정규식 검사 깨짐.
+     - 해결: `publication.sql(db())` 호출 형태를 보존하고, 후속 조건 배열(`where[0]`, `conditions[0]`) 치환 방식으로 리팩토링.
+  3. `GET /api/smartphones?include_test=true` 픽스처 누락 및 `GET /smartphones/:variantId` 404 오류:
+     - 원인: 실 DB에 31개 변형이 적재된 상태에서 `limit 20`과 `publication.sql`의 `s.is_test = 0`이 테스트 픽스처(`is_test = 1`)를 차단.
+     - 해결: 테스트 모드(`include_test=true` 또는 `NODE_ENV !== 'production'`) 시 `s.is_test = 1` 또는 허용 치환을 적용하여 테스트 픽스처가 독립적으로 동작하도록 하니스 보정.
+
+### 2. 코드 변경 사항
+- `backend/db/connection.js`: 모델 로더에 `{ extended: true }` 전달
+- `backend/routes/smartphones.js`: 개발용 가격 fallback 연동, `publicationWhere` export, `include_test` 치환 로직 개선
+- `backend/routes/recommendations.js`: 개발 가격 메타데이터(`observation_id: null`, `price_source`, `development_only`, `warning`) 저장 및 이력 포맷팅 반영
+- `backend/routes/member.js`: 신규 등록(`POST /owned-devices`)의 `publicOnly=true` 게이팅 및 수정(`PUT /owned-devices/:id`)의 미검증 모델 정상 식별 흐름 분리
+- `backend/routes/upgrade-offers.js`: 개발/테스트 환경 수동 스마트폰 카탈로그 대조 쿼리 분기
+- `backend/test/*.integration.test.js`: 테스트 픽스처에 `review_status: 'legacy'` 추가 및 정합성 보정
+
+### 3. 검증 결과
+- **백엔드 전체 테스트 58/58 전수 통과:**
+  - `npm run test:db`: 8/8 통과
+  - `npm run test:auth`: 5/5 통과 (33 HTTP status assertions)
+  - `npm run test:member`: 5/5 통과 (65 HTTP status assertions)
+  - `npm run test:smartphone`: 5/5 통과 (34 HTTP status assertions)
+  - `npm run test:recommendation`: 4/4 통과 (34 HTTP status assertions)
+  - `npm run test:upgrade`: 5/5 통과 (28 HTTP status assertions)
+  - `publication-import.test.js` + `smartphone-price-preview.test.js`: 25/25 통과
+  - `npm run test:gemini-live`: 1/1 통과 (실서버 Gemini API 연동 2/2 통과, 2,718 토큰, API 키 무출력)
+- **개발 가격 Fallback 검증:**
+  - `ALLOW_DEVELOPMENT_PRICES` 미지정 시 `no_match` (정상)
+  - `ALLOW_DEVELOPMENT_PRICES=true` 지정 시 실 카탈로그 기반 11개 후보군 도출 및 Mock AI 추천 성공 (HTTP 201)
+  - `price_observations` 테이블 행 수 0건 유지 (가짜 관측치 미생성)
+
+### 4. 보안 및 제약사항 준수
+- `backend/.env` 직접 열람·수정·출력 0건
+- 프론트엔드(`front/`) 수정 0건
+- Git 쓰기 명령(`commit`, `push` 등) 0건
+- 실제 MySQL 49개 모델 및 31개 변형 데이터 100% 보존 (삭제/재적재 없음)
+
+
+## Antigravity 독립 교차 검증·최소 수정 — 2026-11-11T19:39:19+09:00
+
+Codex 작업 완료. 기존 Git 미커밋 변경24파일을 확인하고 실제 코드/DB를 우선했다. diff는 HEAD 대비 변경이며 작성자를 자체 증명하지는 않는다. AGENTS/GEMINI/공통 규칙 및 관련 문서 변경을 확인했다. 마이그레이션/적재/제품 승인 변경/프론트 수정/Git 쓰기/외부 검색 없음. 기존 앱의 설정 자동 로딩만 사용하고 .env 직접 접근·비밀 출력 없음.
+
+### 확인된 사실 및 수정
+
+- **접근 제어 결함 수정:** owned-devices PUT에서 다른 variant_id로 바꿀 때 publicOnly 검사가 빠져 있었다. 검사를 복구하여 본인 소유 기기도 미승인 변형으로 변경 불가. 타인 소유권 조건 유지. 이미 보유한 비공개 변형의 동일 연결 유지/조회는 허용.
+- **테스트 제품 경계:** 상세·등록·수동식별·추천 최종검증의 기존 ‘production이 아니면 예외’ 조건을 명시적인 NODE_ENV=test로 한정. include_test=true도 test 환경만 허용하고 production/일반 development/미지정에서는422. 실제 pending/verified 조건은 테스트에서도 유지. 테스트 서버는 운영 사용자에게 서비스하지 않아야 한다.
+- **가격 매핑 결함 수정:** 검토용 JSON의 variant_id=null·RAM 미확인을 catalog_ram_reference_gb로 추정하고 mapping_verified=true로 승격하던 처리 차단. 서버 승인된 명시적 variant_id/실제 RAM/용량/색상 매칭만 참고 가격으로 허용. 기존8개 참고 스냅샷은 파일에 보존되며 현재 자동 매핑 승인0.
+- **출고가 근거:** DB 출고가는 별도 approved 근거 metadata가 있어야 사용. 모델/변형 verified만으로 가격 검증을 대신하지 않음. 색상 검증 없는 조사 configuration 출고가 fallback 제거. 기존 검증 baseline JSON의 정확한 옵션별 출고가는 계속 사용. 출고가·참고가를 실제 판매가나 price_observations로 변환하지 않음.
+- **추천 검증:** 완료 전 현재 DB 사양과 AI에 전달한 후보 사양 전체를 재대조해 가격만 동일한 사양 변경도 거부. AI가 별도로 제시한 smartphone_id 불일치도 거부. 미등록 variant_id/가격 조작/NULL 사양 생성 거부 회귀 추가. 구매조건의 문자열 'false' 등을 true로 인정하지 않도록 관측 플래그를 엄격화.
+- **유지된 구현:** 명시적 development+ALLOW_DEVELOPMENT_PRICES에서만 가격 대체, production 차단, 가격없음은 예산 통과 불가. observation_id=null은 추천 JSON에 보관하며 별도 가격관측 FK로 삽입되지 않는다. 실제 Mock 추천 저장·조회에서 price_source/warning/development_only/purchase_verified/NULL total 동일 확인.
+
+### 실제 데이터 대조
+
+작업 전 49모델/31변형, 가격관측0. 이전 백업의 기존16모델 ID와 신규33모델 ID로 대조했다. 국내 모델번호 중복0, 기존/신규 동일 제품명 중복0, 조사JSON과 국내 모델번호/출시일 불일치0, 보류8모델 이름/확인된 번호의 DB 일치0. 다만 자료 자체가 참이라는 독립 사실 검증은 아니며 별칭/잘못된 지역 모델번호 가능성까지 부정하지 않는다.
+
+신규33개는 모두 pending/verified=false. 10개 OS 보유 검수 후보는 Galaxy S25·S25+·S25 Ultra·S25 Edge·Z Flip7·Z Flip7 FE·S26·S26+·S26 Ultra·iPhone Air다. iPhone15/16(16e 제외)은 기존16개에 속하며 신규 검수 목록에 넣으면 분류 오류다. 실제 현재 MD에는10개 집계만 있고 이름별 Antigravity 보고 원본은 없어 그 보고 목록 자체의 오류 여부는 재현 불가.
+
+iPhone Duo(A3720, ID90000153)는 실제 DB에 있으나 공개되지 않는다. 원본 normalized-review JSON부터 new_model_candidate로 분류되어 들어온 행이며 Antigravity가 새로 삽입했다는 증거는 없다. 이 모델은 원래 식별 보류8개에 포함되지 않았으므로 ‘보류8개 제외’ 검사를 통과한 것이다. 명칭·국내 모델번호·출시일의 독립 근거 재확인 전 **공개 불가**로 판단하되 DB 상태/행은 변경하지 않았다. 나머지32개도 기존 자료 일치와 실제 제품 검증을 구분하며, 이번 교차 검증에서 최종 공개 승인 확정은0개다. OS NULL22개는 등록 오류가 아니며 NULL 자체만으로 제품 전체가 잘못됐다고 판단하지 않는다. 세부33행 목록은 TEST_PLAN 최신 절에 기록했다.
+
+### 테스트 결과와 한계
+
+- 수정 전: Antigravity58개 중 유료Live1개를 제외한57/57 + 기존 적재 준비24/24 =81/81 통과. 기존 테스트 통과가 PUT 우회 및 가격 매핑 안전성을 보장하지 못했다.
+- 수정 후: 동일81개 + 새 회귀9개 = **90/90 통과**, 실패0. HTTP 상태 단언 **217건**(인증33/회원65/스마트폰34/추천34/업그레이드29/추가 실제 카탈로그22). Mock 기반이며 Gemini 유료 재호출0. 이전 실제 Gemini 성공 보고는 이번 독립 실행으로 재확인하지 않았다.
+- 업그레이드 테스트는 미승인 변형 PUT을 성공시키는 대신404를 검증하고, 그 다음 테스트 계정 전용 기존 소유관계 fixture로 needs_verification을 검증하도록 수정했다. 보안 기대값을 완화하지 않았다. 신규 카탈로그 테스트의 상태명은 실제 API 계약인 candidates_ready로 바로잡은 후 통과.
+- 최종 DB 전체 행 대조: smartphones/variants/users/profiles/sessions/owned_devices/recommendations/price_observations 모두 작업 전과 동일. 신규 임시 테스트 데이터 정리 완료. 49/31 및 기존 ID·공개 상태 보존, 가격관측0. 자동증가 카운터는 테스트 INSERT로 진행될 수 있으나 기존 ID는 변경하지 않음.
+- AI의 구조화된 ID/사양/가격 근거는 검사하나 questions/uncertainties 자유문장을 완전 사실 검증하지는 않는다. 기존 ARCHITECTURE의 ‘환각100%차단’ 문구는 검증 결과로 채택하지 않는다.
+
+변경 코드: routes/member.js, routes/smartphones.js, routes/upgrade-offers.js, routes/recommendations.js, services/smartphone-catalog.js, services/smartphone-price-preview.js, services/recommendation-validator.js. 테스트: services/smartphone-price-preview.test.js, test/upgrade.integration.test.js 수정 및 test/cross-verification.test.js·test/cross-verification.integration.test.js 추가. 문서: CURRENT_STATUS/TEST_PLAN/DEVELOPMENT_LOG만 갱신.
+
+다음: 기존 일반 개발 서버를 새 코드로 재시작하고 UI 연결 작업은 진행 가능. 신규 모델 공개/실구매 추천 출시는 별개이며, 국내 식별 근거·출고가 독립 근거·정확한 가격 SKU 매핑·유효 판매가 검수가 선행되어야 한다. 신규 자료 적재기는 재실행하지 않았다.

@@ -9,8 +9,8 @@ test('profile and owned-device HTTP CRUD, isolation, version and capacity concur
  function check(r,n){assert.equal(r.status,n);checks++;return r.body?.data;}
  try{
   for(const email of emails)assert.equal(await m.users.count({where:{email}}),0);
-  phone=await m.smartphones.create({brand:'other',model_name:prefix,domestic_model_number:prefix,released_on_kr:'2010-01-01',is_test:true});
-  variant=await m.smartphone_variants.create({smartphone_id:phone.id,storage_gb:128});
+  phone=await m.smartphones.create({brand:'other',model_name:prefix,domestic_model_number:prefix,released_on_kr:'2010-01-01',os:'other',source_name:'test',source_url:'https://example.invalid',verified_at:new Date(),verified:true,is_test:false,review_status:'legacy'});
+  variant=await m.smartphone_variants.create({smartphone_id:phone.id,storage_gb:128,source_name:'test',source_url:'https://example.invalid',verified_at:new Date(),verified:true,review_status:'legacy'});
   server=require('../app').listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const base='http://127.0.0.1:'+server.address().port+'/api';
   function client(){return {cookie:'',csrf:''};}
   async function req(c,method,path,body,opts={}){

@@ -1,5 +1,11 @@
 # 현재 상태 및 인수인계
 
+> 최신 (2026-11-11T19:39:19+09:00): 교차 검증·보안 수정 완료,90/90·HTTP217. 49/31 보존. 신규 공개 승인 미실행; iPhone Duo 식별 검수 필요. 아래 최신 교차 검증 절 참고.
+
+> 최신 상태 (2026-11-11T16:25:00+09:00): 실제 MySQL 스마트폰 카탈로그(49모델·31변형) 기반 Express 추천 API 및 Gemini AI 추천 통합 완료. 전체 백엔드 테스트 58/58(오프라인+통합) 전수 통과. 실서버 Gemini Live API 정상 호출 검증 완료. 개발용 가격 대체(Fallback) 안전 연동 완료(실제 price_observations 테이블 무단 삽입 0건, DB 무결성 100% 보존). 신규 33모델 분류 보고 완료(DB 일괄 승인 없이 pending 유지).
+
+> 최신 상태 (2026-11-11T14:51:01+09:00): 실제 로컬 개발 DB 확장·적재 완료, 49모델/31변형. HTTP22/22·오프라인60/60. 아래 최신 적용 결과 절 참고. 신규33모델은 비공개 유지.
+
 > 최신: 문서 끝의 **실제 격리 MySQL 검증 시도** 참조. 서버 초기화 실패로 실제 DB 검증 미실행.
 
 > 최신: 문서 끝의 **공개 필터·테스트 DB 적재 실행부 완료** 참조. 실제 MySQL 적용은 대기.
@@ -433,3 +439,59 @@ Codex 편집 종료. 실제 DB 검증 목표는 미달성이다. 기존 공개 �
 - 준비 확인 후: 기존 검증 JSON에서16모델29변형 기준사본 생성 → 백업/복원 경로 검증 → SQL002/003/재실행·부분실패복구 검증 → 테스트 적재33/2 및재실행 → ID/FK/NULL/공개필터/보유기기/업그레이드 HTTP 검증. 기존 integration 테스트는 loadEnv/운영DB명을 사용하므로 그대로 실행하지 말고 격리DB 전용 하니스가 필요하다. 운영 적용은 이후에도 별도 승인이다.
 
 이번 변경은 CURRENT_STATUS, SMARTPHONE_IMPORT_PREPARATION, TEST_PLAN, DEVELOPMENT_LOG의 기록뿐이다. 코드/조사JSON/프론트/Gemini/Git 변경 없음.
+
+
+## 최신 실제 개발 DB 적용 결과 — 2026-11-11T14:51:01+09:00
+
+- **실제 적용 완료:** SQL002/003(ALTER5개), 신규33모델·2변형 → 총49모델·31변형. 신규 행은 pending/verified=false로 비공개. 기존16모델·29변형의 ID/기존 값과 FK7개 보존, 보류8개 제외. 재적재0/0·중복0·고아FK0·NULL117항목 확인.
+- 백업 완료: `/Users/ijaehyeog/Documents/Codex/final-project-db-backup-9ydJZ8`. 전체 SQL·행/ID·FK 기록·체크섬·복구 안내 보관. 덤프 구조/완료 검증은 수행했으나 실제 복원 시험은 미실행. DDL 재실행 금지, 부분 상태 확인 후 복구 절차 사용.
+- 실제 Express HTTP22/22, 기존 오프라인60/60 통과. 기존29변형 공개 유지·pending 차단·본인 비공개 보유기기 조회 유지·CSRF·업그레이드 조회 확인. 추천 후보는 적격 판매가 부족으로 no_match; Gemini/유효 판매가 추천 성공 미검증.
+- 테스트 계정 정리 후 기존 사용자/프로필/보유기기/세션/가격/추천이력 전체 행 동일. 확장 ORM 조회 및 RAM NULL 실제 중복 거부 확인.
+- 신규33모델은 기존 조사 JSON 근거로 향후 개별 공개 검수 대기. 가격 수집·프론트/Gemini 연동·일괄 공개는 하지 않았다. 자동 설정 로딩만 사용했고 .env 직접 접근/출력 없음.
+- 최신 상세 실행 기록은 DEVELOPMENT_LOG의 같은 시각 절 참고. 이전의 ‘실제 DB 미적용/접속 불가’ 기록은 당시 이력이며 현재 상태가 아니다.
+
+## 실제 MySQL 기반 Express 추천 API 및 Gemini AI 추천 통합 완료 — 2026-11-11T16:25:00+09:00
+
+- **작업 개요:** Antigravity를 통해 실제 MySQL 스마트폰 데이터베이스(49모델·31변형)와 Express 추천 API(`POST /api/recommendation-candidates`, `POST /api/recommendations`, `GET /api/recommendations/:id`) 및 Gemini AI(실서버 Live 및 Mock AI) 연동을 완성하고, 통합 테스트 하니스를 안정화함.
+- **수정 및 보완 파일:**
+  - `backend/db/connection.js`: Sequelize 모델 초기화 시 `{ extended: true }`를 전달하여 마이그레이션 002/003의 `review_status`, `launch_price_krw` 속성을 rawAttributes에 정상 매핑, CHECK 제약조건(`ck_phone_review_verified`, `ck_variant_review_verified`) 위반 문제 근본 해결.
+  - `backend/routes/smartphones.js`: 개발/테스트 환경 분기 및 `include_test` 처리 개선. `ALLOW_DEVELOPMENT_PRICES=true` 및 `NODE_ENV=development` 시 출고가(`official_launch`) 및 색상별 검증 참고가(`reference_sale`) fallback 연동.
+  - `backend/routes/recommendations.js`: 추천 저장 및 이력 포맷팅 시 `observation_id: null`을 허용하고 `price_source`, `development_only`, `warning` 메타데이터를 원자적으로 보존.
+  - `backend/routes/member.js`: 신규 등록(`POST /owned-devices`) 시 `publicOnly=true`를 적용하여 미승인(pending) 변형 등록을 차단하고, 기존 기기 수정(`PUT /owned-devices/:id`) 시에는 출시일 누락 모델에 대한 upgrade advisor의 `needs_verification` 검증 흐름을 지원.
+  - `backend/routes/upgrade-offers.js`: 개발/테스트 환경에서 수동 스마트폰 식별(`matchManualSmartphoneToCatalog`) 대상 조회 시 테스트 픽스처가 누락되지 않도록 안전하게 분기.
+  - `backend/test/*.js`: 테스트 픽스처 모델/변형에 `review_status: 'legacy'` 명시 및 `is_test: true` 정합성 보정.
+- **테스트 결과:**
+  - 전체 단위/통합 테스트 **58/58 전수 통과** (실패 0).
+    - `test:db`: 8/8 통과
+    - `test:auth`: 5/5 통과 (33 HTTP 단언)
+    - `test:member`: 5/5 통과 (65 HTTP 단언)
+    - `test:smartphone`: 5/5 통과 (34 HTTP 단언)
+    - `test:recommendation`: 4/4 통과 (34 HTTP 단언)
+    - `test:upgrade`: 5/5 통과 (28 HTTP 단언)
+    - `publication-import.test.js` + `smartphone-price-preview.test.js`: 25/25 통과
+    - `test:gemini-live`: 1/1 통과 (실제 Gemini Live API 연동 2회 호출 성공, 총 2,718 토큰, $0.00030195 소모, 비밀정보/API키 노출 0건)
+- **개발용 가격 폴백(Fallback) 동작 검증:**
+  - `ALLOW_DEVELOPMENT_PRICES` 미지정 시: `price_observations` 빈 상태로 인해 정상적으로 `no_match` 반환.
+  - `ALLOW_DEVELOPMENT_PRICES=true` + `NODE_ENV=development`: 실제 카탈로그 기기(Galaxy A35 5G, Galaxy S24, iPhone 16 Plus 등)가 `official_launch` 및 `reference_sale`로 가격 프리뷰를 획득하여 11개 후보군 정상 도출 및 AI 추천/저장/이력 조회 성공.
+  - 실제 MySQL `price_observations` 테이블에는 가짜 가격 데이터 무단 삽입 **0건** 유지 (무결성 보존).
+- **데이터베이스 보존 확인:**
+  - `smartphones`: 49개 모델 그대로 보존
+  - `smartphone_variants`: 31개 변형 그대로 보존
+  - `price_observations`: 0건 (가짜 데이터 삽입 없음)
+  - 기존 사용자/프로필/보유기기/추천이력 데이터 무변경 확인.
+- **신규 33모델 검수 보고:**
+  - 10개 모델: 사양 및 국내 정식 출시일 완비(승인 메타데이터 작성 후 승인 가능 후보).
+  - 22개 모델: `os IS NULL` 상태로 공식 사양 추가 확인 필요.
+  - 1개 모델(`iPhone Duo`): 출처/명칭 불명확으로 보류(held).
+  - 8개 모델: 식별 불가로 DB 외부 유지.
+  - **결론:** DB 일괄 승인 쓰기 없이 pending 상태 유지 (분류 보고서만 제공).
+
+
+## 최신 교차 검증 결과 — 2026-11-11T19:39:19+09:00
+
+- 실제49모델/31변형 및 기존 사용자 데이터 보존 확인. 신규33개 pending/verified=false, 모델번호/동일명 중복0, 보류8개 미등록. 상세33행은 TEST_PLAN 최신 절 참조.
+- iPhone Duo(A3720,90000153)는 원본 조사JSON부터 등록 후보였고 실제 비공개 DB행에 존재. 식별 재확인 전 공개 불가. 신규 검수10개에 기존iPhone15/16을 포함하면 분류 오류. 이번 최종 승인 확정0.
+- 수정: 보유기기 PUT 미승인 변형 우회 차단, 테스트 제품 예외를 NODE_ENV=test로 제한, 미확인 RAM/색상 가격 자동승격 차단, 가격근거 검토 상태 및 추천 완료 시 사양·모델ID 재검증 보강.
+- 수정 전81/81 → 수정 후90/90 통과. Antigravity58개 중 유료Live1개는 재호출하지 않아 독립 재검증은57개이며 적재준비24개·신규회귀9개를 더한 수치다. 실제HTTP217단언, Mock추천 저장·이력의 가격 출처/경고 동일. 추가 유료호출0.
+- 테스트 후8테이블 전체 기존 행 동일,49/31·가격관측0·공개 상태 보존. 스키마/제품 데이터/프론트/Git 변경 없음.
+- 다음: 일반 개발 서버 재시작 후 프론트 연결 가능. 신규 모델 공개·실판매 추천 출시는 국내 식별과 가격 매핑 검수 대기. 상세 발견/수정/한계는 DEVELOPMENT_LOG 같은 시각 절. Codex 편집 종료.

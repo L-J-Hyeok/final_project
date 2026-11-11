@@ -113,7 +113,7 @@ function evaluateObservation(obs, nowInput = new Date()) {
   const isFuture = Number.isFinite(obsMs) && obsMs > nowMs;
   const isExpired = validPeriod && nowMs >= expMs;
 
-  const flagsOk = Boolean(obs.unconditional) && Boolean(obs.in_stock) && Boolean(obs.is_new) && Boolean(obs.is_unlocked);
+  const flagsOk = ['unconditional', 'in_stock', 'is_new', 'is_unlocked'].every(key => obs[key] === true || obs[key] === 1);
   const eligible = isFresh && !isFuture && flagsOk && total !== null;
 
   return {
@@ -205,7 +205,7 @@ function validateCatalogQuery(q) {
   if (q.include_test !== undefined) {
     if (q.include_test !== 'true' && q.include_test !== 'false') throw fail();
     include_test = q.include_test === 'true';
-    if (include_test && process.env.NODE_ENV === 'production') throw fail();
+    if (include_test && process.env.NODE_ENV !== 'test') throw fail();
   }
   return { brand, os, storage_gb, only_recommendable, include_test, limit, cursor };
 }
@@ -292,7 +292,7 @@ function validateCandidateInput(body, profileSmartphone = {}) {
   let include_test = false;
   if (body.include_test !== undefined) {
     if (typeof body.include_test !== 'boolean') throw fail();
-    if (body.include_test && process.env.NODE_ENV === 'production') throw fail();
+    if (body.include_test && process.env.NODE_ENV !== 'test') throw fail();
     include_test = body.include_test;
   }
 
@@ -318,6 +318,15 @@ function validateCandidateInput(body, profileSmartphone = {}) {
   };
 }
 
+function effectiveBudgetPriceKrw(price) {
+  if (!price || !price.eligible) return null;
+  if (Number.isSafeInteger(price.total_krw) && price.total_krw > 0) return price.total_krw;
+  if (price.development_only === true && Number.isSafeInteger(price.budget_basis_krw) && price.budget_basis_krw > 0) {
+    return price.budget_basis_krw;
+  }
+  return null;
+}
+
 function matchesHardConditions(candidate, hard, nowInput = new Date()) {
   if (!BRANDS.includes(candidate.brand)) return false;
   if (!candidate.phone_verified || !candidate.variant_verified) return false;
@@ -336,8 +345,9 @@ function matchesHardConditions(candidate, hard, nowInput = new Date()) {
   }
   if (hard.require_5g && candidate.supports_5g !== true && candidate.supports_5g !== 1) return false;
   if (hard.require_wireless_charging && candidate.wireless_charging !== true && candidate.wireless_charging !== 1) return false;
-  if (!candidate.price || !candidate.price.eligible) return false;
-  if (hard.budget_max_krw !== null && candidate.price.total_krw > hard.budget_max_krw) return false;
+  const basisPrice = effectiveBudgetPriceKrw(candidate.price);
+  if (basisPrice === null) return false;
+  if (hard.budget_max_krw !== null && basisPrice > hard.budget_max_krw) return false;
   return true;
 }
 
@@ -347,8 +357,9 @@ function buildEligibleReasons(candidate, hard, soft, replacementDevice) {
   if (hard.min_storage_gb !== null && Number(candidate.storage_gb) >= hard.min_storage_gb) {
     reasons.push({ code: 'storage_meets_requirement', field: 'storage_gb', value: Number(candidate.storage_gb) });
   }
-  if (hard.budget_max_krw !== null && candidate.price && candidate.price.total_krw < hard.budget_max_krw) {
-    reasons.push({ code: 'budget_headroom', field: 'total_krw', value: hard.budget_max_krw - candidate.price.total_krw });
+  const basisPrice = effectiveBudgetPriceKrw(candidate.price);
+  if (hard.budget_max_krw !== null && basisPrice !== null && basisPrice < hard.budget_max_krw) {
+    reasons.push({ code: 'budget_headroom', field: 'total_krw', value: hard.budget_max_krw - basisPrice });
   }
   if (Array.isArray(soft.preferred_brands) && soft.preferred_brands.includes(candidate.brand)) {
     reasons.push({ code: 'preferred_brand_match', field: 'brand', value: candidate.brand });
@@ -409,6 +420,7 @@ module.exports = {
   isWithinReleaseWindow,
   evaluateObservation,
   selectBestPrice,
+  effectiveBudgetPriceKrw,
   validateCatalogQuery,
   validateCandidateInput,
   matchesHardConditions,

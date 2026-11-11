@@ -63,6 +63,7 @@ test('Live Gemini API natural language analysis and end-to-end smartphone recomm
       source_url: 'https://example.invalid/sm-a356n',
       verified_at: verifiedAt,
       verified: true,
+      review_status: 'legacy',
       is_test: true
     });
     createdPhones.push(galaxyBudgetPhone);
@@ -84,6 +85,7 @@ test('Live Gemini API natural language analysis and end-to-end smartphone recomm
       source_url: 'https://example.invalid/a2783',
       verified_at: verifiedAt,
       verified: true,
+      review_status: 'legacy',
       is_test: true
     });
     createdPhones.push(iphoneBudgetPhone);
@@ -96,7 +98,8 @@ test('Live Gemini API natural language analysis and end-to-end smartphone recomm
       source_name: 'Samsung KR Official Spec',
       source_url: 'https://example.invalid/sm-a356n-128',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vGalaxy128);
 
@@ -108,7 +111,8 @@ test('Live Gemini API natural language analysis and end-to-end smartphone recomm
       source_name: 'Apple KR Official Spec',
       source_url: 'https://example.invalid/a2783-128',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vIphone128);
 

@@ -459,9 +459,17 @@ function buildDeviceCandidateComparison(ownedDeviceProduct, candidate) {
   insufficientFields.push('chipset_benchmark');
 
   // 가격: 신규 후보 구매 비용 표시
+  const candPrice = candidate.price || null;
+  const isDevPrice = Boolean(candPrice && (candPrice.development_only === true || (candPrice.price_source && candPrice.price_source !== 'verified_sale')));
   fields.price = {
-    status: candidate.price ? 'verified_candidate_price' : 'insufficient_data',
-    candidate_total_krw: candidate.price ? candidate.price.total_krw : null
+    status: candPrice
+      ? (isDevPrice ? 'development_fallback_price' : 'verified_candidate_price')
+      : 'insufficient_data',
+    candidate_total_krw: candPrice
+      ? (candPrice.total_krw ?? candPrice.budget_basis_krw ?? candPrice.amount_krw ?? null)
+      : null,
+    price_source: candPrice ? (candPrice.price_source || 'verified_sale') : null,
+    development_only: isDevPrice
   };
 
   return {

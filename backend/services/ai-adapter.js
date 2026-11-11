@@ -210,12 +210,21 @@ function mockAnalyze({ purpose, text, existingProfile }) {
   };
 }
 
+function candidateEffectivePriceKrw(cand) {
+  const p = cand?.price || {};
+  if (Number.isSafeInteger(p.total_krw) && p.total_krw > 0) return p.total_krw;
+  if (Number.isSafeInteger(p.budget_basis_krw) && p.budget_basis_krw > 0) return p.budget_basis_krw;
+  if (Number.isSafeInteger(p.amount_krw) && p.amount_krw > 0) return p.amount_krw;
+  return 0;
+}
+
 function scoreCandidateForMock(cand, soft, common) {
   let score = 0;
   if (Array.isArray(soft.preferred_brands) && soft.preferred_brands.includes(cand.brand)) score += 30;
   if (soft.preferred_os && cand.os === soft.preferred_os) score += 20;
+  const effPrice = candidateEffectivePriceKrw(cand);
   if (common?.spending_style === 'value') {
-    score += Math.max(0, Math.floor((2000000 - cand.price.total_krw) / 50000));
+    score += Math.max(0, Math.floor((2000000 - effPrice) / 50000));
   } else if (common?.spending_style === 'premium') {
     score += Math.floor((cand.storage_gb || 0) / 64);
   }
@@ -252,7 +261,9 @@ function mockRecommend({ aiContext }) {
     const sA = scoreCandidateForMock(a, soft, common);
     const sB = scoreCandidateForMock(b, soft, common);
     if (sA !== sB) return sB - sA;
-    if (a.price.total_krw !== b.price.total_krw) return a.price.total_krw - b.price.total_krw;
+    const pA = candidateEffectivePriceKrw(a);
+    const pB = candidateEffectivePriceKrw(b);
+    if (pA !== pB) return pA - pB;
     return BigInt(a.variant_id) < BigInt(b.variant_id) ? -1 : 1;
   }).slice(0, 3);
 
@@ -267,12 +278,13 @@ function mockRecommend({ aiContext }) {
   const items = ranked.map((cand, i) => {
     const eligibleCodes = (cand.eligible_reasons || []).map(r => r.code);
     const selectedCodes = eligibleCodes.slice(0, 3);
+    const effPrice = candidateEffectivePriceKrw(cand);
     const evidence = [
       {
         variant_id: cand.variant_id,
         field: 'price',
-        price_observation_id: cand.price.observation_id,
-        total_krw: cand.price.total_krw
+        price_observation_id: cand.price.observation_id ?? null,
+        total_krw: effPrice
       },
       {
         variant_id: cand.variant_id,
@@ -528,7 +540,7 @@ const SYSTEM_RECOMMEND_INSTRUCTION = [
   '2. rank: 1부터 시작하는 연속된 정수(1, 2, ...).',
   '3. profile_refs: ["common.usages", "common.spending_style", "soft.preferred_brands", "soft.priorities"] 중 최소 1개 이상 포함하세요.',
   '4. reason_codes: 반드시 해당 후보의 eligible_reasons 배열 안에 있는 code 문자열만 그대로 선택하세요(최소 1개 이상). eligible_reasons에 없는 코드는 절대 넣지 마세요.',
-  '5. evidence: 최소 1개 이상 포함하되, 가격 근거는 {"variant_id": 해당후보variant_id, "field": "price", "price_observation_id": 후보의 price.observation_id, "total_krw": 후보의 price.total_krw} 형식으로 정확히 일치시키고, 사양 근거는 {"variant_id": 해당후보variant_id, "field": "storage_gb", "value": 후보의 storage_gb}처럼 후보의 실제 수치와 정확히 일치시키세요.',
+  '5. evidence: 최소 1개 이상 포함하되, 가격 근거는 {"variant_id": 해당후보variant_id, "field": "price", "price_observation_id": 후보의 price.observation_id(null이면 null 그대로), "total_krw": 후보의 price.total_krw(null이면 price.budget_basis_krw 또는 price.amount_krw)} 형식으로 정확히 일치시키고, 사양 근거는 {"variant_id": 해당후보variant_id, "field": "storage_gb", "value": 후보의 storage_gb}처럼 후보의 실제 수치와 정확히 일치시키세요.',
   '6. uncertainties: 정량 비교할 수 없는 불확실성 안내 문구 배열(없으면 빈 배열 []).'
 ].join('\n');
 

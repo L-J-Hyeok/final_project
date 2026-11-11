@@ -186,8 +186,20 @@ function renderReasonTemplate(reason, candidate, hard, replacementDevice) {
   switch (reason.code) {
     case 'storage_meets_requirement':
       return `저장 용량이 ${candidate.storage_gb}GB로 필수 기준(${hard.min_storage_gb}GB 이상)을 충족합니다.`;
-    case 'budget_headroom':
-      return `배송비 포함 최저가(${candidate.price.total_krw.toLocaleString('ko-KR')}원)가 예산 상한 대비 ${(hard.budget_max_krw - candidate.price.total_krw).toLocaleString('ko-KR')}원 여유가 있습니다.`;
+    case 'budget_headroom': {
+      const price = candidate.price || {};
+      const basisPrice = Number.isSafeInteger(price.total_krw) && price.total_krw > 0
+        ? price.total_krw
+        : (Number.isSafeInteger(price.budget_basis_krw) && price.budget_basis_krw > 0 ? price.budget_basis_krw : price.amount_krw);
+      const headroom = hard.budget_max_krw - basisPrice;
+      if (price.development_only === true || (price.price_source && price.price_source !== 'verified_sale')) {
+        const label = price.price_source === 'reference_sale'
+          ? '개발용 참고 판매가(배송비·실시간 재고 미검증'
+          : '개발용 국내 공식 출고가 폴백(현재 실제 판매가 아님';
+        return `${label}: ${basisPrice.toLocaleString('ko-KR')}원)이 예산 상한 대비 ${headroom.toLocaleString('ko-KR')}원 여유가 있습니다.`;
+      }
+      return `배송비 포함 최저가(${basisPrice.toLocaleString('ko-KR')}원)가 예산 상한 대비 ${headroom.toLocaleString('ko-KR')}원 여유가 있습니다.`;
+    }
     case 'preferred_brand_match':
       return `선호하시는 제조사(${candidate.brand === 'samsung' ? '삼성전자' : '애플'}) 제품입니다.`;
     case 'preferred_os_match':
@@ -276,6 +288,10 @@ function validateRecommendationOutput(aiOutput, aiContext) {
       errors.push(`VARIANT_NOT_IN_CANDIDATES:${variantId}`);
       continue;
     }
+    if (item.smartphone_id !== undefined && String(item.smartphone_id) !== String(candidate.smartphone_id)) {
+      errors.push(`MODEL_ID_MISMATCH:${variantId}`);
+      continue;
+    }
     if (seenVariants.has(variantId)) {
       errors.push(`DUPLICATE_VARIANT:${variantId}`);
       continue;
@@ -359,18 +375,32 @@ function validateRecommendationOutput(aiOutput, aiContext) {
         continue;
       }
       if (ev.field === 'price') {
-        if (
-          String(ev.price_observation_id) !== String(candidate.price.observation_id) ||
-          Number(ev.total_krw) !== Number(candidate.price.total_krw)
-        ) {
+        const expectedObsId = candidate.price.observation_id === null || candidate.price.observation_id === undefined
+          ? null
+          : String(candidate.price.observation_id);
+        const evObsId = ev.price_observation_id === null || ev.price_observation_id === undefined
+          ? null
+          : String(ev.price_observation_id);
+        const expectedBasisKrw = Number.isSafeInteger(candidate.price.total_krw) && candidate.price.total_krw > 0
+          ? Number(candidate.price.total_krw)
+          : Number(candidate.price.budget_basis_krw ?? candidate.price.amount_krw);
+        const evPriceKrw = ev.total_krw !== null && ev.total_krw !== undefined
+          ? Number(ev.total_krw)
+          : Number(ev.value);
+        if (evObsId !== expectedObsId || evPriceKrw !== expectedBasisKrw) {
           errors.push(`PRICE_EVIDENCE_MISMATCH:${variantId}`);
           continue;
         }
         verifiedEvidence.push({
           variant_id: variantId,
           field: 'price',
-          price_observation_id: String(candidate.price.observation_id),
-          total_krw: Number(candidate.price.total_krw)
+          price_observation_id: expectedObsId,
+          total_krw: candidate.price.total_krw !== null && candidate.price.total_krw !== undefined
+            ? Number(candidate.price.total_krw)
+            : null,
+          budget_basis_krw: expectedBasisKrw,
+          price_source: candidate.price.price_source || 'verified_sale',
+          development_only: Boolean(candidate.price.development_only)
         });
       } else {
         const actualVal = candidate[ev.field];
@@ -413,16 +443,25 @@ function validateRecommendationOutput(aiOutput, aiContext) {
         sources: candidate.sources
       },
       price: {
-        observation_id: candidate.price.observation_id,
-        total_krw: candidate.price.total_krw,
-        amount_krw: candidate.price.amount_krw,
-        shipping_krw: candidate.price.shipping_krw,
-        source_name: candidate.price.source_name,
-        source_url: candidate.price.source_url,
-        seller_name: candidate.price.seller_name,
-        observed_at: candidate.price.observed_at,
-        expires_at: candidate.price.expires_at,
-        conditions_text: candidate.price.conditions_text
+        observation_id: candidate.price.observation_id ?? null,
+        price_source: candidate.price.price_source || 'verified_sale',
+        total_krw: candidate.price.total_krw ?? null,
+        amount_krw: candidate.price.amount_krw ?? null,
+        shipping_krw: candidate.price.shipping_krw ?? null,
+        budget_basis_krw: candidate.price.budget_basis_krw ?? candidate.price.total_krw ?? candidate.price.amount_krw ?? null,
+        purchase_verified: candidate.price.purchase_verified !== undefined
+          ? Boolean(candidate.price.purchase_verified)
+          : candidate.price.observation_id !== null && candidate.price.observation_id !== undefined,
+        development_only: Boolean(candidate.price.development_only),
+        source_name: candidate.price.source_name ?? null,
+        source_url: candidate.price.source_url ?? null,
+        danawa_product_url: candidate.price.danawa_product_url ?? null,
+        seller_name: candidate.price.seller_name ?? null,
+        observed_at: candidate.price.observed_at ?? null,
+        expires_at: candidate.price.expires_at ?? null,
+        checked_at: candidate.price.checked_at ?? candidate.price.observed_at ?? null,
+        conditions_text: candidate.price.conditions_text ?? null,
+        warning: candidate.price.warning ?? null
       },
       profile_refs: [...new Set(item.profile_refs)],
       reasons: verifiedReasons,

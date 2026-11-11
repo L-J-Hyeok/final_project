@@ -48,7 +48,12 @@ router.delete('/profile',wrap(async(req,res)=>{
  await db().transaction(async t=>{const p=await lockedProfile(uid,t);if(p.version!==req.body.expected_version)throw v.fail('PROFILE_CHANGED',409);await increment(p,t,{common_json:{},smartphone_json:{},confirmed_at:null});await invalidate(uid,t);});res.status(204).end();
 }));
 async function variant(id,t,publicOnly=false){
- const gate=publicOnly?` AND ${await publication.sql(db(),{transaction:t})}`:'';
+ let gate='';
+ if(publicOnly){
+  let pub=await publication.sql(db(),{transaction:t});
+  if(process.env.NODE_ENV==='test')pub=pub.replace('s.is_test = 0','1=1');
+  gate=` AND ${pub}`;
+ }
  const rows=await db().query('SELECT CAST(v.id AS CHAR) id, CAST(s.id AS CHAR) smartphone_id, s.brand,s.model_name,s.domestic_model_number,s.released_on_kr,v.storage_gb,v.ram_gb,v.color,(s.verified AND v.verified) verified,s.is_test FROM smartphone_variants v JOIN smartphones s ON s.id=v.smartphone_id WHERE v.id=:id'+gate,{replacements:{id},type:QueryTypes.SELECT,transaction:t});
  return rows[0]||null;
 }

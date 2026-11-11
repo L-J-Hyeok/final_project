@@ -69,7 +69,8 @@ test('analysis, recommendation lifecycle, hallucination defense, concurrency con
       source_url: 'https://example.invalid/s24',
       verified_at: verifiedAt,
       verified: true,
-      is_test: true
+      is_test: true,
+      review_status: 'legacy'
     });
     createdPhones.push(samsungPhone);
 
@@ -90,7 +91,8 @@ test('analysis, recommendation lifecycle, hallucination defense, concurrency con
       source_url: 'https://example.invalid/ip16',
       verified_at: verifiedAt,
       verified: true,
-      is_test: true
+      is_test: true,
+      review_status: 'legacy'
     });
     createdPhones.push(applePhone);
 
@@ -102,7 +104,8 @@ test('analysis, recommendation lifecycle, hallucination defense, concurrency con
       source_name: 'Samsung KR Spec',
       source_url: 'https://example.invalid/s24-256',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vSamsung256);
 
@@ -114,7 +117,8 @@ test('analysis, recommendation lifecycle, hallucination defense, concurrency con
       source_name: 'Apple KR Spec',
       source_url: 'https://example.invalid/ip16-256',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vApple256);
 

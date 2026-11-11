@@ -299,6 +299,37 @@ node --test test/db.test.js test/env.test.js: 8/8 통과. 임시 가짜 파일�
       - 수동 입력(`manual_brand: "apple"`, `manual_model_name: "iPhone 15"`) 등록 시 카탈로그(`A3090`, `2023-10-13`) 자동 매칭 및 `upgrade_offer_eligible: true` 확인.
     - 테스트 종료 후 임시 계정·보유 기기·세션 정리 완료(`smartphones: 16`, `smartphone_variants: 29`, `users: 0`, `profiles: 0`, `owned_devices: 0`, `recommendations: 0`, `price_observations: 0`, `sessions: 0`).
 
+## 실제 MySQL DB 기반 Express 추천 API 및 Gemini AI 추천 통합 검증 — 2026-11-11 16:25:00 KST
+
+### 1. 테스트 실행 결과 요약 (58/58 전수 통과)
+
+| 테스트 스위트 | 실행 대상 파일 | 통과 / 전체 | 주요 검증 항목 |
+|---|---|---|---|
+| `test:db` | `test/db.test.js`, `test/env.test.js` | **8 / 8** | 설정 오류 은폐, MySQL 8.0 CHECK 지원, DDL 무결성, 헬스체크 |
+| `test:auth` | `test/auth.test.js`, `test/auth.integration.test.js` | **5 / 5** (33 assertions) | 실 DB scrypt 동시성(2제한), 세션 만료, 쿠키 보안, 회원가입/로그인 라이프사이클 |
+| `test:member` | `test/member.test.js`, `test/member.integration.test.js` | **5 / 5** (65 assertions) | 프로필 낙관적 락(version 충돌 409), 보유 기기 20개 상한, 미승인 변형 등록 차단 |
+| `test:smartphone` | `test/smartphone.test.js`, `test/smartphone.integration.test.js` | **5 / 5** (34 assertions) | 3년 출시일 윈도우, 24시간 가격 신선도, 후보 검색 필터, 커서 기반 페이지네이션 |
+| `test:recommendation` | `test/recommendation.test.js`, `test/recommendation.integration.test.js` | **4 / 4** (34 assertions) | 자연어 분석 draft 추출, 환각 방어, 분당 5회 속도 제한, 추천 저장 및 이력 |
+| `test:upgrade` | `test/upgrade.test.js`, `test/upgrade.integration.test.js` | **5 / 5** (28 assertions) | 정확 3년 경계, 30일 snooze, 영구 숨김, 현재 기기 유지(keep) 제안 |
+| `publication-import` | `test/publication-import.test.js`, `services/smartphone-price-preview.test.js` | **25 / 25** | 공개 게이팅 fail-closed, 트랜잭션 롤백, 개발 가격 우선순위 및 색상 매칭 |
+| `test:gemini-live` | `test/gemini-live.integration.test.js` | **1 / 1** | 실서버 Gemini Live API 자연어 분석 및 종단간 추천 성공 (2회 호출, 2,718 토큰) |
+| **합계** | **전체 백엔드 테스트** | **58 / 58** | **전수 통과 (실패 0)** |
+
+### 2. 개발 가격 Fallback 및 실제 카탈로그 후보 도출 검증
+- 실행 스크립트: `verify-dev-price-fallback.js`
+- 결과: **PASS**
+  - `ALLOW_DEVELOPMENT_PRICES` 미지정 시: `status: 'no_match'`, `candidates: 0` (실시간 가격 부재 정상 반영)
+  - `ALLOW_DEVELOPMENT_PRICES=true` + `NODE_ENV=development`: `status: 'candidates_ready'`, `candidates: 11` (실제 DB 카탈로그 기반)
+  - Fallback 가격 정보: `price_source: 'official_launch'`, `observation_id: null`, `development_only: true`, 경고 문구 정상 부착
+  - 추천 생성(`POST /api/recommendations`): Mock AI 및 Gemini 추천 생성 HTTP 201 성공, DB FK 제약 오류 없음
+  - 이력 조회(`GET /api/recommendations/:id`): 당시 참고 가격 보존 및 `is_expired_now: false` 정상 포맷
+  - DB 무결성: `price_observations` 건수 **0건** 유지 (가짜 관측 레코드 무단 생성 없음)
+
+### 3. 보안 및 데이터 무결성 검증
+- `.env` 및 API 키 원문, 일부 문자열, 해시 노출 0건
+- 프론트엔드(`front/`) 수정 0건
+- MySQL 49개 모델 및 31개 변형 데이터 100% 보존 확인 (삭제 및 재적재 없음)
+
 
 ## 실제 판매 가격 수집 검증 계획 — 2026-11-10 23:16:23 KST, 구현·실행 전
 
@@ -443,3 +474,66 @@ Codex 편집 종료. 실제 DB 검증 목표는 미달성이다. 기존 공개 �
 - 준비 확인 후: 기존 검증 JSON에서16모델29변형 기준사본 생성 → 백업/복원 경로 검증 → SQL002/003/재실행·부분실패복구 검증 → 테스트 적재33/2 및재실행 → ID/FK/NULL/공개필터/보유기기/업그레이드 HTTP 검증. 기존 integration 테스트는 loadEnv/운영DB명을 사용하므로 그대로 실행하지 말고 격리DB 전용 하니스가 필요하다. 운영 적용은 이후에도 별도 승인이다.
 
 이번 변경은 CURRENT_STATUS, SMARTPHONE_IMPORT_PREPARATION, TEST_PLAN, DEVELOPMENT_LOG의 기록뿐이다. 코드/조사JSON/프론트/Gemini/Git 변경 없음.
+
+
+## 최신 실제 개발 DB 적용 결과 — 2026-11-11T14:51:01+09:00
+
+- **실제 적용 완료:** SQL002/003(ALTER5개), 신규33모델·2변형 → 총49모델·31변형. 신규 행은 pending/verified=false로 비공개. 기존16모델·29변형의 ID/기존 값과 FK7개 보존, 보류8개 제외. 재적재0/0·중복0·고아FK0·NULL117항목 확인.
+- 백업 완료: `/Users/ijaehyeog/Documents/Codex/final-project-db-backup-9ydJZ8`. 전체 SQL·행/ID·FK 기록·체크섬·복구 안내 보관. 덤프 구조/완료 검증은 수행했으나 실제 복원 시험은 미실행. DDL 재실행 금지, 부분 상태 확인 후 복구 절차 사용.
+- 실제 Express HTTP22/22, 기존 오프라인60/60 통과. 기존29변형 공개 유지·pending 차단·본인 비공개 보유기기 조회 유지·CSRF·업그레이드 조회 확인. 추천 후보는 적격 판매가 부족으로 no_match; Gemini/유효 판매가 추천 성공 미검증.
+- 테스트 계정 정리 후 기존 사용자/프로필/보유기기/세션/가격/추천이력 전체 행 동일. 확장 ORM 조회 및 RAM NULL 실제 중복 거부 확인.
+- 신규33모델은 기존 조사 JSON 근거로 향후 개별 공개 검수 대기. 가격 수집·프론트/Gemini 연동·일괄 공개는 하지 않았다. 자동 설정 로딩만 사용했고 .env 직접 접근/출력 없음.
+- 최신 상세 실행 기록은 DEVELOPMENT_LOG의 같은 시각 절 참고. 이전의 ‘실제 DB 미적용/접속 불가’ 기록은 당시 이력이며 현재 상태가 아니다.
+
+
+## 최신 교차 검증 결과 — 2026-11-11T19:39:19+09:00
+
+- 실제49모델/31변형 및 기존 사용자 데이터 보존 확인. 신규33개 pending/verified=false, 모델번호/동일명 중복0, 보류8개 미등록. 상세33행은 TEST_PLAN 최신 절 참조.
+- iPhone Duo(A3720,90000153)는 원본 조사JSON부터 등록 후보였고 실제 비공개 DB행에 존재. 식별 재확인 전 공개 불가. 신규 검수10개에 기존iPhone15/16을 포함하면 분류 오류. 이번 최종 승인 확정0.
+- 수정: 보유기기 PUT 미승인 변형 우회 차단, 테스트 제품 예외를 NODE_ENV=test로 제한, 미확인 RAM/색상 가격 자동승격 차단, 가격근거 검토 상태 및 추천 완료 시 사양·모델ID 재검증 보강.
+- 수정 전81/81 → 수정 후90/90 통과. Antigravity58개 중 유료Live1개는 재호출하지 않아 독립 재검증은57개이며 적재준비24개·신규회귀9개를 더한 수치다. 실제HTTP217단언, Mock추천 저장·이력의 가격 출처/경고 동일. 추가 유료호출0.
+- 테스트 후8테이블 전체 기존 행 동일,49/31·가격관측0·공개 상태 보존. 스키마/제품 데이터/프론트/Git 변경 없음.
+- 다음: 일반 개발 서버 재시작 후 프론트 연결 가능. 신규 모델 공개·실판매 추천 출시는 국내 식별과 가격 매핑 검수 대기. 상세 발견/수정/한계는 DEVELOPMENT_LOG 같은 시각 절. Codex 편집 종료.
+
+
+### 신규33모델 실제 ID 대조 (기존16모델은 이전 백업 ID로 제외)
+자료상의 번호·날짜는 DB와 동일하며 외부 재검증 결과가 아니다. 전체 pending/verified=false. ‘검수 후보’는 공개 승인 완료가 아니다.
+| DB ID | 제품명 | 국내 모델번호(기존 자료) | 국내 출시일(기존 자료) | 판정 |
+|---|---|---|---|---|
+| 90000121 | Galaxy A25 5G | SM-A256N | 2024-01-05 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000122 | Galaxy A15 LTE | SM-A155N | 2024-03-18 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000123 | Galaxy A16 LTE | SM-A165N | 2024-11-29 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000124 | Galaxy S25 | SM-S931N | 2025-02-07 | 자료상 일치·중복 없음 / 추가 검증 필요 (10개 검수 후보) |
+| 90000125 | Galaxy S25+ | SM-S936N | 2025-02-07 | 자료상 일치·중복 없음 / 추가 검증 필요 (10개 검수 후보) |
+| 90000126 | Galaxy S25 Ultra | SM-S938N | 2025-02-07 | 자료상 일치·중복 없음 / 추가 검증 필요 (10개 검수 후보) |
+| 90000127 | Galaxy S25 Edge | SM-S937N | 2025-05-23 | 자료상 일치·중복 없음 / 추가 검증 필요 (10개 검수 후보) |
+| 90000128 | Galaxy S25 FE | SM-S731N | 2025-09-19 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000129 | Galaxy Z Fold7 | SM-F966N | 2025-07-25 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000130 | Galaxy Z Flip7 | SM-F766N | 2025-07-25 | 자료상 일치·중복 없음 / 추가 검증 필요 (10개 검수 후보) |
+| 90000131 | Galaxy Z Flip7 FE | SM-F761N | 2025-07-25 | 자료상 일치·중복 없음 / 추가 검증 필요 (10개 검수 후보) |
+| 90000132 | Galaxy A36 5G | SM-A366N | 2025-06-12 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000133 | Galaxy A17 LTE | SM-A175N | 2025-11-07 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000134 | Galaxy S26 | SM-S942N | 2026-03-11 | 자료상 일치·중복 없음 / 추가 검증 필요 (10개 검수 후보) |
+| 90000135 | Galaxy S26+ | SM-S947N | 2026-03-11 | 자료상 일치·중복 없음 / 추가 검증 필요 (10개 검수 후보) |
+| 90000136 | Galaxy S26 Ultra | SM-S948N | 2026-03-11 | 자료상 일치·중복 없음 / 추가 검증 필요 (10개 검수 후보) |
+| 90000137 | Galaxy S26 FE | SM-S741N | 2026-09-04 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000138 | Galaxy A37 5G | SM-A376N | 2026-06-19 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000139 | Galaxy Z Fold8 Ultra | SM-F976N | 2026-08-07 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000140 | Galaxy Z Fold8 | SM-F971N | 2026-08-07 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000141 | Galaxy Z Flip8 | SM-F776N | 2026-08-07 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000142 | Galaxy Buddy3 | SM-A156L | 2024-04-26 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000143 | Galaxy Quantum5 | SM-A556S | 2024-08-28 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000144 | Galaxy Quantum6 | SM-A566S | 2025-08-01 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000145 | iPhone 16e | A3409 | 2025-02-28 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000146 | iPhone 17 | A3520 | 2025-09-19 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000147 | iPhone Air | A3517 | 2025-09-19 | 자료상 일치·중복 없음 / 추가 검증 필요 (10개 검수 후보) |
+| 90000148 | iPhone 17 Pro | A3523 | 2025-09-19 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000149 | iPhone 17 Pro Max | A3526 | 2025-09-19 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000150 | iPhone 17e | A3634 | 2026-03-11 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000151 | iPhone 18 Pro | A3714 | 2026-09-18 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000152 | iPhone 18 Pro Max | A3717 | 2026-09-18 | 자료상 일치·중복 없음 / 추가 검증 필요 (OS NULL) |
+| 90000153 | iPhone Duo | A3720 | 2026-10-23 | 공개 불가: 식별 재확인 |
+
+DB 미등록 보류8개: Galaxy Z Fold Special Edition, Galaxy Z TriFold, Galaxy Wide7, Galaxy Buddy4, Galaxy Wide8, Galaxy Buddy5, Galaxy Wide9, Galaxy Quantum7. 실제 중복 가능성을 특정할 자료 충돌은 발견0이나, 이름이 다른 동일 기기/해외 모델번호의 오기 여부는 외부 검증 없이 확정할 수 없다.
+
+재실행: NODE_ENV=test AI_PROVIDER=mock으로 기존 db/env/auth/member/smartphone/recommendation/upgrade 단위·통합, publication-import, smartphone-price-preview, prepare-smartphone-upsert 및 cross-verification 2개 테스트를 node --test --test-concurrency=1로 실행. gemini-live.integration.test.js는 제외. 새 실제 카탈로그 검증은 로컬 final_project 대상 확인·전용 계정 생성/정리·제품 상태 무변경 방식. .env는 앱 자동 로딩만 사용한다.

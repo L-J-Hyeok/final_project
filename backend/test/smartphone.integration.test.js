@@ -66,7 +66,8 @@ test('smartphone product/price lookup and candidate search HTTP integration', as
       source_url: 'https://example.invalid/samsung-s24',
       verified_at: verifiedAt,
       verified: true,
-      is_test: true
+      is_test: true,
+      review_status: 'legacy'
     });
     createdPhones.push(samsungPhone);
 
@@ -88,7 +89,8 @@ test('smartphone product/price lookup and candidate search HTTP integration', as
       source_url: 'https://example.invalid/apple-16',
       verified_at: verifiedAt,
       verified: true,
-      is_test: true
+      is_test: true,
+      review_status: 'legacy'
     });
     createdPhones.push(applePhone);
 
@@ -110,7 +112,8 @@ test('smartphone product/price lookup and candidate search HTTP integration', as
       source_url: 'https://example.invalid/samsung-s20',
       verified_at: verifiedAt,
       verified: true,
-      is_test: true
+      is_test: true,
+      review_status: 'legacy'
     });
     createdPhones.push(oldSamsungPhone);
 
@@ -125,7 +128,8 @@ test('smartphone product/price lookup and candidate search HTTP integration', as
       source_url: 'https://example.invalid/other',
       verified_at: verifiedAt,
       verified: true,
-      is_test: true
+      is_test: true,
+      review_status: 'legacy'
     });
     createdPhones.push(otherBrandPhone);
 
@@ -139,7 +143,8 @@ test('smartphone product/price lookup and candidate search HTTP integration', as
       source_name: 'Samsung KR Spec',
       source_url: 'https://example.invalid/samsung-s24-256-black',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vSamsung256Black);
 
@@ -152,7 +157,8 @@ test('smartphone product/price lookup and candidate search HTTP integration', as
       source_name: 'Samsung KR Spec',
       source_url: 'https://example.invalid/samsung-s24-512-gray',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vSamsung512Gray);
 
@@ -165,7 +171,8 @@ test('smartphone product/price lookup and candidate search HTTP integration', as
       source_name: 'Apple KR Spec',
       source_url: 'https://example.invalid/apple-16-256-white',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vApple256White);
 
@@ -178,7 +185,8 @@ test('smartphone product/price lookup and candidate search HTTP integration', as
       source_name: 'Apple KR Spec',
       source_url: 'https://example.invalid/apple-16-128-black',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vApple128BlackExpired);
 
@@ -191,7 +199,8 @@ test('smartphone product/price lookup and candidate search HTTP integration', as
       source_name: 'Samsung KR Archive',
       source_url: 'https://example.invalid/samsung-s20-128',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vOldSamsung128);
 
@@ -204,7 +213,8 @@ test('smartphone product/price lookup and candidate search HTTP integration', as
       source_name: 'Other Spec',
       source_url: 'https://example.invalid/other-256',
       verified_at: verifiedAt,
-      verified: true
+      verified: true,
+      review_status: 'legacy'
     });
     createdVariants.push(vOther256);
 
@@ -565,7 +575,8 @@ test('smartphone product/price lookup and candidate search HTTP integration', as
           source_name: 'Samsung KR Spec',
           source_url: 'https://example.invalid/bulk-' + i,
           verified_at: verifiedAt,
-          verified: true
+          verified: true,
+          review_status: 'legacy'
         });
         bulkVariants.push(bv);
         bulkPrices.push(await m.price_observations.create({
