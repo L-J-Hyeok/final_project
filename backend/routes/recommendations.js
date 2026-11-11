@@ -111,7 +111,7 @@ async function verifySnapshotFreshness(candidatesSnapshot, hard, checkTime) {
   if (!variantIds.length) return true;
 
   const rows = await db().query(
-    `${smartphonesRouter.VARIANT_JOIN_SQL} WHERE v.id IN (:variantIds)`,
+    `${smartphonesRouter.VARIANT_JOIN_SQL} WHERE v.id IN (:variantIds) AND ${await smartphonesRouter.publicationWhere()}`,
     { replacements: { variantIds }, type: QueryTypes.SELECT }
   );
   const rowMap = new Map(rows.map(r => [String(r.variant_id), r]));

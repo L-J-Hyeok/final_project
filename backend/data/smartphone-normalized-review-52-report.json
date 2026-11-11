@@ -1,0 +1,72 @@
+{
+  "normalization": {
+    "model_counts": {
+      "existing_preserve": 11,
+      "new_model_candidate": 33,
+      "identity_release_hold": 8
+    },
+    "incomplete_spec_models": 52,
+    "verified_variants": 2,
+    "launch_price_values": 70,
+    "price_observations": 0,
+    "baseline_models": 16,
+    "baseline_variants": 29,
+    "model_duplicates": 0,
+    "verified_variant_duplicates": 0,
+    "db_connected": false
+  },
+  "exact_variant_dry_run": {
+    "mode": "OFFLINE_DRY_RUN",
+    "schema": "current",
+    "basis": "file_inventory_not_live_database",
+    "actual_db_ids_verified": false,
+    "db_writes": 0,
+    "insert_models": [
+      {
+        "key": "s25-ultra",
+        "domestic_model_number": "SM-S938N"
+      },
+      {
+        "key": "s26-plus",
+        "domestic_model_number": "SM-S947N"
+      }
+    ],
+    "insert_variants": [
+      {
+        "model_key": "s25-ultra",
+        "storage_gb": 1024,
+        "ram_gb": 16,
+        "color": "티타늄 제트블랙"
+      },
+      {
+        "model_key": "s26-plus",
+        "storage_gb": 256,
+        "ram_gb": 12,
+        "color": "블랙"
+      }
+    ],
+    "preserve_models": [],
+    "preserve_variants": [],
+    "proposed_null_enrichments": [],
+    "conflicts": [],
+    "price_observations": [],
+    "operational_approval": false,
+    "apply_supported": false,
+    "inventory_before": {
+      "models": 16,
+      "variants": 29
+    },
+    "preservation": "Input inventory remains unchanged; actual DB IDs/FKs need separate read-only verification.",
+    "ready_for_review": true,
+    "summary": {
+      "models_to_insert": 2,
+      "variants_to_insert": 2,
+      "models_preserved": 0,
+      "variants_preserved": 0,
+      "enrichments_proposed": 0,
+      "conflicts": 0,
+      "executable_writes": 0
+    }
+  },
+  "tests_passed": 24
+}

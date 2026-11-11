@@ -1,0 +1,44 @@
+{
+  "priced_snapshots_model_storage_matched": 8,
+  "product_urls": 12,
+  "existing_color_list_matches": 9,
+  "color_list_missing": 3,
+  "exact_prior_configuration_matches": 1,
+  "seller_sku_verified": 0,
+  "same_input_duplicates": 0,
+  "same_configuration_price_conflicts": 0,
+  "historical_discrepancies": [
+    {
+      "model_key": "iphone-17",
+      "color": "Black",
+      "amount_krw": 1251300,
+      "previous_seller": "11번가",
+      "new_seller": "쿠팡",
+      "previous_shipping_krw": 0,
+      "new_shipping_krw": null,
+      "resolution": "separate snapshots; do not inherit shipping or overwrite seller"
+    }
+  ],
+  "review_flags": [
+    {
+      "model_key": "s25-ultra",
+      "reason": "different colors have 338560 KRW price spread; not same-SKU conflict or proven erroneous price",
+      "spread_krw": 338560,
+      "lower_than_other_colors_percent": 22.15
+    }
+  ],
+  "eligible_observations": 0,
+  "db_connected": false,
+  "checks_passed": [
+    "52 models/99 configurations retained",
+    "8 prices/4 null prices",
+    "12 unique snapshot identities",
+    "model/storage mapping",
+    "strict null shipping/time/flags/direct URL",
+    "no DB variant invented",
+    "Danawa URL role and host",
+    "positive integer prices",
+    "old seller discrepancy preserved",
+    "original file byte preservation"
+  ]
+}

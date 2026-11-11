@@ -1,0 +1,3032 @@
+{
+  "schema_version": "priority-verification/1",
+  "checked_at": "2026-11-10T19:39:53.289754+00:00",
+  "base_dataset": "smartphone-expansion-2026-11-10.json",
+  "base_sha256": "3c3bc45ce3a221828452243006866278deb283f2e8b35e63f99c41d03400faaf",
+  "baseline_sha256": "1cd2b98dd107638d3732facde1090e956ae1d9f9f36be97a0c89092ef73424f5",
+  "summary": {
+    "priority_models": 18,
+    "identity_release_evidence_available": 18,
+    "new_exact_sku_facts": 1,
+    "production_ready_models": 0,
+    "priority_additional_review": 18,
+    "global_additional_review": 33,
+    "global_held": 8
+  },
+  "scope": "2025-2026 대표18모델만 검토. S25Edge/FE, S26FE, e/Duo/TriFold 등은 기존 보류 유지하며 이번 우선묶음에서 제외.",
+  "sources": {
+    "a25": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-a25-5g-국내-출시",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "a15": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-a15-lte-국내-출시",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "a16": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-a16-lte-국내-출시",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "a35": {
+      "url": "https://news.samsung.com/kr/456735-2",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s24price": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-s24-시리즈-사전-판매-실시",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s24spec": {
+      "url": "https://news.samsung.com/kr/세상과-소통하는-방식을-혁신하는-새로운-ai폰의-시",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "z6price": {
+      "url": "https://news.samsung.com/kr/삼성전자갤럭시-z-폴드6·z-플립6-사전판매-실시",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "z6spec": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드6·갤럭시-z-플립6·갤럭시-버",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "foldse": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드-스페셜-에디션-국내-출시-2",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s24fe": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-s24-fe-국내-출시",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s25price": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-사전-판매-시작",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s25spec": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-공개",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s25edge": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-s25-엣지-국내-출시",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s25fe": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-ai로-더욱-강력해진-갤럭시-s25-fe·탭-s11",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "fold7": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드7-공개",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "flip7": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-플립7-공개",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "a36": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-a36-5g-국내-출시",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "a17": {
+      "url": "https://news.samsung.com/kr/삼성전자-ai-탑재한-실속형-스마트폰-갤럭시-a17-lte-국내",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "trifold": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-트라이폴드-공개",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s26": {
+      "url": "https://news.samsung.com/kr/삼성전자-3세대-ai폰-갤럭시-s26-시리즈-공개",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s26fe": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-s26-fe-국내-출시",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "a37": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-a37-5g-국내-출시",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "z8release": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드8-울트라·폴드8·플립8-갤럭시-2",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "z8spec": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드8-울트라·폴드8·플립8-등-폴더",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "z8price": {
+      "url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드8-울트라·폴드8·플립8-갤럭시",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ip16": {
+      "url": "https://www.apple.com/kr/newsroom/2024/09/apple-introduces-iphone-16-iphone-16-plus/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ip16pro": {
+      "url": "https://www.apple.com/kr/newsroom/2024/09/apple-debuts-iphone-16-pro-iphone-16-pro-max/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ip16e": {
+      "url": "https://www.apple.com/kr/newsroom/2025/02/apple-debuts-iphone-16e-a-powerful-new-member-of-the-iphone-16-family/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ip17": {
+      "url": "https://www.apple.com/kr/newsroom/2025/09/apple-introduces-iphone-17/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ip17pro": {
+      "url": "https://www.apple.com/kr/newsroom/2025/09/apple-unveils-iphone-17-pro-and-iphone-17-pro-max-the-most-powerful-and-advanced-pro-models-ever/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ipair": {
+      "url": "https://www.apple.com/kr/newsroom/2025/09/introducing-iphone-air-a-powerful-new-iphone-with-a-breakthrough-design/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ip17e": {
+      "url": "https://www.apple.com/kr/newsroom/2026/03/apple-introduces-iphone-17e/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ip18pro": {
+      "url": "https://www.apple.com/kr/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ipduo": {
+      "url": "https://www.apple.com/kr/newsroom/2026/09/apple-unveils-iphone-duo/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "apple-models": {
+      "url": "https://support.apple.com/ko-kr/108044",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "duo-spec": {
+      "url": "https://support.apple.com/en-us/148588",
+      "kind": "manufacturer_global_supplement",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "quantum5": {
+      "url": "https://news.sktelecom.com/206559",
+      "kind": "official_carrier",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "wide7": {
+      "url": "https://news.sktelecom.com/204986",
+      "kind": "official_carrier",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "quantum6": {
+      "url": "https://news.sktelecom.com/214156",
+      "kind": "official_carrier",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "quantum7": {
+      "url": "https://news.sktelecom.com/229704",
+      "kind": "official_carrier",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "wide9": {
+      "url": "https://news.sktelecom.com/227414",
+      "kind": "official_carrier",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "buddy3": {
+      "url": "https://www.lg.co.kr/media/release/27610",
+      "kind": "official_carrier",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "buddy4": {
+      "url": "https://m.lguplus.com/about/ko/corporation/promotion/press-kit/detail?atclNo=2000001186&pageNo=1&srchCond=titCon",
+      "kind": "official_carrier",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "buddy5": {
+      "url": "https://news.lguplus.com/?p=21844",
+      "kind": "official_carrier",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "wide8": {
+      "url": "https://cdnm.shop.tworld.co.kr/pimg/plan_html/202509/P00000324_mobile.html",
+      "kind": "official_carrier",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "a25-id": {
+      "url": "https://www.samsung.com/sec/smartphones/galaxy-a25-5g-a256/SM-A256NZYAKOO/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "a15-id": {
+      "url": "https://www.samsung.com/sec/smartphones/galaxy-a15-lte-a155/SM-A155NZKEKOO/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "a16-id": {
+      "url": "https://www.samsung.com/sec/support/model/SM-A165NLGEKOO/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "a36-id": {
+      "url": "https://www.samsung.com/sec/smartphones/galaxy-a36-5g-a366/SM-A366NLVAKOO/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "a17-id": {
+      "url": "https://www.samsung.com/sec/support/model/SM-A175NZAAKOD/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "a37-id": {
+      "url": "https://www.samsung.com/sec/support/model/SM-A376NZAAKOO/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s25-id": {
+      "url": "https://www.samsungsvc.co.kr/solution/3187302",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "edge-id": {
+      "url": "https://www.samsung.com/sec/support/model/SM-S937NZKWKOO/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "edge-spec": {
+      "url": "https://org-sec-b2b.samsung.com/sec/business/insights/news/news_250519_07/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s25fe-id": {
+      "url": "https://www.samsung.com/sec/smartphones/galaxy-s25-fe-sm-s731/SM-S731NZWWKOD/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "flip7-id": {
+      "url": "https://www.samsungsvc.co.kr/solution/4033898",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s26-id": {
+      "url": "https://www.samsungsvc.co.kr/solution/4613052",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s26fe-id": {
+      "url": "https://www.samsung.com/sec/support/model/SM-S741NLGWKOD/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "fold8ultra-id": {
+      "url": "https://www.samsung.com/sec/smartphones/galaxy-z-fold8-ultra-sm-f976/SM-F976NZKIKOD/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "z8-id": {
+      "url": "https://www.samsung.com/sec/smartphones/all-smartphones/?msockid=2dcebac7143d69cf0502ac0f15aa68bf",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "flip8spec": {
+      "url": "https://www.samsung.com/sec/smartphones/galaxy-z-flip8/specs/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "wireless-share": {
+      "url": "https://www.samsungsvc.co.kr/solution/37799",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "danawa-s26": {
+      "url": "https://prod.danawa.com/info/?pcode=106720964",
+      "kind": "price_comparison_search_excerpt",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "danawa-s25": {
+      "url": "https://prod.danawa.com/info/?pcode=102124202",
+      "kind": "price_comparison_search_excerpt",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "danawa-ip17": {
+      "url": "https://prod.danawa.com/info/?pcode=96314051",
+      "kind": "price_comparison_search_excerpt",
+      "checked_at": "2026-11-10T15:17:19.433697+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "buddy3-id": {
+      "url": "https://www.samsung.com/sec/smartphones/galaxy-a15-5g-a156-co/SM-A156LZKALUC/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:18:04.573186+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "quantum5-id": {
+      "url": "https://www.samsung.com/sec/smartphones/galaxy-a55-5g-a556-co/SM-A556SZKBSKC/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:18:04.573186+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "quantum6-id": {
+      "url": "https://www.samsung.com/sec/smartphones/galaxy-a56-5g-a566s-co/SM-A566SZKBSKC/",
+      "kind": "manufacturer_kr",
+      "checked_at": "2026-11-10T15:18:04.573186+00:00",
+      "access": "web_research",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s26plus-kr": {
+      "url": "https://www.samsung.com/sec/support/model/SM-S947NZVEKOD/",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s26plus-sku": {
+      "url": "https://www.samsung.com/sec/smartphones/galaxy-s26/buy/?modelCode=SM-S947NZKAKOO",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    },
+    "fold7-kr": {
+      "url": "https://www.samsung.com/sec/support/model/SM-F966NDBAKOD/",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    },
+    "fold8-kr": {
+      "url": "https://www.samsung.com/sec/support/model/SM-F971NZKIKOD/",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    },
+    "fold8ultra-kr": {
+      "url": "https://www.samsung.com/sec/support/model/SM-F976NDGIKOO/",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    },
+    "flip8-kr": {
+      "url": "https://www.samsung.com/sec/support/model/SM-F776NZWEKOO/",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ip17-kr": {
+      "url": "https://www.apple.com/kr/iphone-17/specs/",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ipair-kr": {
+      "url": "https://www.apple.com/kr/iphone-air/specs/",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ip17pro-kr": {
+      "url": "https://support.apple.com/ko-kr/125090",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ip17promax-kr": {
+      "url": "https://support.apple.com/ko-kr/125091",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ip18pro-kr": {
+      "url": "https://www.apple.com/kr/iphone-18-pro/specs/",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    },
+    "ip18pro-label": {
+      "url": "https://support.apple.com/ko-kr/148590",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    },
+    "s25ultra-ram": {
+      "url": "https://www.samsung.com/sec/business/insights/news/news_250203_06/",
+      "checked_at": "2026-11-10T19:39:53.289754+00:00",
+      "kind": "official_kr",
+      "reuse_permission": "not_established_for_production"
+    }
+  },
+  "models": [
+    {
+      "model_key": "s25",
+      "model_name": "Galaxy S25",
+      "domestic_model_number": "SM-S931N",
+      "released_on_kr": "2025-02-07",
+      "launch_source_ids": [
+        "s25price"
+      ],
+      "identity_source_ids": [
+        "s25-id"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Snapdragon 8 Elite for Galaxy",
+        "os_at_launch": "Android 15",
+        "main_display_inches": 6.2,
+        "cover_display_inches": null,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": 120,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": null,
+        "ultrawide_camera_mp": null,
+        "telephoto_cameras": null,
+        "front_camera_mp": null,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": 4000,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": true,
+        "weight_g": 162,
+        "dimensions_unfolded_h_w_d_mm": [
+          146.9,
+          70.5,
+          7.2
+        ],
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": "IP68",
+        "supports_5g": true,
+        "wifi": "7",
+        "bluetooth": "5.4",
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "s25spec",
+        "wireless-share"
+      ],
+      "new_spec_evidence": {
+        "values": {},
+        "source_ids": []
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s25spec",
+            "s25-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1155000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s25price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s25spec",
+            "s25-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1298000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s25price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "s25-plus",
+      "model_name": "Galaxy S25+",
+      "domestic_model_number": "SM-S936N",
+      "released_on_kr": "2025-02-07",
+      "launch_source_ids": [
+        "s25price"
+      ],
+      "identity_source_ids": [
+        "s25-id"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Snapdragon 8 Elite for Galaxy",
+        "os_at_launch": "Android 15",
+        "main_display_inches": 6.7,
+        "cover_display_inches": null,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": 120,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": null,
+        "ultrawide_camera_mp": null,
+        "telephoto_cameras": null,
+        "front_camera_mp": null,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": 4900,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": true,
+        "weight_g": 190,
+        "dimensions_unfolded_h_w_d_mm": [
+          158.4,
+          75.8,
+          7.3
+        ],
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": "IP68",
+        "supports_5g": true,
+        "wifi": "7",
+        "bluetooth": "5.4",
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "s25spec",
+        "wireless-share"
+      ],
+      "new_spec_evidence": {
+        "values": {},
+        "source_ids": []
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s25spec",
+            "s25-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1353000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s25price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s25spec",
+            "s25-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1496000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s25price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "s25-ultra",
+      "model_name": "Galaxy S25 Ultra",
+      "domestic_model_number": "SM-S938N",
+      "released_on_kr": "2025-02-07",
+      "launch_source_ids": [
+        "s25price"
+      ],
+      "identity_source_ids": [
+        "s25-id"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Snapdragon 8 Elite for Galaxy",
+        "os_at_launch": "Android 15",
+        "main_display_inches": 6.9,
+        "cover_display_inches": null,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": 120,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": null,
+        "ultrawide_camera_mp": null,
+        "telephoto_cameras": null,
+        "front_camera_mp": null,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": 5000,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": true,
+        "weight_g": 218,
+        "dimensions_unfolded_h_w_d_mm": [
+          162.8,
+          77.6,
+          8.2
+        ],
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": "IP68",
+        "supports_5g": true,
+        "wifi": "7",
+        "bluetooth": "5.4",
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "s25spec",
+        "wireless-share"
+      ],
+      "new_spec_evidence": {
+        "values": {},
+        "source_ids": []
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s25spec",
+            "s25-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1698400,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s25price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s25spec",
+            "s25-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1841400,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s25price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s25spec",
+            "s25-id"
+          ],
+          "launch_price": {
+            "amount_krw": 2127400,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s25price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color_restriction": [
+            "Titanium Jetblack"
+          ],
+          "option_source_ids": [
+            "s25price"
+          ],
+          "launch_price": {
+            "amount_krw": 2249500,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s25price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지",
+        "1TB RAM12/16별 실제 색상 SKU를 곱집합 없이 식별"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다.",
+      "additional_option_evidence": {
+        "source_id": "s25ultra-ram",
+        "storage_gb": 1024,
+        "ram_gb": 16,
+        "color_kr": "티타늄 제트블랙",
+        "launch_price_krw": 2249500
+      }
+    },
+    {
+      "model_key": "s26",
+      "model_name": "Galaxy S26",
+      "domestic_model_number": "SM-S942N",
+      "released_on_kr": "2026-03-11",
+      "launch_source_ids": [
+        "s26"
+      ],
+      "identity_source_ids": [
+        "s26-id"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Exynos 2600",
+        "os_at_launch": "Android 16",
+        "main_display_inches": 6.3,
+        "cover_display_inches": null,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": 120,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": null,
+        "ultrawide_camera_mp": null,
+        "telephoto_cameras": null,
+        "front_camera_mp": null,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": 4300,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": true,
+        "weight_g": 167,
+        "dimensions_unfolded_h_w_d_mm": null,
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": "IP68",
+        "supports_5g": true,
+        "wifi": "7",
+        "bluetooth": null,
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "s26",
+        "wireless-share"
+      ],
+      "new_spec_evidence": {
+        "values": {},
+        "source_ids": []
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s26",
+            "s26-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1254000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s26"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s26",
+            "s26-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1507000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s26"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "s26-plus",
+      "model_name": "Galaxy S26+",
+      "domestic_model_number": "SM-S947N",
+      "released_on_kr": "2026-03-11",
+      "launch_source_ids": [
+        "s26"
+      ],
+      "identity_source_ids": [
+        "s26-id",
+        "s26plus-kr",
+        "s26plus-sku"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Exynos 2600",
+        "os_at_launch": "Android 16",
+        "main_display_inches": 6.7,
+        "cover_display_inches": null,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": 120,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": null,
+        "ultrawide_camera_mp": null,
+        "telephoto_cameras": null,
+        "front_camera_mp": null,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": 4900,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": true,
+        "weight_g": 190,
+        "dimensions_unfolded_h_w_d_mm": null,
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": "IP68",
+        "supports_5g": true,
+        "wifi": "7",
+        "bluetooth": null,
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "s26",
+        "wireless-share"
+      ],
+      "new_spec_evidence": {
+        "values": {},
+        "source_ids": []
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s26",
+            "s26-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1452000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s26"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s26",
+            "s26-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1705000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s26"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [
+        {
+          "sku": "SM-S947NZKAKOO",
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color_kr": "블랙",
+          "source_ids": [
+            "s26plus-sku"
+          ],
+          "fact_verified": true,
+          "production_approved": false
+        }
+      ],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다.",
+      "resolved_issues": [
+        "SM-S947N: 한국 지원 페이지와 제품 SKU가 일치. 액세서리 페이지 번호를 대상 제품 식별에 사용하지 않음."
+      ]
+    },
+    {
+      "model_key": "s26-ultra",
+      "model_name": "Galaxy S26 Ultra",
+      "domestic_model_number": "SM-S948N",
+      "released_on_kr": "2026-03-11",
+      "launch_source_ids": [
+        "s26"
+      ],
+      "identity_source_ids": [
+        "s26-id"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Snapdragon 8 Elite Gen 5 for Galaxy",
+        "os_at_launch": "Android 16",
+        "main_display_inches": 6.9,
+        "cover_display_inches": null,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": 120,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": null,
+        "ultrawide_camera_mp": null,
+        "telephoto_cameras": null,
+        "front_camera_mp": null,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": 5000,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": true,
+        "weight_g": 214,
+        "dimensions_unfolded_h_w_d_mm": null,
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": "IP68",
+        "supports_5g": true,
+        "wifi": "7",
+        "bluetooth": null,
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "s26",
+        "wireless-share"
+      ],
+      "new_spec_evidence": {
+        "values": {},
+        "source_ids": []
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s26",
+            "s26-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1797400,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s26"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s26",
+            "s26-id"
+          ],
+          "launch_price": {
+            "amount_krw": 2050400,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s26"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color_restriction": null,
+          "option_source_ids": [
+            "s26",
+            "s26-id"
+          ],
+          "launch_price": {
+            "amount_krw": 2545400,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "s26"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "fold7",
+      "model_name": "Galaxy Z Fold7",
+      "domestic_model_number": "SM-F966N",
+      "released_on_kr": "2025-07-25",
+      "launch_source_ids": [
+        "fold7"
+      ],
+      "identity_source_ids": [
+        "fold7-kr"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Snapdragon 8 Elite for Galaxy",
+        "os_at_launch": null,
+        "main_display_inches": 8,
+        "cover_display_inches": 6.5,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": null,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": 200,
+        "ultrawide_camera_mp": null,
+        "telephoto_cameras": null,
+        "front_camera_mp": null,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": null,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": true,
+        "weight_g": 215,
+        "dimensions_unfolded_h_w_d_mm": null,
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": null,
+        "supports_5g": null,
+        "wifi": null,
+        "bluetooth": null,
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "fold7",
+        "wireless-share"
+      ],
+      "new_spec_evidence": {
+        "values": {},
+        "source_ids": []
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "fold7"
+          ],
+          "launch_price": {
+            "amount_krw": 2379300,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "fold7"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "fold7"
+          ],
+          "launch_price": {
+            "amount_krw": 2537700,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "fold7"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color_restriction": null,
+          "option_source_ids": [
+            "fold7"
+          ],
+          "launch_price": {
+            "amount_krw": 2933700,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "fold7"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "flip7",
+      "model_name": "Galaxy Z Flip7",
+      "domestic_model_number": "SM-F766N",
+      "released_on_kr": "2025-07-25",
+      "launch_source_ids": [
+        "flip7"
+      ],
+      "identity_source_ids": [
+        "flip7-id"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Exynos 2500",
+        "os_at_launch": "Android 16",
+        "main_display_inches": 6.9,
+        "cover_display_inches": 4.1,
+        "display_type": null,
+        "main_resolution_px": [
+          2520,
+          1080
+        ],
+        "cover_resolution_px": [
+          1048,
+          948
+        ],
+        "refresh_hz": 120,
+        "cover_refresh_hz": 120,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": 50,
+        "ultrawide_camera_mp": 12,
+        "telephoto_cameras": null,
+        "front_camera_mp": 10,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": 4300,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": true,
+        "weight_g": 188,
+        "dimensions_unfolded_h_w_d_mm": [
+          166.7,
+          75.2,
+          6.5
+        ],
+        "dimensions_folded_h_w_d_mm": [
+          85.5,
+          75.2,
+          13.7
+        ],
+        "ip_rating": "IP48",
+        "supports_5g": true,
+        "wifi": "7",
+        "bluetooth": "5.4",
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "flip7",
+        "wireless-share"
+      ],
+      "new_spec_evidence": {
+        "values": {},
+        "source_ids": []
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "flip7",
+            "flip7-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1485000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "flip7"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "flip7",
+            "flip7-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1643400,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "flip7"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "flip7-fe",
+      "model_name": "Galaxy Z Flip7 FE",
+      "domestic_model_number": "SM-F761N",
+      "released_on_kr": "2025-07-25",
+      "launch_source_ids": [
+        "flip7"
+      ],
+      "identity_source_ids": [
+        "flip7-id"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Exynos 2400",
+        "os_at_launch": "Android 16",
+        "main_display_inches": 6.7,
+        "cover_display_inches": 3.4,
+        "display_type": null,
+        "main_resolution_px": [
+          2640,
+          1080
+        ],
+        "cover_resolution_px": [
+          720,
+          748
+        ],
+        "refresh_hz": 120,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": 50,
+        "ultrawide_camera_mp": 12,
+        "telephoto_cameras": null,
+        "front_camera_mp": 10,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": 4000,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": true,
+        "weight_g": 187,
+        "dimensions_unfolded_h_w_d_mm": [
+          165.1,
+          71.9,
+          6.9
+        ],
+        "dimensions_folded_h_w_d_mm": [
+          85.1,
+          71.9,
+          14.9
+        ],
+        "ip_rating": "IP48",
+        "supports_5g": true,
+        "wifi": "6E",
+        "bluetooth": "5.4",
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "flip7",
+        "wireless-share"
+      ],
+      "new_spec_evidence": {
+        "values": {},
+        "source_ids": []
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color_restriction": null,
+          "option_source_ids": [
+            "flip7",
+            "flip7-id"
+          ],
+          "launch_price": {
+            "amount_krw": 1199000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "flip7"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "fold8",
+      "model_name": "Galaxy Z Fold8",
+      "domestic_model_number": "SM-F971N",
+      "released_on_kr": "2026-08-07",
+      "launch_source_ids": [
+        "z8release"
+      ],
+      "identity_source_ids": [
+        "z8-id",
+        "fold8-kr"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Snapdragon 8 Elite Gen 5 for Galaxy",
+        "os_at_launch": null,
+        "main_display_inches": 7.6,
+        "cover_display_inches": 5.5,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": null,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": 50,
+        "ultrawide_camera_mp": 50,
+        "telephoto_cameras": null,
+        "front_camera_mp": 10,
+        "inner_front_camera_mp": 10,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": 4800,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": true,
+        "weight_g": 201,
+        "dimensions_unfolded_h_w_d_mm": [
+          123.9,
+          161.4,
+          4.5
+        ],
+        "dimensions_folded_h_w_d_mm": [
+          123.9,
+          81.9,
+          9.7
+        ],
+        "ip_rating": null,
+        "supports_5g": null,
+        "wifi": "7",
+        "bluetooth": "6",
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "z8spec",
+        "wireless-share"
+      ],
+      "new_spec_evidence": {
+        "values": {
+          "main_resolution_px": [
+            1848,
+            2448
+          ],
+          "cover_resolution_px": [
+            1972,
+            1248
+          ],
+          "refresh_hz": 120,
+          "display_type": "Dynamic AMOLED 2X"
+        },
+        "source_ids": [
+          "fold8-kr"
+        ]
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "z8spec",
+            "z8-id",
+            "z8price"
+          ],
+          "launch_price": {
+            "amount_krw": 2278100,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "z8price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "z8spec",
+            "z8-id",
+            "z8price"
+          ],
+          "launch_price": {
+            "amount_krw": 2531100,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "z8price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color_restriction": null,
+          "option_source_ids": [
+            "z8spec",
+            "z8-id",
+            "z8price"
+          ],
+          "launch_price": {
+            "amount_krw": 3152600,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "z8price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "fold8-ultra",
+      "model_name": "Galaxy Z Fold8 Ultra",
+      "domestic_model_number": "SM-F976N",
+      "released_on_kr": "2026-08-07",
+      "launch_source_ids": [
+        "z8release"
+      ],
+      "identity_source_ids": [
+        "fold8ultra-id",
+        "fold8ultra-kr"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Snapdragon 8 Elite Gen 5 for Galaxy",
+        "os_at_launch": null,
+        "main_display_inches": 8,
+        "cover_display_inches": 6.5,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": null,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": 200,
+        "ultrawide_camera_mp": 50,
+        "telephoto_cameras": [
+          {
+            "mp": 10,
+            "optical_zoom_x": 3
+          }
+        ],
+        "front_camera_mp": 10,
+        "inner_front_camera_mp": 10,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": 5000,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": true,
+        "weight_g": 215,
+        "dimensions_unfolded_h_w_d_mm": [
+          158.4,
+          143.2,
+          4.1
+        ],
+        "dimensions_folded_h_w_d_mm": [
+          158.4,
+          72.8,
+          8.9
+        ],
+        "ip_rating": null,
+        "supports_5g": null,
+        "wifi": "7",
+        "bluetooth": "6",
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "z8spec",
+        "wireless-share"
+      ],
+      "new_spec_evidence": {
+        "values": {
+          "main_resolution_px": [
+            2504,
+            2256
+          ],
+          "cover_resolution_px": [
+            2520,
+            1080
+          ],
+          "refresh_hz": 120,
+          "display_type": "Dynamic AMOLED 2X"
+        },
+        "source_ids": [
+          "fold8ultra-kr"
+        ]
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "z8spec",
+            "fold8ultra-id",
+            "z8price"
+          ],
+          "launch_price": {
+            "amount_krw": 2577300,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "z8price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "z8spec",
+            "fold8ultra-id",
+            "z8price"
+          ],
+          "launch_price": {
+            "amount_krw": 2830300,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "z8price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color_restriction": null,
+          "option_source_ids": [
+            "z8spec",
+            "fold8ultra-id",
+            "z8price"
+          ],
+          "launch_price": {
+            "amount_krw": 3451800,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "z8price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "flip8",
+      "model_name": "Galaxy Z Flip8",
+      "domestic_model_number": "SM-F776N",
+      "released_on_kr": "2026-08-07",
+      "launch_source_ids": [
+        "z8release"
+      ],
+      "identity_source_ids": [
+        "z8-id",
+        "flip8-kr"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Exynos 2600",
+        "os_at_launch": null,
+        "main_display_inches": 6.9,
+        "cover_display_inches": 4.1,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": null,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": 50,
+        "ultrawide_camera_mp": 12,
+        "telephoto_cameras": null,
+        "front_camera_mp": 10,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": 4300,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": true,
+        "weight_g": 180,
+        "dimensions_unfolded_h_w_d_mm": [
+          166.9,
+          75.4,
+          6.1
+        ],
+        "dimensions_folded_h_w_d_mm": [
+          85.7,
+          75.4,
+          13.1
+        ],
+        "ip_rating": null,
+        "supports_5g": null,
+        "wifi": null,
+        "bluetooth": null,
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "z8spec",
+        "wireless-share"
+      ],
+      "new_spec_evidence": {
+        "values": {},
+        "source_ids": []
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "z8spec",
+            "z8-id",
+            "z8price"
+          ],
+          "launch_price": {
+            "amount_krw": 1683000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "z8price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color_restriction": null,
+          "option_source_ids": [
+            "z8spec",
+            "z8-id",
+            "z8price"
+          ],
+          "launch_price": {
+            "amount_krw": 1936000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "z8price"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "iphone-17",
+      "model_name": "iPhone 17",
+      "domestic_model_number": "A3520",
+      "released_on_kr": "2025-09-19",
+      "launch_source_ids": [
+        "ip17"
+      ],
+      "identity_source_ids": [
+        "apple-models",
+        "ip17-kr"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Apple A19",
+        "os_at_launch": null,
+        "main_display_inches": 6.3,
+        "cover_display_inches": null,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": 120,
+        "cover_refresh_hz": null,
+        "brightness_nits": 3000,
+        "brightness_mode": "outdoor peak",
+        "main_camera_mp": 48,
+        "ultrawide_camera_mp": 48,
+        "telephoto_cameras": null,
+        "front_camera_mp": 18,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": null,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": null,
+        "weight_g": null,
+        "dimensions_unfolded_h_w_d_mm": null,
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": null,
+        "supports_5g": null,
+        "wifi": null,
+        "bluetooth": null,
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "ip17"
+      ],
+      "new_spec_evidence": {
+        "values": {
+          "weight_g": 177,
+          "dimensions_unfolded_h_w_d_mm": [
+            149.6,
+            71.5,
+            7.95
+          ],
+          "main_resolution_px": [
+            2622,
+            1206
+          ],
+          "display_type": "OLED",
+          "refresh_hz": 120,
+          "wifi": "7",
+          "bluetooth": "6",
+          "nfc": true
+        },
+        "source_ids": [
+          "ip17-kr"
+        ]
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip17",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": 1290000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "ip17"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip17",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지",
+        "공식 미공개 RAM/mAh는 null; 결함으로 간주해 추정하지 않음",
+        "기본 용량 외 과거 공식 출고가 미확인; 현재 스토어/비교 가격으로 대체하지 않음"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "iphone-air",
+      "model_name": "iPhone Air",
+      "domestic_model_number": "A3517",
+      "released_on_kr": "2025-09-19",
+      "launch_source_ids": [
+        "ipair"
+      ],
+      "identity_source_ids": [
+        "apple-models",
+        "ipair-kr"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Apple A19 Pro",
+        "os_at_launch": null,
+        "main_display_inches": 6.5,
+        "cover_display_inches": null,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": 120,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": null,
+        "ultrawide_camera_mp": null,
+        "telephoto_cameras": null,
+        "front_camera_mp": null,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": null,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": null,
+        "weight_g": null,
+        "dimensions_unfolded_h_w_d_mm": null,
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": null,
+        "supports_5g": null,
+        "wifi": null,
+        "bluetooth": null,
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "ipair"
+      ],
+      "new_spec_evidence": {
+        "values": {
+          "weight_g": 165,
+          "dimensions_unfolded_h_w_d_mm": [
+            156.2,
+            74.7,
+            5.64
+          ],
+          "main_resolution_px": [
+            2736,
+            1260
+          ],
+          "refresh_hz": 120,
+          "ip_rating": "IP68"
+        },
+        "source_ids": [
+          "ipair-kr"
+        ]
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ipair",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": 1590000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "ipair"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ipair",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ipair",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지",
+        "공식 미공개 RAM/mAh는 null; 결함으로 간주해 추정하지 않음",
+        "기본 용량 외 과거 공식 출고가 미확인; 현재 스토어/비교 가격으로 대체하지 않음"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "iphone-17-pro",
+      "model_name": "iPhone 17 Pro",
+      "domestic_model_number": "A3523",
+      "released_on_kr": "2025-09-19",
+      "launch_source_ids": [
+        "ip17pro"
+      ],
+      "identity_source_ids": [
+        "apple-models",
+        "ip17pro-kr"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Apple A19 Pro",
+        "os_at_launch": null,
+        "main_display_inches": null,
+        "cover_display_inches": null,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": null,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": 48,
+        "ultrawide_camera_mp": 48,
+        "telephoto_cameras": [
+          {
+            "mp": 48,
+            "optical_zoom_x": 4
+          }
+        ],
+        "front_camera_mp": 18,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": "8x (not optical telephoto magnification)",
+        "battery_typical_mah": null,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": null,
+        "weight_g": null,
+        "dimensions_unfolded_h_w_d_mm": null,
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": null,
+        "supports_5g": null,
+        "wifi": null,
+        "bluetooth": null,
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "ip17pro"
+      ],
+      "new_spec_evidence": {
+        "values": {
+          "weight_g": 204,
+          "main_resolution_px": [
+            2622,
+            1206
+          ],
+          "refresh_hz": 120,
+          "ip_rating": "IP68"
+        },
+        "source_ids": [
+          "ip17pro-kr"
+        ]
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip17pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": 1790000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "ip17pro"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip17pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip17pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지",
+        "공식 미공개 RAM/mAh는 null; 결함으로 간주해 추정하지 않음",
+        "기본 용량 외 과거 공식 출고가 미확인; 현재 스토어/비교 가격으로 대체하지 않음"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "iphone-17-pro-max",
+      "model_name": "iPhone 17 Pro Max",
+      "domestic_model_number": "A3526",
+      "released_on_kr": "2025-09-19",
+      "launch_source_ids": [
+        "ip17pro"
+      ],
+      "identity_source_ids": [
+        "apple-models",
+        "ip17promax-kr"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Apple A19 Pro",
+        "os_at_launch": null,
+        "main_display_inches": null,
+        "cover_display_inches": null,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": null,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": 48,
+        "ultrawide_camera_mp": 48,
+        "telephoto_cameras": [
+          {
+            "mp": 48,
+            "optical_zoom_x": 4
+          }
+        ],
+        "front_camera_mp": 18,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": "8x (not optical telephoto magnification)",
+        "battery_typical_mah": null,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": null,
+        "weight_g": null,
+        "dimensions_unfolded_h_w_d_mm": null,
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": null,
+        "supports_5g": null,
+        "wifi": null,
+        "bluetooth": null,
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "ip17pro"
+      ],
+      "new_spec_evidence": {
+        "values": {},
+        "source_ids": []
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip17pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": 1990000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "ip17pro"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip17pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip17pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip17pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지",
+        "공식 미공개 RAM/mAh는 null; 결함으로 간주해 추정하지 않음",
+        "기본 용량 외 과거 공식 출고가 미확인; 현재 스토어/비교 가격으로 대체하지 않음",
+        "이번에 확보한 한국 상품표시 근거 외 무게 등 누락 사양은 후속 확인"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    },
+    {
+      "model_key": "iphone-18-pro",
+      "model_name": "iPhone 18 Pro",
+      "domestic_model_number": "A3714",
+      "released_on_kr": "2026-09-18",
+      "launch_source_ids": [
+        "ip18pro"
+      ],
+      "identity_source_ids": [
+        "apple-models",
+        "ip18pro-kr",
+        "ip18pro-label"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Apple A20 Pro",
+        "os_at_launch": null,
+        "main_display_inches": null,
+        "cover_display_inches": null,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": null,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": null,
+        "ultrawide_camera_mp": null,
+        "telephoto_cameras": null,
+        "front_camera_mp": null,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": null,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": null,
+        "weight_g": null,
+        "dimensions_unfolded_h_w_d_mm": null,
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": null,
+        "supports_5g": null,
+        "wifi": null,
+        "bluetooth": null,
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "ip18pro"
+      ],
+      "new_spec_evidence": {
+        "values": {
+          "weight_g": 211,
+          "dimensions_unfolded_h_w_d_mm": [
+            150.0,
+            71.9,
+            8.75
+          ],
+          "main_resolution_px": [
+            2622,
+            1206
+          ],
+          "refresh_hz": 120,
+          "ip_rating": "IP68",
+          "wifi": "7",
+          "bluetooth": "6",
+          "nfc": true
+        },
+        "source_ids": [
+          "ip18pro-kr",
+          "ip18pro-label"
+        ]
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip18pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": 1990000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "ip18pro"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip18pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip18pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip18pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지",
+        "공식 미공개 RAM/mAh는 null; 결함으로 간주해 추정하지 않음",
+        "기본 용량 외 과거 공식 출고가 미확인; 현재 스토어/비교 가격으로 대체하지 않음"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다.",
+      "resolved_issues": [
+        "이전 영문 support 조회429와 별개로 한국 공식 제품 사양/상품표시 근거 확보. 제한 우회 없음."
+      ]
+    },
+    {
+      "model_key": "iphone-18-pro-max",
+      "model_name": "iPhone 18 Pro Max",
+      "domestic_model_number": "A3717",
+      "released_on_kr": "2026-09-18",
+      "launch_source_ids": [
+        "ip18pro"
+      ],
+      "identity_source_ids": [
+        "apple-models",
+        "ip18pro-kr",
+        "ip18pro-label"
+      ],
+      "verification_status": "additional_review",
+      "production_approved": false,
+      "execution_authorized": false,
+      "identity_release_status": "official_evidence_available",
+      "prior_specs": {
+        "chipset": "Apple A20 Pro",
+        "os_at_launch": null,
+        "main_display_inches": null,
+        "cover_display_inches": null,
+        "display_type": null,
+        "main_resolution_px": null,
+        "cover_resolution_px": null,
+        "refresh_hz": null,
+        "cover_refresh_hz": null,
+        "brightness_nits": null,
+        "brightness_mode": null,
+        "main_camera_mp": null,
+        "ultrawide_camera_mp": null,
+        "telephoto_cameras": null,
+        "front_camera_mp": null,
+        "inner_front_camera_mp": null,
+        "optical_zoom": null,
+        "optical_quality_zoom": null,
+        "battery_typical_mah": null,
+        "wired_charging_w": null,
+        "wireless_charging": null,
+        "wireless_charging_w": null,
+        "reverse_wireless": null,
+        "weight_g": null,
+        "dimensions_unfolded_h_w_d_mm": null,
+        "dimensions_folded_h_w_d_mm": null,
+        "ip_rating": null,
+        "supports_5g": null,
+        "wifi": null,
+        "bluetooth": null,
+        "nfc": null,
+        "os_update_generations": null,
+        "security_update_years": null
+      },
+      "prior_spec_source_ids": [
+        "ip18pro"
+      ],
+      "new_spec_evidence": {
+        "values": {
+          "weight_g": 249,
+          "dimensions_unfolded_h_w_d_mm": [
+            163.4,
+            78.0,
+            8.75
+          ],
+          "main_resolution_px": [
+            2868,
+            1320
+          ],
+          "refresh_hz": 120,
+          "ip_rating": "IP68",
+          "wifi": "7",
+          "bluetooth": "6",
+          "nfc": true
+        },
+        "source_ids": [
+          "ip18pro-kr",
+          "ip18pro-label"
+        ]
+      },
+      "configurations": [
+        {
+          "storage_gb": 256,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip18pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": 2190000,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [
+              "ip18pro"
+            ],
+            "verified": true,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip18pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip18pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": null,
+          "color_restriction": null,
+          "option_source_ids": [
+            "ip18pro",
+            "apple-models"
+          ],
+          "launch_price": {
+            "amount_krw": null,
+            "currency": "KRW",
+            "kind": "official_kr_launch",
+            "source_ids": [],
+            "verified": false,
+            "variant_mapping_status": "storage_configuration_only_color_sku_pending"
+          },
+          "exact_color_sku_verified": false
+        }
+      ],
+      "verified_exact_skus": [],
+      "remaining": [
+        "자료 재사용/공개/추천 입력 권리 검토",
+        "실제 색상별 SKU 범위 및 옵션 검수 승인",
+        "미확인 상세 필드는 null 유지",
+        "공식 미공개 RAM/mAh는 null; 결함으로 간주해 추정하지 않음",
+        "기본 용량 외 과거 공식 출고가 미확인; 현재 스토어/비교 가격으로 대체하지 않음"
+      ],
+      "scope_note": "모델번호·판매일 근거 확인과 전체 제품/변형 검증 완료는 다르다. 기존 출고가 출처를 재사용했으며 웹을 다시 읽은 것으로 표시하지 않는다."
+    }
+  ],
+  "schema_review": {
+    "db_execution": false,
+    "baseline_variants_checked_offline": 29,
+    "baseline_null_ram_variants": 15,
+    "normalized_key_collisions": 0,
+    "logical_cases": [
+      {
+        "case": "NULL vs NULL",
+        "equal_index_key": true
+      },
+      {
+        "case": "12 vs12",
+        "equal_index_key": true
+      },
+      {
+        "case": "12 vs16",
+        "equal_index_key": false
+      },
+      {
+        "case": "NULL vs12",
+        "equal_index_key": false
+      }
+    ],
+    "limitation": "NULL와 알려진 RAM은 다른 키다. 동일 실물 SKU의 unknown→known 중복은 입력기 식별/부모행 잠금으로 별도 제어해야 한다."
+  },
+  "unresolved_global_models": [
+    "fold-special-edition",
+    "trifold",
+    "wide7",
+    "buddy4",
+    "wide8",
+    "buddy5",
+    "wide9",
+    "quantum7"
+  ],
+  "not_accepted_as_launch_prices": [
+    "현재 Apple 비교 페이지의 상위 용량 가격: 출시 당시 가격 근거가 아님",
+    "삼성 현재 구매화면의 기준가/혜택가: 묶음/선택 상태 차이 가능, 기존 보도자료 출고가 유지"
+  ],
+  "access_notes": [
+    "iPhone17Pro 제품 URL은 현재 iPhone 목록으로 리디렉션; 한국 support125090/125091로 보강",
+    "이전 영문 Apple support429를 재시도/우회하지 않음"
+  ]
+}

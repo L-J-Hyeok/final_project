@@ -1,4 +1,5 @@
 'use strict';
+const publication = require('../services/product-publication');
 
 // 보유 기기 기반 업그레이드 제안 상태 조회·숨김/30일 억제·현재 사용 기기 지정 API 라우터
 // 주의: 상태 조회/변경 API에서는 절대 Gemini나 외부 API를 호출하지 않는다.
@@ -99,7 +100,8 @@ async function buildUpgradeOfferStatus(uid, nowInput = new Date(), t = undefined
          os,
          verified,
          is_test
-       FROM smartphones
+       FROM smartphones s
+       WHERE ${await publication.sql(db(),{variants:false,transaction:t})}
        ORDER BY id ASC`,
       { type: QueryTypes.SELECT, transaction: t }
     );

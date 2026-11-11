@@ -248,3 +248,247 @@ Asia/Seoul 기준 시간순으로 누적한다. 이전 기록을 삭제하지 �
   - 자동 테스트 중 외부 Gemini API 호출 **0회** 확인, 테스트 종료 후 8개 테이블 전체 행 수 0 확인.
 - 미해결 문제: 없음.
 - 다음 작업: Vue 3 + Vuetify 3 프론트엔드(`front/`) 화면 개발 및 백엔드 API 연동.
+
+## 2026-11-10 09:34:24 KST — Codex 프론트 1단계 및 스펙 비교 핵심 기능 반영
+
+- 최신 로컬 진입점·보안/설계/현황/결정/테스트 문서와 실제 Vue 구성, 백엔드 auth/member/smartphones/recommendations/upgrade-offers 계약을 읽기 전용 확인. 기존 상태와 다르게 기억하던 Git 구조는 루트 모노레포로 확인하여 그대로 보존.
+- 수정: front/src/App.vue, main.js, plugins/vuetify.js, router/index.js, views/HomeView.vue, public/index.html, vue.config.js.
+- 생성: front/src/design/tokens.js, styles/global.css, components/AppButton.vue·FeatureCard.vue·StatusPanel.vue·SpecComparison.vue, views/PlaceholderView.vue·ErrorView.vue·CompareView.vue, api/client.js.
+- 기존 Vuex·패키지·잠금 파일·사용하지 않는 템플릿 자산 보존. 외부 폰트 로더 호출만 제거. 가칭 기기로운·독자적인 CSS 기기 일러스트 사용; Nofee 사이트 직접 비교/복제·외부 이미지 다운로드 없음.
+- 추가 요구 반영: 내비게이션·홈의 제품 비교 진입, 2~3열·누락·차이 표시 기본 UI. 사용자 결정 D-027 및 제품군 확장/시험 계획을 PROJECT_OVERVIEW, ARCHITECTURE, DECISIONS, CURRENT_STATUS, TEST_PLAN에 반영. 실제 검색/선택/DB 비교는 미구현으로 명시.
+- 테스트: 개발 컴파일·운영 빌드 성공, MDI/Vuetify 크기 경고. 실제 브라우저 데스크톱/태블릿/모바일, 플레이스홀더·404/오류 라우트·포커스·메뉴, 비교표 가상 값 차이 및 누락/열 전환, 콘솔 오류 없음. API 모의 fetch 검증. backend 51개 소스 해시 동일. 스크린리더 전수/실제 API/백엔드 테스트는 미실행.
+- 보안: .env 직접/자동 로딩 금지 준수, backend·DB·개발 규칙 변경 없음. Git 읽기 전용 status/diff만 사용, add/commit/push 없음. 설치·Taste 실행·Gemini 호출 없음.
+- 다음: 인증 화면 연결 및 비교 카탈로그 선택/가격 출처·유효성 UI. 상세 결과는 CURRENT_STATUS/TEST_PLAN 참조.
+
+## 프론트 인증 연결 — 2026-11-10 09:38:21 KST
+
+- 회원가입/로그인 폼, 헤더 로그아웃, Vuex 사용자 상태, 라우트 진입 시 /auth/me 복원 및 보호 페이지→로그인 이동 구현. 기존 same-origin 세션/CSRF 클라이언트 재사용, 비밀번호는 요청 후 폼에서 제거하고 저장소에 보관하지 않음.
+- 입력 검증(이메일·12~128자/512바이트·가입 비밀번호 확인), 중복 제출 방지, 401/409/403/429 및 연결 오류 메시지. 가입 후 로그인 안내, 로그인 성공 시 원래 내부 경로 복귀. 로그아웃 실패 시 성공으로 가장하지 않음.
+- 변경: front/src/views/AuthView.vue, api/messages.js 신규; store/index.js, router/index.js, App.vue, styles/global.css 수정. backend/DB/.env/보안 규칙/의존성/Git 쓰기 없음.
+- 검증: Vuex 모의 요청으로 미로그인·로그인·상태 복원·로그아웃·로그아웃 후 거절 5 assertion 통과. 실제 127.0.0.1:3000 연결은 실패(curl HTTP 000). 실제 회원가입/쿠키/새로고침/CSRF/로그아웃 HTTP 종단간 성공은 미검증. 백엔드 또는 DB를 시작하거나 테스트 데이터를 생성하지 않음.
+- 다음: 사용자가 기존 백엔드를 실행하고 APP_ORIGIN을 프론트 origin에 일치시킨 뒤 실제 인증 HTTP 검증. 이번에 .env는 읽지 않음. 프로필/기기/비교/추천 화면은 이전 플레이스홀더 유지.
+
+- 추가 검증: 운영 빌드 성공(기존 MDI/Vuetify 번들 크기 경고 유지). 실제 백엔드 인증 HTTP 테스트는 여전히 대기.
+
+## 인증 종단간 재검증 — 2026-11-10 09:41:29 KST
+
+- backend/package.json의 npm start(node ./bin/www)로 기존 Express 실행 성공. Vue CLI는 loadEnv 비활성 상태로 127.0.0.1:8080 실행. backend health 응답 database=connected. 앱 자체의 정상 설정 로딩 외 .env 직접 읽기/출력/수정 없음.
+- /api/auth/csrf 실제 HTTP 200, 토큰·쿠키 발급 존재 확인(값 미출력). 같은 쿠키/정상 토큰으로 Origin=http://127.0.0.1:8080에서 빈 login 요청은 403 CSRF_INVALID. 알려진 기본 Origin=http://localhost:3000으로 진단 요청 시 422 INVALID_INPUT으로 입력 검증 도달. 후자는 진단만 수행한 것으로 브라우저 인증 성공이 아님.
+- 차단 원인: Vue origin과 백엔드 허용 Origin 불일치. Origin 프록시 위조·백엔드 코드/설정 변경 없이 중단. 실제 가입/정상 로그인/로그아웃·로그인 후 새로고침 세션 유지·잘못된 비밀번호 거부·중복 제출 종단간은 아직 미검증.
+- 시험 계정/사용자 데이터 생성 없음. CSRF 확인용 익명 세션만 생성되어 기존 만료 정책 적용; 다른 세션/기존 사용자 데이터 삭제하지 않음. API 키·쿠키·토큰 출력 없음.
+- 필요한 사용자 설정: 백엔드 APP_ORIGIN을 실제 Vue 주소 http://127.0.0.1:8080과 정확히 맞추고 Express 재시작. 파일을 AI가 수정하지 않음. 서버는 이번 검증 후 실행 상태로 둠.
+- 변경 파일: front/src/api/messages.js, docs/CURRENT_STATUS.md, docs/DEVELOPMENT_LOG.md. CSRF_INVALID가 Origin 불일치도 포함하므로 ‘토큰 만료’ 단정을 일반적인 보안 확인 실패 안내로 최소 수정. 브라우저에서 오류 안내와 비밀번호 입력 삭제 확인. 백엔드·스키마·Git 변경 없음.
+
+
+## 인증 종단간 검증 완료 — 2026-11-10 21:02:41 KST
+
+- 사용자 APP_ORIGIN 변경 후 기존 Express 실행 방식(npm start)으로 재시작. Vue http://127.0.0.1:8080 → 개발 프록시 → Express :3000에서 실제 브라우저/DB 인증 검증 완료. 기존 Origin 불일치 차단 해소.
+- 회원가입 201 및 가입 완료 안내, 잘못된 비밀번호 로그인 401 및 오류 안내, 정상 로그인 200 확인. 가입·로그인 폼 각각 연속 2회 제출 시 실제 해당 POST 요청은 1회만 발생.
+- 로그인 후 실제 브라우저 새로고침에도 /api/auth/me 200 및 로그아웃 메뉴 유지. 세션 쿠키 값은 document.cookie에 노출되지 않음. CSRF 발급 200, 토큰 누락/오류 요청 각각 403 확인(비밀번호·쿠키·토큰 값 미출력).
+- 실제 헤더 로그아웃 후 /api/auth/me 401, /profile 진입 시 /login?next=/profile 이동. 동일 이메일 재가입 409 및 가입 불가 안내 확인.
+- 중단 전 시험 계정과 재개 후 시험 계정 총 2개를 정확한 시험 이메일로만 찾아 정리. 기존 사용자 데이터 변경 없음. 익명 CSRF 세션은 기존 만료 정책에 맡기며 다른 세션을 일괄 삭제하지 않음.
+- 이번 재개 작업의 변경 파일은 docs/CURRENT_STATUS.md, docs/DEVELOPMENT_LOG.md뿐. backend·front 코드, DB 스키마, .env, Git 수정 없음. .env 직접 읽기/출력 없음(백엔드 정상 실행에 필요한 기존 설정 로딩만 사용).
+- 이번 인증 시나리오에서 남은 오류 없음. 전체 백엔드 회귀 테스트/운영 배포 환경 검증은 이번에 재실행하지 않음. Express와 Vue 개발 서버는 실행 상태로 유지.
+- 다음: 별도 개발 단계에서 프로필·보유 기기 화면 API 연동 진행. 제품 비교·AI 추천 UI 연동은 이번 범위에 포함하지 않음.
+
+
+## 프론트 3단계 — 프로필·보유 기기 연결 완료 (2026-11-10 21:22:47 KST)
+
+- 담당/도구: Codex Desktop. 기존 Vue/Vuetify/Router/Vuex 인증 및 API 클라이언트를 재사용했다. 추가 패키지 없음.
+- /profile: 회원 이메일, 공통 용도·구매 성향·이동 빈도·모바일 생태계·생활스타일 메모, 스마트폰 브랜드·OS·순서 있는 우선순위 편집. 기존 전체 값을 불러와 PUT하며 expected_version 충돌 시 초안 유지·자동 덮어쓰기 차단. 선택값 생략 지원. 예산은 영구 프로필 계약에 없어 저장하지 않음. AI 분석 없음.
+- /devices: 제조사/모델/모델번호 검색 및 옵션 선택·더 보기, 빈 결과, 수동 유형별 사양 입력, 목록·수정·삭제 확인, 동일 모델 복수 소유 확인, 대표 스마트폰 지정. RAM/VRAM/저장 용량 구분, 기존 수동 사양 보존, 미검증/호환성 미확인 표시. 기기 변경 후 목록·업그레이드 상태 재조회.
+- 업그레이드: 서버의 current_device, needs_verification, upgrade_offer_eligible, should_show_popup에 따라 표시. 국내 공식 출시일 기준임을 안내하며 30일 유예/기기별 영구 숨김 연결. 일반 추천 링크는 연령 제한 없이 기존 준비 화면으로 이동; Gemini 실행/결과 UI는 미구현.
+- API: GET/PUT /api/profile; GET /api/owned-device-options; GET/POST /api/owned-devices; PUT/DELETE /api/owned-devices/:id; GET /api/upgrade-offer; PUT /api/upgrade-offer/state. 기존 세션/CSRF 사용, 서버 인가 유지. 세션 소멸 응답 시 로그인 이동.
+- 코드 생성: front/src/views/ProfileView.vue, front/src/views/DevicesView.vue, front/src/components/UpgradeNotice.vue, front/src/composables/useMemberApi.js. 수정: front/src/router/index.js, front/src/views/AuthView.vue(만료 안내), front/src/styles/global.css.
+- 실제 검증: 테스트 계정 가입 201·로그인 200, 프로필 저장/수정 200·새로고침 유지·다른 필드 보존, 버전 충돌 409 시 초안 보존, 검색 빈 결과 200, 수동 기기 2개 등록·수정·삭제·대표 변경, 정보 확인 필요 표시, 유예 30일/영구 숨김 PUT 200 및 GET 유지, CSRF 없는 PUT 403. 서버 세션을 로그아웃 204로 폐기한 뒤 열린 기기 화면 재조회 시 401·로그인 이동·만료 안내 확인(30분 시간 경과 시험과는 구분).
+- 실제 데이터 한계: samsung 검색 결과 0개. 카탈로그 연결 등록 및 출시 3년 미만/이상 배너는 모의 응답으로 검증했으며 실제 제품 통합 검증 완료로 간주하지 않는다. 실제 유예/숨김 API 저장 검증은 미식별 수동 시험 기기에 수행했고, 배너 버튼 클릭·숨김은 모의 검증이다.
+- 운영 빌드 성공, 기존 MDI/Vuetify 번들 크기 경고 유지. 개발 컴파일 성공. 390px 실제 에뮬레이션에서 프로필·기기·편집창 가로 넘침 없음; 768/1280px 기기 화면도 없음. 폼 레이블 확인, 스크린리더·키보드 전수 시험은 미실행. 기존 auth/member/upgrade 단위 12/12 통과. 전체 DB/AI 회귀는 미실행.
+- 테스트 전용 계정 1개 및 종속 프로필·보유 기기·로그인 세션 정리 완료(잔여 0). 익명 CSRF 세션은 기존 만료 정책 유지. 기존 사용자/제품 데이터 변경 없음. backend 51개 파일 작업 전후 해시 일치(.env/node_modules/.git 제외). .env 직접 접근 없음. Git 쓰기·Taste 실행·외부 검색·제품 데이터 생성 없음.
+- 최초 컴파일 태그 오류 수정 및 이전 개발 서버의 캐시 권한 오류 해결 후 재빌드 통과. 현재 개발 서버 유지. 임시 운영 빌드는 /private/tmp/final-project-stage3-production에 있음. 편집 종료.
+- 추가 확정 계획: D-028에 TechSpecs 미사용, 허용된 제조사/다나와 자료 정규화·검증·관리자 승인, Express 관리자 인가, 향후 시각적 UI 개선 기록. 관리자/수집기/승인 스키마/디자인 전면 개선은 미구현이며 기존 MVP 우선 로드맵 유지.
+- 다음: 허용된 실제 카탈로그 확보 후 연결 등록·3년 전후 안내 실제 통합 검증; 별도 단계에서 제품 비교 API 연동, 이후 AI 추천·이력 화면 진행. 관리자/데이터 운영은 별도 후속 설계.
+
+## 2026-11-10 21:26:30 KST — Antigravity 전환 인수인계 및 소규모 스마트폰 제품 데이터 구축 준비
+
+- 도구: Google Antigravity (Codex Desktop에서 전환).
+- 목적: Codex가 구현한 프론트엔드 1~3단계 및 최신 문서(D-027, D-028) 인수인계 확인, 조원 프로젝트의 스마트폰 데이터를 안전하게 정규화·검증·적재하기 위한 스키마/검증/절차/관리자 확장 구조 설계.
+- 생성·수정·삭제 파일: `docs/CURRENT_STATUS.md`, `docs/DEVELOPMENT_LOG.md` 갱신. 백엔드·프론트엔드 코드 및 DB 수정 없음.
+- 확인 및 설계 내용:
+  - 프론트엔드 1~3단계(`AuthView.vue`, `ProfileView.vue`, `DevicesView.vue`, `CompareView.vue`, `UpgradeNotice.vue`, `SpecComparison.vue`, `client.js`, `useMemberApi.js`) 및 백엔드(`001-initial.sql`, `models.js`, `smartphone-catalog.js`, `smartphones.js`, `member.js`, `upgrade-advisor.js`) 코드 정적 대조 완료.
+  - MySQL `smartphones`·`smartphone_variants`·`price_observations` 3개 테이블의 컬럼·타입·UNIQUE·FK·CHECK(`ck_smartphones_verified`, `ck_variants_verified`, `ck_prices_*`) 및 추천 후보 검색기(`matchesHardConditions`, `selectBestPrice`, `isWithinReleaseWindow`)의 검증 기준 정리.
+  - 조원 프로젝트 스마트폰 데이터의 호환성 점검 항목(단일 테이블→모델/옵션 1:N 분리, 국내 모델번호 `SM-...N`/`A....` 확인, 국내 공식 출시일 `released_on_kr` 확인, 단위 정규화, 출처 URL/시각 부여) 및 4단계 안전 적재·통합 테스트 계획 수립.
+  - 향후 관리자 페이지(D-028)에서 출처·검증·승인 상태를 관리하기 위한 단계별 구조 검토 완료.
+- 보안·제약 준수: `.env` 미접근, 비밀정보 미출력, DB 스키마 변경/데이터 삭제/외부 크롤링/무단 적재 없음, 프론트엔드 코드 수정 없음, Taste 실행 없음, Git add/commit/push 없음.
+- 다음 작업: 조원 프로젝트 데이터 파일 확인 및 정규화·검증(Dry-Run) 후 소규모 스마트폰 데이터 적재, 이어서 프론트엔드 카탈로그 선택·출시 3년 업그레이드 안내·스펙 비교 통합 검증 진행.
+
+## 2026-11-10 21:52:00 KST — 조원 프로젝트(`pc_final-main.zip`) 스마트폰 데이터 분석·정규화 및 오프라인 검증
+
+- 도구: Google Antigravity.
+- 목적: 첨부된 `pc_final-main.zip` 내 `backend/src/data/products.json`을 임시 공간에서 읽기 전용으로 분석하고, 현재 MySQL 스키마(`smartphones`, `smartphone_variants`, `price_observations`)와의 호환성·누락 사양·출처 검증 등급을 평가하여 정규화 JSON과 오프라인 검증 스크립트를 작성.
+- 생성 파일: `backend/data/normalized-smartphones.json`, `backend/scripts/validate-normalized-smartphones.js`, `backend/scripts/seed-verified-smartphones.js` (기존 백엔드 51개 파일·프론트엔드 파일·DB 스키마·로컬 DB 데이터 수정 없음).
+- 수정 파일: `docs/CURRENT_STATUS.md`, `docs/DEVELOPMENT_LOG.md`, `docs/TEST_PLAN.md` (`docs/DEVELOPMENT_RULES.md` 수정 없음).
+- 분석 및 구현 요약:
+  - `products.json` 전체 제품 50개(스마트폰 26, 태블릿 14, 스마트워치 10) 중 삼성·애플 스마트폰 26개 모델(옵션 39개) 전수 분석.
+  - `2026-11-10` KST 기준 출시 3년 이내 추천 후보군 21개 모델(검증 완료 11 + 보류 10)과 출시 3년 이상 경과 업그레이드 판정용 구형 모델 5개(`Galaxy S23 Ultra`, `iPhone 15 / 15 Plus / 15 Pro / 15 Pro Max`, 모두 검증 완료) 구분.
+  - 검증 완료(`verified_ready`, 16개 모델 / 29개 옵션, `verified: true`)와 보류(`hold_needs_review`, 2025년 출시 코호트 10개 모델 / 10개 옵션, `verified: false`) 분리.
+  - 백엔드 추천 후보 검색(`smartphone-catalog.js`의 `BRANDS = ['samsung', 'apple']`) 및 `routes/smartphones.js`와 100% 일치하도록 정규화 JSON의 `brand`를 소문자 `'apple'` / `'samsung'`으로 정렬.
+  - 원천 데이터에 없는 `wireless_charging`(26개 모델 전체 `null`), Apple 미공개 사양(`battery_mah` 13개 모델 `null`, `ram_gb` 20개 옵션 `null`), 현재 판매가 부재(`currentLowestPriceKrw: null` → `price_observations: []`, 출고가는 감사 메타데이터에만 보관) 원칙 준수.
+- 오프라인 및 Dry-Run 검증 결과:
+  - `node backend/scripts/validate-normalized-smartphones.js`: PASS (DB/네트워크 호출 0회).
+  - `node backend/scripts/seed-verified-smartphones.js` (Dry-Run): PASS (`smartphones` 신규 삽입 예상 16건·갱신 0건·충돌 0건, `smartphone_variants` 신규 삽입 예상 29건·갱신 0건·충돌 0건, `price_observations` 0건, 기존 테이블 변경 0건). 사용자 승인 대기.
+
+## 2026-11-10 22:17:30 KST — 스마트폰 16개 모델 한국 정식 출시일(`released_on_kr`) 정정 및 공식 사양 보완·Dry-Run 재검증
+
+- 도구: Google Antigravity.
+- 목적: 실제 MySQL 데이터 적재 전, 대한민국 사용자 기준 한국 정식 출시일(`released_on_kr`)로 전면 통일하고 국내 모델번호(`SM-...N` / `A....`) 기준 누락·기존 사양을 인터넷 공식 자료로 재검증하여 반영.
+- 수정 파일: `backend/data/normalized-smartphones.json`, `backend/scripts/validate-normalized-smartphones.js`, `docs/CURRENT_STATUS.md`, `docs/DEVELOPMENT_LOG.md`, `docs/TEST_PLAN.md` (`docs/DEVELOPMENT_RULES.md`, 기존 백엔드·프론트엔드 코드 및 실제 MySQL DB 데이터 수정 없음).
+- 검증 및 보완 내역:
+  - **한국 정식 출시일(`released_on_kr`) 정정**: `iPhone 15`(`A3090`), `iPhone 15 Plus`(`A3094`), `iPhone 15 Pro`(`A3102`), `iPhone 15 Pro Max`(`A3106`) 4종의 출시일을 글로벌 1차 출시일 `2023-09-22`에서 **한국 정식 출시일 `2023-10-13`**으로 보정. 나머지 12개 `verified_ready` 모델은 한국 정식 출시일과 일치 확인(`iPhone 16` 4종 `2024-09-20`, `Galaxy S24 FE` `2024-11-01`, `Galaxy Z Fold6 / Flip6` `2024-07-24`, `Galaxy A35 5G` `2024-06-21`, `Galaxy S24` 3종 `2024-01-31`, `Galaxy S23 Ultra` `2023-02-17`).
+  - **무선 충전(`wireless_charging`) 공식 사양 반영**: 제조사 한국 공식 기술 사양을 확인하여 `verified_ready` 16개 모델 중 15개 모델은 `true`, 무선 충전 미지원 모델인 `Galaxy A35 5G`(`SM-A356N`)는 `false`로 업데이트.
+  - **배터리(`battery_mah`)·RAM(`ram_gb`) 및 국내판 전용 사양 검증**: 삼성 8개 모델(14개 옵션)은 삼성전자 코리아 공식 스펙과 100% 일치 확인(`Galaxy S24 FE` 칩셋 표기는 `"Samsung Exynos 2400e (데카코어)"`로 코어 수 표기 통일). Apple 8개 모델(15개 옵션)은 Apple 코리아 공식 사양표 미공개 정책을 준수하여 DB 컬럼은 `null`로 유지하되, 규제기관·다나와 확인 참조 사양을 `audit_metadata.investigated_reference_specs`에 보존.
+  - **재검증 결과**: `node backend/scripts/validate-normalized-smartphones.js` `PASS` 및 `node backend/scripts/seed-verified-smartphones.js` `DRY_RUN_OK`(16개 모델·29개 변형 `to_insert`, 충돌 0건, DB 변경 0건).
+
+## 2026-11-10 23:03:00 KST — 검증된 스마트폰 16개 모델·29개 변형 실제 MySQL 적재(`--apply`), 멱등성 재검증 및 API 통합 테스트 완료
+
+- 도구: Google Antigravity.
+- 목적: 사용자 승인에 따라 최신 검증 완료 데이터(`backend/data/normalized-smartphones.json`)의 `verified_ready` 16개 모델·29개 변형을 실제 MySQL에 단일 트랜잭션으로 적재하고, 재실행 중복 방지(멱등성) 및 제품 검색·보유 기기 선택·출시 3년 경과 판정 API를 실제 DB에서 검증.
+- 수정 파일: `docs/CURRENT_STATUS.md`, `docs/DEVELOPMENT_LOG.md`, `docs/TEST_PLAN.md` (`docs/DEVELOPMENT_RULES.md`, 기존 백엔드·프론트엔드 코드 수정 없음).
+- 실행 및 검증 결과:
+  - 적재 직전 오프라인 검증(`validate-normalized-smartphones.js` `PASS`) 및 Dry-Run(`seed-verified-smartphones.js` `DRY_RUN_OK`, 충돌 0건) 통과.
+  - 실제 적재(`node backend/scripts/seed-verified-smartphones.js --apply`): `[APPLY_OK]` — `smartphones` **16건**, `smartphone_variants` **29건** 삽입 완료, `price_observations` **0건**(가짜 가격·출고가 미삽입), 기존 `users`/`profiles`/`owned_devices`/`recommendations` 변경 0건.
+  - 멱등성 재검증(`node backend/scripts/seed-verified-smartphones.js --apply` 2차 실행): `smartphones` `unchanged: 16`(`to_insert: 0`, `to_update: 0`, `conflicts: 0`), `smartphone_variants` `unchanged: 29`(`to_insert: 0`, `to_update: 0`, `conflicts: 0`)로 중복 생성 방지 확인.
+  - 실제 DB 연동 API 검증: `GET /api/smartphones`(추천 가능 20개 변형 / 전체 29개 변형), `GET /api/smartphones/:variantId`, `GET /api/owned-device-options?q=...`, `POST /api/owned-devices`, `GET /api/upgrade-offer`, `PUT /api/upgrade-offer/state` 모두 정상 작동 확인 후 테스트 임시 계정·세션 완전 정리(최종 DB 행 수: `smartphones: 16`, `smartphone_variants: 29`, 나머지 테이블 `0`).
+
+
+## 2026-11-10 23:16:23 KST — Codex 판매 가격 수집 조사·설계
+
+- 목적: 현재 smartphone 3테이블을 유지하는 실판매가 수집 방안 마련. 최신 16모델/29변형 적재 보고와 모델/DDL/가격 적격 함수 정적 대조; DB 직접 확인은 하지 않음.
+- 조사: GitHub 2개 코드·의존성·라이선스·커밋, 다나와 현행 약관·robots(호스트별), 네이버 쇼핑 API 종료, 제조사/판매처·관리자 수동 대안. 상품 수집/외부 코드 실행/가격 API 실호출 없음. 네이버 과거 레퍼런스보다 2026-07-31 종료 공지를 우선했다.
+- 생성: docs/PRICE_COLLECTION_PLAN.md. 수정: docs/ARCHITECTURE.md(가격 TTL 정확한 경계·수집 경계), docs/DECISIONS.md(D-029), docs/CURRENT_STATUS.md, docs/TEST_PLAN.md, docs/DEVELOPMENT_LOG.md. 기존 로그와 타 도구 변경 보존.
+- 결과: 관리자 검수 수동 입력 → 계약 피드 자동화 권고. 필드별 매핑·unknown 보류·승인 초안 분리·멱등성·갱신/오류·즉시 품절 차단 한계·구현 순서 명시. 모든 구현/자동화 설정은 제안 상태.
+- 검증: 문서/관련 소스 정적 확인만. 빌드·단위·DB/HTTP 통합 시험 미실행(문서 작업). 기존 front/backend 코드, DB 데이터·스키마, .env, Git 변경 없음. 패키지 설치/크롤러/Taste 실행 없음.
+- 다음: 공급처 이용 허가·실제 오퍼 근거를 확보한 뒤 소규모 수동 검증/승인/dry-run 적재기를 별도 구현.
+
+## 2026-11-11 04:18:28 KST — Codex: 스마트폰 우선 단계 및 조사 데이터 확장
+
+- 목적: 2024-01-01~2026-11-10 국내 일반 판매 삼성/Apple 조사와 출고가/판매가 분리. 사용량 중단 후 변경 파일·원본 해시·진행 현황을 확인하고 완료 조사를 반복하지 않고 검증/문서화를 이어감.
+- 생성: backend/data/smartphone-expansion-2026-11-10.json, smartphone-expansion-dry-run-report.json; backend/scripts/validate-smartphone-expansion.js, validate-smartphone-expansion.test.js, dry-run-smartphone-expansion.js.
+- 수정: PROJECT_OVERVIEW, ARCHITECTURE, DECISIONS, CURRENT_STATUS, PRICE_COLLECTION_PLAN, TEST_PLAN, DEVELOPMENT_LOG. 초기 계획은 이력으로 보존하고 D-030으로 Phase1→2→3 확정.
+- 결과: 52모델 조사기록·99용량/RAM구성·공식 출고가70값. 가격3건은 오래된 검색 요약이므로 검토용에 한정. 실판매 관측0. 모든 자료 review_only, 관리자/권리/정확한SKU 승인 미완료. 다른 카테고리/수집기/마이그레이션 미구현.
+- 검증: 원본 검사 PASS, 신규 검사 PASS, 14/14 테스트 PASS. DB 첫 연결 EPERM 후 권한 승인 재실행: READ ONLY 트랜잭션 SELECT와 ROLLBACK만 사용, 16모델/29변형/가격0, 보존 대상 누락0. 실제 DB 보고 시각은 보고서 checked_at 참조. 인증정보 출력 없음.
+- 한계: 전수성/일부 첫 판매일·식별자·상세사양·용량가격·색상SKU·가격 구매조건/권리 미확인은 CURRENT_STATUS와 JSON에 명시. 앱 전체/실제Gemini E2E는 실행하지 않음.
+- 다음: 미확인 근거 보완, 최소 DB 확장안/권리/적재 범위 승인 후 별도 작업. DB 및 기존 기능 코드 변경·패키지 설치·Git add/commit/push 없음.
+
+- 최종 변경 범위 확인: 작업 전 저장한 기존 front/backend 파일 해시와 대조해 변경0·삭제0. 기존 정규화 원본 해시 일치. DB 대조 도구 문법 검사 통과. Git diff 통계에는 작업 전 다른 단계 변경이 포함되므로 이번 작업 변경량으로 해석하지 않음.
+
+## 2026-11-11 04:35:45 KST — Codex: 스마트폰 최소 DB 확장 설계
+
+- 요청 범위: 기존 조사/원본/이전DB대조 보고와 실제 Sequelize·DDL·catalog/member/upgrade 코드만 읽어 최소 확장안 설계. 추가 인터넷검색/수집/DB접속 없음.
+- 생성: docs/SMARTPHONE_DB_EXTENSION_DESIGN.md. 수정: ARCHITECTURE, DECISIONS(D-031 제안), CURRENT_STATUS, TEST_PLAN, DEVELOPMENT_LOG. 기존 기획/원본JSON/기능코드/보안규칙 변경 없음.
+- 결과: 새테이블0, 기존2테이블 추가필드·RAM유일키 설계; 가격관측 유지. 기존16/29 ID/FK/검증값 보존, 폴더블·RAM/색상/출고가 구분. 신규41개 0/32/9 분류 및모델별 이유 기록.
+- 정적 발견: 보유기기 API에 미검증행 차단 필터 없음; 조사DB staging을 권고하지 않음. 조사null·칩셋 축약·영어색상 자동덮어쓰기 금지. 기존 verified는 새 상세필드/출고가 승인을 보장하지 않음.
+- 검증: 원본해시·분류합계·입력파일 보존 확인. DB/SQL/앱 회귀 미실행. 실행용SQL파일은 만들지 않았고 .env 접근·DB쓰기·Git add/commit/push 없음.
+- 다음: 제안 승인과 미확인 근거 보완 후 테스트DB 마이그레이션/입력기·API 계약 변경을 별도 작업으로 수행.
+
+## 2026-11-11 04:43:02 KST — Codex: 스키마 설계 검증·최신 대표 우선검증
+
+- 기존18대표모델 자료 우선사용, 부족한한국모델/상품표시·사양과MySQL공식문서만 추가조회. S26+충돌해소, Apple17Pro리디렉션은한국support로보강. 현재스토어가격을출고가로미채택.
+- 생성: backend/data/smartphone-priority-verification-2026-11-11.json, docs/SMARTPHONE_PRIORITY_VERIFICATION.md. 수정: SMARTPHONE_DB_EXTENSION_DESIGN, ARCHITECTURE, DECISIONS(D-032), CURRENT_STATUS, TEST_PLAN, DEVELOPMENT_LOG.
+- 기본방향승인/DB작업미승인 구분. 기존UNIQUE에는RAM이없다는점, 향후nullable RAM키의NULL중복, COALESCE키의NULL/known한계와동시입력잠금 보완. 기존29정적검사충돌0 및4논리사례확인.
+- 결과: 우선18모델 기본식별·판매일근거연결, 운영적재준비0. 전체신규41중추가검증33/보류8. 원본2종 해시보존; 기존코드/DB/프론트/.env/Git쓰기 없음. SQL/API/MySQL엔진검증 미실행.
+- 다음: 정확한SKU/권리/남은출고가근거와승인입력기 검토, 실제마이그레이션/적재는별도승인후진행.
+
+## 2026-11-11 04:50:14 KST — Codex: 검증 기준 분리와 기존 자료 재분류
+
+- 생성: docs/SMARTPHONE_VALIDATION_RECLASSIFICATION.md. 수정: SMARTPHONE_PRIORITY_VERIFICATION, SMARTPHONE_DB_EXTENSION_DESIGN, ARCHITECTURE, DECISIONS(D-033), CURRENT_STATUS, TEST_PLAN, DEVELOPMENT_LOG. 이전 이력 보존, JSON/기능코드 수정 없음.
+- 이유: 전체SKU·운영승인과 사실검증을 합쳐0개로 표시한 기준 보완. 모델/변형/출고가/판매가 독립 판정, 확인된 두 변형을 분리. 전체 신규모델 A완료10(우선9), B2, 우선 구성출고가35·정확구성연결2. 현행/확장 후보 모두2모델2변형이며 실제적재는0건.
+- 검증: 기존 JSON 집계·문서근거·실제DDL/API 정적 확인, 원본3개 해시 보존. 기존16/29는 과거 DB보고 기준 유지 대상이며 이번 직접 조회 없음. 후속 스키마/HTTP 테스트는 미실행.
+- 제한 준수: 추가검색·DB접속/변경·적재·.env접근·front/backend코드변경·Git쓰기 없음. 문서 외 파일수정 없음. 다음은 두 구성 승인 검수와 제한된 누락근거 보완, 실제 적용은 별도 허가 후.
+
+## 2026-11-11 09:27:27 KST — Codex: 미적용 SQL·오프라인 적재 계획·NULL/링크 설계
+
+- 사용자첨부재개요청에따라완료된재분류/조사재사용,기존seed/migrate/모델/API정적검토후남은준비진행.
+- 생성: backend/db/migration-drafts/002-smartphone-details.draft.sql,003-smartphone-ram-key.draft.sql; backend/data/smartphone-import-candidates-2026-11-11.json,smartphone-import-preparation-dry-run.json; backend/scripts/prepare-smartphone-upsert.js,prepare-smartphone-upsert.test.js; docs/SMARTPHONE_IMPORT_PREPARATION.md. 관련설계/우선검증/ARCHITECTURE/DECISIONS(D-034)/CURRENT_STATUS/TEST_PLAN/본로그추가.
+- 결과: 두명시적구성의준비파일,현행/확장오프라인계획2모델2변형·충돌0. 검증수치9/2/35/2유지,운영승인false.쓰기모드없음. SQL별도draft미적용,기존추천엔진/ORM/seed/API미변경.
+- 테스트24/24통과,원본보존/중복/NULL/가격/URL/쓰기인수거부및기존catalog/upgrade순수함수일부회귀. 실제DB스키마/ID/FK/HTTP시험은미실행.
+- 한계: liveDB중복·collation·동시입력·DDL잠금/부분실패·승인/권리/누락OS/색상검수및API/프론트연결은남음.기존16/29실데이터변경없음. 다음단계는명시적승인후실행부/테스트환경검증이며이번자동진행없음.
+
+## 52개 조사 기록 정규화 완료 — 2026-11-11T09:38:16.807107+09:00
+
+- Codex 편집 종료. 신규 backend/data/smartphone-normalized-review-52.json 및 smartphone-normalized-review-52-report.json 작성. 기존 원본4개 해시/내용 보존, SQL002/003 및 기존Upsert도구 재사용·미수정. DB/웹/.env 접근·프론트/추천엔진/Git 변경 없음.
+- 52개 = 기존등록 대응11 + 국내식별·출시 확인 신규모델후보33 + 식별/출시보류8. 기존16개 중 조사기간밖5개도 보존. 실제DB재조회가 아닌 기존검증원본 기준 대조다.33은 완전검증/운영승인/변형확보33을 뜻하지 않으며 OS등 verified CHECK와 공개조건은 별도다.
+- 확인된 개별 변형은2모델2개 유지. 99용량/RAM구성과색상목록은 증거로만 보존하며 곱집합/자동INSERT 금지. 전체52개에 일부 기본/선택 사양누락이 있으나 이것만으로모델전체를보류하지않음.
+- 현재스키마값과 확장후상세/공식URL값 분리,기존값원본 별도보존. 출고가70값(색상SKU70건아님),미확인29값NULL,정확변형연결2. 현재판매가/가격관측0. 공식URL도기존근거만복사하며역할검수필요표시;미확인사양/링크NULL,구매URL추정없음.
+- 오프라인검사:52개합계·모델번호중복0·검증변형중복0·NULL매핑·원본16/29보존통과. 기존도구Dry-Run은검증된2개구성만평가하여2모델2변형·충돌0·쓰기0. 전체33모델의실행계획은아님. 기존테스트24/24통과. 실제MySQL/DDL/ID/FK/HTTP검증미실행.
+- 다음:33모델후보의OS/공개검수와개별옵션근거보완,기존값대조차이승인 → 격리테스트DB/백업·마이그레이션호환·쓰기실행부/ORM/노출정책준비 → 실제적재별도승인. 현행보유기기API의미검증노출때문에후보전체운영DBstaging금지.
+
+## 색상별 다나와 참고 가격 정리 — 2026-11-11T10:32:27.206538+09:00
+
+- Codex 편집 종료. 사용자 제공 조사일2026-11-11의 가격8건+URL전용4건을 smartphone-color-price-review-2026-11-11.json 및 smartphone-color-price-review-report.json에 별도 보존. 추가검색/URL접속/DB/.env/기능코드/Git쓰기없음. 기존52모델/99구성 및 원본4파일 내용보존.
+- 모델·256GB대응12/12(가격8/8). 기존색상목록대응9/12, S25Ultra3색은기존색상목록미기록. 기존검증된정확구성과대응은S26+블랙256/12 한건이나판매처SKU는전부미확인. RAM은제공자료에없어snapshot null,카탈로그참고RAM은별도. DB변형ID전부null,새변형생성0.
+- 직접판매처URL/배송비/총가격/실제관측·갱신·만료시각/신품·재고·자급제·무조건구매 모두미확인. 조사일을관측시각으로대체하지않음. 추천적격0/price_observations추가0. 공식출고가와혼용없음.
+- 중복0/동일구성금액충돌0. 기존iPhone17블랙은같은금액1,251,300원이지만이전11번가와신규쿠팡이달라별도스냅샷보존;이전무료배송값상속금지. S25Ultra색상간338,560원(22.15%)차이는검토표시이며오류확정/삭제/색상간가격대체하지않음.
+- 오프라인10개검사항목통과(구조·집계·매칭·중복·null·URL역할·양수금액·기존자료차이·원본보존). 페이지사실/재고/최종가격/DB통합은미검증.
+- 향후: 쿠팡/G마켓/삼성닷컴/Apple공식몰우선비교,다나와는상품발견/가격비교. 신품·국내정식자급제·무조건구매·배송비포함만승인,중고/리퍼/전시/해외/가개통/약정/번호이동/카드·회원조건제외. 관측은출처·판매처·색상·시각별추가보존하고이상가격은검토분리.
+- 모델기본최저가는검증된구성중선택하고그용량/RAM/색상을함께표시;용량선택시그용량내,색상선택시그색상내최저가. 가격없으면현재판매가정보없음,판매종료는근거있을때만판정하고출고가유지. 후속세대출시만으로이전세대제외하지않되기존출시3년/가격24시간/필수조건은유지. 기간확장은별도결정사항.
+- 판매상태unknown/verified_available/verified_unavailable/discontinued_confirmed를구분하며12건모두unknown. 가격부재를판매종료로해석하지않음. 동일변형의승인출고가+적격현재가일때만배송비포함차액/할인율. 다나와링크는비교정보링크,직접구매링크는별도이며이번8건을구매가능가격으로공개하지않음. UI/API연동·수집자동화는미구현.
+
+## 44모델 병합·개발용 가격 DTO 준비 — 2026-11-11T10:39:56.988197+09:00
+
+- Codex 편집종료. 구현: backend/scripts/prepare-smartphone-model-merge.js(파일기반44모델병합계획), backend/services/smartphone-price-preview.js 및 .test.js(가격선택·DTO). 보고서 backend/data/smartphone-model-merge-plan.json. 기존원본해시유지,SQL002/003·Upsert도구·운영라우트·추천검증미수정.
+- 계획44=기존11보존+신규33,식별보류8제외. 기존16/29 및기간밖5보존. 신규OS등NULL허용하여 verified=false로표현가능하나공개승인은별도. 기존known값차이10모델은검토목록으로만기록하고덮어쓰지않음. null입력은기존값보존. 정확변형은기존계획2모델2변형,중복0. 실제DB ID/FK검사아님.
+- 가격모듈: 검증판매가→정확히서버매핑한색상참고가→검증출고가→null. 기본production, development와allowDevelopmentPrices=true를동시에명시해야대체가격허용. 환경/매핑옵션은서버전용이며요청body에서받으면안됨. price_source=verified_sale/reference_sale/official_launch/null. 기존24시간검증함수재사용. development여도DB변형ID·모델/변형verified없으면가격없음.
+- DTO: variant_id,price_source,pricing{amount_krw,shipping_krw,total_krw,budget_basis_krw,purchase_verified,development_only,source_url,danawa_product_url,checked_at,warning}. 참고가배송비미확인은shipping/total=null,예산실험값만상품금액사용하며실구매가격차이/배송비누락경고필수. 판매가가아닌출고가를현재가로표시하지않음. NULL사양을수정하거나Gemini후보를JSON에서만들지않음.
+- 기존참고JSON의ram_gb=null/영문색상을DB색상에자동매칭하지않는다. server references입력은실제variant_id,용량/RAM/색상이확정된별도매핑필요. 예: S26+블랙256/12의기존구성근거를실제DB ID에대조한후에만매핑. SKU미확인나머지는가격프리뷰에서도자동승격금지. source_url과danawa_product_url역할분리,출고가차액은실제유효판매가와승인출고가있을때만후속API에서계산.
+- API계약준비상태: candidatePriceDTO는실행가능순수함수이나Express응답/추천저장/이력/Gemini최종결과에는아직연결하지않았다. 기존최종추천검증은실제observation_id와현재가를재조회하므로개발참고가를기존price에끼워넣지않음. 후속연결시후보와결과/스냅샷모두price_source·development_only·warning을보존하고운영조회에개발이력혼입차단필요. 이번운영추천흐름변경없음.
+- 테스트: 새10+기존24=34/34통과. 가격우선순위·운영/기본차단·명시적옵트인·24시간/만료·색상/RAM불일치·DB미검증후보차단·NULL보존·잘못된불리언거절. 병합계획44/33/11/8검사통과. SQL은정적검토만이며MySQL문법실행/동시성/실제API통합시험아님. 안전한분리테스트DB의존재·격리근거가없어어떤DB에도접속하지않음.
+- 공개정책: OS NULL 모델은등록준비가능하지만기존verified CHECK상true불가. member/일부catalog는false도조회할수있으므로미승인/보류모델은계속파일에격리. 실제적재전공개필터/승인입력기/ORM·마이그레이션검증필수. 가격대체허용은개발전용새정책이며운영의실판매가원칙을완화하지않음.
+- 다음: 33모델/2변형의운영검수와SQL테스트환경승인, 공개필터·실제쓰기실행부준비, DB조회결과에대한색상가격매핑및개발전용추천최종검증/이력연결. .env/웹검색/DB접속·적재/프론트/Git/PC-FIT변경없음.
+
+## 공개 필터·테스트 DB 적재 실행부 완료 — 2026-11-11T14:25:08.174937+09:00
+
+Codex 재개 작업 완료. 직전 구현을 유지하고 MySQL 버전/InnoDB 안전검사, 실패 롤백 모의검증, 미공개 기기 신규등록 거부 테스트 및 문서 인수인계를 마무리했다. 운영/테스트 DB 실제 접속 없음. .env/웹/프론트/Git 작업 없음.
+
+### 구현 완료
+
+- services/product-publication.js: 스키마 이전 verified=true/is_test=false, 확장 후 모델·변형 각각 legacy/approved 상태까지 강제 확인. information_schema 조회 실패 시 허용으로 fallback하지 않으며 캐시하지 않는다.
+- routes/smartphones.js: 목록·상세·추천후보 조회 필터. 선택적 검색 옵션으로 공개 필터 우회 불가.
+- routes/member.js: 보유기기 선택 목록/신규등록/다른 변형으로 변경 시 필터. 기존 본인 소유 기기 조회·동일 변형 유지·삭제는 소유권 검사 유지, 소유기록 삭제 없음.
+- routes/upgrade-offers.js: 수동 기기 자동식별은 공개 모델만. 기존 소유 카탈로그 기기 조회·연령 판정 보존.
+- routes/recommendations.js: 직전 작업에서 최종 후보 재검증 SELECT의 공개 조건만 추가. Gemini 호출/프롬프트/가격/결과 로직 변경 없음. 이번 재개에서는 추가 수정하지 않음.
+- db/models.js: defineModels(db,DataTypes,{extended:true}) 선택적 확장 매핑. 기본 매핑은 기존 컬럼만 사용하므로 마이그레이션 이전 유지. 공식 URL/details/출고가/review 상태·metadata 매핑, 생성 ram_identity_gb는 쓰기 속성에서 제외. 상세 사양 링크는 metadata에 역할별 저장. SQL002/003 미수정·미실행.
+- scripts/prepare-smartphone-model-merge.js의 run은 오프라인 기본, executeTest(options)는 db/test-smartphone-import.js 호출. 동일 기능의 새 CLI 없음.
+
+### 테스트 DB 쓰기 실행부
+
+executeTest() 기본은 DB 접속 없이 계획 반환. apply:true와 정확한 DB명 confirmation 및 명시적 config가 있어야 연결 가능하다. DB명 final_project_test_[a-z0-9_]+, 로컬IP 127.0.0.1/::1, 전용계정 fp_import_test만 허용. root/운영DB/원격/추가 연결옵션 거부. .env/기존 connection 모듈 사용하지 않음. CLI --apply는 계속 거부한다.
+
+접속 후 해당 테스트 스키마 SELECT/INSERT 및 전역USAGE만 허용하는 계정 권한 검사, MySQL8.0.16+·InnoDB·확장컬럼 검사. 다른 DB/전역 권한·role·GRANT OPTION·UPDATE/DELETE 권한은 거부한다. DDL은 이 실행부에서 실행하지 않는다.
+
+기존 원본hash/후보 검증 재사용, 테스트DB에 기준16모델/29변형 사본이 없으면 중단. 신규33모델·근거확인2변형만 pending/verified=false로 삽입하며 8개 식별보류 제외. 기존11+조사기간밖5 및29변형은 전체행/ID/FK 비교로 보존. 기존행 UPDATE/DELETE 없음, 조사 null 덮어쓰기 없음. 재실행은 같은ID로 skip. RAM/색상 모호성은 보류하고 자동 병합하지 않는다. 신규 가격관측0, 기존 색상 가격JSON/개발 가격모듈 유지.
+
+한 Sequelize 관리 트랜잭션, 부모행잠금/GET_LOCK, 실패 예외 전파를 통한 rollback 구조. 실제 운영 공개 승인은 수행하지 않으며 모델 등록 가능과 공개 가능은 구분한다. OS NULL 행은 저장 가능하지만 기존 CHECK상 verified=true로 승격할 수 없다.
+
+### 오프라인 검증 완료 / 실제 DB 검증 대기
+
+총60테스트 통과·실패0(새 publication-import 14 + 기존46). 실행 대상: test/publication-import.test.js, services/smartphone-price-preview.test.js, scripts/prepare-smartphone-upsert.test.js, test/member.test.js, test/smartphone.test.js, test/upgrade.test.js.
+
+상태/스키마전후/조회실패 차단, 전용DB·계정·권한 제한, 선택적ORM, 실제 라우트핸들러+가짜DB 공개 조회·기존소유기기·미공개 신규등록 거부, 가짜저장소33모델2변형 삽입 및 재실행0/0, 원래ID/값 보존을 확인했다. 두번째INSERT 강제실패 시 모의 관리트랜잭션 rollback·commit없음 검증. 실제 MySQL rollback 성공으로 해석하지 않는다. 최초 검색어 누락 테스트 fixture는 수정 후 통과했다.
+
+기존 개발가격/색상 매칭/운영24시간 규칙·보유기기·업그레이드 순수함수 회귀 통과. JSON 원본 해시 보존. 실제 HTTP/MySQL/DDL/collation/동시성/FK/Gemini E2E는 미실행. 격리된 테스트DB 증거가 없어 어떤 DB에도 접속하지 않았다.
+
+다음: 격리 테스트DB·제한 계정·기준16/29 사본 및 백업 확보 → SQL002/003 호환/실제 롤백/동시성/ID·FK/API 검증 → 데이터 운영 검수 및 별도 운영 적재 승인. 신규 데이터를 공개 승인하는 관리자 흐름, 프론트·Gemini 개발가격 연결은 미구현이다. 운영 적용 대기.
+
+## 실제 격리 MySQL 검증 시도 — 2026-11-11T14:29:33.581092+09:00
+
+Codex 편집 종료. 실제 DB 검증 목표는 미달성이다. 기존 공개 필터/적재기/SQL/JSON을 재작성하지 않았다.
+
+- 확인: Homebrew MySQL 8.0.45 서버·클라이언트·mysqldump 실행 파일 존재. 기존 서버 설정/운영 인증정보/.env는 읽지 않았다. Docker/Podman/Colima는 PATH에서 발견되지 않았다.
+- 격리 준비: /tmp/fp-mysql-isolated.JbI1Lg 새 임시 경로에서 --no-defaults --initialize-insecure --datadir=해당경로/data --log-error=해당경로/init.log 로 별도 인스턴스 초기화를 시도했다. 이는 기존 서버 접속이 아니라 새 테스트 데이터 디렉터리 생성 시도다. 운영 데이터 디렉터리·포트·계정 재사용 없음.
+- 실패: 프로세스가 초기화 직후 signal 11, 종료코드2로 중단. 로그의 delegates_init/Aligned_atomic 부근 스택 확인. 별도 sysctl hw.cachelinesize 조회도 Operation not permitted. 권한 제한이 충돌의 원인인지는 미확정이다. 제한 우회·기존 서버 대체 접속·재설치 없음.
+- 테스트 서버/제한 계정/기준16·29 사본을 확보하지 못했으므로 SQL002/003 실행0, 신규33모델/2변형 실제 적재0, HTTP 테스트0. 실제 FK/NULL유일키/DDL반복/백업복구/실제롤백은 미실행. 운영DB 접속·변경0. 미완성 임시 디렉터리와 init.log는 진단용으로 보존했고 기존 데이터 삭제 없음.
+- 오프라인 회귀는60/60통과·실패0. 기존 모델 병합 Dry-Run도44=11기존+33신규,보류8,기준16/29·기간밖5 보존 계획 유지. 이것은 실제 DB 보존/적재 검증을 대체하지 않는다. 신규 모의 테스트는 추가하지 않았다.
+- 다음 준비: 사용자가 별도 터미널/승인된 격리 환경에서 MySQL8.0.16+ 인스턴스 초기화를 완료하고, 운영과 다른 데이터 디렉터리·포트·서버 식별을 확인해야 한다. 테스트 DB명은 final_project_test_<이름>, 적재 계정 fp_import_test는 해당스키마 SELECT/INSERT만 부여하고 운영 권한이 없어야 한다. DDL/기준사본 준비 계정과 적재 계정을 분리한다. 인증정보를 MD/대화/.env에 복사하거나 출력하지 않는다.
+- 준비 확인 후: 기존 검증 JSON에서16모델29변형 기준사본 생성 → 백업/복원 경로 검증 → SQL002/003/재실행·부분실패복구 검증 → 테스트 적재33/2 및재실행 → ID/FK/NULL/공개필터/보유기기/업그레이드 HTTP 검증. 기존 integration 테스트는 loadEnv/운영DB명을 사용하므로 그대로 실행하지 말고 격리DB 전용 하니스가 필요하다. 운영 적용은 이후에도 별도 승인이다.
+
+이번 변경은 CURRENT_STATUS, SMARTPHONE_IMPORT_PREPARATION, TEST_PLAN, DEVELOPMENT_LOG의 기록뿐이다. 코드/조사JSON/프론트/Gemini/Git 변경 없음.

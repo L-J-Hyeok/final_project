@@ -1,0 +1,17 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict');const {selectPrice}=require('./smartphone-price-preview');
+const candidate={variant_id:'1',phone_verified:true,variant_verified:true,storage_gb:256,ram_gb:12,color:'블랙'};
+const ref={variant_id:'1',mapping_verified:true,storage_gb:256,ram_gb:12,color:'블랙',amount_krw:100,shipping_krw:null,research_date:'2026-11-11'};
+const launch={variant_id:'1',mapping_verified:true,verified:true,amount_krw:200};
+const args={candidate,references:[ref],launch,environment:'development',allowDevelopmentPrices:true,now:new Date('2026-11-11T12:00:00Z')};
+const sale={id:'1',variant_id:'1',amount_krw:90,shipping_krw:10,observed_at:'2026-11-11T11:00:00Z',expires_at:'2026-11-12T11:00:00Z',in_stock:true,is_new:true,is_unlocked:true,unconditional:true,source_name:'fixture',seller_name:'fixture'};
+test('verified sale precedes references',()=>assert.equal(selectPrice({...args,observations:[sale]}).price_source,'verified_sale'));
+test('reference precedes launch with explicit warning and unknown shipping',()=>{const p=selectPrice(args);assert.equal(p.price_source,'reference_sale');assert.equal(p.total_krw,null);assert.ok(p.warning);assert.equal(p.purchase_verified,false)});
+test('launch fallback and no price',()=>{assert.equal(selectPrice({...args,references:[]}).price_source,'official_launch');assert.equal(selectPrice({...args,references:[],launch:null}).price_source,null)});
+test('production and default deny fallbacks',()=>{assert.equal(selectPrice({...args,environment:'production'}).price_source,null);assert.equal(selectPrice({candidate,launch}).price_source,null)});
+test('development requires explicit opt in',()=>assert.equal(selectPrice({...args,allowDevelopmentPrices:false}).price_source,null));
+test('24 hour and expired observations remain invalid in production',()=>{for(const o of [{...sale,expires_at:'2026-11-13T11:00:00Z'},{...sale,expires_at:'2026-11-11T12:00:00Z'}])assert.equal(selectPrice({...args,environment:'production',observations:[o]}).price_source,null)});
+test('color or RAM mismatch cannot use another option price',()=>{for(const change of [{color:'화이트'},{ram_gb:null},{variant_id:'2'},{mapping_verified:false}])assert.equal(selectPrice({...args,references:[{...ref,...change}],launch:null}).price_source,null)});
+test('non DB/unverified candidates rejected',()=>{for(const c of [{...candidate,variant_id:null},{...candidate,phone_verified:false},{...candidate,variant_verified:false}])assert.equal(selectPrice({...args,candidate:c}).price_source,null)});
+test('null specs and source objects not mutated',()=>{const input={...args,candidate:{...candidate,battery_mah:null}};const before=JSON.stringify(input);selectPrice(input);assert.equal(JSON.stringify(input),before)});
+test('invalid observations and string false cannot become verified',()=>assert.equal(selectPrice({...args,environment:'production',observations:[{...sale,is_new:'false'},{...sale,observed_at:'bad'}]}).price_source,null));

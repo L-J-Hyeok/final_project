@@ -1,0 +1,7 @@
+<template><section class="section-wrap compare-page"><span class="eyebrow">SIDE BY SIDE</span><div class="section-heading"><div><h1>제품 스펙 비교</h1><p>같은 기준으로 나란히 보고, 나에게 필요한 차이를 찾아보세요.</p></div><span class="example-label">스마트폰 MVP</span></div><div class="compare-notice" role="status"><v-icon icon="mdi-information-outline" size="20" /><p>비교 화면 준비 중입니다. 제품 검색·선택과 실제 데이터 연결은 다음 단계에서 제공해요.</p></div><div class="compare-toolbar"><span>스마트폰 <small>노트북 · 태블릿 · 스마트워치는 향후 지원</small></span><div role="group" aria-label="비교 열 수"><v-btn v-for="n in [2,3]" :key="n" :variant="count===n?'flat':'outlined'" :color="count===n?'primary':'secondary'" :aria-pressed="count===n" @click="count=n">{{ n }}개 비교</v-btn></div></div><SpecComparison :count="count" :fields="fields" /><div class="compare-notes"><p>• ‘값 다름’ 표시는 차이만 안내하며, 더 좋은 제품이라는 뜻이 아닙니다.</p><p>• 배터리 용량·RAM만으로 실사용 시간이나 성능의 우열을 판단하지 않습니다.</p><p>• 연결 후 확인 가능한 DB 사양과 유효한 가격만 표시합니다. 자료가 없거나 가격이 만료되면 ‘정보 없음’으로 안내합니다.</p><p>• 일반 스펙 비교는 AI를 호출하지 않습니다.</p></div></section></template>
+<script setup>
+import {ref} from 'vue'
+import SpecComparison from '../components/SpecComparison.vue'
+const count=ref(3)
+const fields=[{key:'screen_inches',label:'화면 크기',unit:'인치'},{key:'refresh_hz',label:'주사율',unit:'Hz'},{key:'ram_gb',label:'RAM',unit:'GB'},{key:'storage_gb',label:'저장 용량',unit:'GB'},{key:'battery_mah',label:'배터리 용량',unit:'mAh'},{key:'weight_g',label:'무게',unit:'g'},{key:'price_krw',label:'배송비 포함 가격',unit:'원'}]
+</script>

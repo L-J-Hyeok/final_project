@@ -1,0 +1,2 @@
+<template><div class="section-wrap"><StatusPanel :title="route.meta.title" :description="route.meta.description || '이 화면은 다음 단계에서 연결합니다. 지금은 데이터를 입력하거나 요청하지 않습니다.'" /><div class="placeholder-links"><router-link to="/profile">내 프로필</router-link><router-link to="/devices">보유 기기</router-link><router-link to="/history">추천 이력</router-link></div></div></template>
+<script setup>import { useRoute } from 'vue-router'; import StatusPanel from '../components/StatusPanel.vue'; const route=useRoute()</script>

@@ -1,4 +1,5 @@
 'use strict';
+const publication = require('../services/product-publication');
 
 const express = require('express');
 const { QueryTypes } = require('sequelize');
@@ -137,6 +138,7 @@ router.get('/smartphones', wrap(async (req, res) => {
   const { minDate, maxDate } = catalog.releaseWindowKst(now);
 
   const conditions = [
+    await publication.sql(db()),
     'v.id > :cursor',
     "s.brand IN ('samsung', 'apple')"
   ];
@@ -201,7 +203,7 @@ router.get('/smartphones/:variantId', wrap(async (req, res) => {
   const now = new Date();
 
   const rows = await db().query(
-    `${VARIANT_JOIN_SQL} WHERE v.id = :variantId`,
+    `${VARIANT_JOIN_SQL} WHERE v.id = :variantId AND ${await publication.sql(db())}`,
     { replacements: { variantId }, type: QueryTypes.SELECT }
   );
   if (!rows.length) throw catalog.fail('NOT_FOUND', 404);
@@ -320,6 +322,7 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
   // 2. Parameterized SELECT for hard spec conditions
   const h = input.hard;
   const where = [
+    await publication.sql(db()),
     's.verified = 1',
     'v.verified = 1',
     's.domestic_model_number IS NOT NULL',
@@ -499,5 +502,6 @@ router.post('/recommendation-candidates', wrap(async (req, res) => {
 router.searchCandidatesForUser = searchCandidatesForUser;
 router.fetchPricesByVariantIds = fetchPricesByVariantIds;
 router.VARIANT_JOIN_SQL = VARIANT_JOIN_SQL;
+router.publicationWhere = () => publication.sql(db());
 
 module.exports = router;

@@ -1,7 +1,7 @@
 'use strict';
 
 // 스키마 생성은 SQL 마이그레이션 전용. 여기서는 기존 8테이블에 매핑한다.
-module.exports = function defineModels(sequelize, D) {
+module.exports = function defineModels(sequelize, D, options = {}) {
   function col(type, nullable, extra) {
     return Object.assign({ type: type, allowNull: Boolean(nullable) }, extra || {});
   }
@@ -83,6 +83,22 @@ module.exports = function defineModels(sequelize, D) {
     result_json: col(D.JSON, true), validation_errors: col(D.JSON, true), model_name: text(120, true),
     prompt_version: text(40), as_of: date(), created_at: created()
   }, [{ fields: ['user_id', 'created_at', 'id'] }]);
+  // Opt in only after schema 002 has been independently confirmed. Never sync.
+  if (options.extended === true) {
+    Object.assign(smartphones.rawAttributes, {
+      official_product_url: text(2048, true), details_json: col(D.JSON, true),
+      review_status: col(D.STRING(16), false, { defaultValue: 'pending' }),
+      review_metadata_json: col(D.JSON, true)
+    });
+    Object.assign(variants.rawAttributes, {
+      launch_price_krw: positive(D.INTEGER.UNSIGNED, true),
+      launch_price_metadata_json: col(D.JSON, true),
+      review_status: col(D.STRING(16), false, { defaultValue: 'pending' }),
+      review_metadata_json: col(D.JSON, true)
+    });
+    // Generated ram_identity_gb intentionally omitted from writable ORM fields.
+    smartphones.refreshAttributes(); variants.refreshAttributes();
+  }
   // 이미 정의한 FK만 연결한다. 추가 컬럼이나 중간 테이블을 생성하지 않는다.
   sessions.belongsTo(users, { foreignKey: 'user_id', onDelete: 'CASCADE' });
   profiles.belongsTo(users, { foreignKey: 'user_id', onDelete: 'CASCADE' });

@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "mode": "offline_preparation_only",
+  "production_approved": false,
+  "execution_authorized": false,
+  "source_hashes": {
+    "normalized-smartphones.json": "1cd2b98dd107638d3732facde1090e956ae1d9f9f36be97a0c89092ef73424f5",
+    "smartphone-expansion-2026-11-10.json": "3c3bc45ce3a221828452243006866278deb283f2e8b35e63f99c41d03400faaf",
+    "smartphone-priority-verification-2026-11-11.json": "ba39f8d24af9073e446d96ccb7dd1602473effe9ff2122f601f73a2f1d51f2fd"
+  },
+  "models": [
+    {
+      "key": "s25-ultra",
+      "brand": "samsung",
+      "model_name": "Galaxy S25 Ultra",
+      "domestic_model_number": "SM-S938N",
+      "released_on_kr": "2025-02-07",
+      "os": "android",
+      "chipset": "Snapdragon 8 Elite for Galaxy",
+      "screen_inches": 6.9,
+      "refresh_hz": 120,
+      "battery_mah": 5000,
+      "weight_g": 218,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "fact_status": "verified",
+      "production_approved": false,
+      "source_refs": {
+        "s25price": {
+          "url": "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-사전-판매-시작",
+          "kind": "manufacturer_kr",
+          "checked_at": "2026-11-10T15:17:19.433697+00:00",
+          "access": "web_research",
+          "reuse_permission": "not_established_for_production"
+        },
+        "wireless-share": {
+          "url": "https://www.samsungsvc.co.kr/solution/37799",
+          "kind": "manufacturer_kr",
+          "checked_at": "2026-11-10T15:17:19.433697+00:00",
+          "access": "web_research",
+          "reuse_permission": "not_established_for_production"
+        },
+        "s25spec": {
+          "url": "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-공개",
+          "kind": "manufacturer_kr",
+          "checked_at": "2026-11-10T15:17:19.433697+00:00",
+          "access": "web_research",
+          "reuse_permission": "not_established_for_production"
+        },
+        "s25-id": {
+          "url": "https://www.samsungsvc.co.kr/solution/3187302",
+          "kind": "manufacturer_kr",
+          "checked_at": "2026-11-10T15:17:19.433697+00:00",
+          "access": "web_research",
+          "reuse_permission": "not_established_for_production"
+        }
+      },
+      "links": {
+        "product_info": null,
+        "specifications": null,
+        "manufacturer_purchase": null
+      },
+      "null_note": "Unknown stays null; reverse_wireless does not establish wireless_charging."
+    },
+    {
+      "key": "s26-plus",
+      "brand": "samsung",
+      "model_name": "Galaxy S26+",
+      "domestic_model_number": "SM-S947N",
+      "released_on_kr": "2026-03-11",
+      "os": "android",
+      "chipset": "Exynos 2600",
+      "screen_inches": 6.7,
+      "refresh_hz": 120,
+      "battery_mah": 4900,
+      "weight_g": 190,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "fact_status": "verified",
+      "production_approved": false,
+      "source_refs": {
+        "s26-id": {
+          "url": "https://www.samsungsvc.co.kr/solution/4613052",
+          "kind": "manufacturer_kr",
+          "checked_at": "2026-11-10T15:17:19.433697+00:00",
+          "access": "web_research",
+          "reuse_permission": "not_established_for_production"
+        },
+        "s26": {
+          "url": "https://news.samsung.com/kr/삼성전자-3세대-ai폰-갤럭시-s26-시리즈-공개",
+          "kind": "manufacturer_kr",
+          "checked_at": "2026-11-10T15:17:19.433697+00:00",
+          "access": "web_research",
+          "reuse_permission": "not_established_for_production"
+        },
+        "s26plus-sku": {
+          "url": "https://www.samsung.com/sec/smartphones/galaxy-s26/buy/?modelCode=SM-S947NZKAKOO",
+          "checked_at": "2026-11-10T19:39:53.289754+00:00",
+          "kind": "official_kr",
+          "reuse_permission": "not_established_for_production"
+        },
+        "s26plus-kr": {
+          "url": "https://www.samsung.com/sec/support/model/SM-S947NZVEKOD/",
+          "checked_at": "2026-11-10T19:39:53.289754+00:00",
+          "kind": "official_kr",
+          "reuse_permission": "not_established_for_production"
+        },
+        "wireless-share": {
+          "url": "https://www.samsungsvc.co.kr/solution/37799",
+          "kind": "manufacturer_kr",
+          "checked_at": "2026-11-10T15:17:19.433697+00:00",
+          "access": "web_research",
+          "reuse_permission": "not_established_for_production"
+        }
+      },
+      "links": {
+        "product_info": null,
+        "specifications": null,
+        "manufacturer_purchase": null
+      },
+      "null_note": "Unknown stays null; reverse_wireless does not establish wireless_charging."
+    }
+  ],
+  "variants": [
+    {
+      "model_key": "s25-ultra",
+      "storage_gb": 1024,
+      "ram_gb": 16,
+      "color": "티타늄 제트블랙",
+      "official_sku": null,
+      "fact_status": "verified",
+      "production_approved": false,
+      "color_evidence": {
+        "kind": "explicit_exclusive_configuration",
+        "original_color": "Titanium Jetblack",
+        "source_ids": [
+          "s25price"
+        ],
+        "notes": "Explicit color mapping reviewed in SMARTPHONE_PRIORITY_VERIFICATION.md; no Cartesian product."
+      },
+      "launch_price": {
+        "amount_krw": 2249500,
+        "currency": "KRW",
+        "fact_status": "verified",
+        "source_ids": [
+          "s25price"
+        ],
+        "production_approved": false
+      },
+      "current_price": null
+    },
+    {
+      "model_key": "s26-plus",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "블랙",
+      "official_sku": "SM-S947NZKAKOO",
+      "fact_status": "verified",
+      "production_approved": false,
+      "color_evidence": {
+        "kind": "exact_sku",
+        "original_color": "Black",
+        "source_ids": [
+          "s26plus-sku"
+        ],
+        "notes": "Explicit color mapping reviewed in SMARTPHONE_PRIORITY_VERIFICATION.md; no Cartesian product."
+      },
+      "launch_price": {
+        "amount_krw": 1452000,
+        "currency": "KRW",
+        "fact_status": "verified",
+        "source_ids": [
+          "s26"
+        ],
+        "production_approved": false
+      },
+      "current_price": null
+    }
+  ],
+  "price_observations": []
+}

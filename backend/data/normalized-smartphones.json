@@ -1,0 +1,1701 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-11-10T12:40:00.000Z",
+  "reference_date_kst": "2026-11-10",
+  "three_year_cutoff_date_kst": "2023-11-10",
+  "source_archive": "pc_final-main.zip (backend/src/data/products.json)",
+  "summary": {
+    "total_products_in_source_zip": 50,
+    "category_counts_in_source_zip": {
+      "smartphone": 26,
+      "tablet": 14,
+      "smartwatch": 10
+    },
+    "smartphone_models_total": 26,
+    "smartphone_models_by_brand": {
+      "apple": 13,
+      "samsung": 13
+    },
+    "smartphone_variants_total": 39,
+    "price_observations_total": 0,
+    "by_migration_tier": {
+      "verified_ready_models": 16,
+      "verified_ready_variants": 29,
+      "hold_needs_review_models": 10,
+      "hold_needs_review_variants": 10
+    },
+    "by_release_window_as_of_2026_11_10": {
+      "within_3_years_recommendation_candidates": 21,
+      "within_3_years_verified_ready": 11,
+      "within_3_years_hold_needs_review": 10,
+      "elapsed_3_years_upgrade_offer_targets": 5
+    },
+    "missing_specs_summary": {
+      "wireless_charging_null_count": 10,
+      "wireless_charging_verified_ready_null_count": 0,
+      "battery_mah_null_count": 13,
+      "ram_gb_null_variant_count": 20,
+      "current_lowest_price_null_variant_count": 39
+    }
+  },
+  "smartphones": [
+    {
+      "smartphone_key": "iphone-17",
+      "brand": "apple",
+      "model_name": "iPhone 17",
+      "domestic_model_number": "A3520",
+      "released_on_kr": "2025-09-19",
+      "os": "ios",
+      "chipset": "Apple A19 (6코어 CPU, 5코어 GPU)",
+      "screen_inches": 6.3,
+      "refresh_hz": 120,
+      "battery_mah": null,
+      "weight_g": 177,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-17/specs/",
+      "verified_at": null,
+      "verified": false,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "hold_needs_review",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "wireless_charging",
+          "battery_mah",
+          "ram_gb"
+        ],
+        "hold_reasons": [
+          "2025년 출시 모델 코호트(초기 30개 검증 마스터 목록 이후 추가분)로 국내 모델번호·공식 스펙 URL 교차 검수 필요"
+        ],
+        "teammate_product_id": "p0000000-0000-4000-8000-793945919367",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "iphone-17-air",
+      "brand": "apple",
+      "model_name": "iPhone Air",
+      "domestic_model_number": "A3517",
+      "released_on_kr": "2025-09-19",
+      "os": "ios",
+      "chipset": "Apple A19 Pro",
+      "screen_inches": 6.5,
+      "refresh_hz": 120,
+      "battery_mah": null,
+      "weight_g": 165,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-air/specs/",
+      "verified_at": null,
+      "verified": false,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "hold_needs_review",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "wireless_charging",
+          "battery_mah",
+          "ram_gb"
+        ],
+        "hold_reasons": [
+          "2025년 출시 모델 코호트(초기 30개 검증 마스터 목록 이후 추가분)로 국내 모델번호·공식 스펙 URL 교차 검수 필요"
+        ],
+        "teammate_product_id": "p0000000-0000-4000-8000-793945918117",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "iphone-17-pro",
+      "brand": "apple",
+      "model_name": "iPhone 17 Pro",
+      "domestic_model_number": "A3523",
+      "released_on_kr": "2025-09-19",
+      "os": "ios",
+      "chipset": "Apple A19 Pro (6코어 CPU, 6코어 GPU)",
+      "screen_inches": 6.3,
+      "refresh_hz": 120,
+      "battery_mah": null,
+      "weight_g": 206,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-17-pro/specs/",
+      "verified_at": null,
+      "verified": false,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "hold_needs_review",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "wireless_charging",
+          "battery_mah"
+        ],
+        "hold_reasons": [
+          "2025년 출시 모델 코호트(초기 30개 검증 마스터 목록 이후 추가분)로 국내 모델번호·공식 스펙 URL 교차 검수 필요",
+          "Apple 공식 스펙 페이지 미표기 항목인 RAM 용량(12GB)이 rawSpecs에 포함되어 있어 출처 재확인 필요"
+        ],
+        "teammate_product_id": "p0000000-0000-4000-8000-793945920119",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "iphone-17-pro-max",
+      "brand": "apple",
+      "model_name": "iPhone 17 Pro Max",
+      "domestic_model_number": "A3526",
+      "released_on_kr": "2025-09-19",
+      "os": "ios",
+      "chipset": "Apple A19 Pro (6코어 CPU, 6코어 GPU)",
+      "screen_inches": 6.9,
+      "refresh_hz": 120,
+      "battery_mah": null,
+      "weight_g": 233,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-17-pro/specs/",
+      "verified_at": null,
+      "verified": false,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "hold_needs_review",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "wireless_charging",
+          "battery_mah"
+        ],
+        "hold_reasons": [
+          "2025년 출시 모델 코호트(초기 30개 검증 마스터 목록 이후 추가분)로 국내 모델번호·공식 스펙 URL 교차 검수 필요",
+          "Apple 공식 스펙 페이지 미표기 항목인 RAM 용량(12GB)이 rawSpecs에 포함되어 있어 출처 재확인 필요"
+        ],
+        "teammate_product_id": "p0000000-0000-4000-8000-793945921891",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "iphone-16e",
+      "brand": "apple",
+      "model_name": "iPhone 16e",
+      "domestic_model_number": "A3409",
+      "released_on_kr": "2025-02-28",
+      "os": "ios",
+      "chipset": "Apple A18 (6코어 CPU, 4코어 GPU)",
+      "screen_inches": 6.1,
+      "refresh_hz": 60,
+      "battery_mah": null,
+      "weight_g": 167,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16e/specs/",
+      "verified_at": null,
+      "verified": false,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "hold_needs_review",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "wireless_charging",
+          "battery_mah",
+          "ram_gb"
+        ],
+        "hold_reasons": [
+          "2025년 출시 모델 코호트(초기 30개 검증 마스터 목록 이후 추가분)로 국내 모델번호·공식 스펙 URL 교차 검수 필요"
+        ],
+        "teammate_product_id": "p0000000-0000-4000-8000-793945925591",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "iphone-16-pro-max",
+      "brand": "apple",
+      "model_name": "iPhone 16 Pro Max",
+      "domestic_model_number": "A3296",
+      "released_on_kr": "2024-09-20",
+      "os": "ios",
+      "chipset": "Apple A18 Pro (6코어 CPU, 6코어 GPU, 16코어 Neural Engine)",
+      "screen_inches": 6.9,
+      "refresh_hz": 120,
+      "battery_mah": null,
+      "weight_g": 227,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16-pro/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "battery_mah",
+          "ram_gb"
+        ],
+        "investigated_reference_specs": {
+          "battery_mah": 4685,
+          "ram_gb": 8,
+          "note": "Apple 코리아 공식 사양서 미표기(공식 출처 정합성을 위해 DB 컬럼은 null 유지, 규제기관·다나와 기준 참고값)"
+        },
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000001",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "iphone-16-pro",
+      "brand": "apple",
+      "model_name": "iPhone 16 Pro",
+      "domestic_model_number": "A3293",
+      "released_on_kr": "2024-09-20",
+      "os": "ios",
+      "chipset": "Apple A18 Pro (6코어 CPU, 6코어 GPU, 16코어 Neural Engine)",
+      "screen_inches": 6.3,
+      "refresh_hz": 120,
+      "battery_mah": null,
+      "weight_g": 199,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16-pro/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "battery_mah",
+          "ram_gb"
+        ],
+        "investigated_reference_specs": {
+          "battery_mah": 3582,
+          "ram_gb": 8,
+          "note": "Apple 코리아 공식 사양서 미표기(공식 출처 정합성을 위해 DB 컬럼은 null 유지, 규제기관·다나와 기준 참고값)"
+        },
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000002",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "iphone-16-plus",
+      "brand": "apple",
+      "model_name": "iPhone 16 Plus",
+      "domestic_model_number": "A3290",
+      "released_on_kr": "2024-09-20",
+      "os": "ios",
+      "chipset": "Apple A18 (6코어 CPU, 5코어 GPU, 16코어 Neural Engine)",
+      "screen_inches": 6.7,
+      "refresh_hz": 60,
+      "battery_mah": null,
+      "weight_g": 199,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "battery_mah",
+          "ram_gb"
+        ],
+        "investigated_reference_specs": {
+          "battery_mah": 4674,
+          "ram_gb": 8,
+          "note": "Apple 코리아 공식 사양서 미표기(공식 출처 정합성을 위해 DB 컬럼은 null 유지, 규제기관·다나와 기준 참고값)"
+        },
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000003",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "iphone-16",
+      "brand": "apple",
+      "model_name": "iPhone 16",
+      "domestic_model_number": "A3287",
+      "released_on_kr": "2024-09-20",
+      "os": "ios",
+      "chipset": "Apple A18 (6코어 CPU, 5코어 GPU, 16코어 Neural Engine)",
+      "screen_inches": 6.1,
+      "refresh_hz": 60,
+      "battery_mah": null,
+      "weight_g": 170,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "battery_mah",
+          "ram_gb"
+        ],
+        "investigated_reference_specs": {
+          "battery_mah": 3561,
+          "ram_gb": 8,
+          "note": "Apple 코리아 공식 사양서 미표기(공식 출처 정합성을 위해 DB 컬럼은 null 유지, 규제기관·다나와 기준 참고값)"
+        },
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000004",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "iphone-15-plus",
+      "brand": "apple",
+      "model_name": "iPhone 15 Plus",
+      "domestic_model_number": "A3094",
+      "released_on_kr": "2023-10-13",
+      "os": "ios",
+      "chipset": "Apple A16 Bionic (6코어 CPU, 5코어 GPU)",
+      "screen_inches": 6.7,
+      "refresh_hz": 60,
+      "battery_mah": null,
+      "weight_g": 201,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://support.apple.com/ko-kr/111830",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "elapsed_3_years_upgrade_offer_target",
+        "within_3_years_as_of_2026_11_10": false,
+        "upgrade_offer_eligible_as_of_2026_11_10": true,
+        "missing_specs": [
+          "battery_mah",
+          "ram_gb"
+        ],
+        "investigated_reference_specs": {
+          "battery_mah": 4383,
+          "ram_gb": 6,
+          "note": "Apple 코리아 공식 사양서 미표기(공식 출처 정합성을 위해 DB 컬럼은 null 유지, 규제기관·다나와 기준 참고값)"
+        },
+        "release_date_correction": {
+          "previous_value": "2023-09-22",
+          "corrected_kr_official_release": "2023-10-13",
+          "reason": "글로벌 1차 출시일(2023-09-22)을 한국 정식 출시일(2023-10-13)로 보정"
+        },
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-793945918808",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "iphone-15-pro-max",
+      "brand": "apple",
+      "model_name": "iPhone 15 Pro Max",
+      "domestic_model_number": "A3106",
+      "released_on_kr": "2023-10-13",
+      "os": "ios",
+      "chipset": "Apple A17 Pro (6코어 CPU, 6코어 GPU, 16코어 Neural Engine)",
+      "screen_inches": 6.7,
+      "refresh_hz": 120,
+      "battery_mah": null,
+      "weight_g": 221,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://support.apple.com/ko-kr/111828",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "elapsed_3_years_upgrade_offer_target",
+        "within_3_years_as_of_2026_11_10": false,
+        "upgrade_offer_eligible_as_of_2026_11_10": true,
+        "missing_specs": [
+          "battery_mah",
+          "ram_gb"
+        ],
+        "investigated_reference_specs": {
+          "battery_mah": 4422,
+          "ram_gb": 8,
+          "note": "Apple 코리아 공식 사양서 미표기(공식 출처 정합성을 위해 DB 컬럼은 null 유지, 규제기관·다나와 기준 참고값)"
+        },
+        "release_date_correction": {
+          "previous_value": "2023-09-22",
+          "corrected_kr_official_release": "2023-10-13",
+          "reason": "글로벌 1차 출시일(2023-09-22)을 한국 정식 출시일(2023-10-13)로 보정"
+        },
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000005",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "iphone-15-pro",
+      "brand": "apple",
+      "model_name": "iPhone 15 Pro",
+      "domestic_model_number": "A3102",
+      "released_on_kr": "2023-10-13",
+      "os": "ios",
+      "chipset": "Apple A17 Pro (6코어 CPU, 6코어 GPU, 16코어 Neural Engine)",
+      "screen_inches": 6.1,
+      "refresh_hz": 120,
+      "battery_mah": null,
+      "weight_g": 187,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://support.apple.com/ko-kr/111829",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "elapsed_3_years_upgrade_offer_target",
+        "within_3_years_as_of_2026_11_10": false,
+        "upgrade_offer_eligible_as_of_2026_11_10": true,
+        "missing_specs": [
+          "battery_mah",
+          "ram_gb"
+        ],
+        "investigated_reference_specs": {
+          "battery_mah": 3274,
+          "ram_gb": 8,
+          "note": "Apple 코리아 공식 사양서 미표기(공식 출처 정합성을 위해 DB 컬럼은 null 유지, 규제기관·다나와 기준 참고값)"
+        },
+        "release_date_correction": {
+          "previous_value": "2023-09-22",
+          "corrected_kr_official_release": "2023-10-13",
+          "reason": "글로벌 1차 출시일(2023-09-22)을 한국 정식 출시일(2023-10-13)로 보정"
+        },
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000006",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "iphone-15",
+      "brand": "apple",
+      "model_name": "iPhone 15",
+      "domestic_model_number": "A3090",
+      "released_on_kr": "2023-10-13",
+      "os": "ios",
+      "chipset": "Apple A16 Bionic (6코어 CPU, 5코어 GPU, 16코어 Neural Engine)",
+      "screen_inches": 6.1,
+      "refresh_hz": 60,
+      "battery_mah": null,
+      "weight_g": 171,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://support.apple.com/ko-kr/111831",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "elapsed_3_years_upgrade_offer_target",
+        "within_3_years_as_of_2026_11_10": false,
+        "upgrade_offer_eligible_as_of_2026_11_10": true,
+        "missing_specs": [
+          "battery_mah",
+          "ram_gb"
+        ],
+        "investigated_reference_specs": {
+          "battery_mah": 3349,
+          "ram_gb": 6,
+          "note": "Apple 코리아 공식 사양서 미표기(공식 출처 정합성을 위해 DB 컬럼은 null 유지, 규제기관·다나와 기준 참고값)"
+        },
+        "release_date_correction": {
+          "previous_value": "2023-09-22",
+          "corrected_kr_official_release": "2023-10-13",
+          "reason": "글로벌 1차 출시일(2023-09-22)을 한국 정식 출시일(2023-10-13)로 보정"
+        },
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000007",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-z-flip7",
+      "brand": "samsung",
+      "model_name": "Galaxy Z Flip7",
+      "domestic_model_number": "SM-F766N",
+      "released_on_kr": "2025-07-25",
+      "os": "android",
+      "chipset": "Exynos 2500",
+      "screen_inches": 6.9,
+      "refresh_hz": 120,
+      "battery_mah": 4300,
+      "weight_g": 188,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-flip7/",
+      "verified_at": null,
+      "verified": false,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "hold_needs_review",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "wireless_charging"
+        ],
+        "hold_reasons": [
+          "2025년 출시 모델 코호트(초기 30개 검증 마스터 목록 이후 추가분)로 국내 모델번호·공식 스펙 URL 교차 검수 필요"
+        ],
+        "teammate_product_id": "p0000000-0000-4000-8000-793945924405",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-z-fold7",
+      "brand": "samsung",
+      "model_name": "Galaxy Z Fold7",
+      "domestic_model_number": "SM-F966N",
+      "released_on_kr": "2025-07-25",
+      "os": "android",
+      "chipset": "Snapdragon 8 Elite for Galaxy",
+      "screen_inches": 8,
+      "refresh_hz": 120,
+      "battery_mah": 4400,
+      "weight_g": 215,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-fold7/",
+      "verified_at": null,
+      "verified": false,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "hold_needs_review",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "wireless_charging"
+        ],
+        "hold_reasons": [
+          "2025년 출시 모델 코호트(초기 30개 검증 마스터 목록 이후 추가분)로 국내 모델번호·공식 스펙 URL 교차 검수 필요"
+        ],
+        "teammate_product_id": "p0000000-0000-4000-8000-793945925382",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s25",
+      "brand": "samsung",
+      "model_name": "Galaxy S25",
+      "domestic_model_number": "SM-S931N",
+      "released_on_kr": "2025-02-07",
+      "os": "android",
+      "chipset": "Snapdragon 8 Elite for Galaxy",
+      "screen_inches": 6.2,
+      "refresh_hz": 120,
+      "battery_mah": 4000,
+      "weight_g": 162,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s25/specs/",
+      "verified_at": null,
+      "verified": false,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "hold_needs_review",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "wireless_charging"
+        ],
+        "hold_reasons": [
+          "2025년 출시 모델 코호트(초기 30개 검증 마스터 목록 이후 추가분)로 국내 모델번호·공식 스펙 URL 교차 검수 필요"
+        ],
+        "teammate_product_id": "p0000000-0000-4000-8000-793945923965",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s25-plus",
+      "brand": "samsung",
+      "model_name": "Galaxy S25+",
+      "domestic_model_number": "SM-S936N",
+      "released_on_kr": "2025-02-07",
+      "os": "android",
+      "chipset": "Snapdragon 8 Elite for Galaxy",
+      "screen_inches": 6.7,
+      "refresh_hz": 120,
+      "battery_mah": 4900,
+      "weight_g": 190,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s25/specs/",
+      "verified_at": null,
+      "verified": false,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "hold_needs_review",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "wireless_charging"
+        ],
+        "hold_reasons": [
+          "2025년 출시 모델 코호트(초기 30개 검증 마스터 목록 이후 추가분)로 국내 모델번호·공식 스펙 URL 교차 검수 필요"
+        ],
+        "teammate_product_id": "p0000000-0000-4000-8000-793945925774",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s25-ultra",
+      "brand": "samsung",
+      "model_name": "Galaxy S25 Ultra",
+      "domestic_model_number": "SM-S938N",
+      "released_on_kr": "2025-02-07",
+      "os": "android",
+      "chipset": "Snapdragon 8 Elite for Galaxy",
+      "screen_inches": 6.9,
+      "refresh_hz": 120,
+      "battery_mah": 5000,
+      "weight_g": 218,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s25-ultra/specs/",
+      "verified_at": null,
+      "verified": false,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "hold_needs_review",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [
+          "wireless_charging"
+        ],
+        "hold_reasons": [
+          "2025년 출시 모델 코호트(초기 30개 검증 마스터 목록 이후 추가분)로 국내 모델번호·공식 스펙 URL 교차 검수 필요"
+        ],
+        "teammate_product_id": "p0000000-0000-4000-8000-793945925018",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s24-fe",
+      "brand": "samsung",
+      "model_name": "Galaxy S24 FE",
+      "domestic_model_number": "SM-S721N",
+      "released_on_kr": "2024-11-01",
+      "os": "android",
+      "chipset": "Samsung Exynos 2400e (데카코어)",
+      "screen_inches": 6.7,
+      "refresh_hz": 120,
+      "battery_mah": 4700,
+      "weight_g": 213,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s24-fe/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [],
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-793945925669",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-z-fold6",
+      "brand": "samsung",
+      "model_name": "Galaxy Z Fold6",
+      "domestic_model_number": "SM-F956N",
+      "released_on_kr": "2024-07-24",
+      "os": "android",
+      "chipset": "Snapdragon 8 Gen 3 for Galaxy (옥타코어)",
+      "screen_inches": 7.6,
+      "refresh_hz": 120,
+      "battery_mah": 4400,
+      "weight_g": 239,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-fold6/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [],
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000011",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-z-flip6",
+      "brand": "samsung",
+      "model_name": "Galaxy Z Flip6",
+      "domestic_model_number": "SM-F741N",
+      "released_on_kr": "2024-07-24",
+      "os": "android",
+      "chipset": "Snapdragon 8 Gen 3 for Galaxy (옥타코어)",
+      "screen_inches": 6.7,
+      "refresh_hz": 120,
+      "battery_mah": 4000,
+      "weight_g": 187,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-flip6/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [],
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000012",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-a35-5g",
+      "brand": "samsung",
+      "model_name": "Galaxy A35 5G",
+      "domestic_model_number": "SM-A356N",
+      "released_on_kr": "2024-06-21",
+      "os": "android",
+      "chipset": "Samsung Exynos 1380 (옥타코어)",
+      "screen_inches": 6.6,
+      "refresh_hz": 120,
+      "battery_mah": 5000,
+      "weight_g": 209,
+      "supports_5g": true,
+      "wireless_charging": false,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a35-5g-a356/SM-A356NLBKKOO/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [],
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000014",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s24-ultra",
+      "brand": "samsung",
+      "model_name": "Galaxy S24 Ultra",
+      "domestic_model_number": "SM-S928N",
+      "released_on_kr": "2024-01-31",
+      "os": "android",
+      "chipset": "Snapdragon 8 Gen 3 for Galaxy (옥타코어)",
+      "screen_inches": 6.8,
+      "refresh_hz": 120,
+      "battery_mah": 5000,
+      "weight_g": 232,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s24-ultra/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [],
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000008",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s24-plus",
+      "brand": "samsung",
+      "model_name": "Galaxy S24+",
+      "domestic_model_number": "SM-S926N",
+      "released_on_kr": "2024-01-31",
+      "os": "android",
+      "chipset": "Samsung Exynos 2400 (데카코어)",
+      "screen_inches": 6.7,
+      "refresh_hz": 120,
+      "battery_mah": 4900,
+      "weight_g": 196,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s24/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [],
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000009",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s24",
+      "brand": "samsung",
+      "model_name": "Galaxy S24",
+      "domestic_model_number": "SM-S921N",
+      "released_on_kr": "2024-01-31",
+      "os": "android",
+      "chipset": "Samsung Exynos 2400 (데카코어)",
+      "screen_inches": 6.2,
+      "refresh_hz": 120,
+      "battery_mah": 4000,
+      "weight_g": 167,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s24/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "within_3_years_recommendation_candidate",
+        "within_3_years_as_of_2026_11_10": true,
+        "upgrade_offer_eligible_as_of_2026_11_10": false,
+        "missing_specs": [],
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000010",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s23-ultra",
+      "brand": "samsung",
+      "model_name": "Galaxy S23 Ultra",
+      "domestic_model_number": "SM-S918N",
+      "released_on_kr": "2023-02-17",
+      "os": "android",
+      "chipset": "Snapdragon 8 Gen 2 for Galaxy (옥타코어)",
+      "screen_inches": 6.8,
+      "refresh_hz": 120,
+      "battery_mah": 5000,
+      "weight_g": 233,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s23-ultra/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "is_test": false,
+      "audit_metadata": {
+        "migration_tier": "verified_ready",
+        "age_group_as_of_2026_11_10": "elapsed_3_years_upgrade_offer_target",
+        "within_3_years_as_of_2026_11_10": false,
+        "upgrade_offer_eligible_as_of_2026_11_10": true,
+        "missing_specs": [],
+        "hold_reasons": [],
+        "teammate_product_id": "p0000000-0000-4000-8000-000000000013",
+        "teammate_verified_at_raw": "2026-11-06"
+      }
+    }
+  ],
+  "smartphone_variants": [
+    {
+      "smartphone_key": "iphone-17",
+      "domestic_model_number": "A3520",
+      "storage_gb": 256,
+      "ram_gb": null,
+      "color": "블랙",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-17/specs/",
+      "verified_at": null,
+      "verified": false,
+      "audit_metadata": {
+        "teammate_variant_id": "v-iphone-17-default",
+        "teammate_sku_code": "APPLE-A3520-DEFAULT",
+        "teammate_variant_model_number": "A3520",
+        "reference_launch_price_krw": 1290000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-17-air",
+      "domestic_model_number": "A3517",
+      "storage_gb": 256,
+      "ram_gb": null,
+      "color": "스카이 블루",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-air/specs/",
+      "verified_at": null,
+      "verified": false,
+      "audit_metadata": {
+        "teammate_variant_id": "v-iphone-17-air-default",
+        "teammate_sku_code": "APPLE-A3517-DEFAULT",
+        "teammate_variant_model_number": "A3517",
+        "reference_launch_price_krw": 1590000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-17-pro",
+      "domestic_model_number": "A3523",
+      "storage_gb": 256,
+      "ram_gb": null,
+      "color": "실버 알루미늄",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-17-pro/specs/",
+      "verified_at": null,
+      "verified": false,
+      "audit_metadata": {
+        "teammate_variant_id": "v-iphone-17-pro-default",
+        "teammate_sku_code": "APPLE-A3523-DEFAULT",
+        "teammate_variant_model_number": "A3523",
+        "reference_launch_price_krw": 1790000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": 12
+      }
+    },
+    {
+      "smartphone_key": "iphone-17-pro-max",
+      "domestic_model_number": "A3526",
+      "storage_gb": 256,
+      "ram_gb": null,
+      "color": "실버 알루미늄",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-17-pro/specs/",
+      "verified_at": null,
+      "verified": false,
+      "audit_metadata": {
+        "teammate_variant_id": "v-iphone-17-pro-max-default",
+        "teammate_sku_code": "APPLE-A3526-DEFAULT",
+        "teammate_variant_model_number": "A3526",
+        "reference_launch_price_krw": 1990000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": 12
+      }
+    },
+    {
+      "smartphone_key": "iphone-16e",
+      "domestic_model_number": "A3409",
+      "storage_gb": 128,
+      "ram_gb": null,
+      "color": "블랙",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16e/specs/",
+      "verified_at": null,
+      "verified": false,
+      "audit_metadata": {
+        "teammate_variant_id": "v-iphone-16e-default",
+        "teammate_sku_code": "APPLE-A3409-DEFAULT",
+        "teammate_variant_model_number": "A3409",
+        "reference_launch_price_krw": 990000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-16-pro-max",
+      "domestic_model_number": "A3296",
+      "storage_gb": 256,
+      "ram_gb": null,
+      "color": "데저트 티타늄",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16-pro/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip16pm-256",
+        "teammate_sku_code": "AP-IP16PM-256-5G",
+        "teammate_variant_model_number": "A3296",
+        "reference_launch_price_krw": 1900000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-16-pro-max",
+      "domestic_model_number": "A3296",
+      "storage_gb": 512,
+      "ram_gb": null,
+      "color": "데저트 티타늄",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16-pro/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip16pm-512",
+        "teammate_sku_code": "AP-IP16PM-512-5G",
+        "teammate_variant_model_number": "A3296",
+        "reference_launch_price_krw": 2200000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-16-pro",
+      "domestic_model_number": "A3293",
+      "storage_gb": 128,
+      "ram_gb": null,
+      "color": "내추럴 티타늄",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16-pro/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip16p-128",
+        "teammate_sku_code": "AP-IP16P-128-5G",
+        "teammate_variant_model_number": "A3293",
+        "reference_launch_price_krw": 1550000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-16-pro",
+      "domestic_model_number": "A3293",
+      "storage_gb": 256,
+      "ram_gb": null,
+      "color": "내추럴 티타늄",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16-pro/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip16p-256",
+        "teammate_sku_code": "AP-IP16P-256-5G",
+        "teammate_variant_model_number": "A3293",
+        "reference_launch_price_krw": 1700000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-16-plus",
+      "domestic_model_number": "A3290",
+      "storage_gb": 128,
+      "ram_gb": null,
+      "color": "울트라마린",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip16pl-128",
+        "teammate_sku_code": "AP-IP16PL-128-5G",
+        "teammate_variant_model_number": "A3290",
+        "reference_launch_price_krw": 1350000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-16-plus",
+      "domestic_model_number": "A3290",
+      "storage_gb": 256,
+      "ram_gb": null,
+      "color": "울트라마린",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip16pl-256",
+        "teammate_sku_code": "AP-IP16PL-256-5G",
+        "teammate_variant_model_number": "A3290",
+        "reference_launch_price_krw": 1500000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-16",
+      "domestic_model_number": "A3287",
+      "storage_gb": 128,
+      "ram_gb": null,
+      "color": "울트라마린",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip16-128",
+        "teammate_sku_code": "AP-IP16-128-5G",
+        "teammate_variant_model_number": "A3287",
+        "reference_launch_price_krw": 1250000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-16",
+      "domestic_model_number": "A3287",
+      "storage_gb": 256,
+      "ram_gb": null,
+      "color": "울트라마린",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/iphone-16/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip16-256",
+        "teammate_sku_code": "AP-IP16-256-5G",
+        "teammate_variant_model_number": "A3287",
+        "reference_launch_price_krw": 1400000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-15-plus",
+      "domestic_model_number": "A3094",
+      "storage_gb": 128,
+      "ram_gb": null,
+      "color": "블랙",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://support.apple.com/ko-kr/111830",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-iphone-15-plus-default",
+        "teammate_sku_code": "APPLE-A3094-DEFAULT",
+        "teammate_variant_model_number": "A3094",
+        "reference_launch_price_krw": 1350000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-15-pro-max",
+      "domestic_model_number": "A3106",
+      "storage_gb": 256,
+      "ram_gb": null,
+      "color": "내추럴 티타늄",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://support.apple.com/ko-kr/111828",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip15pm-256",
+        "teammate_sku_code": "AP-IP15PM-256-5G",
+        "teammate_variant_model_number": "A3106",
+        "reference_launch_price_krw": 1900000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-15-pro-max",
+      "domestic_model_number": "A3106",
+      "storage_gb": 512,
+      "ram_gb": null,
+      "color": "내추럴 티타늄",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://support.apple.com/ko-kr/111828",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip15pm-512",
+        "teammate_sku_code": "AP-IP15PM-512-5G",
+        "teammate_variant_model_number": "A3106",
+        "reference_launch_price_krw": 2200000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-15-pro",
+      "domestic_model_number": "A3102",
+      "storage_gb": 128,
+      "ram_gb": null,
+      "color": "블루 티타늄",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://support.apple.com/ko-kr/111829",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip15p-128",
+        "teammate_sku_code": "AP-IP15P-128-5G",
+        "teammate_variant_model_number": "A3102",
+        "reference_launch_price_krw": 1550000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-15-pro",
+      "domestic_model_number": "A3102",
+      "storage_gb": 256,
+      "ram_gb": null,
+      "color": "블루 티타늄",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://support.apple.com/ko-kr/111829",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip15p-256",
+        "teammate_sku_code": "AP-IP15P-256-5G",
+        "teammate_variant_model_number": "A3102",
+        "reference_launch_price_krw": 1700000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-15",
+      "domestic_model_number": "A3090",
+      "storage_gb": 128,
+      "ram_gb": null,
+      "color": "핑크",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://support.apple.com/ko-kr/111831",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip15-128",
+        "teammate_sku_code": "AP-IP15-128-5G",
+        "teammate_variant_model_number": "A3090",
+        "reference_launch_price_krw": 1250000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "iphone-15",
+      "domestic_model_number": "A3090",
+      "storage_gb": 256,
+      "ram_gb": null,
+      "color": "핑크",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://support.apple.com/ko-kr/111831",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-ip15-256",
+        "teammate_sku_code": "AP-IP15-256-5G",
+        "teammate_variant_model_number": "A3090",
+        "reference_launch_price_krw": 1400000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-z-flip7",
+      "domestic_model_number": "SM-F766N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "블루 섀도우",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-flip7/",
+      "verified_at": null,
+      "verified": false,
+      "audit_metadata": {
+        "teammate_variant_id": "v-galaxy-z-flip7-default",
+        "teammate_sku_code": "SAMSUNG-SM-F766N-DEFAULT",
+        "teammate_variant_model_number": "SM-F766N",
+        "reference_launch_price_krw": 1485000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-z-fold7",
+      "domestic_model_number": "SM-F966N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "제트 블랙",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-fold7/",
+      "verified_at": null,
+      "verified": false,
+      "audit_metadata": {
+        "teammate_variant_id": "v-galaxy-z-fold7-default",
+        "teammate_sku_code": "SAMSUNG-SM-F966N-DEFAULT",
+        "teammate_variant_model_number": "SM-F966N",
+        "reference_launch_price_krw": 2379300,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s25",
+      "domestic_model_number": "SM-S931N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "네이비",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s25/specs/",
+      "verified_at": null,
+      "verified": false,
+      "audit_metadata": {
+        "teammate_variant_id": "v-galaxy-s25-default",
+        "teammate_sku_code": "SAMSUNG-SM-S931N-DEFAULT",
+        "teammate_variant_model_number": "SM-S931N",
+        "reference_launch_price_krw": 1155000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s25-plus",
+      "domestic_model_number": "SM-S936N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "아이스블루",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s25/specs/",
+      "verified_at": null,
+      "verified": false,
+      "audit_metadata": {
+        "teammate_variant_id": "v-galaxy-s25-plus-default",
+        "teammate_sku_code": "SAMSUNG-SM-S936N-DEFAULT",
+        "teammate_variant_model_number": "SM-S936N",
+        "reference_launch_price_krw": 1353000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s25-ultra",
+      "domestic_model_number": "SM-S938N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "티타늄 실버블루",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s25-ultra/specs/",
+      "verified_at": null,
+      "verified": false,
+      "audit_metadata": {
+        "teammate_variant_id": "v-galaxy-s25-ultra-default",
+        "teammate_sku_code": "SAMSUNG-SM-S938N-DEFAULT",
+        "teammate_variant_model_number": "SM-S938N",
+        "reference_launch_price_krw": 1698400,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s24-fe",
+      "domestic_model_number": "SM-S721N",
+      "storage_gb": 256,
+      "ram_gb": 8,
+      "color": "그라파이트",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s24-fe/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-galaxy-s24-fe-default",
+        "teammate_sku_code": "SAMSUNG-SM-S721N-DEFAULT",
+        "teammate_variant_model_number": "SM-S721N",
+        "reference_launch_price_krw": 946000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-z-fold6",
+      "domestic_model_number": "SM-F956N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "실버 쉐도우",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-fold6/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-zf6-256",
+        "teammate_sku_code": "SM-F956N-256-5G",
+        "teammate_variant_model_number": "SM-F956N",
+        "reference_launch_price_krw": 2229700,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-z-fold6",
+      "domestic_model_number": "SM-F956N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "네이비",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-fold6/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-zf6-512",
+        "teammate_sku_code": "SM-F956N-512-5G",
+        "teammate_variant_model_number": "SM-F956N",
+        "reference_launch_price_krw": 2388100,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-z-flip6",
+      "domestic_model_number": "SM-F741N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "블루",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-flip6/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-zfl6-256",
+        "teammate_sku_code": "SM-F741N-256-5G",
+        "teammate_variant_model_number": "SM-F741N",
+        "reference_launch_price_krw": 1485000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-z-flip6",
+      "domestic_model_number": "SM-F741N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "민트",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-flip6/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-zfl6-512",
+        "teammate_sku_code": "SM-F741N-512-5G",
+        "teammate_variant_model_number": "SM-F741N",
+        "reference_launch_price_krw": 1643400,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-a35-5g",
+      "domestic_model_number": "SM-A356N",
+      "storage_gb": 128,
+      "ram_gb": 6,
+      "color": "어썸 아이스블루",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a35-5g-a356/SM-A356NLBKKOO/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-a35-128",
+        "teammate_sku_code": "SM-A356N-128-5G",
+        "teammate_variant_model_number": "SM-A356N",
+        "reference_launch_price_krw": 499400,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s24-ultra",
+      "domestic_model_number": "SM-S928N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "티타늄 그레이",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s24-ultra/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-s24u-256",
+        "teammate_sku_code": "SM-S928N-256-5G",
+        "teammate_variant_model_number": "SM-S928N",
+        "reference_launch_price_krw": 1698400,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s24-ultra",
+      "domestic_model_number": "SM-S928N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "티타늄 블랙",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s24-ultra/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-s24u-512",
+        "teammate_sku_code": "SM-S928N-512-5G",
+        "teammate_variant_model_number": "SM-S928N",
+        "reference_launch_price_krw": 1841400,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s24-plus",
+      "domestic_model_number": "SM-S926N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "코발트 바이올렛",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s24/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-s24p-256",
+        "teammate_sku_code": "SM-S926N-256-5G",
+        "teammate_variant_model_number": "SM-S926N",
+        "reference_launch_price_krw": 1353000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s24-plus",
+      "domestic_model_number": "SM-S926N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "오닉스 블랙",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s24/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-s24p-512",
+        "teammate_sku_code": "SM-S926N-512-5G",
+        "teammate_variant_model_number": "SM-S926N",
+        "reference_launch_price_krw": 1496000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s24",
+      "domestic_model_number": "SM-S921N",
+      "storage_gb": 256,
+      "ram_gb": 8,
+      "color": "앰버 옐로우",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s24/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-s24-256",
+        "teammate_sku_code": "SM-S921N-256-5G",
+        "teammate_variant_model_number": "SM-S921N",
+        "reference_launch_price_krw": 1155000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s24",
+      "domestic_model_number": "SM-S921N",
+      "storage_gb": 512,
+      "ram_gb": 8,
+      "color": "마블 그레이",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s24/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-s24-512",
+        "teammate_sku_code": "SM-S921N-512-5G",
+        "teammate_variant_model_number": "SM-S921N",
+        "reference_launch_price_krw": 1298000,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s23-ultra",
+      "domestic_model_number": "SM-S918N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "그린",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s23-ultra/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-s23u-256",
+        "teammate_sku_code": "SM-S918N-256-5G",
+        "teammate_variant_model_number": "SM-S918N",
+        "reference_launch_price_krw": 1599400,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    },
+    {
+      "smartphone_key": "galaxy-s23-ultra",
+      "domestic_model_number": "SM-S918N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "팬텀 블랙",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s23-ultra/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z",
+      "verified": true,
+      "audit_metadata": {
+        "teammate_variant_id": "v-s23u-512",
+        "teammate_sku_code": "SM-S918N-512-5G",
+        "teammate_variant_model_number": "SM-S918N",
+        "reference_launch_price_krw": 1720400,
+        "current_lowest_price_krw": null,
+        "unverified_raw_ram_gb": null
+      }
+    }
+  ],
+  "price_observations": []
+}

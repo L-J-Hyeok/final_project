@@ -1,10 +1,5 @@
-// Styles
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
-
-// Vuetify
 import { createVuetify } from 'vuetify'
-
-export default createVuetify(
-  // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-)
+import { colors } from '../design/tokens'
+export default createVuetify({ theme: { defaultTheme: 'platform', themes: { platform: { dark: false, colors } } }, defaults: { VBtn: { rounded: 'lg', elevation: 0, style: 'text-transform:none;letter-spacing:0;font-weight:650' }, VCard: { rounded: 'xl', elevation: 0 } } })
