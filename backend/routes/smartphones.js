@@ -117,6 +117,7 @@ function formatVariantRow(row, priceSummary, now) {
       }
     },
     price: priceSummary.selected,
+    seller_price_summary: require('../services/danawa-seller-prices').summarizeSellerPrices(priceSummary.latest_by_seller),
     latest_prices_by_seller: priceSummary.latest_by_seller
   };
 }
@@ -126,21 +127,7 @@ async function fetchPricesByVariantIds(variantIds, t) {
   if (!variantIds.length) return map;
   for (const id of variantIds) map.set(String(id), []);
   const rows = await db().query(
-    `SELECT
-       CAST(id AS CHAR) AS id,
-       CAST(variant_id AS CHAR) AS variant_id,
-       source_name,
-       source_url,
-       seller_name,
-       amount_krw,
-       shipping_krw,
-       observed_at,
-       expires_at,
-       conditions_text,
-       unconditional,
-       in_stock,
-       is_new,
-       is_unlocked
+    `SELECT price_observations.*, CAST(id AS CHAR) AS id, CAST(variant_id AS CHAR) AS variant_id
      FROM price_observations
      WHERE variant_id IN (:variantIds)
      ORDER BY observed_at DESC, id DESC`,
@@ -210,7 +197,7 @@ router.get('/smartphones', wrap(async (req, res) => {
 
   const data = pageRows.map(row => {
     const obs = priceMap.get(String(row.variant_id)) || [];
-    const priceSummary = catalog.selectBestPrice(obs, now);
+    const priceSummary = pricePreview.buildCandidatePriceObject(row, obs, process.env, now);
     return formatVariantRow(row, priceSummary, now);
   });
 
@@ -239,7 +226,7 @@ router.get('/smartphones/:variantId', wrap(async (req, res) => {
   if (!rows.length) throw catalog.fail('NOT_FOUND', 404);
 
   const priceMap = await fetchPricesByVariantIds([variantId]);
-  const priceSummary = catalog.selectBestPrice(priceMap.get(variantId) || [], now);
+  const priceSummary = pricePreview.buildCandidatePriceObject(rows[0], priceMap.get(variantId) || [], process.env, now);
   const view = formatVariantRow(rows[0], priceSummary, now);
 
   res.json({

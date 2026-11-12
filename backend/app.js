@@ -32,6 +32,7 @@ app.use('/api', require('./routes/member'));
 app.use('/api', require('./routes/smartphones'));
 app.use('/api', require('./routes/upgrade-offers'));
 app.use('/api', require('./routes/recommendations'));
+app.use('/api/admin', require('./routes/admin-candidates')());
 app.use('/api/auth', require('./routes/auth')(authConfig));
 
 // catch 404 and forward to error handler
@@ -43,14 +44,22 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   if (req.path === '/api' || req.path.startsWith('/api/')) {
     var codes = { INVALID_INPUT: 422, CSRF_INVALID: 403, RATE_LIMITED: 429,
-      AUTH_BUSY: 429, REGISTRATION_CONFLICT: 409, INVALID_CREDENTIALS: 401, AUTH_REQUIRED: 401, PROFILE_CHANGED: 409, PROFILE_INCOMPLETE: 409, CANDIDATES_CHANGED: 409, DEVICE_LIMIT: 409,
+      AUTH_BUSY: 429, REGISTRATION_CONFLICT: 409, INVALID_CREDENTIALS: 401, AUTH_REQUIRED: 401,
+      ADMIN_REQUIRED: 403, ADMIN_REVIEW_DISABLED: 403, APPROVAL_POLICY_VIOLATION: 409, DUPLICATE_CANDIDATE: 409,
+      PROFILE_CHANGED: 409, PROFILE_INCOMPLETE: 409, CANDIDATES_CHANGED: 409, DEVICE_LIMIT: 409,
       NOT_FOUND: 404, VERSION_EXHAUSTED: 409,
       AI_INVALID_RESULT: 502, AI_UNAVAILABLE: 502, AI_TIMEOUT: 504, AI_KEY_MISSING: 503, AI_CONFIG_INVALID: 503, AI_MODEL_NOT_ALLOWED: 503 };
     var status = codes[err.code] || (err.type === 'entity.parse.failed' ? 400 : err.type === 'entity.too.large' ? 413 : err.status === 404 ? 404 : 503);
     var code = codes[err.code] ? err.code : status === 400 ? 'INVALID_JSON' : status === 413 ? 'BODY_TOO_LARGE' : status === 404 ? 'NOT_FOUND' : 'SERVICE_UNAVAILABLE';
+    var adminMessages = {
+      ADMIN_REQUIRED: '관리자 권한이 필요합니다.',
+      ADMIN_REVIEW_DISABLED: '운영 환경에서는 별도 승인 전까지 검수 상태 저장이 비활성화되어 있습니다.',
+      APPROVAL_POLICY_VIOLATION: err.message || '검증 근거가 불충분하여 승인할 수 없습니다.',
+      DUPLICATE_CANDIDATE: err.message || '기존 DB와 중복되는 후보는 승인할 수 없습니다.'
+    };
     var msg = code === 'AI_KEY_MISSING'
       ? 'AI API 키가 설정되지 않았습니다. backend/.env에 GEMINI_API_KEY를 설정하거나 AI_PROVIDER=mock으로 실행해 주세요.'
-      : '요청을 처리할 수 없습니다.';
+      : adminMessages[code] || '요청을 처리할 수 없습니다.';
     res.set('Cache-Control', 'no-store');
     if (status === 429) res.set('Retry-After', '60');
     return res.status(status).json({ error: { code: code, message: msg } });

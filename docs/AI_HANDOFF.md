@@ -1,5 +1,7 @@
 # AI 인수인계 스냅샷 (AI Handoff)
 
+> 최신 보완(2026-11-13 04:57 KST): 판매처별 내부 feed 처리·저장 함수·005 SQL 초안·가격 요약 API/비교 표시 구현. 관련 Mock/SSR37개·빌드 통과. 실제 다나와 연결·저장권한 미확보, 격리 MySQL 초기화 signal11로 실제 DB 검증 미완료. 운영 DB 미접속/미변경. 하단 건수는 과거 스냅샷이며 이번에 재확인하지 않음. Codex 편집 종료; 상세 및 재개 조건은 PRICE_COLLECTION_PLAN 최신 절. Gemini 순위 결정은 기존 방식 유지, AI 설명 전용 서버 순위 정책은 미구현.
+
 > 이 문서는 Codex와 Antigravity 간 세션 전환 및 작업 인계를 위한 **현재 시점 단일 스냅샷**이다.
 > 과거 작업 이력은 누적하지 않으며, 주요 상태가 변경될 때 최신 상태로 덮어써서 갱신한다.
 > 상세 규칙: [docs/AI_WORKFLOW.md](AI_WORKFLOW.md) | 유일한 개발 규칙 원본: [docs/DEVELOPMENT_RULES.md](DEVELOPMENT_RULES.md)

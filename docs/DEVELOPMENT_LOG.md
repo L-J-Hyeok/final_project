@@ -813,3 +813,15 @@ Antigravity. `/compare` (`SpecComparison.vue`)의 스마트폰·태블릿·스�
   - 단위/SSR 테스트 **33/33 전수 통과** (`compare-ui.test.cjs` **11/11** 포함), `npm run build` 성공 (`DONE Build complete`).
   - 실제 Chrome(`1440×900`) 검증: 2·3열 실사진 로드(`naturalWidth > 0`, `objectFit: contain`, `pedHeight: 224`), 미확보 기기 SVG 유지, 태블릿/스마트워치 전환 및 교체, 404 `@error` SVG 복원, 콘솔 오류 0건 확인.
   - 백엔드·DB·API·인증·추천·`/recommend`·`/devices` 무수정, Gemini 호출 0, Git 작업 0.
+
+## Phase 5 판매처별 가격 후속 — 2026-11-13 04:57 KST, Codex
+
+- Antigravity 작업 중지 확인. 기존 matcher/TTL/공개 승인·추천 검증 보존.
+- 신규: backend/services/danawa-seller-prices.js, backend/test/danawa-seller-prices.test.js, backend/db/migration-drafts/005-seller-prices.draft.sql.
+- 수정: backend/services/danawa-price-sync.js, smartphone-catalog.js, smartphone-price-preview.js, backend/db/models.js, backend/routes/smartphones.js, front/src/components/SpecComparison.vue, front/test/danawa-price-display.test.cjs.
+- 판매처별 내부 수신 계약, 직영몰 식별, 정확 옵션 매칭, 미확인 NULL/참고 관측, 중복 fingerprint·이력 추가·트랜잭션, 최신 유효 판매처 최저가·출처 API 및 비교 표시 구현. DB에 없는 판매처 가격은 만들지 않았다.
+- 관련 backend Mock/단위33 + frontend SSR4 = 37개 통과, build 성공(크기 경고3). 실제 외부 조회/실제 DB/HTTP 검증은 이 숫자에 포함되지 않는다.
+- 격리 MySQL 8.0.45 초기화 시 signal11 종료. 기존 고정명 DB를 삭제하는 Phase5 테스트는 실행하지 않았다. 운영 DB 접속·DDL·데이터 변경 없음. 005는 적용되지 않은 초안이며 실제 스키마 검증이 필요하다.
+- 다나와 MCP에 판매처 조회 경로가 있지만 현재 세션 플러그인 미연결, 저장·재사용 권한 미확인. 다섯 지정 판매처 실가격 모두 미확보. 실제 Gemini 호출 없음.
+- 기존 Gemini 순위 선택은 유지: 서버 가격 계산/예산/업그레이드 비용 경로는 연결했지만 AI 설명 전용 순위 정책은 미구현.
+- 문서: PRICE_COLLECTION_PLAN, CURRENT_STATUS, AI_HANDOFF, TEST_PLAN, DEVELOPMENT_LOG 갱신. 다음: 인가된 데이터 공급·저장 조건 확보 및 정상 동작하는 격리 MySQL에서005/이력/동시성/HTTP 검증. 편집 종료.

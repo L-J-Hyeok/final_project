@@ -114,7 +114,12 @@ function evaluateObservation(obs, nowInput = new Date()) {
   const isExpired = validPeriod && nowMs >= expMs;
 
   const flagsOk = ['unconditional', 'in_stock', 'is_new', 'is_unlocked'].every(key => obs[key] === true || obs[key] === 1);
-  const eligible = isFresh && !isFuture && flagsOk && total !== null;
+  let metadata = obs.price_metadata_json || null;
+  if (typeof metadata === 'string') { try { metadata = JSON.parse(metadata); } catch (_) { metadata = {}; } }
+  const sellerPolicy = require('./danawa-seller-prices');
+  const designated = !metadata || sellerPolicy.isAllowedSeller(metadata.seller_key);
+  const eligible = isFresh && !isFuture && flagsOk && total !== null
+    && designated && (!metadata || (metadata.version === 1 && metadata.price_type === 'verified_sale'));
 
   return {
     observation_id: String(obs.id),
@@ -125,13 +130,21 @@ function evaluateObservation(obs, nowInput = new Date()) {
     amount_krw: amount,
     shipping_krw: shipping,
     total_krw: total,
-    observed_at: observedAt.toISOString(),
-    expires_at: expiresAt.toISOString(),
+    observed_at: Number.isFinite(obsMs) ? observedAt.toISOString() : null,
+    expires_at: Number.isFinite(expMs) ? expiresAt.toISOString() : null,
+    price_source: metadata ? metadata.price_type : 'verified_sale',
+    danawa_product_url: metadata?.danawa_product_url || null,
+    seller_product_url: metadata?.seller_product_url || null,
+    danawa_product_code: metadata?.product_code || null,
+    seller_key: metadata?.seller_key || null,
+    designated_seller: designated,
+    purchase_verified: eligible,
+    warning: metadata ? '조회 시점의 참고 정보입니다. 배송비·판매 조건에 따라 실제 결제금액이 달라질 수 있습니다.' : null,
     conditions_text: obs.conditions_text,
-    unconditional: Boolean(obs.unconditional),
-    in_stock: Boolean(obs.in_stock),
-    is_new: Boolean(obs.is_new),
-    is_unlocked: Boolean(obs.is_unlocked),
+    unconditional: obs.unconditional == null ? null : Boolean(obs.unconditional),
+    in_stock: obs.in_stock == null ? null : Boolean(obs.in_stock),
+    is_new: obs.is_new == null ? null : Boolean(obs.is_new),
+    is_unlocked: obs.is_unlocked == null ? null : Boolean(obs.is_unlocked),
     is_expired: !isFresh || isExpired,
     eligible
   };

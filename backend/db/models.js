@@ -99,6 +99,12 @@ module.exports = function defineModels(sequelize, D, options = {}) {
     // Generated ram_identity_gb intentionally omitted from writable ORM fields.
     smartphones.refreshAttributes(); variants.refreshAttributes();
   }
+  if (options.sellerPrices === true) {
+    prices.rawAttributes.price_metadata_json = col(D.JSON, true);
+    prices.rawAttributes.observation_key = col(D.STRING(64), true, { unique: true });
+    for (const key of ['unconditional', 'in_stock', 'is_new', 'is_unlocked']) prices.rawAttributes[key].allowNull = true;
+    prices.refreshAttributes();
+  }
   // 이미 정의한 FK만 연결한다. 추가 컬럼이나 중간 테이블을 생성하지 않는다.
   sessions.belongsTo(users, { foreignKey: 'user_id', onDelete: 'CASCADE' });
   profiles.belongsTo(users, { foreignKey: 'user_id', onDelete: 'CASCADE' });

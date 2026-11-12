@@ -230,3 +230,34 @@ SQL/Sequelize 정적 확인 결과다. 이번에 실제 information_schema를 �
 - 테스트: 새10+기존24=34/34통과. 가격우선순위·운영/기본차단·명시적옵트인·24시간/만료·색상/RAM불일치·DB미검증후보차단·NULL보존·잘못된불리언거절. 병합계획44/33/11/8검사통과. SQL은정적검토만이며MySQL문법실행/동시성/실제API통합시험아님. 안전한분리테스트DB의존재·격리근거가없어어떤DB에도접속하지않음.
 - 공개정책: OS NULL 모델은등록준비가능하지만기존verified CHECK상true불가. member/일부catalog는false도조회할수있으므로미승인/보류모델은계속파일에격리. 실제적재전공개필터/승인입력기/ORM·마이그레이션검증필수. 가격대체허용은개발전용새정책이며운영의실판매가원칙을완화하지않음.
 - 다음: 33모델/2변형의운영검수와SQL테스트환경승인, 공개필터·실제쓰기실행부준비, DB조회결과에대한색상가격매핑및개발전용추천최종검증/이력연결. .env/웹검색/DB접속·적재/프론트/Git/PC-FIT변경없음.
+
+## Phase 5 후속 판매처별 처리 — 2026-11-13 04:57 KST
+
+### 확인된 접근 경로와 미확보 사항
+- danawa-cli의 검색 응답은 `minPrice` 중심이며 판매처별 목록 계약은 확인되지 않았다. 코드 라이선스가 가격 데이터 저장 권한을 의미하지 않는다.
+- [다나와 MCP 문서](https://mcp.ai.cowave.kr/docs)는 `search_products` → 반환된 `product_ref`·카테고리 → `get_mall_price_list` 경로를 제공한다. 협력 판매처만 반환될 수 있고 미확인 배송비를 무료로 간주하지 않는다. 연결은 Claude/OpenAI 커넥터 허용 IP에 제한되며 개별 IP 허용은 제공하지 않는다고 명시한다.
+- 현재 세션 도구/플러그인 검색에서 다나와 연결을 확보하지 못했다. 로컬 MCP 직접 접속·차단 우회·웹 가격 크롤링은 하지 않았다. 쿠팡/G마켓/11번가/삼성·Apple 공식몰 **실제 가격 조회 모두 미실행**이다.
+- [이용약관](https://www.danawa.com/info/provision.html) 제24조 및 콘텐츠 이용조건을 확인했다. MCP의 조회 제공 자체가 서비스 DB 영구 저장·재배포 허가라는 근거는 확인되지 않았다. 공급자에 사용 목적/갱신 빈도/저장 기간/표시 범위를 확인해야 한다. robots.txt는 이번 조사에서 다시 읽지 못했으며 기존 코드의 규칙을 최신 확인 사실로 간주하지 않는다.
+- [기존 Open API 안내](https://img.danawa.com/new/open_api/api_guide.html)는 내용에 예시/불완전 항목이 있어 현재 사용 가능한 판매처 API로 판단하지 않았다.
+
+### 구현한 내부 수신·저장 계약
+- `danawa-price-sync.syncSellerPrices(db, {variant, feed, options})`를 기존 서비스에 추가했다. 기본 Dry-Run이며 **외부 MCP 원본 스키마의 파서가 아니라, 인가된 공급자가 변환해서 전달할 내부 계약**이다. 실응답 계약은 연결 확보 후 매핑해야 한다.
+- feed: `product_code`, `maker`, `observed_at`(수집 시각 필수), `expires_at`(미지정 시 최대24시간 TTL 계산), `provider_updated_at`(모르면 null), `offers[]`.
+- offer: `product_name`(정확한 국내 모델번호/저장용량/RAM/색상 확인 가능한 제목), `seller_key`, `seller_name`, `seller_product_url`(확인 시에만), `amount_krw`, `shipping_krw`, `unconditional`, `in_stock`, `is_new`, `is_unlocked`, `conditions_text`.
+- 공급자가 다른 이름의 필드를 반환하면 명시적으로 변환해야 한다. 없는 배송비·재고·조건은 null, 신품/자급제 자체가 미확인인 상품은 저장 대상에서 제외한다. 조건부 할인·품절·부적합 상품은 제외 사유로 반환한다. 이상가격도 기존 matcher의 거절/검토 결과에 남기며 기존 DB 기록을 지우지 않는다.
+- 허용 판매처 설정은 `danawa-seller-prices.js`의 `DEFAULT_SELLERS`/`SELLERS`에서 관리한다. 정확한 이름과 URL 도메인을 대조하고 제조사 직영몰은 제조사 일치·직접 URL 확인을 필수로 한다. 공식 인증 판매점은 직영몰로 추정하지 않는다.
+- 실행 쓰기는 `apply:true`, `allowDbWrite:true`, `storageAuthorized:true`, 실제 허가 근거 `authorizationRef`가 필요하다. 이 값은 서버 운영자용이며 프론트 입력으로 받지 않는다. 승인 문자열이 외부 이용권한을 자동 증명하는 것은 아니다. 쓰기 전 실제 공개 DB 옵션을 재조회해 전달받은 옵션을 대체한다.
+- `005-seller-prices.draft.sql`: 기존 테이블에 `price_metadata_json`, `observation_key UNIQUE` 추가, 조건/재고/신품/자급제 flags NULL 허용. metadata에 가격유형·판매처키·직영/마켓 구분·다나와 코드/링크·직접 판매처 링크·공급자 갱신시각 보존. 기존 ID/FK/행 삭제 없음. **자동 실행 등록 안 함, 실제 MySQL 적용 안 함.** 백업 후 1회 적용하며 재실행/부분 DDL 실패는 수동 점검한다.
+- 동일 관측 fingerprint 중복 방지, 옵션 행 잠금+트랜잭션으로 이력 추가. 가격/확인시각이 바뀌면 새 기록. DB에 없는 옵션 및 실패 batch는 롤백하도록 작성. 실제 MySQL 동시성/DDL 검증은 미완료.
+
+### 소비 API·추천 연결
+- 기존 목록/상세 응답의 `latest_prices_by_seller`를 유지하고 `seller_price_summary {lowest, sellers, overall_danawa_minimum_krw:null}` 추가. 판매처별 unknown/expired/reference_sale/verified_sale 구분. 지정 판매처 최저가를 다나와 전체 최저가라고 부르지 않는다.
+- 기존 DB 가격조회가 추가 metadata를 읽도록 수정하고 `smartphone-price-preview`가 다나와 링크·경고를 버리지 않도록 수정했다. 24시간·배송비 포함·재고/신품/자급제/조건 확인 기준은 추천 적격 가격에 그대로 적용한다. 참고 관측은 저장/표시 가능하지만 예산 확정에 사용하지 않는다.
+- 기존 추천 후보 예산 필터·업그레이드 구매 비용 계산이 이 가격을 재사용한다. 가격 자체는 서버가 계산하며 Gemini가 수정하면 기존 validator가 거절한다. **기존 실제 Gemini의 제품 순위 결정 방식은 변경하지 않았다. AI를 설명 전용으로 제한하는 서버 최종 순위 정책은 아직 미구현**이다.
+- 비교 화면의 기존 가격 영역에 판매처별 금액/배송비 확인 상태/조회시각/만료/미확인/다나와 링크를 추가했다. 재고·가격 없음은 판매 종료로 단정하지 않는다. 프론트 디자인 전체 변경 없음.
+
+### 검증 및 다음 실행 조건
+- 백엔드 관련 단위/Mock 33개, 프론트 SSR 4개 통과(중복 실행 제외). 프론트 production build 성공, 기존 크기 경고3건.
+- 별도 `/tmp/kiki-seller-mysql.OBkQEq`에서 MySQL 8.0.45 초기화 시 signal11 종료(`memory::Aligned_atomic`, `delegates_init`). DB가 생성되기 전에 실패했다. 운영 DB 대신 사용하지 않았고 운영 연결/DDL/가격 쓰기0회. 기존 고정명 DB를 DROP하는 Phase5 통합 테스트는 실행하지 않았다.
+- 현재 완료는 코드·Mock/SSR 검증이다. **실가격 확보, MySQL 마이그레이션/저장/동시성 검증, 실제 HTTP/E2E, 실제 가격 기반 추천 성공은 미완료**다. 보고상 기존 관측0건을 이번 실제 DB 조회 결과로 재확인하지 않았다.
+- 다음: 인가된 다나와 연결과 저장/재사용 조건 확보 → 실제 응답 1제품 판매처별 매핑 → 동작하는 격리 MySQL에서005·이력·동시성·추천 HTTP 검증 → 별도 승인 후 개발 DB 적용. 스케줄러/자동 외부 수집은 아직 연결하지 않는다.

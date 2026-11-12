@@ -187,6 +187,39 @@
               <span :class="['hero-price-note', { warn: isDevOrRefPrice(product) }]">
                 {{ category === 'smartphone' ? formatPriceNoteShort(product) : '출고가 · 조원 참고' }}
               </span>
+              <a
+                v-if="category === 'smartphone' && getDanawaUrl(product)"
+                :href="getDanawaUrl(product)"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="spec-external-link hero-danawa-link"
+              >
+                다나와 상품 보기
+              </a>
+              <small v-if="category === 'smartphone' && product.seller_price_summary?.lowest">
+                지정 판매처 중 최저가: {{ Number(product.seller_price_summary.lowest.total_krw).toLocaleString('ko-KR') }}원 (배송비 포함)
+                · {{ product.seller_price_summary.lowest.seller_name }}
+              </small>
+              <details v-if="category === 'smartphone' && product.seller_price_summary">
+                <summary>판매처별 조회 가격 · 구매 조건 확인 필요</summary>
+                <ul>
+                  <li v-for="offer in product.latest_prices_by_seller" :key="offer.observation_id">
+                    {{ offer.seller_name }}:
+                    <template v-if="offer.is_expired">가격 만료</template>
+                    <template v-else>
+                      {{ Number(offer.amount_krw).toLocaleString('ko-KR') }}원
+                      · {{ offer.shipping_krw == null ? '배송비 미확인' : `배송비 ${Number(offer.shipping_krw).toLocaleString('ko-KR')}원` }}
+                      · {{ offer.eligible ? '구매 조건 확인 가격' : '참고 가격 · 조건 미확인' }}
+                    </template>
+                    <small> · {{ offer.observed_at }}</small>
+                    <a v-if="offer.danawa_product_url" :href="offer.danawa_product_url" target="_blank" rel="noopener noreferrer">다나와에서 조건 확인</a>
+                  </li>
+                </ul>
+                <p v-for="seller in product.seller_price_summary.sellers.filter(s => s.status === 'unknown')" :key="seller.seller_key">
+                  {{ seller.seller_name }}: 가격 미확인
+                </p>
+                <small>조회 시점의 참고 정보이며 실제 결제금액은 달라질 수 있습니다.</small>
+              </details>
             </div>
 
             <button type="button" class="hero-change-btn" @click="$emit('change', i)">
@@ -346,6 +379,14 @@ import {
   getAvailableVariantsForProduct,
   normalizeColorKey
 } from '../utils/deviceImages.js'
+import {
+  isReferenceOrDevPrice,
+  formatPriceAmount as formatPolicyPriceAmount,
+  formatPriceTypeLabel as formatPolicyPriceTypeLabel,
+  formatPriceNotice as formatPolicyPriceNotice,
+  getDanawaProductUrl,
+  formatPriceCheckedAt
+} from '../utils/priceDisplay.js'
 
 const props = defineProps({
   products: { type: Array, default: () => [] },
@@ -522,33 +563,20 @@ function isUnknown(val) {
   return val === '정보 없음' || val === '가격 정보 없음' || val === null || val === undefined
 }
 
-// Price Helpers
+// Price Helpers (shared with recommendation & upgrade screens via utils/priceDisplay.js)
 function formatPriceShort(p) {
   if (!p || !p.price) return '가격 정보 없음'
-  const pr = p.price
-  if (pr.price_source === 'verified_sale' && pr.purchase_verified === true && pr.total_krw) {
-    return `${pr.total_krw.toLocaleString('ko-KR')}원`
-  }
-  const amt = pr.budget_basis_krw || pr.amount_krw
-  if (typeof amt === 'number' && amt > 0) {
-    return `${amt.toLocaleString('ko-KR')}원`
-  }
-  return '가격 정보 없음'
+  return formatPolicyPriceAmount(p.price, { emptyText: '가격 정보 없음', includeTag: false })
 }
 
 function isDevOrRefPrice(p) {
   if (!p || !p.price) return false
-  return p.price.development_only === true || ['official_launch', 'reference_sale'].includes(p.price.price_source)
+  return isReferenceOrDevPrice(p.price)
 }
 
 function formatPriceNoteShort(p) {
   if (!p || !p.price) return '현재 판매가 미확인'
-  const pr = p.price
-  if (pr.price_source === 'verified_sale' && pr.purchase_verified === true) return '검증된 판매가 · 배송비 포함'
-  if (pr.price_source === 'official_launch') return '개발용 공식 출고가 · 실제 판매가 아님'
-  if (pr.price_source === 'reference_sale') return '개발용 참고가 · 구매 조건 미검증'
-  if (pr.development_only === true) return '개발용 가격 · 실제 판매가 아님'
-  return '가격 정보 미확인'
+  return formatPolicyPriceTypeLabel(p.price, { emptyText: '가격 정보 미확인' })
 }
 
 function formatSupplementalPriceShort(p) {
@@ -559,52 +587,26 @@ function formatSupplementalPriceShort(p) {
 // Smartphone Full Price Helpers (for Detailed Table)
 function formatPriceAmount(p) {
   if (!p || !p.price) return '가격 정보 없음'
-  const pr = p.price
-  if (pr.price_source === 'verified_sale' && pr.purchase_verified === true && pr.total_krw) {
-    return `${pr.total_krw.toLocaleString('ko-KR')}원`
-  }
-  const amt = pr.budget_basis_krw || pr.amount_krw
-  if (typeof amt === 'number' && amt > 0) {
-    if (pr.price_source === 'official_launch') return `${amt.toLocaleString('ko-KR')}원 (개발용 출고가)`
-    if (pr.price_source === 'reference_sale') return `${amt.toLocaleString('ko-KR')}원 (개발용 참고가)`
-    return `${amt.toLocaleString('ko-KR')}원 (개발용 가격)`
-  }
-  return '가격 정보 없음'
+  return formatPolicyPriceAmount(p.price, { emptyText: '가격 정보 없음', includeTag: true })
 }
 
 function formatPriceType(p) {
   if (!p || !p.price) return '가격 정보 없음'
-  const pr = p.price
-  if (pr.price_source === 'verified_sale' && pr.purchase_verified === true) {
-    return '검증된 판매가 (배송비 포함)'
-  }
-  if (pr.price_source === 'official_launch') {
-    return '개발용 공식 출고가 기준 · 실제 판매가 아님'
-  }
-  if (pr.price_source === 'reference_sale') {
-    return '개발용 참고 판매가 · 구매 조건 미검증'
-  }
-  if (pr.development_only === true) {
-    return '개발용 가격 · 실제 판매가 아님'
-  }
-  return '가격 정보 없음'
+  return formatPolicyPriceTypeLabel(p.price, { emptyText: '가격 정보 없음' })
 }
 
 function formatPriceDate(p) {
   if (!p || !p.price) return '정보 없음'
-  const d = p.price.checked_at || p.price.observed_at
-  if (!d) return '정보 없음'
-  const date = new Date(d)
-  return Number.isNaN(date.getTime()) ? '정보 없음' : date.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })
+  return formatPriceCheckedAt(p.price)
 }
 
 function formatPriceNotice(p) {
   if (!p || !p.price) return '구매 조건 확인 필요'
-  if (p.price.warning) return p.price.warning
-  if (p.price.development_only || ['official_launch', 'reference_sale'].includes(p.price.price_source)) {
-    return '실제 구매 가능 가격이 아닙니다. 배송비·재고·구매 조건은 확인이 필요합니다.'
-  }
-  return '배송비 포함 검증 가격'
+  return formatPolicyPriceNotice(p.price)
+}
+
+function getDanawaUrl(p) {
+  return p && p.price ? getDanawaProductUrl(p.price) : null
 }
 
 function formatSupplementalPrice(p) {
@@ -1035,7 +1037,8 @@ const smartphoneCategories = [
       { key: 'launch_price', label: '공식 출고가', format: formatOfficialLaunchPrice },
       { key: 'price_type', label: '가격 유형', format: formatPriceType },
       { key: 'price_source', label: '가격 출처', format: p => p.price?.source_name || '정보 없음' },
-      { key: 'price_date', label: '가격 확인일', format: formatPriceDate },
+      { key: 'danawa_link', label: '다나와 상품 링크', format: p => getDanawaUrl(p) ? '다나와 상품 보기' : '정보 없음', href: getDanawaUrl },
+      { key: 'price_date', label: '가격 조회 시각', format: formatPriceDate },
       { key: 'price_notice', label: '구매 참고사항', format: formatPriceNotice }
     ]
   }

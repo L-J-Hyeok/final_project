@@ -97,13 +97,25 @@
                   {{ priceLabel(item.price) }}
                 </strong>
                 <p class="price-amount">{{ money(priceAmount(item.price)) }}</p>
-                <p v-if="development(item.price)" class="price-dev-notice">
+                <p v-if="isDanawaRef(item.price)" class="price-dev-notice">
+                  다나와 기준 최저가입니다. 실제 최종 결제가격(배송비·재고·결제 조건)과 다를 수 있으며, 예산 충족·교체 확정 근거로 사용되지 않습니다.
+                </p>
+                <p v-else-if="development(item.price)" class="price-dev-notice">
                   실제 구매 가능 가격이 아닙니다. 배송비·재고·구매 조건은 확인이 필요합니다.
                 </p>
-                <p v-if="item.price?.warning" class="price-warning" role="note">{{ item.price.warning }}</p>
+                <p v-if="item.price?.warning && !isDanawaRef(item.price)" class="price-warning" role="note">{{ item.price.warning }}</p>
                 <div class="price-meta-foot">
                   <p v-if="item.price?.source_name" class="price-source">출처: {{ item.price.source_name }}</p>
-                  <small class="price-date">확인일: {{ date(item.price?.checked_at || item.price?.observed_at) }}</small>
+                  <small class="price-date">조회 시각: {{ checkedAt(item.price) }}</small>
+                  <a
+                    v-if="danawaUrl(item.price)"
+                    :href="danawaUrl(item.price)"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="compare-handoff-link"
+                  >
+                    다나와 상품 보기 →
+                  </a>
                 </div>
               </div>
 
@@ -113,7 +125,7 @@
                 <dl v-for="(value,key) in item.comparison_with_owned.fields" :key="key">
                   <dt>{{ comparisonLabels[key] || key }}</dt>
                   <dd v-if="value.status==='verified_comparison'">{{ value.current }} → {{ value.candidate }} {{ value.unit || '' }}</dd>
-                  <dd v-else-if="key==='price' && value.candidate_total_krw != null">{{ value.candidate_total_krw.toLocaleString('ko-KR') }}원 · {{ value.development_only ? '개발용 가격, 실제 구매가 아님' : '검증 판매가' }}</dd>
+                  <dd v-else-if="key==='price' && value.candidate_total_krw != null">{{ value.candidate_total_krw.toLocaleString('ko-KR') }}원 · {{ value.price_source === 'danawa_reference' ? '다나와 기준 최저가 (참고용)' : value.development_only ? '개발용 가격, 실제 구매가 아님' : '검증 판매가' }}</dd>
                   <dd v-else>{{ value.note || '비교 불가: 검증된 자료 부족' }}<span v-if="key==='chipset'"> ({{ value.current || '정보 없음' }} → {{ value.candidate || '정보 없음' }})</span></dd>
                 </dl>
                 <ul><li v-for="note in [...(item.comparison_with_owned.improvements || []),...(item.comparison_with_owned.tradeoffs || []),...(item.comparison_with_owned.cautions || [])]" :key="note">{{ note }}</li></ul>
@@ -186,28 +198,49 @@ const text = x => typeof x === 'string' ? x : (x?.description || x?.message || '
 const spec = (value, unit) => value == null ? '정보 없음' : `${value}${unit}`
 const valid = value => typeof value === 'number' && Number.isFinite(value) && value > 0
 const money = value => valid(value) ? `${value.toLocaleString('ko-KR')}원` : '현재 판매가 정보 없음'
-const development = p => p?.development_only === true || ['reference_sale', 'official_launch'].includes(p?.price_source)
-const isVerifiedPrice = p => p?.price_source === 'verified_sale' && p?.purchase_verified === true && !development(p)
+const isExpired = p => {
+  if (!p?.expires_at) return false
+  const expMs = new Date(p.expires_at).getTime()
+  return !Number.isFinite(expMs) || Date.now() >= expMs
+}
+const isDanawaRef = p => !isExpired(p) && (p?.price_source === 'danawa_reference' || p?.is_reference_price === true)
+const development = p => !isExpired(p) && !isDanawaRef(p) && (p?.development_only === true || ['reference_sale', 'official_launch'].includes(p?.price_source))
+const isVerifiedPrice = p => !isExpired(p) && p?.price_source === 'verified_sale' && p?.purchase_verified === true && !development(p) && !isDanawaRef(p)
+
+function danawaUrl(p) {
+  if (!p || isExpired(p) || typeof p.danawa_product_url !== 'string') return null
+  try {
+    const parsed = new URL(p.danawa_product_url)
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? parsed.href : null
+  } catch {
+    return null
+  }
+}
+
+function checkedAt(p) {
+  if (!p || isExpired(p)) return '정보 없음'
+  const raw = p.checked_at || p.observed_at
+  if (!raw) return '정보 없음'
+  const d = new Date(raw)
+  return Number.isNaN(d.getTime())
+    ? '정보 없음'
+    : d.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+}
 
 function priceAmount(p) {
-  if (!p) return null
-  if (development(p)) return valid(p.budget_basis_krw) ? p.budget_basis_krw : p.amount_krw
-  return p.price_source === 'verified_sale' && p.purchase_verified === true ? p.total_krw : null
+  if (!p || isExpired(p)) return null
+  if (isDanawaRef(p)) return valid(p.amount_krw) ? p.amount_krw : null
+  if (development(p)) return valid(p.budget_basis_krw) ? p.budget_basis_krw : (valid(p.amount_krw) ? p.amount_krw : null)
+  return isVerifiedPrice(p) && valid(p.total_krw) ? p.total_krw : null
 }
 
 function priceLabel(p) {
-  if (p?.price_source === 'official_launch') return '개발용 공식 출고가 기준 · 현재 판매가 아님'
-  if (p?.price_source === 'reference_sale') return '개발용 참고 판매가 · 구매 조건 미검증'
+  if (!p || isExpired(p)) return '현재 판매가 정보 없음'
+  if (isDanawaRef(p)) return '다나와 기준 최저가'
+  if (p.price_source === 'official_launch') return '개발용 공식 출고가 기준 · 현재 판매가 아님'
+  if (p.price_source === 'reference_sale') return '개발용 참고 판매가 · 구매 조건 미검증'
   if (development(p)) return '개발용 가격 · 실제 판매가 아님'
-  return p?.price_source === 'verified_sale' && p?.purchase_verified === true
-    ? '검증된 판매가 · 배송비 포함'
-    : '현재 판매가 정보 없음'
-}
-
-function date(value) {
-  if (!value) return '정보 없음'
-  const d = new Date(value)
-  return Number.isNaN(d.getTime()) ? '정보 없음' : d.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })
+  return isVerifiedPrice(p) ? '검증된 판매가 · 배송비 포함' : '현재 판매가 정보 없음'
 }
 </script>
 

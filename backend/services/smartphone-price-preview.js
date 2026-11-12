@@ -158,74 +158,90 @@ function buildCandidatePriceObject(row, observations = [], env = process.env, no
         budget_basis_krw: priceSummary.selected.total_krw,
         purchase_verified: true,
         development_only: false,
-        danawa_product_url: null,
+        danawa_product_url: priceSummary.selected.danawa_product_url || null,
         checked_at: priceSummary.selected.observed_at,
-        warning: null
+        warning: priceSummary.selected.warning || null
       },
       latest_by_seller: priceSummary.latest_by_seller
     };
   }
 
   const { environment, allowDevelopmentPrices } = getDevelopmentPricingFlags(env);
-  if (environment !== 'development' || !allowDevelopmentPrices) {
-    return priceSummary;
-  }
-
-  const candidate = {
-    variant_id: String(row.variant_id),
-    phone_verified: Boolean(row.phone_verified),
-    variant_verified: Boolean(row.variant_verified),
-    storage_gb: Number(row.storage_gb),
-    ram_gb: row.ram_gb === null || row.ram_gb === undefined ? null : Number(row.ram_gb),
-    color: row.color
-  };
-  const { references, launch } = customCurated || resolveCuratedPriceInputsForVariant(row);
-  const devPricing = selectPrice({
-    candidate,
-    observations,
-    references,
-    launch,
-    environment,
-    allowDevelopmentPrices,
-    now
-  });
-
-  if (!devPricing || !devPricing.price_source) {
-    return priceSummary;
-  }
-
-  const isRefSale = devPricing.price_source === 'reference_sale';
-  return {
-    selected: {
-      observation_id: null,
+  if (environment === 'development' && allowDevelopmentPrices) {
+    const candidate = {
       variant_id: String(row.variant_id),
-      price_source: devPricing.price_source,
-      source_name: isRefSale ? '개발용 다나와 참고 스냅샷(비실시간)' : (row.phone_source_name || row.variant_source_name || '국내 공식 출고가(개발용 폴백)'),
-      source_url: devPricing.source_url,
-      danawa_product_url: devPricing.danawa_product_url,
-      seller_name: isRefSale ? '개발용 참고 판매처(실시간 재고 미검증)' : '공식 출고가 기준(실시간 판매처 미검증)',
-      amount_krw: devPricing.amount_krw,
-      shipping_krw: devPricing.shipping_krw,
-      total_krw: devPricing.total_krw,
-      budget_basis_krw: devPricing.budget_basis_krw,
-      observed_at: null,
-      expires_at: null,
-      checked_at: devPricing.checked_at,
-      conditions_text: isRefSale
-        ? '개발용 참고 판매가(배송비·재고·실시간 구매 가능 여부 미검증)'
-        : '개발용 국내 공식 출고가 폴백(현재 실제 판매가 아님)',
-      unconditional: false,
-      in_stock: false,
-      is_new: true,
-      is_unlocked: true,
-      is_expired: false,
-      eligible: true,
-      purchase_verified: false,
-      development_only: true,
-      warning: devPricing.warning
-    },
-    latest_by_seller: priceSummary.latest_by_seller
-  };
+      phone_verified: Boolean(row.phone_verified),
+      variant_verified: Boolean(row.variant_verified),
+      storage_gb: Number(row.storage_gb),
+      ram_gb: row.ram_gb === null || row.ram_gb === undefined ? null : Number(row.ram_gb),
+      color: row.color
+    };
+    const { references, launch } = customCurated || resolveCuratedPriceInputsForVariant(row);
+    const devPricing = selectPrice({
+      candidate,
+      observations,
+      references,
+      launch,
+      environment,
+      allowDevelopmentPrices,
+      now
+    });
+
+    if (devPricing && devPricing.price_source) {
+      const isRefSale = devPricing.price_source === 'reference_sale';
+      return {
+        selected: {
+          observation_id: null,
+          variant_id: String(row.variant_id),
+          price_source: devPricing.price_source,
+          source_name: isRefSale ? '개발용 다나와 참고 스냅샷(비실시간)' : (row.phone_source_name || row.variant_source_name || '국내 공식 출고가(개발용 폴백)'),
+          source_url: devPricing.source_url,
+          danawa_product_url: devPricing.danawa_product_url,
+          seller_name: isRefSale ? '개발용 참고 판매처(실시간 재고 미검증)' : '공식 출고가 기준(실시간 판매처 미검증)',
+          amount_krw: devPricing.amount_krw,
+          shipping_krw: devPricing.shipping_krw,
+          total_krw: devPricing.total_krw,
+          budget_basis_krw: devPricing.budget_basis_krw,
+          observed_at: null,
+          expires_at: null,
+          checked_at: devPricing.checked_at,
+          conditions_text: isRefSale
+            ? '개발용 참고 판매가(배송비·재고·실시간 구매 가능 여부 미검증)'
+            : '개발용 국내 공식 출고가 폴백(현재 실제 판매가 아님)',
+          unconditional: false,
+          in_stock: false,
+          is_new: true,
+          is_unlocked: true,
+          is_expired: false,
+          eligible: true,
+          purchase_verified: false,
+          development_only: true,
+          warning: devPricing.warning
+        },
+        latest_by_seller: priceSummary.latest_by_seller
+      };
+    }
+  }
+
+  const allowDanawaReference = String(env.ALLOW_DANAWA_REFERENCE_PRICES || '').trim().toLowerCase() === 'true'
+    || Boolean(customCurated && customCurated.danawaFixtures);
+  if (allowDanawaReference) {
+    // Lazy require avoids circular dependency cleanly while sharing the strict variant matcher and 24h TTL policy.
+    const danawaSync = require('./danawa-price-sync');
+    const refPrice = danawaSync.resolveVariantDanawaReferencePrice(row, {
+      now,
+      fixtures: customCurated && customCurated.danawaFixtures ? customCurated.danawaFixtures : null,
+      isMock: true,
+    });
+    if (refPrice) {
+      return {
+        selected: refPrice,
+        latest_by_seller: priceSummary.latest_by_seller
+      };
+    }
+  }
+
+  return priceSummary;
 }
 
 function candidatePriceDTO(input) {

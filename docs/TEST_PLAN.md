@@ -537,3 +537,11 @@ Codex 편집 종료. 실제 DB 검증 목표는 미달성이다. 기존 공개 �
 DB 미등록 보류8개: Galaxy Z Fold Special Edition, Galaxy Z TriFold, Galaxy Wide7, Galaxy Buddy4, Galaxy Wide8, Galaxy Buddy5, Galaxy Wide9, Galaxy Quantum7. 실제 중복 가능성을 특정할 자료 충돌은 발견0이나, 이름이 다른 동일 기기/해외 모델번호의 오기 여부는 외부 검증 없이 확정할 수 없다.
 
 재실행: NODE_ENV=test AI_PROVIDER=mock으로 기존 db/env/auth/member/smartphone/recommendation/upgrade 단위·통합, publication-import, smartphone-price-preview, prepare-smartphone-upsert 및 cross-verification 2개 테스트를 node --test --test-concurrency=1로 실행. gemini-live.integration.test.js는 제외. 새 실제 카탈로그 검증은 로컬 final_project 대상 확인·전용 계정 생성/정리·제품 상태 무변경 방식. .env는 앱 자동 로딩만 사용한다.
+
+## Phase 5 후속 판매처 가격 — 2026-11-13 04:57 KST
+
+- 실행/통과: backend/test/danawa-price.test.js 8, danawa-seller-prices.test.js 8, recommendation.test.js 3, upgrade.test.js 4, smartphone.test.js 4, smartphone-verification-admin.test.js 6. 합계33 단위/Mock.
+- front/test/danawa-price-display.test.cjs SSR4 통과. 신규 판매처별 표시·미확인 배송비·만료·미확인 판매처, 기존 참고가 표시 회귀 포함. npm run build 성공, 크기 경고3.
+- 신규 검증: 국내 모델/용량/RAM/색상 불일치 차단, 지정 판매처/직영몰 구분, NULL 보존·참고가 예산 배제, 최신 판매처 이력 우선·최저가 변경, 만료, 가격 DTO/예산/업그레이드 비용, fingerprint 중복/이력·batch 실패 롤백(Mock).
+- 미실행: 실제 다나와 조회, MySQL005 문법·적용·이력 저장·동시 잠금, 실제 HTTP/브라우저 가격 흐름. 격리 mysqld 초기화가 signal11로 실패했으며 운영 DB로 대체하지 않았다. 기존 danawa-price-integration.test.js는 고정명 DB DROP을 포함하므로 그대로 실행하지 않았다.
+- 후속: 인가된 공급자 실응답과 저장 권한 확보 후 격리DB에서 동시 동일 관측 중복0·신규 관측 추가·FK/NULL·롤백을 확인하고 실제 API/비교 화면까지 검증한다. AI 설명전용 서버 순위 정책은 별도 미완료 항목이다.

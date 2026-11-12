@@ -1,0 +1,3929 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12",
+  "reference_date_kst": "2026-11-12",
+  "policy_note": "Verified manufacturer & official carrier press release catalog only. Unknown fields remain null (no speculation).",
+  "records": [
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Z Fold Special Edition",
+      "domestic_model_number": "SM-F958N",
+      "released_on_kr": "2024-10-25",
+      "os": "android",
+      "chipset": "Snapdragon 8 Gen 3 for Galaxy",
+      "screen_inches": 8,
+      "refresh_hz": 120,
+      "battery_mah": 4400,
+      "weight_g": 236,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "삼성전자 대한민국 공식 홈페이지 / 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-fold6-se-f958/SM-F958NZKAKOO/",
+      "official_product_url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드-스페셜-에디션-국내-출시-2",
+      "details_json": {
+        "cover_display_inches": 6.5,
+        "main_camera_mp": 200,
+        "ip_rating": "IP48",
+        "note": "SM-F958N 512GB/16GB 블랙 쉐도우 단일 출시"
+      },
+      "options": [
+        {
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "블랙 쉐도우",
+          "launch_price_krw": 2789600,
+          "sku_example": "SM-F958NZKAKOO",
+          "channel": "standard",
+          "official_option_verified": true,
+          "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-fold6-se-f958/SM-F958NZKAKOO/"
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Z TriFold",
+      "domestic_model_number": "SM-F968N",
+      "released_on_kr": "2025-12-12",
+      "os": "android",
+      "chipset": "Snapdragon 8 Elite for Galaxy",
+      "screen_inches": 10,
+      "refresh_hz": 120,
+      "battery_mah": 5600,
+      "weight_g": 309,
+      "supports_5g": true,
+      "wireless_charging": true,
+      "source_name": "삼성전자 대한민국 공식 홈페이지 / 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-trifold/specs/",
+      "official_product_url": "https://www.samsung.com/sec/smartphones/galaxy-z-trifold-f968/SM-F968NZKAKOO/",
+      "details_json": {
+        "cover_display_inches": 6.5,
+        "main_camera_mp": 200,
+        "ip_rating": "IP48",
+        "wired_charging_w": 45,
+        "note": "SM-F968N 512GB/16GB 크래프티드 블랙 단일 출시"
+      },
+      "options": [
+        {
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "크래프티드 블랙",
+          "launch_price_krw": 3590400,
+          "sku_example": "SM-F968NZKAKOO",
+          "channel": "standard",
+          "official_option_verified": true,
+          "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-trifold-f968/SM-F968NZKAKOO/"
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Wide7",
+      "domestic_model_number": "SM-M156S",
+      "released_on_kr": "2024-06-26",
+      "os": "android",
+      "chipset": null,
+      "screen_inches": 6.5,
+      "refresh_hz": 90,
+      "battery_mah": 6000,
+      "weight_g": null,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 지원 / SKT 뉴스룸",
+      "source_kind": "carrier_and_manufacturer_support",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-M156SZAASKC/",
+      "official_product_url": "https://news.sktelecom.com/204986",
+      "official_spec_verified": false,
+      "review_reason": "SKT 출시일(2024-06-26)·모델번호(SM-M156S)·6.5형·90Hz·128GB/6GB 확인되나 제조사 공식 페이지상 무게/칩셋/전체 공식 색상명 미확정으로 보류.",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "다크 블루",
+          "launch_price_krw": 374000,
+          "sku_example": "SM-M156SZAASKC",
+          "official_option_verified": false,
+          "notes": "전체 색상 라인업(그레이/라이트 블루 포함 여부) 공식 확인 필요"
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Buddy4",
+      "domestic_model_number": "SM-A166L",
+      "released_on_kr": "2025-05-09",
+      "os": "android",
+      "chipset": null,
+      "screen_inches": 6.7,
+      "refresh_hz": 90,
+      "battery_mah": 5000,
+      "weight_g": null,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 지원 / LG U+ 보도자료",
+      "source_kind": "carrier_and_manufacturer_support",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-A166LZKELUC/",
+      "official_product_url": "https://m.lguplus.com/about/ko/corporation/promotion/press-kit/detail?pageNo=1&srchCond=titCon&atclNo=2000001186",
+      "official_spec_verified": false,
+      "review_reason": "LG U+ 보도자료 기준 2025-05-09 출시·SM-A166L·128GB/6GB·블루 블랙/라이트 그레이/골드(399,300원) 확인되나 제조사 공식 무게·AP 표기 검수 필요.",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "블루 블랙",
+          "launch_price_krw": 399300,
+          "sku_example": "SM-A166LZKELUC",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "라이트 그레이",
+          "launch_price_krw": 399300,
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "골드",
+          "launch_price_krw": 399300,
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Wide8",
+      "domestic_model_number": "SM-M166S",
+      "released_on_kr": null,
+      "os": "android",
+      "chipset": null,
+      "screen_inches": 6.7,
+      "refresh_hz": 90,
+      "battery_mah": 5000,
+      "weight_g": 200,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 지원",
+      "source_kind": "manufacturer_support",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-M166SZKASKC/",
+      "official_spec_verified": false,
+      "review_reason": "삼성전자 지원 페이지에서 SM-M166S·128GB/6GB·200g·6.7형·90Hz 확인되나 SKT 공식 뉴스룸 일반 판매 개시일 및 전체 색상·칩셋명 추가 검증 필요.",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "블랙",
+          "sku_example": "SM-M166SZKASKC",
+          "official_option_verified": false,
+          "notes": "썬더 블랙/민트 그린/블러쉬 핑크 여부 공식 확인 필요"
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Jump4",
+      "domestic_model_number": "SM-M366K",
+      "released_on_kr": null,
+      "os": "android",
+      "chipset": null,
+      "screen_inches": 6.7,
+      "refresh_hz": 120,
+      "battery_mah": 5000,
+      "weight_g": null,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 지원",
+      "source_kind": "manufacturer_support",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-M366KZKCKTC/",
+      "official_spec_verified": false,
+      "review_reason": "삼성전자 지원 페이지에서 SM-M366K·128GB/6GB·6.7형·120Hz 확인되나 KT 공식 출시일·무게·AP명·전체 색상 공식 출처 확인 필요.",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "블랙",
+          "sku_example": "SM-M366KZKCKTC",
+          "official_option_verified": false
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy XCover7 Pro",
+      "domestic_model_number": "SM-G766N",
+      "released_on_kr": null,
+      "os": "android",
+      "chipset": null,
+      "screen_inches": 6.6,
+      "refresh_hz": 120,
+      "battery_mah": 4350,
+      "weight_g": 240,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 비즈니스 공식 홈페이지",
+      "source_kind": "manufacturer_kr_b2b",
+      "source_url": "https://www.samsung.com/sec/business/smartphones/galaxy-xcover7pro-g766/SM-G766NZKDK13/",
+      "official_spec_verified": false,
+      "review_reason": "삼성 비즈니스 카탈로그(SM-G766N)는 확인되나 일반 소비자향 공식 국내 출시일(YYYY-MM-DD) 및 AP·유통 채널 검수 필요.",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "블랙",
+          "sku_example": "SM-G766NZKDK13",
+          "official_option_verified": false
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Buddy5",
+      "domestic_model_number": "SM-A176L",
+      "released_on_kr": null,
+      "os": "android",
+      "chipset": null,
+      "screen_inches": 6.7,
+      "refresh_hz": 90,
+      "battery_mah": 5000,
+      "weight_g": 192,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 지원 / LG U+ 뉴스룸",
+      "source_kind": "carrier_and_manufacturer_support",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-A176LZKELUC/",
+      "official_product_url": "https://news.lguplus.com/?p=21844",
+      "official_spec_verified": false,
+      "review_reason": "LG U+ 보도자료(5월 발표/방송)와 삼성 지원(SM-A176L) 간 최초 일반 판매 개시일·상세 용량/색상/AP 확정 보류.",
+      "options": []
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Wide9",
+      "domestic_model_number": "SM-M176S",
+      "released_on_kr": "2026-07-03",
+      "os": "android",
+      "chipset": null,
+      "screen_inches": 6.7,
+      "refresh_hz": 90,
+      "battery_mah": 5000,
+      "weight_g": 192,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 지원 / SKT 뉴스룸",
+      "source_kind": "carrier_and_manufacturer_support",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-M176SZKASKC/",
+      "official_product_url": "https://news.sktelecom.com/227414",
+      "official_spec_verified": false,
+      "review_reason": "SKT 뉴스룸(2026-07-03, 출고가 469,700원)·삼성 지원(SM-M176S) 확인되나 공식 저장용량/색상별 SKU·AP 최종 검수 필요.",
+      "options": []
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Quantum7",
+      "domestic_model_number": "SM-A576S",
+      "released_on_kr": "2026-08-25",
+      "os": "android",
+      "chipset": null,
+      "screen_inches": 6.7,
+      "refresh_hz": 120,
+      "battery_mah": 5000,
+      "weight_g": 179,
+      "supports_5g": true,
+      "wireless_charging": null,
+      "source_name": "삼성전자 지원 / SKT 뉴스룸",
+      "source_kind": "carrier_and_manufacturer_support",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-A576SLBASKC/",
+      "official_product_url": "https://news.sktelecom.com/229704",
+      "official_spec_verified": false,
+      "review_reason": "SKT 뉴스룸(2026-08-25, 출고가 717,200원, 어썸 그레이/아이스블루/라일락)·삼성 지원(SM-A576S) 확인되나 공식 저장용량/AP 최종 검수 필요.",
+      "options": []
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Jump3",
+      "domestic_model_number": "SM-M446K",
+      "released_on_kr": "2023-11-10",
+      "os": "android",
+      "source_name": "삼성전자 지원",
+      "source_kind": "manufacturer_support",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-M446KZWAKTC/",
+      "options": []
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S23 Ultra",
+      "domestic_model_number": "SM-S918N",
+      "released_on_kr": "2023-02-17",
+      "os": "android",
+      "source_name": "삼성전자 공식 홈페이지",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s23-ultra/specs/",
+      "options": []
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 15",
+      "domestic_model_number": "A3090",
+      "released_on_kr": "2023-10-13",
+      "os": "ios",
+      "source_name": "Apple 공식 사양",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://support.apple.com/ko-kr/111831",
+      "options": []
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 15 Plus",
+      "domestic_model_number": "A3094",
+      "released_on_kr": "2023-10-13",
+      "os": "ios",
+      "source_name": "Apple 공식 사양",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://support.apple.com/ko-kr/111830",
+      "options": []
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 15 Pro",
+      "domestic_model_number": "A3102",
+      "released_on_kr": "2023-10-13",
+      "os": "ios",
+      "source_name": "Apple 공식 사양",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://support.apple.com/ko-kr/111829",
+      "options": []
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 15 Pro Max",
+      "domestic_model_number": "A3106",
+      "released_on_kr": "2023-10-13",
+      "os": "ios",
+      "source_name": "Apple 공식 사양",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://support.apple.com/ko-kr/111828",
+      "options": []
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy A26 5G",
+      "domestic_model_number": "SM-A266B",
+      "released_on_kr": null,
+      "kr_released": false,
+      "market_scope": "overseas_only",
+      "exclusion_reason_code": "NO_OFFICIAL_KR_RELEASE",
+      "review_reason": "국내 정식 출시 이력 없음 (해외 전용 모델)",
+      "source_name": "삼성전자 글로벌 확인",
+      "source_kind": "scope_exclusion",
+      "source_url": "https://www.samsung.com/sec/",
+      "options": []
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy A55 5G",
+      "domestic_model_number": "SM-A5560",
+      "released_on_kr": null,
+      "kr_released": false,
+      "market_scope": "overseas_only",
+      "exclusion_reason_code": "RENAMED_IN_KR_ALREADY_EXISTS",
+      "review_reason": "해외 모델명으로, 국내에는 SKT 전용 Galaxy Quantum5(SM-A556S, DB ID 90000143)로 출시되어 이미 존재함.",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "scope_exclusion",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a55-5g-a556-co/SM-A556SZKBSKC/",
+      "options": []
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy A56 5G",
+      "domestic_model_number": "SM-A566B",
+      "released_on_kr": null,
+      "kr_released": false,
+      "market_scope": "overseas_only",
+      "exclusion_reason_code": "RENAMED_IN_KR_ALREADY_EXISTS",
+      "review_reason": "해외 모델명으로, 국내에는 SKT 전용 Galaxy Quantum6(SM-A566S, DB ID 90000144)로 출시되어 이미 존재함.",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "scope_exclusion",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a56-5g-a566s-co/SM-A566SZKBSKC/",
+      "options": []
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy XCover7",
+      "domestic_model_number": "SM-G556B",
+      "released_on_kr": null,
+      "kr_released": false,
+      "market_scope": "overseas_only",
+      "exclusion_reason_code": "NO_OFFICIAL_KR_RELEASE",
+      "review_reason": "해외 러기드 모델(SM-G556)로 국내 정식 소비자 출시 및 전파인증 이력 없음.",
+      "source_name": "삼성전자 확인",
+      "source_kind": "scope_exclusion",
+      "source_url": "https://www.samsung.com/sec/",
+      "options": []
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 18",
+      "domestic_model_number": null,
+      "released_on_kr": null,
+      "release_status": "unreleased",
+      "source_name": "Apple 공식 발표 확인",
+      "source_kind": "scope_exclusion",
+      "source_url": "https://www.apple.com/kr/iphone/",
+      "options": []
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 18e",
+      "domestic_model_number": null,
+      "released_on_kr": null,
+      "release_status": "unreleased",
+      "source_name": "Apple 공식 발표 확인",
+      "source_kind": "scope_exclusion",
+      "source_url": "https://www.apple.com/kr/iphone/",
+      "options": []
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 16",
+      "domestic_model_number": "A3287",
+      "released_on_kr": "2024-09-20",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 사양",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://support.apple.com/ko-kr/121029",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "핑크",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "틸",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "울트라마린",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "핑크",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "틸",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "울트라마린",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "핑크",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "틸",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "울트라마린",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 16 Plus",
+      "domestic_model_number": "A3290",
+      "released_on_kr": "2024-09-20",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 사양",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://support.apple.com/ko-kr/121030",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "핑크",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "틸",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "울트라마린",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "핑크",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "틸",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "울트라마린",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "핑크",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "틸",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "울트라마린",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 16 Pro",
+      "domestic_model_number": "A3293",
+      "released_on_kr": "2024-09-20",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 사양",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://support.apple.com/ko-kr/121031",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "내추럴 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "데저트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "블랙 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "화이트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "내추럴 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "데저트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "블랙 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "화이트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "내추럴 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "데저트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "블랙 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "화이트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 8,
+          "color": "내추럴 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 8,
+          "color": "데저트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 8,
+          "color": "블랙 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 8,
+          "color": "화이트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 16 Pro Max",
+      "domestic_model_number": "A3296",
+      "released_on_kr": "2024-09-20",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 사양",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://support.apple.com/ko-kr/121032",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "내추럴 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "데저트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "블랙 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "화이트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "내추럴 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "데저트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "블랙 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "화이트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 8,
+          "color": "내추럴 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 8,
+          "color": "데저트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 8,
+          "color": "블랙 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 8,
+          "color": "화이트 티타늄",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 16e",
+      "domestic_model_number": "A3409",
+      "released_on_kr": "2025-02-28",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.apple.com/kr/newsroom/2025/02/apple-debuts-iphone-16e-a-powerful-new-member-of-the-iphone-16-family/",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 17",
+      "domestic_model_number": "A3520",
+      "released_on_kr": "2025-09-19",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.apple.com/kr/newsroom/2025/09/apple-introduces-iphone-17/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "미스트 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "세이지",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "라벤더",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "미스트 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "세이지",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "라벤더",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone Air",
+      "domestic_model_number": "A3517",
+      "released_on_kr": "2025-09-19",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.apple.com/kr/newsroom/2025/09/introducing-iphone-air-a-powerful-new-iphone-with-a-breakthrough-design/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "스페이스 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "클라우드 화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "라이트 골드",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "스카이 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "스페이스 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "클라우드 화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "라이트 골드",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "스카이 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 8,
+          "color": "스페이스 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 8,
+          "color": "클라우드 화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 8,
+          "color": "라이트 골드",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 8,
+          "color": "스카이 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 17 Pro",
+      "domestic_model_number": "A3523",
+      "released_on_kr": "2025-09-19",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.apple.com/kr/newsroom/2025/09/apple-unveils-iphone-17-pro-and-iphone-17-pro-max-the-most-powerful-and-advanced-pro-models-ever/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "실버 알루미늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "딥 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "코스믹 오렌지",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "실버 알루미늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "딥 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "코스믹 오렌지",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "실버 알루미늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "딥 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "코스믹 오렌지",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 17 Pro Max",
+      "domestic_model_number": "A3526",
+      "released_on_kr": "2025-09-19",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.apple.com/kr/newsroom/2025/09/apple-unveils-iphone-17-pro-and-iphone-17-pro-max-the-most-powerful-and-advanced-pro-models-ever/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "실버 알루미늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "딥 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "코스믹 오렌지",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "실버 알루미늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "딥 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "코스믹 오렌지",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "실버 알루미늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "딥 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "코스믹 오렌지",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "실버 알루미늄",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "딥 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "코스믹 오렌지",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 17e",
+      "domestic_model_number": "A3634",
+      "released_on_kr": "2026-03-11",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.apple.com/kr/newsroom/2026/03/apple-introduces-iphone-17e/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "소프트 핑크",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "소프트 핑크",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 18 Pro",
+      "domestic_model_number": "A3714",
+      "released_on_kr": "2026-09-18",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.apple.com/kr/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "글래시어",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "버건디",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "글래시어",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "버건디",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "글래시어",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "버건디",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "글래시어",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "버건디",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone 18 Pro Max",
+      "domestic_model_number": "A3717",
+      "released_on_kr": "2026-09-18",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.apple.com/kr/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "글래시어",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "버건디",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "글래시어",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "버건디",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "글래시어",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "버건디",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "글래시어",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "버건디",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "apple",
+      "model_name": "iPhone Duo",
+      "domestic_model_number": "A3720",
+      "released_on_kr": "2026-10-23",
+      "os": "ios",
+      "source_name": "Apple Korea 공식 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.apple.com/kr/newsroom/2026/09/apple-unveils-iphone-duo/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "나이트 스카이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "스타 화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "나이트 스카이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "스타 화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "나이트 스카이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "스타 화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "나이트 스카이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 2048,
+          "ram_gb": 12,
+          "color": "스타 화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy A25 5G",
+      "domestic_model_number": "SM-A256N",
+      "released_on_kr": "2024-01-05",
+      "os": "android",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a25-5g-a256/SM-A256NZYAKOO/",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "라이트 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "블루 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S24",
+      "domestic_model_number": "SM-S921N",
+      "released_on_kr": "2024-01-31",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-갤럭시-s24-시리즈-사전-판매-실시",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "오닉스 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "마블 그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "코발트 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "앰버 옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "오닉스 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "마블 그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "코발트 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "앰버 옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "제이드 그린",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "사파이어 블루",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "샌드스톤 오렌지",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "제이드 그린",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "사파이어 블루",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "샌드스톤 오렌지",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S24+",
+      "domestic_model_number": "SM-S926N",
+      "released_on_kr": "2024-01-31",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-갤럭시-s24-시리즈-사전-판매-실시",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "오닉스 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "마블 그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "코발트 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "앰버 옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "오닉스 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "마블 그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "코발트 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "앰버 옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "제이드 그린",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "사파이어 블루",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "샌드스톤 오렌지",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "제이드 그린",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "사파이어 블루",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "샌드스톤 오렌지",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S24 Ultra",
+      "domestic_model_number": "SM-S928N",
+      "released_on_kr": "2024-01-31",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-갤럭시-s24-시리즈-사전-판매-실시",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "티타늄 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "티타늄 그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "티타늄 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "티타늄 옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 그린",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 블루",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 오렌지",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 그린",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 블루",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 오렌지",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy A15 LTE",
+      "domestic_model_number": "SM-A155N",
+      "released_on_kr": "2024-03-18",
+      "os": "android",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a15-lte-a155/SM-A155NZKEKOO/",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "블루 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "라이트 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Buddy3",
+      "domestic_model_number": "SM-A156L",
+      "released_on_kr": "2024-04-26",
+      "os": "android",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a15-5g-a156-co/SM-A156LZKALUC/",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "블루 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "라이트 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy A35 5G",
+      "domestic_model_number": "SM-A356N",
+      "released_on_kr": "2024-06-21",
+      "os": "android",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a35-5g-a356/SM-A356NLBWKOO/",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "어썸 아이스블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "어썸 라일락",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "어썸 네이비",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Z Fold6",
+      "domestic_model_number": "SM-F956N",
+      "released_on_kr": "2024-07-24",
+      "os": "android",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-fold6/specs/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "네이비",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "핑크",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "네이비",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "핑크",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "네이비",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "핑크",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "크래프티드 블랙",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "화이트",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "크래프티드 블랙",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "화이트",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "크래프티드 블랙",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "화이트",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Z Flip6",
+      "domestic_model_number": "SM-F741N",
+      "released_on_kr": "2024-07-24",
+      "os": "android",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-z-flip6/specs/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "민트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "민트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "크래프티드 블랙",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "화이트",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "피치",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "크래프티드 블랙",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "화이트",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "피치",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Quantum5",
+      "domestic_model_number": "SM-A556S",
+      "released_on_kr": "2024-08-28",
+      "os": "android",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a55-5g-a556-co/SM-A556SZKBSKC/",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "어썸 아이스블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "어썸 네이비",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "어썸 라일락",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S24 FE",
+      "domestic_model_number": "SM-S721N",
+      "released_on_kr": "2024-11-01",
+      "os": "android",
+      "source_name": "삼성전자 지원",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-S721NLBWKOO/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "그라파이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "옐로우",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy A16 LTE",
+      "domestic_model_number": "SM-A165N",
+      "released_on_kr": "2024-11-29",
+      "os": "android",
+      "source_name": "삼성전자 지원",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-A165NLGEKOO/",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 4,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 4,
+          "color": "그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 4,
+          "color": "라이트 그린",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S25",
+      "domestic_model_number": "SM-S931N",
+      "released_on_kr": "2025-02-07",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-사전-판매-시작",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "네이비",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "아이스블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "민트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "네이비",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "아이스블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "민트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "코랄 레드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "블루 블랙",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "핑크 골드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "코랄 레드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "블루 블랙",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "핑크 골드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S25+",
+      "domestic_model_number": "SM-S936N",
+      "released_on_kr": "2025-02-07",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-사전-판매-시작",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "네이비",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "아이스블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "민트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "네이비",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "아이스블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "민트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "코랄 레드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "블루 블랙",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "핑크 골드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "코랄 레드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "블루 블랙",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "핑크 골드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S25 Ultra",
+      "domestic_model_number": "SM-S938N",
+      "released_on_kr": "2025-02-07",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-사전-판매-시작",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "티타늄 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "티타늄 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "티타늄 실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 12,
+          "color": "티타늄 그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 제트블랙",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 제이드그린",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 핑크골드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 제트블랙",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 제이드그린",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 핑크골드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "티타늄 제트블랙",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S25 Edge",
+      "domestic_model_number": "SM-S937N",
+      "released_on_kr": "2025-05-23",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-갤럭시-s25-엣지-국내-출시",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 아이시블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "티타늄 제트블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 실버",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 아이시블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "티타늄 제트블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy A36 5G",
+      "domestic_model_number": "SM-A366N",
+      "released_on_kr": "2025-06-12",
+      "os": "android",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a36-5g-a366/SM-A366NLVAKOO/",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "어썸 라벤더",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "어썸 화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "어썸 블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Z Fold7",
+      "domestic_model_number": "SM-F966N",
+      "released_on_kr": "2025-07-25",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드7-공개",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "블루 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "제트블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "블루 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "제트블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "블루 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "제트블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "민트",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "민트",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "민트",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Z Flip7",
+      "domestic_model_number": "SM-F766N",
+      "released_on_kr": "2025-07-25",
+      "os": "android",
+      "source_name": "삼성전자 서비스",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsungsvc.co.kr/solution/4033898",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "블루 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "제트블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "코랄 레드",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "블루 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "제트블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "코랄 레드",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "민트",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "민트",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Z Flip7 FE",
+      "domestic_model_number": "SM-F761N",
+      "released_on_kr": "2025-07-25",
+      "os": "android",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsungsvc.co.kr/solution/4033898",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Quantum6",
+      "domestic_model_number": "SM-A566S",
+      "released_on_kr": "2025-08-01",
+      "os": "android",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a56-5g-a566s-co/SM-A566SZKBSKC/",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "어썸 라이트그레이",
+          "sku_example": "SM-A566SZABSKC",
+          "official_option_verified": true,
+          "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a56-5g-a566s-co/SM-A566SZABSKC/",
+          "notes": "삼성닷컴 SM-A566S 공식 SKU 확인 색상(기존 DB의 어썸 네이비/아이스블루와 대조 검수 권장)"
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "어썸 그라파이트",
+          "sku_example": "SM-A566SZKBSKC",
+          "official_option_verified": true,
+          "source_url": "https://www.samsung.com/sec/smartphones/galaxy-a56-5g-a566s-co/SM-A566SZKBSKC/",
+          "notes": "삼성닷컴 SM-A566S 공식 SKU 확인 색상(기존 DB의 어썸 네이비/아이스블루와 대조 검수 권장)"
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S25 FE",
+      "domestic_model_number": "SM-S731N",
+      "released_on_kr": "2025-09-19",
+      "os": "android",
+      "source_name": "삼성전자 대한민국",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/smartphones/galaxy-s25-fe-sm-s731/SM-S731NZWWKOD/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "네이비",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "아이스블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "제트블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy A17 LTE",
+      "domestic_model_number": "SM-A175N",
+      "released_on_kr": "2025-11-07",
+      "os": "android",
+      "source_name": "삼성전자 지원",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-A175NZAAKOD/",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "라이트 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "그레이",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S26",
+      "domestic_model_number": "SM-S942N",
+      "released_on_kr": "2026-03-11",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-3세대-ai폰-갤럭시-s26-시리즈-공개",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "코발트 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "스카이 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "코발트 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "스카이 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "핑크 골드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "핑크 골드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S26+",
+      "domestic_model_number": "SM-S947N",
+      "released_on_kr": "2026-03-11",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-3세대-ai폰-갤럭시-s26-시리즈-공개",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "코발트 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "스카이 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "코발트 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "스카이 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "핑크 골드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "핑크 골드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S26 Ultra",
+      "domestic_model_number": "SM-S948N",
+      "released_on_kr": "2026-03-11",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-3세대-ai폰-갤럭시-s26-시리즈-공개",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "코발트 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "스카이 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "코발트 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "스카이 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "핑크 골드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "핑크 골드",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "실버 쉐도우",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "코발트 바이올렛",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "블랙",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "스카이 블루",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "핑크 골드",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "실버 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy A37 5G",
+      "domestic_model_number": "SM-A376N",
+      "released_on_kr": "2026-06-19",
+      "os": "android",
+      "source_name": "삼성전자 지원",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-A376NZAAKOO/",
+      "options": [
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "어썸 라벤더",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "어썸 화이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "어썸 차콜",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Z Fold8 Ultra",
+      "domestic_model_number": "SM-F976N",
+      "released_on_kr": "2026-08-07",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드8-울트라·폴드8·플립8-갤럭시",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "바이올렛 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "그라파이트",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "크림",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "바이올렛 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "그라파이트",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "크림",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "바이올렛 쉐도우",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "그라파이트",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "크림",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "그린 쉐도우",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 전용 색상(기존 pending DB 색상과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "그린 쉐도우",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 전용 색상(기존 pending DB 색상과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "그린 쉐도우",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 전용 색상(기존 pending DB 색상과 정합성 검수 권장)"
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Z Fold8",
+      "domestic_model_number": "SM-F971N",
+      "released_on_kr": "2026-08-07",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드8-울트라·폴드8·플립8-갤럭시",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "라벤더",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 네이비/실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "그라파이트",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 네이비/실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "크림",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 네이비/실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "라벤더",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 네이비/실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "그라파이트",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 네이비/실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "크림",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 네이비/실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "라벤더",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 네이비/실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "그라파이트",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 네이비/실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "크림",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 네이비/실버 쉐도우/제트블랙과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "피스타치오",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 전용 색상(기존 pending DB 색상과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "피스타치오",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 전용 색상(기존 pending DB 색상과 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 1024,
+          "ram_gb": 16,
+          "color": "피스타치오",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 전용 색상(기존 pending DB 색상과 정합성 검수 권장)"
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy Z Flip8",
+      "domestic_model_number": "SM-F776N",
+      "released_on_kr": "2026-08-07",
+      "os": "android",
+      "source_name": "삼성전자 뉴스룸",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드8-울트라·폴드8·플립8-갤럭시",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "핑크",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 민트/블루/실버 쉐도우와 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "그라파이트",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 민트/블루/실버 쉐도우와 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "크림",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 민트/블루/실버 쉐도우와 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "핑크",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 민트/블루/실버 쉐도우와 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "그라파이트",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 민트/블루/실버 쉐도우와 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "크림",
+          "channel": "standard",
+          "official_option_verified": true,
+          "notes": "삼성 뉴스룸 공식 색상(기존 pending DB 색상 민트/블루/실버 쉐도우와 정합성 검수 권장)"
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "민트",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "민트",
+          "channel": "samsung_dotcom_exclusive",
+          "official_option_verified": true
+        }
+      ]
+    },
+    {
+      "brand": "samsung",
+      "model_name": "Galaxy S26 FE",
+      "domestic_model_number": "SM-S741N",
+      "released_on_kr": "2026-09-04",
+      "os": "android",
+      "source_name": "삼성전자 지원",
+      "source_kind": "manufacturer_kr",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-S741NLGWKOD/",
+      "options": [
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "블루베리",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "그라파이트",
+          "channel": "standard",
+          "official_option_verified": true
+        },
+        {
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "피스타치오",
+          "channel": "standard",
+          "official_option_verified": true
+        }
+      ]
+    }
+  ]
+}
