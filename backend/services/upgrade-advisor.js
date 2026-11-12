@@ -456,7 +456,9 @@ function buildDeviceCandidateComparison(ownedDeviceProduct, candidate) {
     candidate: candidate.chipset || null,
     note: '동일 기준의 검증된 벤치마크 데이터가 없어 칩셋 명칭만 제공하며 정량 성능 배수를 단정하지 않습니다.'
   };
-  insufficientFields.push('chipset_benchmark');
+  insufficientFields.push('chipset_benchmark', 'camera', 'usage_performance');
+  fields.camera = { status: 'insufficient_data', note: '동일 기준으로 검증된 카메라 비교 자료가 없습니다.' };
+  fields.usage_performance = { status: 'insufficient_data', note: '용도별 실측 성능 자료가 없어 체감 성능 향상을 단정하지 않습니다.' };
 
   // 가격: 신규 후보 구매 비용 표시
   const candPrice = candidate.price || null;
@@ -505,7 +507,9 @@ function evaluateKeepCurrentDeviceOption({ ownedDevice, upgradeContext, hard, ca
     const weightOk = hard.max_weight_g === null || (prod.weight_g && Number(prod.weight_g) <= hard.max_weight_g);
     const fiveGOk = !hard.require_5g || Boolean(prod.supports_5g);
     const wirelessOk = !hard.require_wireless_charging || Boolean(prod.wireless_charging);
-    meetsCurrentNeeds = Boolean(storageOk && refreshOk && weightOk && fiveGOk && wirelessOk);
+    const osOk = !hard.required_os || prod.os === hard.required_os;
+    const brandOk = !hard.allowed_brands || hard.allowed_brands.includes(prod.brand);
+    meetsCurrentNeeds = Boolean(storageOk && refreshOk && weightOk && fiveGOk && wirelessOk && osOk && brandOk);
 
     if (meetsCurrentNeeds) {
       reasonsToKeep.push(
@@ -531,8 +535,8 @@ function evaluateKeepCurrentDeviceOption({ ownedDevice, upgradeContext, hard, ca
     }
   }
 
-  const recommendKeep = (meetsCurrentNeeds && intent === 'low_or_keep_if_okay' && painPoints.length === 0) ||
-    (meetsCurrentNeeds && reasonsToKeep.length >= 2);
+  const recommendKeep = painPoints.length === 0 && ((meetsCurrentNeeds && intent === 'low_or_keep_if_okay' && painPoints.length === 0) ||
+    (meetsCurrentNeeds && reasonsToKeep.length >= 2));
 
   if (satisfied.length > 0 && recommendKeep) {
     reasonsToKeep.push(`기존 기기에서 만족하신 요소(${satisfied.join(', ')})를 추가 지출 없이 계속 유지할 수 있습니다.`);
@@ -588,7 +592,83 @@ function validateUpgradeContextInput(rawContext) {
   return { satisfied_aspects, pain_points, replacement_intent };
 }
 
+
+// Purchase eligibility is still enforced by the existing catalog. This gate only
+// decides whether a verified difference addresses the owner's stated need.
+const VERIFIABLE_UPGRADE_NEEDS = new Set(['storage', 'portability', 'display', 'os_ecosystem']);
+const UPGRADE_NEED_LABELS = {
+  battery: '배터리',
+  camera: '카메라',
+  performance: '성능',
+  portability: '휴대성',
+  display: '화면',
+  storage: '저장 용량',
+  price: '비용',
+  os_ecosystem: 'OS·생태계'
+};
+
+function evaluateUpgradeDecision(context) {
+  const owned = context.replacement_device;
+  if (!owned) return null;
+  const conditions = context.purchase_conditions || {};
+  const u = conditions.upgrade_context;
+  const result = (status, questions = [], reasons = []) => ({ status, questions, reasons, eligible_variant_ids: [] });
+  if (!u || !conditions.purchase_reason || (!u.satisfied_aspects?.length && !u.pain_points?.length)) {
+    return result('clarify', ['교체를 고려하는 이유와 현재 기기의 만족 항목 또는 불편 항목을 알려 주세요.']);
+  }
+  if (owned.category !== 'smartphone' || !owned.product?.verified) {
+    return result('clarify', ['보유 스마트폰의 검증된 모델·옵션을 확인해 주세요. 수동 입력 사양으로 성능을 추측하지 않습니다.']);
+  }
+  const candidates = context.candidates_snapshot || [];
+  const keep = evaluateKeepCurrentDeviceOption({ ownedDevice: owned, upgradeContext: u, hard: conditions.hard, candidates });
+  if (keep.meets_current_hard_specs && !u.pain_points.length && u.replacement_intent === 'low_or_keep_if_okay') {
+    return result('keep', [], keep.reasons);
+  }
+  if (!candidates.length) return result('defer', [], ['현재 예산·필수 조건과 확인 가능한 가격을 충족하는 교체 후보가 없습니다. 가격 하락이나 신제품 출시는 예측하지 않습니다.']);
+  const needs = u.pain_points.length ? u.pain_points : (conditions.soft?.priorities || []);
+  if (!needs.length) return result('clarify', ['교체로 개선하고 싶은 항목을 선택해 주세요.']);
+  const verifiableNeeds = needs.filter(need => VERIFIABLE_UPGRADE_NEEDS.has(need));
+  const unverifiedNeeds = needs.filter(need => !VERIFIABLE_UPGRADE_NEEDS.has(need));
+  const formatNeeds = list => list.map(need => UPGRADE_NEED_LABELS[need] || need).join('·');
+
+  if (!verifiableNeeds.length) {
+    return result('defer', [], [
+      `선택하신 항목(${formatNeeds(unverifiedNeeds)})에 대한 동일 기준 실측·시세 비교 데이터가 없어 교체를 권장하기 어렵습니다. 수리 비용·배터리 상태 또는 용도별 성능 자료를 확인한 뒤 다시 판단해 주세요.`
+    ]);
+  }
+
+  const current = owned.product;
+  const gain = (c, field, lower = false) => current[field] != null && c[field] != null && (lower ? Number(c[field]) < Number(current[field]) : Number(c[field]) > Number(current[field]));
+  const improves = (c, need) => {
+    if (need === 'storage') return gain(c, 'storage_gb');
+    if (need === 'portability') return gain(c, 'weight_g', true);
+    if (need === 'display') return gain(c, 'refresh_hz');
+    if (need === 'os_ecosystem') return !!conditions.soft?.preferred_os && c.os === conditions.soft.preferred_os && current.os !== c.os;
+    return false;
+  };
+  const eligible = candidates.filter(c => verifiableNeeds.every(need => improves(c, need)));
+  if (!eligible.length) {
+    return result('defer', [], [
+      `말씀하신 개선 항목(${formatNeeds(verifiableNeeds)})을 객관적으로 충족하는 교체 후보를 현재 데이터에서 찾지 못했습니다. 수리 비용·배터리 상태 또는 조건을 조정한 뒤 다시 판단해 주세요.`
+    ]);
+  }
+  const unverifiedCautions = unverifiedNeeds.length
+    ? [`선택하신 항목 중 ${formatNeeds(unverifiedNeeds)} 관련 실측·시세 비교 자료는 없어, 데이터로 확인 가능한 ${formatNeeds(verifiableNeeds)} 개선을 기준으로 후보를 선별했습니다.`]
+    : [];
+  return {
+    status: 'recommend',
+    questions: [],
+    reasons: [],
+    eligible_variant_ids: eligible.map(c => String(c.variant_id)),
+    verified_needs: verifiableNeeds,
+    unverified_needs: unverifiedNeeds,
+    unverified_cautions: unverifiedCautions
+  };
+}
+
 module.exports = {
+  VERIFIABLE_UPGRADE_NEEDS,
+  evaluateUpgradeDecision,
   DEVICE_UPGRADE_POLICIES,
   getSnoozeDays,
   computeAnniversaryDateKst,

@@ -40,3 +40,49 @@ function reload(){if(form.value&&JSON.stringify(form.value)!==baseline&&!window.
 async function save(){if(busy.value||conflict.value)return;error.value='';success.value='';if(!form.value.common.usages.length){error.value='주요 사용 목적을 1개 이상 선택해 주세요.';return}busy.value=true;try{const body=JSON.parse(JSON.stringify(form.value));body.common.lifestyle_note=body.common.lifestyle_note?.trim()||null;apply((await api('/api/profile',{method:'PUT',body})).data);success.value='프로필을 저장했어요.'}catch(e){error.value=memberMessage(e);conflict.value=e.code==='PROFILE_CHANGED'}finally{busy.value=false}}
 onMounted(load)
 </script>
+
+<style scoped>
+.member-card {
+  margin-bottom: 24px !important;
+}
+.member-email {
+  font-size: 16px;
+  font-weight: 650;
+  color: #111111;
+  margin-bottom: 12px;
+}
+.choice-group label {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid #e5e5e7;
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111111;
+  cursor: pointer;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+.choice-group label:hover {
+  background: #f5f5f7;
+  border-color: #d4d4d8;
+}
+.choice-group label:has(input:checked) {
+  background: #f5f5f7;
+  border-color: #111111;
+  font-weight: 650;
+}
+.choice-group label:has(input:focus-visible),
+.choice-group label:focus-within {
+  outline: 2px solid #111111;
+  outline-offset: 2px;
+}
+.member-actions {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e5e7;
+}
+</style>

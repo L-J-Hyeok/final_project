@@ -4,19 +4,39 @@
   <p v-if="loading" role="status">보유 기기를 불러오는 중입니다.</p><p v-if="error" role="alert" class="auth-error">{{ error }}</p><p v-if="success" role="status" class="auth-success">{{ success }}</p>
   <div class="member-actions"><AppButton :disabled="busy || loading || !loaded" @click="start()">기기 등록</AppButton><AppButton secondary :disabled="busy || loading" @click="load">목록 새로고침</AppButton></div>
   <UpgradeNotice v-if="offer" :offer="offer" :busy="busy || loading" @action="changeState" />
-  <p v-if="loaded && !devices.length" class="member-empty">등록된 기기가 없어요. 첫 스마트폰을 등록해 보세요.</p>
-  <div class="member-grid">
-    <v-card v-for="d in devices" :key="d.id" class="member-card device-card">
-      <span class="eyebrow">{{ current(d) ? '현재 대표 스마트폰' : '기타 보유 기기' }}</span><h2>{{ title(d) }}</h2><p>{{ categories[d.category] || d.category }}</p>
-      <p>모델번호: {{ d.product?.domestic_model_number || d.manual_model_number || '정보 없음' }}</p>
-      <p>저장 용량: {{ capacity(d.product?.storage_gb ?? d.manual_storage_gb) }}<template v-if="d.product?.ram_gb"> · RAM {{ capacity(d.product.ram_gb) }}</template><template v-if="d.product?.color"> · {{ d.product.color }}</template></p>
-      <p v-for="(value,key) in d.manual_specs_json || {}" :key="key">{{ specs[key]?.label || key }}: {{ value ?? '정보 없음' }}</p>
-      <small>{{ d.source==='manual'?'수동 입력 · 미검증 사양. 성능·호환성 판정에 사용하지 않습니다.':d.product?.verified?'카탈로그 연결 · 호환성은 별도 확인 필요':'카탈로그 연결 · 모델 정보 확인 필요' }}</small>
-      <div class="member-actions"><AppButton secondary :disabled="busy || loading" @click="start(d)">수정</AppButton><AppButton secondary :disabled="busy || loading" @click="remove(d)">삭제</AppButton><AppButton v-if="d.category==='smartphone' && !current(d)" secondary :disabled="busy || loading" @click="changeState('set_current',d.id)">대표 스마트폰으로 지정</AppButton></div>
-    </v-card>
+  <div v-if="loaded && !devices.length && !error" class="devices-empty">
+    <v-icon size="48" aria-hidden="true">mdi-devices</v-icon>
+    <h2>나의 첫 기기를 등록해 보세요</h2>
+    <p>지금 쓰는 스마트폰부터 오래된 기기까지.<br>모델을 검색하거나 직접 입력할 수 있어요.</p>
+    <AppButton :disabled="busy || loading" @click="start()">첫 기기 등록</AppButton>
+  </div>
+  <div v-if="devices.length" class="devices-list-heading"><h2>내 기기 <span>{{ devices.length }}</span></h2><p>대표 스마트폰을 기준으로 업그레이드를 안내해 드려요.</p></div>
+  <div class="devices-grid" :aria-busy="loading">
+    <article v-for="d in devices" :key="d.id" class="device-card" :aria-labelledby="'device-title-'+d.id">
+      <div class="device-stage">
+        <span class="device-category">{{ categories[d.category] || d.category }}</span>
+        <span v-if="current(d)" class="device-current">대표 스마트폰</span>
+        <v-icon size="76" aria-hidden="true">{{ deviceIcon(d.category) }}</v-icon>
+      </div>
+      <div class="device-content">
+        <p class="device-brand">{{ d.product?.brand || d.manual_brand || '제조사 정보 없음' }}</p>
+        <h3 :id="'device-title-'+d.id">{{ d.product?.model_name || d.manual_model_name || '모델명 정보 없음' }}</h3>
+        <p class="device-role">{{ current(d) ? '현재 사용 중인 대표 스마트폰' : '기타 보유 기기' }}</p>
+        <dl class="device-facts">
+          <div><dt>모델번호</dt><dd>{{ d.product?.domestic_model_number || d.manual_model_number || '정보 없음' }}</dd></div>
+          <div v-if="['smartphone','laptop','tablet','pc','ssd'].includes(d.category)"><dt>저장 용량</dt><dd>{{ capacity(d.product?.storage_gb ?? d.manual_storage_gb) }}</dd></div>
+          <div v-if="d.product"><dt>RAM / 색상</dt><dd>{{ capacity(d.product.ram_gb) }} / {{ d.product.color || '정보 없음' }}</dd></div>
+          <div><dt>등록일</dt><dd>{{ registeredDate(d.created_at) }}</dd></div>
+        </dl>
+        <details v-if="Object.keys(d.manual_specs_json || {}).length" class="device-details"><summary>직접 입력한 사양</summary><dl class="device-facts"><div v-for="(value,key) in d.manual_specs_json" :key="key"><dt>{{ specs[key]?.label || key }}</dt><dd>{{ value ?? '정보 없음' }}</dd></div></dl></details>
+        <p class="device-source">{{ d.source==='manual'?'수동 등록 · 미검증 정보':'카탈로그 연결' }}<small>{{ d.source==='manual'?'입력한 사양은 성능·호환성 판정에 사용하지 않아요.':d.product?.verified?'호환성은 별도로 확인해 주세요.':'모델 정보 확인이 필요해요.' }}</small></p>
+        <div class="device-actions"><AppButton v-if="d.category==='smartphone'" secondary :to="'/recommend?device='+d.id">유지·교체 판단하기</AppButton><AppButton secondary :disabled="busy || loading" :aria-label="title(d)+' 수정'" @click="start(d)">수정</AppButton><AppButton secondary :disabled="busy || loading" :aria-label="title(d)+' 삭제'" @click="remove(d)">삭제</AppButton></div>
+        <AppButton v-if="d.category==='smartphone' && !current(d)" class="device-primary-action" secondary :disabled="busy || loading" @click="changeState('set_current',d.id)">대표 스마트폰으로 지정</AppButton>
+      </div>
+    </article>
   </div>
   <v-dialog v-model="editor" max-width="760" :persistent="busy || searching">
-    <v-card class="member-card device-editor"><h2 id="device-editor-title">{{ editingId?'기기 정보 수정':'기기 등록' }}</h2><p v-if="editingId">기기 정보 수정 시 기존 추천 이력과 이 기기의 숨김 설정이 초기화됩니다.</p>
+    <v-card class="member-card device-editor"><h2 id="device-editor-title">{{ editingId?'기기 정보 수정':'기기 등록' }}</h2><p v-if="editingId">기기 정보를 수정해도 과거 추천 이력은 보존됩니다. 이 기기의 숨김 설정은 초기화됩니다.</p>
       <p v-if="formError" role="alert" class="auth-error">{{ formError }}</p>
       <form class="member-form" aria-labelledby="device-editor-title" @submit.prevent="save">
         <fieldset :disabled="busy || searching">
@@ -59,6 +79,8 @@ const blank=()=>({category:'smartphone',manual_brand:'',manual_model_name:'',man
 const manual=ref(blank()),hasStorage=computed(()=>['smartphone','laptop','tablet','pc','ssd'].includes(manual.value.category))
 const current=d=>String(offer.value?.current_device?.owned_device_id)===String(d.id)
 const title=d=>d.product?`${d.product.brand} ${d.product.model_name}`:`${d.manual_brand} ${d.manual_model_name}`
+const deviceIcon=category=>({smartphone:'mdi-cellphone',laptop:'mdi-laptop',tablet:'mdi-tablet',watch:'mdi-watch',monitor:'mdi-monitor',pc:'mdi-desktop-tower',cpu:'mdi-chip',gpu:'mdi-expansion-card',ram:'mdi-memory',ssd:'mdi-harddisk'}[category] || 'mdi-devices')
+const registeredDate=value=>{if(!value)return '정보 없음';const date=new Date(value);return Number.isNaN(date.getTime())?'정보 없음':new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric'}).format(date)}
 const capacity=v=>v===null||v===undefined||v===''?'정보 없음':`${v}GB`
 async function load(){loading.value=true;error.value='';try{const [d,o]=await Promise.all([api('/api/owned-devices?limit=50'),api('/api/upgrade-offer')]);devices.value=d.data;offer.value=o.data;loaded.value=true;return true}catch(e){error.value=memberMessage(e);return false}finally{loading.value=false}}
 function start(d){editingId.value=d?.id||null;mode.value=d?.source||'catalog';query.value='';searchQuery='';options.value=d?.product?[d.product]:[];selected.value=d?.variant_id||null;cursor.value=null;searched.value=false;formError.value='';searchError.value='';manual.value=d?.source==='manual'?{category:d.category,manual_brand:d.manual_brand,manual_model_name:d.manual_model_name,manual_model_number:d.manual_model_number||'',manual_storage_gb:d.manual_storage_gb??'',manual_specs_json:{...d.manual_specs_json}}:blank();makeCurrent.value=d?current(d):true;editor.value=true}
@@ -70,6 +92,65 @@ async function save(){if(busy.value||searching.value)return;formError.value='';l
  if(duplicate&&!window.confirm('같은 모델이 이미 등록되어 있어요. 별도로 보유한 기기로 저장할까요?'))return
  busy.value=true;success.value='';error.value='';try{const r=await api(editingId.value?`/api/owned-devices/${editingId.value}`:'/api/owned-devices',{method:editingId.value?'PUT':'POST',body});editor.value=false;success.value='기기를 저장했어요.';if(makeCurrent.value&&r.data.device.category==='smartphone'){try{await api('/api/upgrade-offer/state',{method:'PUT',body:{action:'set_current',owned_device_id:r.data.device.id}})}catch(e){success.value='기기는 저장됐지만 대표 기기 지정은 실패했어요. 목록에서 다시 지정해 주세요.'}}const refreshed=await load();if(!refreshed)success.value+=' 최신 목록을 불러오지 못했어요. 다시 등록하지 말고 목록을 새로고침해 주세요.'}catch(e){formError.value=memberMessage(e)}finally{busy.value=false}}
 async function changeState(action,id){if(busy.value||loading.value)return;busy.value=true;error.value='';success.value='';try{offer.value=(await api('/api/upgrade-offer/state',{method:'PUT',body:{action,owned_device_id:String(id)}})).data;success.value=action==='set_current'?'대표 스마트폰을 변경했어요.':action==='snooze'?'업그레이드 안내를 나중으로 미뤘어요.':'이 기기의 업그레이드 제안을 숨겼어요.'}catch(e){error.value=memberMessage(e)}finally{busy.value=false}}
-async function remove(d){if(busy.value||!window.confirm(`${title(d)} 기기를 삭제할까요? 이 기기의 숨김 설정과 기존 추천 이력도 삭제됩니다.`))return;busy.value=true;success.value='';try{await api(`/api/owned-devices/${d.id}`,{method:'DELETE'});success.value='기기를 삭제했어요.';await load()}catch(e){error.value=memberMessage(e)}finally{busy.value=false}}
+async function remove(d){if(busy.value||!window.confirm(`${title(d)} 기기를 삭제할까요? 이 기기의 숨김 설정은 삭제하고 과거 추천 이력은 당시 정보로 보존합니다.`))return;busy.value=true;success.value='';try{await api(`/api/owned-devices/${d.id}`,{method:'DELETE'});success.value='기기를 삭제했어요.';await load()}catch(e){error.value=memberMessage(e)}finally{busy.value=false}}
 onMounted(load)
 </script>
+
+<style scoped>
+.devices-list-heading { display:flex; justify-content:space-between; align-items:baseline; gap:16px; margin:32px 0 16px; }
+.devices-list-heading h2 { font-size:20px; white-space:nowrap; }
+.devices-list-heading h2 span { color:#71717a; margin-left:6px; }
+.devices-list-heading p, .device-role { color:#52525b; font-size:14px; }
+.devices-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; }
+.device-card { min-width:0; overflow:hidden; border:1px solid var(--border-hairline,#e5e5e7); border-radius:24px; background:#fff; display:flex; flex-direction:column; }
+.device-stage { position:relative; display:flex; justify-content:center; align-items:center; min-height:190px; padding:56px 24px 24px; background:var(--surface-gray,#f5f5f7); color:var(--ink-black,#111); }
+.device-category, .device-current { position:absolute; top:20px; font-size:12px; line-height:24px; }
+.device-category { left:20px; color:#52525b; }
+.device-current { right:20px; padding:0 10px; border-radius:99px; background:#111; color:#fff; }
+.device-content { padding:24px; display:flex; flex-direction:column; flex:1; }
+.device-brand { font-size:12px; color:#52525b; margin:0 0 6px; }
+.device-content h3 { font-size:24px; line-height:1.3; letter-spacing:-.03em; overflow-wrap:anywhere; }
+.device-role { margin:8px 0 20px; }
+.device-facts { margin:0; font-size:14px; }
+.device-facts > div { display:grid; grid-template-columns:90px minmax(0,1fr); gap:12px; padding:8px 0; }
+.device-facts dt { color:#52525b; }
+.device-facts dd { margin:0; overflow-wrap:anywhere; color:#111; }
+.device-details { margin-top:12px; font-size:14px; }
+.device-details summary { cursor:pointer; min-height:44px; padding:12px 0; }
+.device-source { margin:20px 0; border-top:1px solid #e5e5e7; padding-top:16px; font-size:12px; color:#52525b; }
+.device-source small { display:block; margin-top:4px; font-size:12px; line-height:1.6; }
+.device-actions { display:flex; gap:10px; margin-top:auto; }
+.device-actions > * { flex:1; min-width:0; }
+.device-primary-action { margin-top:10px; width:100%; }
+.devices-empty { text-align:center; padding:64px 24px; margin-top:24px; background:var(--surface-gray,#f5f5f7); border-radius:24px; }
+.devices-empty h2 { margin:20px 0 12px; font-size:24px; }
+.devices-empty p { color:#52525b; line-height:1.8; margin-bottom:24px; }
+.device-card :focus-visible, .devices-empty :focus-visible { outline:2px solid #111; outline-offset:4px; }
+@media(max-width:700px) { .devices-grid { grid-template-columns:minmax(0,1fr); gap:20px; } .devices-list-heading { align-items:flex-start; flex-direction:column; gap:6px; } .device-content { padding:20px; } .device-content h3 { font-size:22px; } }
+@media(prefers-reduced-motion:reduce) { .search-options label { transition:none !important; } }
+.search-options label {
+  padding: 12px 10px;
+  border-radius: 8px;
+  transition: background-color 0.12s ease;
+  cursor: pointer;
+}
+.search-options label:hover {
+  background: #f5f5f7;
+}
+.choice-group label {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid #e5e5e7;
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+}
+.choice-group label:has(input:checked) {
+  background: #f5f5f7;
+  border-color: #111111;
+  font-weight: 650;
+}
+</style>

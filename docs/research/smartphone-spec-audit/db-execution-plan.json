@@ -1,0 +1,585 @@
+{
+  "plan_metadata": {
+    "generated_at": "2026-11-11T18:58:44.961Z",
+    "reference_date_kst": "2026-11-12T03:55:00+09:00",
+    "mode": "READ_ONLY_EXECUTION_PLAN_NO_DML",
+    "target_database": "MySQL (kikiroum)",
+    "schema_version_checked": "001-initial.sql",
+    "safety_audit_status": "TRUNCATE_REMOVED_SURGICAL_ROLLBACK_ENABLED",
+    "invariants": {
+      "total_models_preserved": 49,
+      "existing_variants_preserved": 31,
+      "idempotency_guaranteed": true,
+      "price_fabrication_prevented": true,
+      "approval_status_preserved": true,
+      "service_isolation_guaranteed": true
+    }
+  },
+  "option_classification_summary": {
+    "total_candidates_analyzed": 257,
+    "grade_a_direct_launch_evidence": {
+      "count": 130,
+      "description": "국내 공식 출시 완료 모델 (공식 출시 보도자료, 출시가 공시, 통신사 전산 등록 확인)"
+    },
+    "grade_b_official_announcement": {
+      "count": 81,
+      "description": "제조사 공식 언팩 발표 및 전파인증 적합성평가 식별자로 뒷받침되는 신뢰 라인업"
+    },
+    "grade_c_held_insufficient": {
+      "count": 46,
+      "description": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    "applicable_options_count": 211,
+    "applicable_new_variants_count": 181,
+    "held_variants_count": 46,
+    "expected_total_variants_after_apply": 212
+  },
+  "backup_and_recovery_plan": {
+    "snapshot_nature_declaration": "CREATE TABLE ... AS SELECT 구문은 원본의 PK, FK, 인덱스, Auto-Increment 속성을 복제하지 않으므로 구조적 스키마 백업이 아닌 순수 [데이터 값 스냅샷 테이블]로 정의 및 운용함.",
+    "backup_sql": [
+      "-- [백업 Step 1] 안전 데이터 값 스냅샷 테이블 생성 (트랜잭션 외 별도 DDL)",
+      "CREATE TABLE smartphones_data_snapshot_20261112 AS SELECT * FROM smartphones;",
+      "CREATE TABLE smartphone_variants_data_snapshot_20261112 AS SELECT * FROM smartphone_variants;",
+      "-- [백업 Step 2] 원본 데이터 무결성 검증 쿼리",
+      "SELECT COUNT(*) AS phone_count FROM smartphones_data_snapshot_20261112; -- 기대값: 49",
+      "SELECT COUNT(*) AS variant_count FROM smartphone_variants_data_snapshot_20261112; -- 기대값: 31"
+    ],
+    "transaction_rollback_sql": [
+      "-- [트랜잭션 제어] 실행 도중 오류 발생 시 COMMIT 이전 안전 롤백",
+      "START TRANSACTION;",
+      "SAVEPOINT before_smartphone_enrichment_20261112;",
+      "-- 실행 도중 오류 발생 시 아래 쿼리로 즉시 원복:",
+      "ROLLBACK TO SAVEPOINT before_smartphone_enrichment_20261112;",
+      "ROLLBACK;"
+    ],
+    "emergency_disaster_recovery_sql": [
+      "-- [사후 재난 복구] 커밋 후 치명적 오류 발견 시 이번 배치 변경분만 선별 원복 (TRUNCATE 절대 사용 금지, 기존 PK/FK 및 타 테이블 참조 관계 100% 보존)",
+      "START TRANSACTION;",
+      "-- 1) 이번 배치로 신규 적재된 변형만 선별 삭제 (기존 31개 변형 ID 및 FK 참조 보존)",
+      "DELETE FROM smartphone_variants WHERE review_metadata_json->>'$.batch_id' = 'enrichment_20261112';",
+      "-- 2) 스마트폰 기본 8개 컬럼 및 details_json을 데이터 값 스냅샷 테이블 값으로 복원 (행 삭제 없음, PK/FK 보존)",
+      "UPDATE smartphones s JOIN smartphones_data_snapshot_20261112 snap ON s.id = snap.id",
+      "SET s.os = snap.os,",
+      "    s.chipset = snap.chipset,",
+      "    s.screen_inches = snap.screen_inches,",
+      "    s.refresh_hz = snap.refresh_hz,",
+      "    s.battery_mah = snap.battery_mah,",
+      "    s.weight_g = snap.weight_g,",
+      "    s.supports_5g = snap.supports_5g,",
+      "    s.wireless_charging = snap.wireless_charging,",
+      "    s.details_json = snap.details_json,",
+      "    s.updated_at = snap.updated_at;",
+      "COMMIT;",
+      "-- [복구 검증 쿼리]",
+      "SELECT COUNT(*) FROM smartphones; -- 기대값: 49",
+      "SELECT COUNT(*) FROM smartphone_variants; -- 기대값: 31",
+      "SELECT COUNT(*) FROM smartphone_variants WHERE verified = 1; -- 기대값: 29"
+    ]
+  },
+  "details_json_merge_policy": {
+    "policy": "NON_DESTRUCTIVE_DEEP_MERGE",
+    "pre_audit_conflicts_detected": 0,
+    "description": "기존 DB에 존재하는 속성은 100% 보존하며, 누락된 키만 추가. RFC 7396 null 삭제 버그를 방지하기 위해 사전 계산된 검증 JSON 리터럴을 직접 UPDATE에 적용함.",
+    "sample_safe_sql": "UPDATE smartphones SET details_json = '{\"main_camera_mp\":48,\"ultrawide_camera_mp\":48,\"chipset\":\"Apple A18 Pro\"}', updated_at = NOW(3) WHERE id = 90000105;"
+  },
+  "execution_steps": [
+    {
+      "step": 1,
+      "title": "트랜잭션 시작 및 세이브포인트 설정",
+      "sql": "START TRANSACTION; SAVEPOINT before_smartphone_enrichment_20261112;"
+    },
+    {
+      "step": 2,
+      "title": "스마트폰 49모델 기존 컬럼 NULL 보완 (122건 UPDATE)",
+      "description": "실제 컬럼(os, chipset, screen_inches, refresh_hz, battery_mah, weight_g, supports_5g, wireless_charging)만 수정",
+      "update_statements_count": 41,
+      "sample_sql": "UPDATE smartphones SET battery_mah = 4685, updated_at = NOW(3) WHERE id = 90000105;"
+    },
+    {
+      "step": 3,
+      "title": "details_json 비파괴적 병합 적용 (49개 모델)",
+      "description": "사전 검증된 비파괴적 병합 JSON(기존 카메라/디스플레이 스펙 100% 보존, RFC 7396 null 삭제 방지)으로 49개 모델 일괄 UPDATE",
+      "update_statements_count": 49,
+      "sample_sql": "UPDATE smartphones SET details_json = '{\"main_camera_mp\":48,\"ultrawide_camera_mp\":48,\"chipset\":\"Apple A18 Pro\"}', updated_at = NOW(3) WHERE id = 90000105;"
+    },
+    {
+      "step": 4,
+      "title": "신규 변형 181건 멱등 INSERT",
+      "description": "A등급(101건) + B등급(80건) 신규 변형만 INSERT ... WHERE NOT EXISTS 멱등 등록 (C등급 보류 45건 제외). verified = 0, review_status = \"pending\", batch_id = \"enrichment_20261112\" 유지",
+      "insert_statements_count": 181,
+      "sample_sql": "INSERT INTO smartphone_variants (smartphone_id, storage_gb, ram_gb, color, source_name, source_url, verified_at, verified, launch_price_krw, launch_price_metadata_json, review_status, review_metadata_json, ram_identity_gb)\nSELECT 90000105, 256, 8, '내추럴 티타늄', 'Apple 코리아 공식 출시 라인업', 'https://support.apple.com/ko-kr/121032', NULL, 0, NULL, NULL, 'pending', '{\"batch_id\":\"enrichment_20261112\",\"status\":\"pending\",\"channel\":\"standard\",\"official_sku\":null,\"sku_status\":\"pending_review\",\"sku_verification_source\":null,\"option_release_verified\":true,\"classification\":\"A\",\"classification_reason\":\"국내 공식 출시 완료 모델 (공식 출시 보도자료, 출시가 공시, 통신사 요금제 전산 등록 확인)\",\"notes\":\"Apple 공식 발표 색상·용량 옵션 확인 완료. 단, 개별 Part Number(KH/A)는 열람 가능한 단독 공식 페이지 미확보로 추정 방지를 위해 보류(null) 처리함.\"}', 8\nWHERE NOT EXISTS (\n  SELECT 1 FROM smartphone_variants\n  WHERE smartphone_id = 90000105 AND storage_gb = 256 AND color = '내추럴 티타늄'\n);"
+    },
+    {
+      "step": 5,
+      "title": "반영 후 9단계 무결성 검증 쿼리 실행",
+      "verification_queries": [
+        {
+          "name": "스마트폰 모델 수 불변 확인",
+          "query": "SELECT COUNT(*) FROM smartphones;",
+          "expected": 49
+        },
+        {
+          "name": "총 변형 수 확인 (기존 31 + 신규 181)",
+          "query": "SELECT COUNT(*) FROM smartphone_variants;",
+          "expected": 212
+        },
+        {
+          "name": "기존 승인 상태 불변 확인",
+          "query": "SELECT COUNT(*) FROM smartphone_variants WHERE verified = 1;",
+          "expected": 29
+        },
+        {
+          "name": "신규 변형 승인 상태 격리 확인 (verified = 0)",
+          "query": "SELECT COUNT(*) FROM smartphone_variants WHERE review_metadata_json->>'$.batch_id' = 'enrichment_20261112' AND verified = 0;",
+          "expected": 181
+        },
+        {
+          "name": "신규 변형 검토 상태 격리 확인 (review_status = \"pending\")",
+          "query": "SELECT COUNT(*) FROM smartphone_variants WHERE review_metadata_json->>'$.batch_id' = 'enrichment_20261112' AND review_status = 'pending';",
+          "expected": 181
+        },
+        {
+          "name": "신규 옵션 중복 0건 확인",
+          "query": "SELECT smartphone_id, storage_gb, color, COUNT(*) FROM smartphone_variants GROUP BY smartphone_id, storage_gb, color HAVING COUNT(*) > 1;",
+          "expected": 0
+        },
+        {
+          "name": "기본 사양 NULL 보완 완료 확인 (잔여 NULL 0건)",
+          "query": "SELECT COUNT(*) FROM smartphones WHERE os IS NULL OR chipset IS NULL OR screen_inches IS NULL OR refresh_hz IS NULL OR battery_mah IS NULL OR weight_g IS NULL OR supports_5g IS NULL OR wireless_charging IS NULL;",
+          "expected": 0
+        },
+        {
+          "name": "보완값 범위 이상 없음 확인",
+          "query": "SELECT COUNT(*) FROM smartphones WHERE screen_inches <= 0 OR refresh_hz <= 0 OR weight_g <= 0;",
+          "expected": 0
+        },
+        {
+          "name": "신규 변형 가격 임의 생성 방지 확인 (launch_price_krw IS NULL)",
+          "query": "SELECT COUNT(*) FROM smartphone_variants WHERE review_metadata_json->>'$.batch_id' = 'enrichment_20261112' AND launch_price_krw IS NOT NULL;",
+          "expected": 0
+        }
+      ]
+    },
+    {
+      "step": 6,
+      "title": "최종 확정 (COMMIT)",
+      "sql": "COMMIT;"
+    }
+  ],
+  "held_options_detail": [
+    {
+      "smartphone_id": "90000134",
+      "model_name": "Galaxy S26",
+      "domestic_model_number": "SM-S942N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000134",
+      "model_name": "Galaxy S26",
+      "domestic_model_number": "SM-S942N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "화이트",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000134",
+      "model_name": "Galaxy S26",
+      "domestic_model_number": "SM-S942N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "코발트 바이올렛",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000134",
+      "model_name": "Galaxy S26",
+      "domestic_model_number": "SM-S942N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000135",
+      "model_name": "Galaxy S26+",
+      "domestic_model_number": "SM-S947N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000135",
+      "model_name": "Galaxy S26+",
+      "domestic_model_number": "SM-S947N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "화이트",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000135",
+      "model_name": "Galaxy S26+",
+      "domestic_model_number": "SM-S947N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "코발트 바이올렛",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000135",
+      "model_name": "Galaxy S26+",
+      "domestic_model_number": "SM-S947N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000136",
+      "model_name": "Galaxy S26 Ultra",
+      "domestic_model_number": "SM-S948N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000136",
+      "model_name": "Galaxy S26 Ultra",
+      "domestic_model_number": "SM-S948N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "실버 쉐도우",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000136",
+      "model_name": "Galaxy S26 Ultra",
+      "domestic_model_number": "SM-S948N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "코발트 바이올렛",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000136",
+      "model_name": "Galaxy S26 Ultra",
+      "domestic_model_number": "SM-S948N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000136",
+      "model_name": "Galaxy S26 Ultra",
+      "domestic_model_number": "SM-S948N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "실버 쉐도우",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000136",
+      "model_name": "Galaxy S26 Ultra",
+      "domestic_model_number": "SM-S948N",
+      "storage_gb": 1024,
+      "ram_gb": 16,
+      "color": "블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000137",
+      "model_name": "Galaxy S26 FE",
+      "domestic_model_number": "SM-S741N",
+      "storage_gb": 256,
+      "ram_gb": 8,
+      "color": "피스타치오",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000137",
+      "model_name": "Galaxy S26 FE",
+      "domestic_model_number": "SM-S741N",
+      "storage_gb": 256,
+      "ram_gb": 8,
+      "color": "그라파이트",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000137",
+      "model_name": "Galaxy S26 FE",
+      "domestic_model_number": "SM-S741N",
+      "storage_gb": 256,
+      "ram_gb": 8,
+      "color": "블루베리",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000138",
+      "model_name": "Galaxy A37 5G",
+      "domestic_model_number": "SM-A376N",
+      "storage_gb": 128,
+      "ram_gb": 6,
+      "color": "어썸 차콜",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000138",
+      "model_name": "Galaxy A37 5G",
+      "domestic_model_number": "SM-A376N",
+      "storage_gb": 128,
+      "ram_gb": 6,
+      "color": "어썸 라벤더",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000138",
+      "model_name": "Galaxy A37 5G",
+      "domestic_model_number": "SM-A376N",
+      "storage_gb": 128,
+      "ram_gb": 6,
+      "color": "어썸 화이트",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000139",
+      "model_name": "Galaxy Z Fold8 Ultra",
+      "domestic_model_number": "SM-F976N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "실버 쉐도우",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000139",
+      "model_name": "Galaxy Z Fold8 Ultra",
+      "domestic_model_number": "SM-F976N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "제트블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000140",
+      "model_name": "Galaxy Z Fold8",
+      "domestic_model_number": "SM-F971N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "실버 쉐도우",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000140",
+      "model_name": "Galaxy Z Fold8",
+      "domestic_model_number": "SM-F971N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "네이비",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000140",
+      "model_name": "Galaxy Z Fold8",
+      "domestic_model_number": "SM-F971N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "제트블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000140",
+      "model_name": "Galaxy Z Fold8",
+      "domestic_model_number": "SM-F971N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "실버 쉐도우",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000141",
+      "model_name": "Galaxy Z Flip8",
+      "domestic_model_number": "SM-F776N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "민트",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000141",
+      "model_name": "Galaxy Z Flip8",
+      "domestic_model_number": "SM-F776N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "실버 쉐도우",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000141",
+      "model_name": "Galaxy Z Flip8",
+      "domestic_model_number": "SM-F776N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "블루",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000141",
+      "model_name": "Galaxy Z Flip8",
+      "domestic_model_number": "SM-F776N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "민트",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000151",
+      "model_name": "iPhone 18 Pro",
+      "domestic_model_number": "A3714",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000151",
+      "model_name": "iPhone 18 Pro",
+      "domestic_model_number": "A3714",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "실버",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000151",
+      "model_name": "iPhone 18 Pro",
+      "domestic_model_number": "A3714",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "글래시어",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000151",
+      "model_name": "iPhone 18 Pro",
+      "domestic_model_number": "A3714",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "버건디",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000151",
+      "model_name": "iPhone 18 Pro",
+      "domestic_model_number": "A3714",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000151",
+      "model_name": "iPhone 18 Pro",
+      "domestic_model_number": "A3714",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "실버",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000152",
+      "model_name": "iPhone 18 Pro Max",
+      "domestic_model_number": "A3717",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000152",
+      "model_name": "iPhone 18 Pro Max",
+      "domestic_model_number": "A3717",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "실버",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000152",
+      "model_name": "iPhone 18 Pro Max",
+      "domestic_model_number": "A3717",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "글래시어",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000152",
+      "model_name": "iPhone 18 Pro Max",
+      "domestic_model_number": "A3717",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "버건디",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000152",
+      "model_name": "iPhone 18 Pro Max",
+      "domestic_model_number": "A3717",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "블랙",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000152",
+      "model_name": "iPhone 18 Pro Max",
+      "domestic_model_number": "A3717",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "실버",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000153",
+      "model_name": "iPhone Duo",
+      "domestic_model_number": "A3720",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "나이트 스카이",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000153",
+      "model_name": "iPhone Duo",
+      "domestic_model_number": "A3720",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "color": "스타 화이트",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000153",
+      "model_name": "iPhone Duo",
+      "domestic_model_number": "A3720",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "나이트 스카이",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    },
+    {
+      "smartphone_id": "90000153",
+      "model_name": "iPhone Duo",
+      "domestic_model_number": "A3720",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "color": "스타 화이트",
+      "reason": "2026년 하반기 이후 장기 미래 모델로, 최종 출시 규격 및 이동통신사 전산 등록 미완료로 인한 보류"
+    }
+  ]
+}

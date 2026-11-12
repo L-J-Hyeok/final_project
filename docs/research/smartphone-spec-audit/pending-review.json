@@ -1,0 +1,270 @@
+{
+  "generated_at": "2026-11-11T17:48:49.032Z",
+  "reference_date_kst": "2026-11-12T02:43:33+09:00",
+  "special_issues_count": 7,
+  "special_issues": [
+    {
+      "issue_id": "ISSUE-CORRECTION-RELEASE-STATUS",
+      "title": "49모델 전체 국내 공식 출시 상태 전수 정정",
+      "description": "이전 보고서에서 2026년 11월 12일 기준선임에도 불구하고 미래 연도(2025~2026년) 모델을 unannounced/not_announced로 잘못 분류한 오류를 전면 정정함. 49개 모델 전원 국내 공식 출시(confirmed_kr_general_sale) 확인 완료.",
+      "corrected_models_count": 24,
+      "status": "resolved"
+    },
+    {
+      "issue_id": "ISSUE-IPHONE-REGULATORY-BATTERY",
+      "title": "Apple 전 모델 규제기관(국립전파연구원/KTC) 인증 배터리 적재",
+      "description": "Apple 공식 소비자 기술사양은 배터리 mAh를 미공개하므로, 사용자 요청에 따라 국립전파연구원(NRRA) 적합성평가 및 KTC 안전인증 고시값을 candidate_value로 적재하고 status를 secondary_verified로 반영함.",
+      "affected_models_count": 17,
+      "status": "resolved_via_regulatory_data"
+    },
+    {
+      "issue_id": "ISSUE-IPHONE-AIR-NAME-MATCH",
+      "title": "iPhone Air 공식 명칭 대조 및 루머 가칭 검토",
+      "description": "DB 모델명은 iPhone Air (A3517)이며, Apple 공식 발표명(Introducing iPhone Air)과 완벽히 일치함. 일부 시중 루머 및 검색어인 \"iPhone 17 Air\"와의 별칭 대응을 확인하고 DB 모델명 iPhone Air를 유지함.",
+      "status": "verified_match"
+    },
+    {
+      "issue_id": "ISSUE-S26-PLUS-COLLISION",
+      "title": "Galaxy S26+ 모델번호 표기 충돌 해소",
+      "description": "초기 일부 케이스 액세서리 페이지에서 SM-S946N으로 오기되었으나, 삼성전자 제품 지원 및 한국 출시 정규 모델번호는 SM-S947N임을 최종 확인.",
+      "status": "verified_match"
+    },
+    {
+      "issue_id": "ISSUE-IPHONE-DUO-SPEC",
+      "title": "iPhone Duo 커버 디스플레이 표기 미세 차이",
+      "description": "국내 뉴스룸 보도자료(13.6cm)와 영문 기술사양 보충자료(13.7cm / 5.4인치) 간 미세 표기 차이 검토. 5.4인치(약 13.7cm) 기준 유지.",
+      "status": "under_observation"
+    },
+    {
+      "issue_id": "ISSUE-S25-ULTRA-RAM-UNIQUE-KEY",
+      "title": "Galaxy S25 Ultra 1TB RAM12/16GB 유일키 충돌 주의",
+      "description": "S25 Ultra 1TB는 RAM 12GB와 16GB(티타늄 제트블랙 전용)로 별도 출시되었음. 현행 DB의 UNIQUE(smartphone_id, storage_gb, color) 제약으로는 표현할 수 없으므로 RAM 유일키 스키마 변경 선행 필요.",
+      "status": "requires_db_schema_prerequisite"
+    },
+    {
+      "issue_id": "ISSUE-A35-SKU-MATCH",
+      "title": "Galaxy A35 5G 정규 SKU 대응 확인",
+      "description": "DB의 어썸 아이스블루 128GB는 정규 자급제 SKU SM-A356NLBWKOO와 정확히 일치함. SM-A356NLBKKOO는 어썸 네이비의 정규 SKU임.",
+      "status": "verified_match"
+    }
+  ],
+  "pending_spec_fields_count": 27,
+  "pending_spec_fields": [
+    {
+      "model_id": "90000121",
+      "domestic_model_number": "SM-A256N",
+      "model_name": "Galaxy A25 5G",
+      "field_name": "chipset",
+      "reason": "출처에 구체적 AP 미기재로 보류",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000121",
+      "domestic_model_number": "SM-A256N",
+      "model_name": "Galaxy A25 5G",
+      "field_name": "weight_g",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000122",
+      "domestic_model_number": "SM-A155N",
+      "model_name": "Galaxy A15 LTE",
+      "field_name": "chipset",
+      "reason": "출처에 구체적 AP 미기재로 보류",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000122",
+      "domestic_model_number": "SM-A155N",
+      "model_name": "Galaxy A15 LTE",
+      "field_name": "weight_g",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000123",
+      "domestic_model_number": "SM-A165N",
+      "model_name": "Galaxy A16 LTE",
+      "field_name": "chipset",
+      "reason": "출처에 구체적 AP 미기재로 보류",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000123",
+      "domestic_model_number": "SM-A165N",
+      "model_name": "Galaxy A16 LTE",
+      "field_name": "weight_g",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000128",
+      "domestic_model_number": "SM-S731N",
+      "model_name": "Galaxy S25 FE",
+      "field_name": "chipset",
+      "reason": "출처에 구체적 AP 미기재로 보류",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000132",
+      "domestic_model_number": "SM-A366N",
+      "model_name": "Galaxy A36 5G",
+      "field_name": "chipset",
+      "reason": "출처에 구체적 AP 미기재로 보류",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000133",
+      "domestic_model_number": "SM-A175N",
+      "model_name": "Galaxy A17 LTE",
+      "field_name": "chipset",
+      "reason": "출처에 구체적 AP 미기재로 보류",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000137",
+      "domestic_model_number": "SM-S741N",
+      "model_name": "Galaxy S26 FE",
+      "field_name": "chipset",
+      "reason": "출처에 구체적 AP 미기재로 보류",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000137",
+      "domestic_model_number": "SM-S741N",
+      "model_name": "Galaxy S26 FE",
+      "field_name": "screen_inches",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000137",
+      "domestic_model_number": "SM-S741N",
+      "model_name": "Galaxy S26 FE",
+      "field_name": "weight_g",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000138",
+      "domestic_model_number": "SM-A376N",
+      "model_name": "Galaxy A37 5G",
+      "field_name": "chipset",
+      "reason": "출처에 구체적 AP 미기재로 보류",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000142",
+      "domestic_model_number": "SM-A156L",
+      "model_name": "Galaxy Buddy3",
+      "field_name": "chipset",
+      "reason": "출처에 구체적 AP 미기재로 보류",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000142",
+      "domestic_model_number": "SM-A156L",
+      "model_name": "Galaxy Buddy3",
+      "field_name": "weight_g",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000143",
+      "domestic_model_number": "SM-A556S",
+      "model_name": "Galaxy Quantum5",
+      "field_name": "chipset",
+      "reason": "출처에 구체적 AP 미기재로 보류",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000143",
+      "domestic_model_number": "SM-A556S",
+      "model_name": "Galaxy Quantum5",
+      "field_name": "weight_g",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000144",
+      "domestic_model_number": "SM-A566S",
+      "model_name": "Galaxy Quantum6",
+      "field_name": "chipset",
+      "reason": "출처에 구체적 AP 미기재로 보류",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000144",
+      "domestic_model_number": "SM-A566S",
+      "model_name": "Galaxy Quantum6",
+      "field_name": "screen_inches",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000144",
+      "domestic_model_number": "SM-A566S",
+      "model_name": "Galaxy Quantum6",
+      "field_name": "weight_g",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000145",
+      "domestic_model_number": "A3409",
+      "model_name": "iPhone 16e",
+      "field_name": "weight_g",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000148",
+      "domestic_model_number": "A3523",
+      "model_name": "iPhone 17 Pro",
+      "field_name": "screen_inches",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000149",
+      "domestic_model_number": "A3526",
+      "model_name": "iPhone 17 Pro Max",
+      "field_name": "screen_inches",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000149",
+      "domestic_model_number": "A3526",
+      "model_name": "iPhone 17 Pro Max",
+      "field_name": "weight_g",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000150",
+      "domestic_model_number": "A3634",
+      "model_name": "iPhone 17e",
+      "field_name": "weight_g",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000151",
+      "domestic_model_number": "A3714",
+      "model_name": "iPhone 18 Pro",
+      "field_name": "screen_inches",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    },
+    {
+      "model_id": "90000152",
+      "domestic_model_number": "A3717",
+      "model_name": "iPhone 18 Pro Max",
+      "field_name": "screen_inches",
+      "reason": "미표기",
+      "recommendation": "출처 보도자료에 해당 수치 미표기됨. 제조사 사용자 매뉴얼 또는 상세 스펙 공시 후 보강 권장"
+    }
+  ]
+}

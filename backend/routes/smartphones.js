@@ -16,7 +16,7 @@ function db() {
   return connection.getDatabase();
 }
 
-router.use(['/smartphones', '/recommendation-candidates'], wrap(async (req, res, next) => {
+router.use(['/recommendation-candidates'], wrap(async (req, res, next) => {
   if (!req.session || !req.session.user_id) throw catalog.fail('AUTH_REQUIRED', 401);
   const user = await db().models.users.findByPk(req.session.user_id, { attributes: ['id'] });
   if (!user) throw catalog.fail('AUTH_REQUIRED', 401);
@@ -39,6 +39,8 @@ const VARIANT_JOIN_SQL = `
     s.weight_g,
     s.supports_5g,
     s.wireless_charging,
+    s.official_product_url,
+    s.details_json,
     s.source_name AS phone_source_name,
     s.source_url AS phone_source_url,
     s.verified_at AS phone_verified_at,
@@ -56,6 +58,19 @@ const VARIANT_JOIN_SQL = `
   FROM smartphone_variants v
   JOIN smartphones s ON s.id = v.smartphone_id
 `;
+
+function parseJsonColumn(value) {
+  if (value === null || value === undefined) return null;
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      return parsed && typeof parsed === 'object' ? parsed : null;
+    } catch {
+      return null;
+    }
+  }
+  return typeof value === 'object' ? value : null;
+}
 
 function formatVariantRow(row, priceSummary, now) {
   const phoneVerified = Boolean(row.phone_verified);
@@ -81,6 +96,10 @@ function formatVariantRow(row, priceSummary, now) {
     storage_gb: Number(row.storage_gb),
     ram_gb: row.ram_gb === null ? null : Number(row.ram_gb),
     color: row.color,
+    official_product_url: row.official_product_url || null,
+    details_json: parseJsonColumn(row.details_json),
+    launch_price_krw: row.launch_price_krw === null || row.launch_price_krw === undefined ? null : Number(row.launch_price_krw),
+    launch_price_metadata_json: parseJsonColumn(row.launch_price_metadata_json),
     verified,
     is_test: Boolean(row.is_test),
     sources: {
@@ -145,6 +164,7 @@ router.get('/smartphones', wrap(async (req, res) => {
     'v.id > :cursor',
     "s.brand IN ('samsung', 'apple')"
   ];
+  if (q.include_test && !req.session?.user_id) throw catalog.fail('AUTH_REQUIRED', 401);
   if (q.include_test) {
     conditions[0] = conditions[0].replace('s.is_test = 0', 's.is_test = 1');
   }
@@ -209,7 +229,7 @@ router.get('/smartphones/:variantId', wrap(async (req, res) => {
   const now = new Date();
 
   let pubClause = await publication.sql(db());
-  if (process.env.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV === 'test' && req.session?.user_id) {
     pubClause = pubClause.replace('s.is_test = 0', '1=1');
   }
   const rows = await db().query(
@@ -463,21 +483,75 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
     };
   }
 
-  // 4. More than 40 candidates -> clarify without arbitrary truncation
+  // 4. More than 40 candidates -> evaluate owned-device keep/defer/clarify or narrow to verified upgrades first
   if (matchedCandidates.length > 40) {
-    return {
-      status: 'clarify',
-      as_of: now.toISOString(),
-      profile_version: profile.version,
-      input,
-      candidate_count: matchedCandidates.length,
-      candidates: [],
-      questions: [
-        `조건을 만족하는 후보가 ${matchedCandidates.length}개로 너무 많습니다. 선호 제조사·저장 용량·예산 범위를 조금 더 구체화해 주세요.`
-      ],
-      keep_current_evaluation: keepAssessment,
-      ai_context: null
-    };
+    if (replacementDevice) {
+      const earlyUpgradeDecision = upgradeAdvisor.evaluateUpgradeDecision({
+        replacement_device: replacementDevice,
+        purchase_conditions: {
+          hard: h,
+          soft: input.soft,
+          purchase_reason: input.purchase_reason,
+          upgrade_context: input.upgrade_context
+        },
+        candidates_snapshot: matchedCandidates
+      });
+      if (earlyUpgradeDecision?.status === 'recommend') {
+        const upgradedCandidates = matchedCandidates.filter(c =>
+          earlyUpgradeDecision.eligible_variant_ids.includes(String(c.variant_id))
+        );
+        if (upgradedCandidates.length > 40) {
+          return {
+            status: 'clarify',
+            clarify_reason: 'too_many_candidates',
+            as_of: now.toISOString(),
+            profile_version: profile.version,
+            input,
+            candidate_count: upgradedCandidates.length,
+            candidates: [],
+            questions: [
+              `조건을 만족하는 교체 후보가 ${upgradedCandidates.length}개로 너무 많습니다. 선호 제조사·저장 용량·예산 범위를 조금 더 구체화해 주세요.`
+            ],
+            keep_current_evaluation: keepAssessment,
+            ai_context: null
+          };
+        }
+        matchedCandidates.splice(0, matchedCandidates.length, ...upgradedCandidates);
+      } else if (earlyUpgradeDecision && ['keep', 'defer', 'clarify'].includes(earlyUpgradeDecision.status)) {
+        return {
+          status: 'clarify',
+          clarify_reason: 'too_many_candidates',
+          upgrade_decision: earlyUpgradeDecision,
+          as_of: now.toISOString(),
+          profile_version: profile.version,
+          input,
+          candidate_count: matchedCandidates.length,
+          candidates: [],
+          questions: [
+            `조건을 만족하는 후보가 ${matchedCandidates.length}개로 너무 많습니다. 선호 제조사·저장 용량·예산 범위를 조금 더 구체화해 주세요.`
+          ],
+          keep_current_evaluation: keepAssessment,
+          ai_context: null
+        };
+      }
+    }
+
+    if (matchedCandidates.length > 40) {
+      return {
+        status: 'clarify',
+        clarify_reason: 'too_many_candidates',
+        as_of: now.toISOString(),
+        profile_version: profile.version,
+        input,
+        candidate_count: matchedCandidates.length,
+        candidates: [],
+        questions: [
+          `조건을 만족하는 후보가 ${matchedCandidates.length}개로 너무 많습니다. 선호 제조사·저장 용량·예산 범위를 조금 더 구체화해 주세요.`
+        ],
+        keep_current_evaluation: keepAssessment,
+        ai_context: null
+      };
+    }
   }
 
   // 5. 1..40 candidates -> candidate_ready with structured AI input snapshot (no PII/secrets)

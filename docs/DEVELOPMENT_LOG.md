@@ -587,3 +587,229 @@ iPhone Duo(A3720, ID90000153)는 실제 DB에 있으나 공개되지 않는다. 
 변경 코드: routes/member.js, routes/smartphones.js, routes/upgrade-offers.js, routes/recommendations.js, services/smartphone-catalog.js, services/smartphone-price-preview.js, services/recommendation-validator.js. 테스트: services/smartphone-price-preview.test.js, test/upgrade.integration.test.js 수정 및 test/cross-verification.test.js·test/cross-verification.integration.test.js 추가. 문서: CURRENT_STATUS/TEST_PLAN/DEVELOPMENT_LOG만 갱신.
 
 다음: 기존 일반 개발 서버를 새 코드로 재시작하고 UI 연결 작업은 진행 가능. 신규 모델 공개/실구매 추천 출시는 별개이며, 국내 식별 근거·출고가 독립 근거·정확한 가격 SKU 매핑·유효 판매가 검수가 선행되어야 한다. 신규 자료 적재기는 재실행하지 않았다.
+
+
+## Vue 추천 화면 API 연결 — 2026-11-11T20:03:38+09:00
+
+Codex. 기존 세션 맥락과 AI_HANDOFF를 재사용하고 필요한 프론트/API 계약만 확인했다. /compare는 일반 스펙 비교이므로 보존하고 /recommend를 실제 추천 화면으로 교체했다.
+
+- 신규: front/src/api/recommendations.js, components/RecommendationResult.vue, views/RecommendView.vue, test/recommendation-ui.test.cjs. 수정: front/src/router/index.js, docs/AI_HANDOFF.md 및 본 로그.
+- GET /api/profile → 최신 version 확인 → POST /api/recommendations. 서버 내부 후보 검색을 재사용하고 별도 후보 엔드포인트/추천 로직/공개 예외를 추가하지 않았다. 기존 useMemberApi/client의 세션·CSRF·401 로그인 이동 유지. 미확정 프로필은 프로필 화면 안내. 중복 제출 방지, 자동 POST 재시도 없음.
+- 서버가 반환한 제품명·모델번호·용량·RAM·색상·근거만 표시. 예산·목적은 필수 조건, 제조사는 선호 조건. 개발용 출고가/참고 판매가는 구매 가능 가격과 구분하고 warning·확인일 표시. 가격/사양 NULL은 정보 없음. no_match/clarify/keep/defer 및 로딩·오류 상태 분리.
+- npm run build 성공, 번들 크기 관련 경고3. node --test test/recommendation-ui.test.cjs 8/8 통과: API 요청계약, 단일 POST, Mock 결과/NULL, 가격 출처·개발 경고, 로딩/오류/결과 없음, 추가 질문/유지/보류, 오류 메시지. Vue 컴파일된 컴포넌트 SSR 렌더링 검증이며 브라우저 E2E로 주장하지 않는다. 최초 테스트 경로 오기1회는 경로 수정 후 통과.
+- 실제 DB 변경·Gemini 호출0, 백엔드·CompareView 변경0, Git 쓰기0. 실제 추천 POST는 DB 이력을 생성하므로 이번 제한에 따라 호출하지 않았다. 모바일 시각 검증·실제 Express/Gemini 브라우저 흐름은 다음 확인 대상으로 남는다.
+
+
+## 추천 화면 실제 Mock E2E 완료 — 2026-11-11T20:11:48+09:00
+
+Codex. 중단 이전 완료한 UI검증은 반복하지 않고 기존 격리 브라우저·임시 계정·Mock서버를 재사용했다. 실제 /recommend에서 세션 복원·프로필GET200·CSRF 발급 경로를 거쳐 추천POST 정확히1회201 성공. model_name=mock-ai-v1, Gemini 호출0. Galaxy A35 5G/S24 FE/S24 카드3개와 official_launch/development_only 경고 표시, 서버 금액과 카드 일치 확인. 추천이력GET200 및 응답/이력의 모든 가격 필드 동일, DB 저장도 확인. 로그아웃204 후 이번 임시계정만 삭제(관련 데이터 정리), 8테이블 모든 행이 테스트 전 기록과 동일. 제품/가격/기존 사용자 변경 없음. 검증용 Mock Express·Vue 프로세스 종료. 애플리케이션 코드 수정0, AI_HANDOFF와 본 로그만 갱신. 남은 검증: 모바일390px 시각·키보드 접근성.
+
+
+## 추천 화면 모바일 반응형 및 접근성 보강 — 2026-11-11T20:25:00+09:00
+
+Antigravity. 기존 AI_WORKFLOW 및 AI_HANDOFF 규칙을 적용하여 /recommend 화면의 모바일 390px 뷰포트와 키보드 접근성을 점검·보강했다.
+- 수정 파일: front/src/views/RecommendView.vue, front/src/components/RecommendationResult.vue.
+- 모바일 390px 반응형: 체크박스 터치 타깃 44px 확장(min-height: 44px, padding: 4px 8px), submit 버튼 block 전폭 확장, 가로 스크롤 방지 minmax(min(100%, 280px), 1fr), 사양 정의 목록 flex-wrap 및 줄바꿈 최적화.
+- 키보드 접근성: Tab/Shift+Tab 논리적 DOM 순서 확인, 체크박스 :focus-within 및 :focus-visible 고대비 링(outline: 2px solid var(--blue)), h2 및 프로그래밍 포커스 컨테이너 외곽선 잔상 제거.
+- 개발용 가격 경고: .price-warning 앰버 톤 하이라이트 박스(bg: #fffbeb, border: #fde68a, color: #92400e)로 모바일 시각 인지력 및 가독성 대폭 향상.
+- 검증: test/recommendation-ui.test.cjs 8/8 통과, npm run build 성공. 백엔드·DB·인증·Git 작업 없음.
+
+
+## 스마트폰 상세 스펙 비교 화면 구현 — 2026-11-11T20:35:00+09:00
+
+Antigravity. /compare 경로의 스마트폰 상세 스펙 비교 기능을 구현 완료했다.
+- 신규: front/src/api/smartphones.js, front/test/compare-ui.test.cjs.
+- 수정: front/src/views/CompareView.vue, front/src/components/SpecComparison.vue, docs/AI_HANDOFF.md 및 본 로그.
+- 화면 구성 및 기능:
+  - 2개 비교 기본, 최대 3개까지 비교 가능 ([2개 비교], [3개 비교] 툴바 버튼).
+  - 상단 1:1 빠른 선택 드롭다운 및 모달 검색기(제조사/모델명/모델번호 텍스트 검색, 전체/삼성/애플 탭 필터).
+  - 제품 이미지 box: DB 이미지 URL 우선 반영, 부재 시 비율 왜곡 없는 정돈된 스마트폰 SVG 플레이스홀더 표시.
+  - 7개 카테고리(기본 정보, 디스플레이, 성능 및 메모리, 카메라, 배터리 및 충전, 네트워크 및 규격, 가격 및 구매 정보)로 상세 사양 나란히 비교.
+  - 같은 항목 동일 행 비교, '값 다름' 강조(spec-difference, difference-label), '차이 있는 항목만 보기'(showDiffOnly) 필터링 지원.
+  - 가격 정책 준수: verified_sale(검증된 판매가·배송비 포함), official_launch(개발용 출고가), reference_sale(개발용 참고가), 가격 없음 처리 및 개발용 가격 경고 안내.
+  - API 미제공 필드(카메라 세부 화소, 디스플레이 패널/해상도, Wi-Fi/BT/NFC, 방수·방진, Apple 비공식 RAM/배터리)는 임의 생성 없이 정직하게 '정보 없음'으로 처리.
+  - 미인증 사용자 접속 시 안내 및 로그인 링크 표시, 공개 승인된 제품만 목록 및 비교에 노출(pending/is_test 비노출).
+- 검증:
+  - test/compare-ui.test.cjs 7/7 통과 (API helper 쿼리, 2/3종 사양 렌더링, NULL/정보없음 처리, SVG 플레이스홀더, 가격 정책, 차이점 감지, 차이만 보기 필터).
+  - test/recommendation-ui.test.cjs 8/8 통과 (추천 화면 회귀 없음).
+  - npm run build 성공 (DONE Build complete).
+  - 실제 Headless Chrome 브라우저 E2E 검증 8/8 항목 전수 통과 (탭 전환, 2/3개 비교·제거, 모달 검색, 차이 강조·차이만 보기, 출고가 경고, 기기별 SVG 플레이스홀더, 노트북 준비 중 안내).
+  - 백엔드 코드 수정 0, DB 변경 0, 외부 제품 크롤링 0, Git 쓰기 0.
+
+
+## 로컬 인증·게스트 카탈로그 수정 — 2026-11-11T21:17:25+09:00
+
+Codex. 이전 맥락 재사용, Git 명령 없음. 초기 서버 미실행(ECONNREFUSED)을 확인하여 정상 npm 실행 방식으로 검증용 서버를 시작했다. .env는 앱 자동로딩만 사용했다.
+
+- 원인 재현: 동일 CSRF/쿠키로 localhost:8080 Origin은403 CSRF_INVALID, 설정 Origin의 루프백 주소는422 INVALID_INPUT(의도한 짧은 진단 비밀번호)로 다음 검증 단계 통과. 개발의 같은 포트 localhost/127.0.0.1만 allowedOrigins로 명시 허용. production exact Origin, 잘못된 토큰/Origin 거부 유지. front 프록시 수정 불필요.
+- 게스트 카탈로그는 백엔드401 및 CompareView 로그인 여부 early return의 이중 제한이었다. 공개 GET 목록/상세의 로그인 요구만 제거하고 개인 후보검색은 유지. test 환경에서도 게스트 include_test 및 테스트 상세는 차단. CompareView 로딩 조건과 안내만 수정, UI·정적 데이터 유지.
+- 비밀번호 최소8자로 변경, 최대128코드포인트/512바이트·scrypt·로그인 세션 정책 유지. 기존12자 이상 비밀번호 호환.
+- 코드: backend/auth/config.js, auth/middleware.js, routes/auth.js, routes/smartphones.js; front/src/views/AuthView.vue, CompareView.vue. 테스트: backend/test/local-auth-catalog.integration.test.js 추가, smartphone.integration.test.js 공개 GET/테스트 fixture 보호 검증 갱신. 문서: auth/README.md, ARCHITECTURE 비밀번호 안내 및 AI_HANDOFF/본 로그.
+- 실제 localhost:8080 프록시 HTTP17: 정상 CSRF8자 가입/로그인/로그아웃,7자422,CSRF누락/위조403,잘못된 포트Origin403,게스트 공개목록/상세200,pending404,개인프로필/추천이력401. 개발·운영 Origin 단위검증 포함2/2 + 기존관련32/32 =34/34. 프론트 비교/추천15/15, build 성공(크기경고3).
+- 실제 격리 게스트 브라우저 /compare 스마트폰29개·태블릿14개·워치10개 선택옵션과 오류없음 확인. 제품/기존사용자 데이터 변경0, 임시테스트 데이터 정리 후8테이블 전체행 동일. Gemini 호출0. 백엔드 재시작으로 수정 반영 확인 후 이번에 시작한 서버는 종료, 사용자는 VS Code에서 정상 실행 방식으로 재시작하면 된다.
+
+
+## 추천 이력 및 추천 결과 상세 화면 구현 — 2026-11-11T21:28:00+09:00
+
+Antigravity. /history 및 /recommendations/:id 화면을 구현 완료했다.
+- 신규: front/src/views/HistoryView.vue, front/src/views/RecommendationDetailView.vue, front/test/history-ui.test.cjs.
+- 수정: front/src/api/recommendations.js (history, getRecommendation, deleteRecommendation API 및 90일 만료 메시지 추가), front/src/router/index.js (플레이스홀더를 실제 뷰 컴포넌트로 연결), docs/AI_HANDOFF.md 및 본 로그.
+- 화면 구성 및 기능:
+  - `/history`:
+    - GET /api/recommendations 호출하여 최근 90일 보관 정책 기반의 본인 추천 이력 목록 조회.
+    - 추천 일시, 상태 뱃지(추천 완료, 조건 일치 없음, 조건 구체화, 기기 유지, 구매 보류), 당시 예산·사용 목적·선호 제조사 요약 표시.
+    - 추천 완료 건의 경우 추천 기기 모델명·용량 뱃지 요약 표시.
+    - 이력 개별 삭제 기능(DELETE /api/recommendations/:id) 및 이전 이력 더 보기(cursor 기반 페이지네이션) 지원.
+    - 빈 이력 시 AI 추천 시작 유도 카드 및 CTA 버튼 제공.
+  - `/recommendations/:id`:
+    - route.params.id 기반 GET /api/recommendations/:id 단건 상세 조회. 새로고침 후에도 유지.
+    - 상단 목록 복귀 링크, 추천 일시, 모델명, 당시 요청 조건 스냅샷(예산, 사용 목적, 선호 브랜드, 프로필 버전) 표시.
+    - 기존 `RecommendationResult.vue`를 재사용하여 추천 제품 카드, 상세 사양, 추천 근거, 확인 필요 사항, 개발용 가격 경고 및 당시 관측 가격 상태 안내(is_expired_now, price_status_note) 표시.
+    - 404/90일 보관 만료 시 안내 경고 및 목록 복귀 버튼 제공.
+- 검증:
+  - `test/history-ui.test.cjs`: 5/5 통과 (API helper 3종 엔드포인트, 90일 보관/404 메시지, 빈 이력 상태, 이력 목록 요약, 상세 화면 스냅샷 및 추천 결과 렌더링).
+  - `test/recommendation-ui.test.cjs`: 8/8 통과 (기존 추천 폼 회귀 없음).
+  - `test/compare-ui.test.cjs`: 7/7 통과 (기존 통합 비교 화면 회귀 없음).
+  - `npm run build`: 성공 (DONE Build complete).
+  - 백엔드 코드 수정 0, DB 변경 0, Gemini 실제 호출 0, Git 쓰기 0.
+
+
+## 메인 페이지 리디자인 및 디자인 시스템 방향 정립 — 2026-11-11T21:43:00+09:00
+
+Antigravity. Apple의 미니멀 제품 중심 디자인과 nofee.team의 현대적 SaaS UI를 결합한 통합 디자인 방향을 정립하고 메인 페이지(/)를 리디자인 완료했다.
+- 신규: front/test/home-ui.test.cjs.
+- 수정: front/src/design/tokens.js (colors 유지 및 designTokens 확장), front/src/styles/global.css (:root 공통 디자인 토큰 추가 및 기존 변수 호환 유지), front/src/views/HomeView.vue (전면 리디자인), docs/AI_HANDOFF.md 및 본 로그.
+- 디자인 시스템 및 공통 토큰:
+  - Apple Minimal: 밝은 캔버스(#f8fafc), 넓은 여백, 정돈된 타이포그래피 계층, 왜곡 없는 제품 중심 정보 배치.
+  - nofee.team SaaS: 1px 미세 테두리(#e2e8f0), 부드러운 카드 그림자, 명확한 상태 뱃지, 실용적 기능 카드.
+  - 기존 변수(--ink, --muted, --blue, --line, --radius)와 100% 호환되도록 구성하여 /compare, /recommend, /history 등 기존 화면 시각 회귀 방지.
+- 메인 페이지 구현 내용:
+  - 히어로: 로그인 상태별 맞춤 헤더 뱃지(로그인 사용자 환영 및 이력/기기/프로필 바로가기, 비로그인 안심 안내 문구), 메인 헤드라인, 3대 주요 서비스 액션 바.
+  - 주요 서비스 3선 카드 (Core Capabilities):
+    1. AI 스마트폰 추천: /recommend 연결, '서비스 이용 가능' 뱃지, 분석 특징 안내.
+    2. 기기 스펙 비교: /compare 연결, '서비스 이용 가능' 뱃지, 1:1 대조 특징 안내.
+    3. PC-FIT (조립 PC 견적): /pc 연결, '준비 중 (Coming Soon)' 뱃지, 향후 확장 기능임을 정직하게 명시하고 작동하는 것처럼 꾸미지 않음.
+  - 미니멀 제품 쇼케이스: 구형 회전 궤도/추상 그래픽을 제거하고, AI 추천 사유 칩 및 1:1 스펙 차이 강조 미리보기 프레임 배치.
+  - 카테고리 스트립(스마트폰/태블릿/워치/노트북/조립PC 상태 태그), SPEC보다 LIFE 3대 철학 카드, 3단계 추천 여정, 하단 듀얼 CTA 배너 구성.
+- 검증:
+  - `test/home-ui.test.cjs`: 6/6 통과 (헤드라인, 3대 액션 버튼, PC-FIT 상태 솔직 고지, 비로그인 안심 문구, 로그인 환영 및 바로가기, 카테고리 스트립).
+  - 프론트 단위/SSR 전체 **26/26 전수 통과** (`home-ui` 6/6, `history-ui` 5/5, `recommendation-ui` 8/8, `compare-ui` 7/7).
+  - `npm run build`: 성공 (DONE Build complete).
+  - 제한 준수: 백엔드/DB/인증 변경 0, Gemini API 유료 호출 0, Git 쓰기 0, .env 열람 0, /compare·/recommend·/history·추천상세 수정 0.
+
+
+## 메인 페이지 전면 재설계 (Apple·Samsung·nofee.team 통합 레퍼런스 반영) — 2026-11-11T21:58:00+09:00
+
+Antigravity. 기존 SaaS 대시보드형 카드 나열을 전면 해체하고, 실제 데스크톱 브라우저(1440×900)에서 Apple(`apple.com/kr/`), Samsung(`samsung.com/sec/`), nofee.team(`nofee.team/`)의 레이아웃·타이포·내비게이션 구조를 확인·분석한 결과를 바탕으로 메인 페이지 정보 구조와 스타일을 재설계했다.
+- 참고 사이트 실제 확인 요약:
+  - Apple: 100% 풀블리드 교차 밴드(#fff / #f5f5f7 / #000), 강한 디스플레이 타이포, 제품 중심 대형 비주얼, 980px 단순 필 버튼.
+  - Samsung: 화이트 캔버스 위 좌측 볼드 흑백 헤드라인 + 단순 블랙 테두리 CTA + 우측 대형 하드웨어 비주얼, 상단 카테고리 탐색.
+  - nofee.team: 64px 화이트 고정 헤더(1px `#e5e5e7`), 그림자 없는 헤어라인 서피스, 실용적인 2단 서브 내비게이션 탭.
+- 변경 파일:
+  - `front/src/design/tokens.js`: 화이트·블랙·뉴트럴 그레이 기반 `designTokens` 재정립 (기존 Vuetify 호환 `colors` 유지).
+  - `front/src/styles/global.css`: 모노크롬 CSS 변수 및 64px 화이트 헤더/블랙 마크/블랙 CTA(`.header-cta`)/푸터 최소 정제 (타 페이지 공용 클래스 보존).
+  - `front/src/views/HomeView.vue`: 전면 재설계 (서브 카테고리 탭 + 계정 유틸리티 바, 대형 히어로 및 커스텀 SVG 하드웨어 스테이지, 중복 제거된 AI 추천·기기 비교 2대 에디토리얼 밴드, 기기별 지원 현황 및 PC-FIT 준비 중 정직 고지 테이블, 블랙 클로징 배너).
+  - `front/test/home-ui.test.cjs`: 신규 아키텍처 기준 단위/SSR 테스트 6/6 갱신.
+- 검증 결과:
+  - 단위/SSR 테스트 **26/26 전수 통과** (`home-ui` 6/6, `history-ui` 5/5, `recommendation-ui` 8/8, `compare-ui` 7/7).
+  - `npm run build`: 성공 (DONE Build complete).
+  - 실제 데스크톱 Headless Chrome(1440×900) 검증: 비로그인·로그인 분기, PC-FIT 탭 전환 및 `/pc` 이동, `/recommend` 및 `/compare` 이동·전역 스타일 무회귀, 가로 스크롤 0(`scrollWidth=1440`), 콘솔 오류 0건 확인.
+  - 제한 준수: `/compare`·`/recommend`·`/history`·인증 화면·백엔드·DB 수정 0, Gemini 호출 0, Git 작업 0, `.env` 열람 0.
+
+
+## 기기로움 종합 IT 플랫폼 메인 페이지 프리미엄 리디자인 — 2026-11-11T22:20:00+09:00
+
+Antigravity. SVG/와이어프레임 중심의 모노크롬 메인을 제조사 중립적·종합 IT기기(모바일+조립 PC) 플랫폼 인상의 대형 제품 비주얼 슬라이드쇼 메인 페이지로 전면 업그레이드했다.
+- 독자적 스튜디오 제품 비주얼 생성 및 배치 (`front/src/assets/home/`):
+  - `hero-platform.jpg`: 노트북·태블릿·다양한 스마트폰·스마트워치 통합 구도 (무로고/제조사 중립)
+  - `hero-smartphones.jpg`: 다양한 마감·카메라 모듈의 스마트폰 라인업
+  - `hero-compare.jpg`: 스마트폰·태블릿·스마트워치 나란히 비교 라인업
+  - `hero-pc-fit.jpg`: 다크 티타늄/옵시디언 스튜디오 기반 PC 케이스·GPU·CPU 쿨러·메인보드 하드웨어
+  - 저작권/핫링크 없는 자체 생성 자산이며, 개별 실물 SKU 공식 이미지는 미확보 상태로 정직 구분.
+- 신규/수정 파일:
+  - `front/src/components/HeroSlideshow.vue` (신규): 4종 슬라이드(통합 플랫폼, AI 스마트폰 추천, 상세 스펙 비교, PC-FIT 준비 중), 7초 자동 전환, 좌우 버튼·인디케이터·일시정지, 키보드 좌우 화살표, `prefers-reduced-motion` 존중, 수동 조작 시 자동 전환 일시정지, `@error` 이미지 폴백 프레임 구현.
+  - `front/src/views/HomeView.vue` (개편): 확장형 5대 영역 서브 내비게이션(AI 추천, 상세 비교, PC-FIT · 준비 중, 보유 기기, 프로필, 추천 이력) + 히어로 슬라이드쇼 + Section A(AI 맞춤 추천) + Section B(IT기기 스펙 비교 및 실제 비교 UI 요약) + Section C(PC-FIT 조립 PC 준비 중 다크 섹션) + Section D(간결한 마지막 CTA). 불필요한 지원 현황 테이블/반복 설명 섹션 제거.
+  - `front/test/home-ui.test.cjs` (갱신): 4종 슬라이드, 이미지 `@error` 폴백, 섹션 A~D, 게스트/로그인 내비게이션 검증 7건.
+- 검증 결과:
+  - 프론트 단위/SSR 테스트 **27/27 통과** (`home-ui` 7/7, `history-ui` 5/5, `recommendation-ui` 8/8, `compare-ui` 7/7).
+  - `npm run build` 성공 (`DONE Build complete`, 4종 이미지 번들 포함).
+  - 실제 데스크톱 Chrome(`1440×900`) 검증: 4종 슬라이드 전환 및 수동 조작 시 일시정지 전환, 키보드 `ArrowRight`, PC-FIT 다크 테마 및 `/pc` 이동, 로그인/비로그인 내비게이션, HTTP 404 이미지 로딩 실패 폴백(`carouselHeight: 580` 무흔들림), `/recommend`·`/compare` 전역 스타일 무회귀, 콘솔 오류 0건 확인.
+  - 제한 준수: 백엔드·DB·인증·`/recommend`·`/compare`·`/history` 수정 0, PC-FIT 실제 구현 0, Gemini 호출 0, Git 쓰기 0, `.env` 열람 0.
+
+
+## 내부 페이지 모노크롬 디자인 통일 — 2026-11-11T22:37:00+09:00
+
+Antigravity. 메인 페이지(`/`)와 일관된 화이트·블랙·뉴트럴 그레이 모노크롬 디자인 시스템을 내부 핵심 화면 6곳(`/recommend`, `/compare`, `/history`, `/recommendations/:id`, `/profile`, `/devices`)에 통일 적용했다.
+- 공통 토큰·컴포넌트·전역 스타일:
+  - `front/src/design/tokens.js`: Vuetify 테마 `colors.primary` / `secondary`를 `#111111`로 통일 (시맨틱 `error`/`success`/`warning` 유지).
+  - `front/src/components/AppButton.vue`: `rounded="pill"` 적용으로 주 CTA는 블랙 필 버튼, 보조 CTA는 아웃라인 필 버튼으로 통일.
+  - `front/src/styles/global.css`: 모노크롬 포커스 링(`#111111`), `.eyebrow`/`member-card`/`upgrade-banner`/`compare-notice`/`auth-card`/`comparison-table .spec-difference` 뉴트럴 그레이 스타일 정리.
+- 페이지별 변경:
+  - `RecommendView.vue` & `RecommendationResult.vue`: 필수 조건(`01`)·선택 조건(`02`)·제출 영역 계층화, 칩 형태 체크박스, 결과 구분선 추가. 앰버 개발용 가격 경고 및 출처/확인일 가독성 유지.
+  - `CompareView.vue` & `SpecComparison.vue`: Apple식 비교표 및 SVG 플레이스홀더 유지, 카테고리 탭·개수 버튼·모달 검색·차이 강조를 모노크롬 블랙/뉴트럴 톤으로 정리.
+  - `HistoryView.vue` & `RecommendationDetailView.vue`: 상태 뱃지(추천 완료 블랙 필 + 유지/보류/미일치 시맨틱 컬러), `#f5f5f7` 조건 요약 바 및 스냅샷 카드 통일. 삭제/90일 만료 404 안내 유지.
+  - `ProfileView.vue` & `DevicesView.vue`: 칩형 선택지, 깔끔한 입력 테두리·모달 호버 정리. 검색/등록/수정/삭제/업그레이드 배너 동작 유지.
+- 검증:
+  - 단위/SSR 테스트 **27/27 통과**, `npm run build` 성공 (`DONE Build complete`).
+  - 실제 Chrome(`1440×900`) 6개 내부 페이지 렌더링·입력 조작(예산 입력/차이만 보기 토글/프로필 선택/보유 기기 배너), 경고 배지 가독성(`rgb(255, 251, 235)`), 가로 스크롤 0, 콘솔 오류 0건 확인.
+  - `HomeView.vue`, `HeroSlideshow.vue`, 백엔드·DB·인증·API 계약 수정 0, Gemini 호출 0, Git 작업 0.
+
+
+## 기기로움 UI·UX 고도화 1차 (디자인 시스템 정립 및 `/compare`·`/recommend` 전면 개편) — 2026-11-11T23:00:00+09:00
+
+Antigravity. 정적인 표·업무용 폼 중심이던 `/compare`와 `/recommend`의 정보 구조·제품 표현·인터랙션을 전면 고도화하고 공통 디자인/인터랙션 원칙을 정립했다.
+- 공통 디자인·인터랙션 시스템:
+  - `docs/DESIGN_SYSTEM.md` 신설 (PC-FIT 포함 전 페이지 재사용 규칙, `prefers-reduced-motion`, 데이터 정직성 기준 정의).
+  - `front/src/styles/global.css`: 공통 `.skeleton-block`, `.fade-slide-*`, `.reveal-*` 전환 및 모션 감소 비활성화 유틸리티 추가.
+- `/compare` (`CompareView.vue`, `SpecComparison.vue`) UX 고도화:
+  - 기본 화면의 엑셀형 긴 표를 제거하고, 상단 고정 스티키 비교 바(`top: 64px`) + 대형 제품 스포트라이트 카드(`fade-slide` 전환, 이미지 `@load`/`@error` 안전 폴백) + 아이콘 기반 핵심 사양 6종 한눈에 보기로 재설계.
+  - 7개 영역 전체 상세 비교표는 아코디언(`상세 사양 전체 비교표 펼치기/접기`) 뒤로 점진적 공개 처리.
+  - 로딩 중 레이아웃 흔들림 방지를 위한 2~3슬롯 스켈레톤 로딩 적용.
+- `/recommend` (`RecommendView.vue`, `RecommendationResult.vue`) UX 고도화:
+  - 3단계 구매 가이드 위저드(`01 예산 설정` → `02 사용 목적` → `03 선호 제조사 · 실행`) 적용. 빠른 예산 프리셋 칩 + 아이콘 사용 목적 카드 + 실시간 조건 요약 바 제공 (`v-show`로 단계 이동/모션 감소 시 입력값 100% 보존).
+  - 추천 결과 스켈레톤 로딩 및 제품 중심 스포트라이트 카드(외형 무대, 스펙 3종 타일, 개발용 가격 경고·출처 유지, 절제된 `reveal` 등장) 적용.
+- 검증 결과:
+  - 프론트 단위/SSR 테스트 **31/31 전수 통과** (`compare-ui` 9/9, `recommendation-ui` 10/10, `home-ui` 7/7, `history-ui` 5/5).
+  - `npm run build` 성공 (`DONE Build complete`).
+  - 실제 데스크톱 Chrome(`1440×900`, `prefers-reduced-motion: reduce` 포함) 검증: `/compare` 스티키 바 고정(`top=64`), 핵심 지표, 아코디언 펼침, 3슬롯, 태블릿 전환 및 `/recommend` 3단계 입력 보존·모의 POST 페이로드 계약 일치·결과 카드·경고 배지·콘솔 오류 0건 확인.
+- 후속 작업 범위: `/devices`(갤러리형), `/profile`, `/history`, `/upgrade`(기존 로직 기반 UI 개선), 메인 페이지 스크롤 리빌 검토.
+
+
+## Apple 스타일 기기 비교 화면(`/compare`) 전면 리디자인 — 2026-11-11T23:15:00+09:00
+
+Antigravity. `/compare` (`SpecComparison.vue`)의 정보 구조와 렌더링 방식을 기존 좌측 라벨형 표에서 **Apple 공식 비교 페이지 스타일의 독립형 세로 제품 열(2~3열)**로 전면 재설계했다.
+- 주요 변경 파일: `front/src/components/SpecComparison.vue`, `front/test/compare-ui.test.cjs`.
+- 정보 구조 및 레이아웃 개편:
+  - 기본 화면에서 좌측 `[비교 항목]` 라벨 열, HTML `<table>`, 반복 `값 다름` 뱃지, 무거운 카드 테두리를 제거하고 제품별 독립 세로 열(`.apple-columns-grid` / `.apple-hero-col`)과 제품 이미지 무대(`.product-visual-pedestal`, SVG·`@error` 폴백 유지)·모델명·용량/모델번호·가격 출처/경고·`기기 변경`/`제거` 조작을 상단에 배치.
+  - 상단 스티키 비교 바(`.sticky-compare-bar`)로 스크롤 시(`top: 64px`) 비교 기기명과 변경 링크를 고정 유지.
+  - 핵심 사양 비교 영역(`.visual-specs-area`)을 **아이콘 + 굵은 핵심 수치 + 간결한 보조 설명** 세로 블록(`.visual-spec-block`)으로 구성하고, CSS Grid로 열 간 동일 항목의 상단 위치를 수평 정렬(`maxTopDiffPx: 0` in 2/3열).
+  - 7개 영역 전체 상세 비교표(`.comparison-table`)는 중앙 토글 버튼(`상세 사양표 모두 보기` / `상세 사양표 접기`) 뒤 `#detailed-spec-panel` 아코디언에 수납(초기 로드 시 `aria-expanded="false"`, 높이 `0px`, `inert`·`prefers-reduced-motion: reduce` 대응)하고 2~3개 기기 및 `차이 있는 항목만 보기` 필터와 실시간 동기화.
+  - 상세 사양표 세부 UI 개선:
+    - 수정 1 ('값 다름' 뱃지 겹침 해소): `.spec-label-wrap` 세로 flex 배치(gap 6px) 및 `word-break: keep-all; overflow-wrap: break-word` 적용으로 좁은 열에서도 뱃지가 항목명과 겹치거나 붙지 않고 다음 줄에 깔끔하게 배치.
+    - 수정 2 (상세 사양 값 중앙 정렬 및 일관성): `.comparison-table`에 `table-layout: fixed; width: 100%` 적용, 2~3개 제품 열 너비 완벽 균등 분할(2열 각 467px, 3열 각 311.3px), 모든 데이터 셀 패딩(`16px 20px`) 및 수직(`vertical-align: middle`)·수평(`text-align: center`) 정렬 통일, 긴 텍스트 중앙 기준 줄바꿈 처리.
+- 검증 결과:
+  - 프론트 단위/SSR 테스트 **32/32 전수 통과** (`compare-ui` 10/10, `recommendation-ui` 10/10, `home-ui` 7/7, `history-ui` 5/5).
+  - `npm run build` 성공 (`DONE Build complete`, 기존 에셋 크기 경고 3건 외 오류 없음).
+  - 실제 데스크톱 Chrome(`1440×900`, 모의 `/api/auth/me`·`/api/smartphones`) 검증: 초기 2열·수평 정렬 오차 `0px`·상세 표 미노출(`panelHeightPx: 0`)·스티키 바(`top: 64px`)·모달 검색/교체(`A35` → `Galaxy A35 5G`)·3열 추가/제거·`차이 있는 항목만 보기` 동기화·아코디언 펼침/접힘·태블릿(`14`)/스마트워치(`10`)/노트북(`준비 중`) 전환·`prefers-reduced-motion: reduce`(`0s`)·콘솔 오류 0건 확인.
+  - 백엔드·DB·인증·API 계약·`CompareView.vue`·`HomeView.vue`·`HeroSlideshow.vue`·기타 내부 페이지 무수정, Gemini 호출 0, Git 작업 0.
+
+
+## 실제 IT기기 제품 이미지 확보 및 `/compare` 적용 — 2026-11-12T00:10:00+09:00
+
+Antigravity. `/compare` (`SpecComparison.vue`)의 스마트폰·태블릿·스마트워치 비교 화면에서 SVG 플레이스홀더를 대체할 수 있는 **정확하고 사용 허가 조건이 명확한 실제 제품 사진(Wikimedia Commons CC0 / CC BY 4.0 / CC BY-SA 4.0)**을 선별·최적화해 적용했다.
+- 라이선스 및 정합성 기준:
+  - Samsung·Apple 공식 사이트/뉴스룸/Product Bezels는 약관상 비교 웹사이트 재배포 및 경쟁사 제품 병렬 배치를 금지하므로 직접 내려받기·재배포를 배제했다.
+  - Wikimedia Commons에서도 저작권 불명확 렌더 추청 PNG, 매장 도난방지 퍽 가림, 엔화 가격표 노출, 2개 이상 기기 혼재, 케이스 크기(42/46mm·43/47mm·40/44mm·11/13인치) 미검증 이미지는 제외하고 **미확보(기존 SVG 플레이스홀더 유지)**로 정직하게 분류했다.
+- 확보 현황 (**총 26 / 40 모델 확보**, **14 모델 미확보**):
+  - **스마트폰 (15 / 16 확보):** `Galaxy S24`, `S24+`, `S24 Ultra`, `S24 FE`, `S23 Ultra`, `Z Fold6`, `Z Flip6`, `A35 5G`, `iPhone 16 Pro Max`, `16 Pro`, `16`, `15 Pro Max`, `15 Pro`, `15 Plus`, `15` (`iPhone 16 Plus`만 매장 보안퍽/손 가림 외 단독 실사진 미비로 미확보).
+  - **태블릿 (8 / 14 확보):** `Galaxy Tab S9`, `Tab S10+`, `iPad (A16)`, `iPad Air 11 (M3)`, `iPad Pro 13 (M4)`, `iPad Pro 11 (M4)`, `iPad Air 13 (M2)`, `iPad mini (A17 Pro)` (`Tab S9+`, `Tab S9 Ultra`, `Tab S9 FE`, `Tab S9 FE+`, `Tab S10 Ultra`, `iPad Air 13 (M3)` 미확보).
+  - **스마트워치 (3 / 10 확보):** `Apple Watch Ultra 2 49mm`, `Apple Watch Series 10 42mm`, `Apple Watch Series 10 46mm` (`Apple Watch 10.png` `CC BY-SA 4.0` 투명이미지 좌/우 42mm·46mm 정밀 분리, 나머지 7종은 크기 미명시/가격표·다중 시계/미존재로 미확보).
+- 구현 및 연결:
+  - `front/public/images/products/` (26종 최적화 JPEG/투명 PNG 저장, `800px`/`520px` 리사이즈).
+  - `front/src/utils/deviceImages.js` 신설: 모델 대표 이미지(`scope: 'model_reference'`) 매핑과 색상·용량 변형(`variant_image_url`) 구분, 공통 조회 함수(`resolveDeviceImage`, `getDeviceImageMeta`, `isModelReferenceImage`) 제공.
+  - `front/src/data/supplemental-devices.json`: 확보 11종 경로 반영 및 미확보 13종 `thumbnail_url: null` 처리(불필요한 404 방지).
+  - `front/src/components/SpecComparison.vue`: `/compare`에만 공통 조회 연동(`object-fit: contain`, `@error` 시 기존 SVG 폴백 유지, 레이아웃·사양표·가격·기타 페이지 무수정).
+- 검증 결과:
+  - 단위/SSR 테스트 **33/33 전수 통과** (`compare-ui.test.cjs` **11/11** 포함), `npm run build` 성공 (`DONE Build complete`).
+  - 실제 Chrome(`1440×900`) 검증: 2·3열 실사진 로드(`naturalWidth > 0`, `objectFit: contain`, `pedHeight: 224`), 미확보 기기 SVG 유지, 태블릿/스마트워치 전환 및 교체, 404 `@error` SVG 복원, 콘솔 오류 0건 확인.
+  - 백엔드·DB·API·인증·추천·`/recommend`·`/devices` 무수정, Gemini 호출 0, Git 작업 0.

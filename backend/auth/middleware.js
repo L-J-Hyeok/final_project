@@ -13,7 +13,7 @@ module.exports = function (config) {
   var wrap = fn => (req, res, next) => Promise.resolve().then(() => fn(req, res, next)).catch(next);
   router.use((req, res, next) => { res.set('Cache-Control', 'no-store'); next(); });
   router.use((req, res, next) => {
-    if (!['GET','HEAD','OPTIONS'].includes(req.method) && req.get('Origin') !== config.origin) return next(fail(403, 'CSRF_INVALID'));
+    if (!['GET','HEAD','OPTIONS'].includes(req.method) && !(config.allowedOrigins || [config.origin]).includes(req.get('Origin'))) return next(fail(403, 'CSRF_INVALID'));
     if (!limiter.take('request:' + req.ip, 120, 60000)) return next(fail(429, 'RATE_LIMITED'));
     next();
   });

@@ -234,6 +234,10 @@ function validateRecommendationOutput(aiOutput, aiContext) {
     return { valid: false, errors: ['OUTPUT_NOT_OBJECT'] };
   }
 
+  const decision = aiContext.upgrade_decision;
+  if (decision && aiOutput.status === 'recommend' && (decision.status !== 'recommend' || (!Array.isArray(aiOutput.items) || aiOutput.items.some(i => !i || !decision.eligible_variant_ids.includes(String(i.variant_id)))))) {
+    return { valid: false, errors: ['UNVERIFIED_UPGRADE_BENEFIT'] };
+  }
   const status = aiOutput.status;
   if (!['recommend', 'keep', 'defer', 'clarify'].includes(status)) {
     return { valid: false, errors: ['INVALID_STATUS'] };
@@ -247,7 +251,7 @@ function validateRecommendationOutput(aiOutput, aiContext) {
   if (status === 'keep' || status === 'defer' || status === 'clarify') {
     const keepEval = aiContext.keep_current_evaluation;
     if (status === 'keep') {
-      if (!aiContext.replacement_device || !keepEval || !keepEval.meets_current_hard_specs) {
+      if (!aiContext.replacement_device || !keepEval || !keepEval.recommend_keep) {
         return { valid: false, errors: ['UNVERIFIED_KEEP_RECOMMENDATION'] };
       }
     }

@@ -11,7 +11,7 @@ function credentials(body) {
       typeof body.email !== 'string' || typeof body.password !== 'string') throw fail(422, 'INVALID_INPUT');
   var email = body.email.trim().toLowerCase(), p = body.password;
   if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
-      [...p].length < 12 || [...p].length > 128 || Buffer.byteLength(p) > 512) throw fail(422, 'INVALID_INPUT');
+      [...p].length < 8 || [...p].length > 128 || Buffer.byteLength(p) > 512) throw fail(422, 'INVALID_INPUT');
   return { email: email, password: p };
 }
 function callSession(req, method) { return new Promise((resolve, reject) => req.session[method](err => err ? reject(err) : resolve())); }

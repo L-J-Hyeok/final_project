@@ -372,9 +372,11 @@ test('smartphone product/price lookup and candidate search HTTP integration', as
     const b = client();
     const anon = client();
 
-    // Unauthenticated access rejected with 401
-    check(await req(anon, 'GET', '/smartphones'), 401);
-    check(await req(anon, 'GET', '/smartphones/' + vSamsung256Black.id), 401);
+    // Public catalog is readable; test fixtures and personal candidate search remain protected.
+    const publicRows = check(await req(anon, 'GET', '/smartphones'), 200);
+    assert.ok(publicRows.every(x => !x.is_test));
+    check(await req(anon, 'GET', '/smartphones?include_test=true'), 401);
+    check(await req(anon, 'GET', '/smartphones/' + vSamsung256Black.id), 404);
     anon.csrf = check(await req(anon, 'GET', '/auth/csrf'), 200).csrf_token;
     check(await req(anon, 'POST', '/recommendation-candidates', { expected_profile_version: 1, hard: { budget_max_krw: 1000000, usages: ['video'] } }), 401);
 

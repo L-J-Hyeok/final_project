@@ -167,16 +167,56 @@ router.post('/recommendations', wrap(async (req, res) => {
 
   // 1. 기존 후보 검색 로직 재사용 (프로필 확정 여부, 버전, 소유 기기, 필수 조건 검증)
   const searchResult = await smartphonesRouter.searchCandidatesForUser(uid, req.body, asOf);
+  // Reuse owner-scoped catalog context; missing/no-match paths still need the
+  // selected owned device to make a conservative keep/defer decision.
+  let upgradeDecision = null;
+  let upgradeContext = searchResult.ai_context;
+  if (searchResult.input.replacement_device_id) {
+    if (!upgradeContext) {
+      const owned = await db().models.owned_devices.findOne({ where: { id: searchResult.input.replacement_device_id, user_id: uid } });
+      if (!owned) throw catalog.fail('NOT_FOUND', 404);
+      const device = owned.toJSON();
+      let product = null;
+      if (device.variant_id) {
+        const rows = await db().query(`SELECT CAST(v.id AS CHAR) AS variant_id,CAST(s.id AS CHAR) AS smartphone_id,s.model_name,s.os,s.brand,s.chipset,s.screen_inches,s.refresh_hz,s.weight_g,s.battery_mah,s.supports_5g,s.wireless_charging,v.storage_gb,v.ram_gb,v.color,(s.verified AND v.verified) verified FROM smartphone_variants v JOIN smartphones s ON s.id=v.smartphone_id WHERE v.id=:id`, { replacements: { id: device.variant_id }, type: QueryTypes.SELECT });
+        product = rows[0] || null;
+      }
+      upgradeContext = { replacement_device: { id: String(device.id), category: device.category, source: device.variant_id ? 'catalog' : 'manual', product }, purchase_conditions: { hard: searchResult.input.hard, soft: searchResult.input.soft, purchase_reason: searchResult.input.purchase_reason, upgrade_context: searchResult.input.upgrade_context }, candidates_snapshot: searchResult.candidates || [] };
+    }
+    const advisor = require('../services/upgrade-advisor');
+    const hasHardClarify = Array.isArray(searchResult.input?.clarify_questions) && searchResult.input.clarify_questions.length > 0;
+    const isTooManyCandidatesClarify = searchResult.status === 'clarify' && (searchResult.candidate_count || 0) > 40 && !searchResult.upgrade_decision;
+    // Missing budget/usage or contradictory hard filters (and still >40 after upgrade filtering) must stay clarify.
+    if (searchResult.upgrade_decision && !hasHardClarify) {
+      upgradeDecision = searchResult.upgrade_decision;
+    } else if (!hasHardClarify && !isTooManyCandidatesClarify) {
+      upgradeDecision = advisor.evaluateUpgradeDecision(upgradeContext);
+    }
+    if (upgradeDecision?.status === 'recommend') {
+      searchResult.candidates = searchResult.candidates.filter(c => upgradeDecision.eligible_variant_ids.includes(String(c.variant_id)));
+      searchResult.ai_context.candidates_snapshot = searchResult.candidates;
+      searchResult.ai_context.upgrade_decision = upgradeDecision;
+    }
+  }
+  const ownedVariantId = upgradeContext?.replacement_device?.product?.variant_id
+    ? String(upgradeContext.replacement_device.product.variant_id)
+    : null;
   const inputSnapshot = {
     expected_profile_version: searchResult.profile_version,
     hard: searchResult.input.hard,
     soft: searchResult.input.soft,
     replacement_device_id: searchResult.input.replacement_device_id,
+    upgrade_context: searchResult.input.upgrade_context,
+    owned_device_snapshot: upgradeContext?.replacement_device || null,
     purchase_reason: searchResult.input.purchase_reason
   };
 
   // 2. 후보가 없거나(no_match) 추가 질문이 필요한 경우(clarify) AI를 호출하지 않고 저장 후 즉시 반환
-  if (searchResult.status === 'clarify' || searchResult.status === 'no_match') {
+  if (searchResult.status === 'clarify' || searchResult.status === 'no_match' || (upgradeDecision && upgradeDecision.status !== 'recommend')) {
+    const status = upgradeDecision?.status || searchResult.status;
+    const questions = upgradeDecision?.questions || searchResult.questions;
+    const reasons = upgradeDecision?.reasons || [];
+    const cautions = status === 'keep' ? (searchResult.keep_current_evaluation?.cautions || []) : [];
     const saved = await db().transaction(async t => {
       const user = await db().models.users.findByPk(uid, { transaction: t, lock: t.LOCK.UPDATE, attributes: ['id'] });
       if (!user) throw catalog.fail('AUTH_REQUIRED', 401);
@@ -185,13 +225,15 @@ router.post('/recommendations', wrap(async (req, res) => {
 
       return db().models.recommendations.create({
         user_id: uid,
-        status: searchResult.status,
+        status,
         profile_version: searchResult.profile_version,
         input_snapshot: inputSnapshot,
         candidates_snapshot: [],
         result_json: {
           items: [],
-          questions: searchResult.questions
+          questions,
+          keep_reasons: reasons,
+          keep_cautions: cautions
         },
         validation_errors: null,
         model_name: null,
@@ -206,8 +248,11 @@ router.post('/recommendations', wrap(async (req, res) => {
         status: saved.status,
         profile_version: saved.profile_version,
         as_of: asOf.toISOString(),
+        owned_variant_id: ownedVariantId,
         items: [],
-        questions: searchResult.questions
+        questions,
+        keep_reasons: reasons,
+        keep_cautions: cautions
       }
     });
   }
@@ -291,6 +336,22 @@ router.post('/recommendations', wrap(async (req, res) => {
       throw catalog.fail('CANDIDATES_CHANGED', 409);
     }
 
+    if (
+      check.result.status === 'recommend' &&
+      Array.isArray(upgradeDecision?.unverified_cautions) &&
+      upgradeDecision.unverified_cautions.length
+    ) {
+      for (const item of check.result.items) {
+        if (!Array.isArray(item.uncertainties)) item.uncertainties = [];
+        for (const rawCaution of upgradeDecision.unverified_cautions) {
+          const caution = typeof rawCaution === 'string' ? rawCaution.trim().slice(0, 300) : '';
+          if (caution && !item.uncertainties.includes(caution)) {
+            item.uncertainties.push(caution);
+          }
+        }
+      }
+    }
+
     const finalPayload = {
       items: check.result.items,
       questions: check.result.questions,
@@ -328,6 +389,7 @@ router.post('/recommendations', wrap(async (req, res) => {
         status: check.result.status,
         profile_version: searchResult.profile_version,
         as_of: asOf.toISOString(),
+        owned_variant_id: ownedVariantId,
         model_name: aiRes.model_name || null,
         prompt_version: currentAdapter.promptVersion || aiModule.PROMPT_VERSION,
         ai_usage: totalUsage,
@@ -340,7 +402,7 @@ router.post('/recommendations', wrap(async (req, res) => {
   } catch (err) {
     if (
       processingRow &&
-      !['AI_INVALID_RESULT', 'CANDIDATES_CHANGED', 'PROFILE_CHANGED'].includes(err.code)
+      !['AI_INVALID_RESULT', 'CANDIDATES_CHANGED'].includes(err.code)
     ) {
       try {
         await db().models.recommendations.update(
@@ -403,6 +465,8 @@ function formatHistoricalRecommendation(row, now = new Date()) {
     model_name: raw.model_name,
     prompt_version: raw.prompt_version,
     input_snapshot: raw.input_snapshot,
+    historical_snapshot: true,
+    validity_note: '추천 당시 조건의 기록입니다. 현재 구매 전 가격·조건을 다시 확인하세요.',
     items,
     questions: Array.isArray(resultJson.questions) ? resultJson.questions : [],
     keep_reasons: Array.isArray(resultJson.keep_reasons) ? resultJson.keep_reasons : [],

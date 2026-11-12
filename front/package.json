@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "images:process": "node scripts/process-official-renders.mjs"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",

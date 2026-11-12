@@ -87,7 +87,7 @@ router.put('/owned-devices/:id',wrap(async(req,res)=>{
   const nextDevices={...curJson._upgrade_state.devices};delete nextDevices[String(id)];
   curJson._upgrade_state={...curJson._upgrade_state,devices:nextDevices};
  }
- await row.update({...input,updated_at:new Date()},{transaction:t});await increment(p,t,{smartphone_json:curJson});await invalidate(uid,t);
+ await row.update({...input,updated_at:new Date()},{transaction:t});await increment(p,t,{smartphone_json:curJson});
  const devView=await deviceView(row,t);
  const upgradeOffer=devView.category==='smartphone'?await require('./upgrade-offers').buildUpgradeOfferStatus(uid,new Date(),t):null;
  return {device:devView,profile_version:p.version,upgrade_offer:upgradeOffer};});res.json({data:result});
@@ -101,7 +101,7 @@ router.delete('/owned-devices/:id',wrap(async(req,res)=>{
   const nextCurrent=String(curJson._upgrade_state.current_device_id)===String(id)?null:curJson._upgrade_state.current_device_id;
   curJson._upgrade_state={...curJson._upgrade_state,current_device_id:nextCurrent,devices:nextDevices};
  }
- await row.destroy({transaction:t});await increment(p,t,{smartphone_json:curJson});await invalidate(uid,t);});res.status(204).end();
+ await row.destroy({transaction:t});await increment(p,t,{smartphone_json:curJson});});res.status(204).end();
 }));
 router.stripInternalSmartphoneKeys=stripInternalSmartphoneKeys;
 router.mergeInternalSmartphoneKeys=mergeInternalSmartphoneKeys;

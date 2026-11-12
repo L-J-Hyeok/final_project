@@ -46,7 +46,7 @@ front/src/plugins/webfontloader.js에 Google Fonts 로딩 코드가 있어 네�
 ### 1. 인증과 서버 경계
 
 - 이메일·비밀번호 가입, 서버 세션 로그인. JWT·소셜 로그인·메일 인증·비밀번호 재설정은 이번 구현 범위에서 제외하며 공개 서비스 전 별도 보강한다.
-- 이메일은 trim·소문자 정규화 후 형식·254자 이하 검사, 비밀번호는 정규화/trim 없이 12~128자·UTF-8 512바이트 이하. 이메일 UNIQUE. 가입 시 users와 빈 profiles를 한 트랜잭션으로 생성하고 로그인은 별도 수행.
+- 이메일은 trim·소문자 정규화 후 형식·254자 이하 검사, 비밀번호는 정규화/trim 없이 8~128자·UTF-8 512바이트 이하. 이메일 UNIQUE. 가입 시 users와 빈 profiles를 한 트랜잭션으로 생성하고 로그인은 별도 수행.
 - 비밀번호: Node 내장 비동기 scrypt, N=131072, r=8, p=1, maxmem=256MiB, 무작위 salt 16바이트·키 64바이트. 알고리즘·파라미터·salt·해시를 password_hash에 저장, 상수시간 비교. 요청 처리 동시 해시 2개로 제한하며 대상 장비에서 시간·메모리 시험 후 파라미터 변경은 결정 기록에 남긴다.
 - express-session + MySQL 영속 store 사용 예정. 기본 MemoryStore는 사용하지 않음. Sequelize v6 계열과 mysql2 드라이버 사용(D-019, 사용자 요청으로 기존 ORM 없음 결정을 대체). 직접 SQL은 파라미터 바인딩을 유지. 패키지 설치는 다음 구현 작업에서 수행한다.
 - 쿠키 sid: HttpOnly, SameSite=Lax, Path=/, Domain 미설정, 운영 HTTPS에서 Secure=true. 로컬 HTTP에서만 Secure=false. 로그인 시 세션 ID·CSRF 토큰 재발급, 로그아웃 시 서버 삭제·동일 속성 쿠키 만료.

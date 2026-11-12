@@ -11,7 +11,14 @@ module.exports = function (env) {
         (production ? url.protocol !== 'https:' : !['http:', 'https:'].includes(url.protocol)) ||
         (url.protocol === 'http:' && !['localhost', '127.0.0.1', '[::1]'].includes(url.hostname))) invalid();
   } catch (_) { invalid(); }
-  return { secret: secret, origin: origin, production: production,
+  // Local development aliases only, with the configured protocol/port unchanged.
+  var allowedOrigins = [origin];
+  if (!production && url.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(url.hostname)) {
+    var alias = new URL(origin);
+    alias.hostname = url.hostname === 'localhost' ? '127.0.0.1' : 'localhost';
+    allowedOrigins.push(alias.origin);
+  }
+  return { secret: secret, origin: origin, allowedOrigins: allowedOrigins, production: production,
     trustProxy: env.TRUST_PROXY_LOOPBACK === 'true',
     cookie: { httpOnly: true, sameSite: 'lax', secure: production || origin.startsWith('https:'), path: '/' } };
 };
