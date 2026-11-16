@@ -1,13 +1,13 @@
-export const DANAWA_REFERENCE_LABEL = '다나와 기준 최저가'
+export const DANAWA_REFERENCE_LABEL = '다나와 수집 당시 참고 가격'
 export const DANAWA_REFERENCE_NOTICE =
-  '다나와 기준 최저가(참고용)입니다. 실제 최종 결제가격(배송비·재고·결제 조건)과 다를 수 있으며, 예산 충족이나 교체 권장 확정 근거로 사용되지 않습니다.'
+  '다나와 수집 당시 참고 가격입니다. 실제 최종 결제가격과 다를 수 있으며, 판매 가격은 구매 조건에 따라 달라질 수 있습니다.'
 
 export function isValidPositiveNumber(value) {
   return typeof value === 'number' && Number.isFinite(value) && value > 0
 }
 
 export function isPriceExpired(price, now = new Date()) {
-  if (!price || !price.expires_at) return false
+  if (!price || price.retained_observation || !price.expires_at) return false
   const expMs = new Date(price.expires_at).getTime()
   const nowMs = now instanceof Date ? now.getTime() : new Date(now).getTime()
   if (!Number.isFinite(expMs) || !Number.isFinite(nowMs)) return true
@@ -57,7 +57,7 @@ export function formatPriceAmount(price, { emptyText = '가격 정보 없음', i
   const formatted = `${amt.toLocaleString('ko-KR')}원`
   if (!includeTag) return formatted
   if (isVerifiedPrice(price, now)) return formatted
-  if (isDanawaReferencePrice(price)) return `${formatted} (다나와 기준 최저가)`
+  if (isDanawaReferencePrice(price)) return `${formatted} (다나와 수집 당시 참고 가격)`
   if (price.price_source === 'official_launch') return `${formatted} (개발용 출고가)`
   if (price.price_source === 'reference_sale') return `${formatted} (개발용 참고가)`
   return `${formatted} (개발용 가격)`
@@ -65,8 +65,10 @@ export function formatPriceAmount(price, { emptyText = '가격 정보 없음', i
 
 export function formatPriceTypeLabel(price, { emptyText = '가격 정보 없음', now = new Date() } = {}) {
   if (!price || isPriceExpired(price, now)) return emptyText
-  if (isVerifiedPrice(price, now)) return '검증된 판매가 · 배송비 포함'
-  if (isDanawaReferencePrice(price)) return DANAWA_REFERENCE_LABEL
+  if (isVerifiedPrice(price, now)) return '수집 당시 참고 가격 · 배송비 포함'
+  if (isDanawaReferencePrice(price)) return price.color_scope === 'capacity_common'
+    ? '모델·용량 기준 수집 당시 참고 가격'
+    : DANAWA_REFERENCE_LABEL
   if (price.price_source === 'official_launch') return '개발용 공식 출고가 · 실제 판매가 아님'
   if (price.price_source === 'reference_sale') return '개발용 참고가 · 구매 조건 미검증'
   if (price.development_only === true) return '개발용 가격 · 실제 판매가 아님'
@@ -98,7 +100,7 @@ export function getDanawaProductUrl(price, now = new Date()) {
 
 export function formatPriceCheckedAt(price, now = new Date()) {
   if (!price || isPriceExpired(price, now)) return '정보 없음'
-  const raw = price.checked_at || price.observed_at
+  const raw = price.observed_at || price.checked_at
   if (!raw) return '정보 없음'
   const d = new Date(raw)
   if (Number.isNaN(d.getTime())) return '정보 없음'

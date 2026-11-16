@@ -7,6 +7,7 @@ export function createSmartphoneApi(api) {
       if (params.os) q.set('os', params.os)
       if (params.storage_gb) q.set('storage_gb', String(params.storage_gb))
       if (params.only_recommendable !== undefined) q.set('only_recommendable', String(params.only_recommendable))
+      if (params.comparison) q.set('comparison', 'true')
       if (params.limit) q.set('limit', String(params.limit))
       if (params.cursor) q.set('cursor', String(params.cursor))
       const qs = q.toString()

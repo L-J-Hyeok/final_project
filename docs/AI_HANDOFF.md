@@ -1,5 +1,14 @@
 # AI 인수인계 스냅샷 (AI Handoff)
 
+> 최신 보완(2026-11-16 20:30 KST): **8-3C 6개 카테고리 AI 추천·보유 기기 관리·업그레이드 프론트엔드 연동 완료**.
+> - 프론트엔드 6개 카테고리 탭 연동 (`RecommendView.vue`, `RecommendationResult.vue`, `DevicesView.vue`, `api/recommendations.js`)
+> - 6개 카테고리 보유 기기 검색·등록, 유지/교체 판단(KEEP, REPLACE, DEFER, CLARIFY), 자연어 분석, 다나와 링크, macOS/Windows 조건 처리 완료
+> - 프론트엔드 유닛/SSR 테스트(39/39), 빌드(`npm run build`), 실서버 API 통합 검증(12/12) 전수 통과.
+> - 기존 스마트폰 추천/비교 및 운영 DB 데이터 100% 무결성 보존.
+
+
+> 최신 보완(2026-11-13 12:50 KST): 다나와 단일 최저가(`minPrice`) 및 상품 링크 기반 MVP 연동 완료. danawa-cli@3.0.0 실제 호출 검증(Galaxy S24, iPhone 16 Pro, Z Flip6), 격리 MySQL 트랜잭션 저장·24h TTL·중복방지·이력보존 검증 통과(10/10), 추천·비교·업그레이드 서비스 일관 연동, 프론트엔드 안내 문구(`다나와 기준 최저가: ○○○원`, `마지막 확인: 날짜·시간`, `다나와에서 가격 비교하기`, `판매 가격은 구매 조건에 따라 달라질 수 있습니다.`) 적용 및 SSR 테스트(4/4) 통과. 운영 DB(final_project) 무변경(49/257/0) 100% 보존. Antigravity Phase 5 MVP 완성.
+
 > 최신 보완(2026-11-13 04:57 KST): 판매처별 내부 feed 처리·저장 함수·005 SQL 초안·가격 요약 API/비교 표시 구현. 관련 Mock/SSR37개·빌드 통과. 실제 다나와 연결·저장권한 미확보, 격리 MySQL 초기화 signal11로 실제 DB 검증 미완료. 운영 DB 미접속/미변경. 하단 건수는 과거 스냅샷이며 이번에 재확인하지 않음. Codex 편집 종료; 상세 및 재개 조건은 PRICE_COLLECTION_PLAN 최신 절. Gemini 순위 결정은 기존 방식 유지, AI 설명 전용 서버 순위 정책은 미구현.
 
 > 이 문서는 Codex와 Antigravity 간 세션 전환 및 작업 인계를 위한 **현재 시점 단일 스냅샷**이다.
@@ -112,3 +121,31 @@
 - 비밀번호는 프론트/백엔드 모두8~128 Unicode 코드포인트·512 UTF-8 바이트 이하, scrypt/기존 해시 유지.
 - 게스트 스마트폰 목록·상세는 공개 검증 행만 접근. pending/is_test는 게스트 조회 불가. 개인 프로필/추천후보/이력은 인증 필수. CompareView의 게스트 로딩 중단 조건 제거, 정적 태블릿/워치 비교 유지.
 - 이번 검증: localhost:8080 실제HTTP17, 백엔드 관련34/34, 프론트15/15, 빌드 성공(크기 경고3). 게스트 브라우저 스마트폰29·태블릿14·워치10 선택 가능. 임시 계정 정리 후8테이블 모든 기존 행 동일, Gemini 호출0. 검증용으로 시작한 서버는 종료하며 VS Code에서 backend npm run start / front npm run serve 재시작 필요.
+
+### 7-4 성능 점수 인계
+
+현재 Gemini는 자연어 분석과 확정 순위 설명을 맡는다. 검증된 동일 시험 CPU·GPU 실측은 기기로움 서버가 게임·성능 추천에 반영하며, 공통 자료가 없으면 v2 결과를 유지한다. 실측 DB에 검증 자료는 아직 없다. Grounding을 별도 랭커 입력으로 이용할 권한과 데이터 제공 조건은 미확인 상태다. 성능 및 업그레이드 관련 테스트 32/32 통과.
+
+### 7-9 백엔드 통합 인계
+
+[팀 실행과 HTTP 계약](ARCHITECTURE.md#7-9-성능-조회와-팀-인계)을 우선 사용한다. 실제 개발 카탈로그 44모델·310 SKU, 가격 93건, 가격 적격 28모델·64구성이다. 격리 MySQL/Express에서 제조사 조건 세 종류와 여섯 목적의 추천, 실제 Gemini 배터리 자료에 따른 구매 점수 및 DEFER→REPLACE, 가격·링크·이력 보존 및 429 폴백을 확인했다. 관련 테스트 50/50. 다음 작업은 [칩셋 및 공급처 점검](audits/SMARTPHONE_CHIPSETS_7_8.md)을 바탕으로 CPU·GPU·게임·카메라의 이용 가능한 자료를 확보하는 것이다.
+
+### 8-1 공통 카탈로그 인계
+
+[`GET /api/catalog` 하위 계약과 007 적용 절차](ARCHITECTURE.md#8-1-공통-제품-카탈로그)를 사용한다. 스마트폰은 기존 44개 공개 모델·310개 SKU를 읽고 기존 비교 가격과 링크를 유지한다. 전체 개발 DB의 스마트폰 53모델·352 SKU 및 가격 93건을 읽기 전용으로 확인했다. 007은 격리 MySQL에만 적용했으며 5개 신규 제품군은 합성 샘플로 검증했다. 다음 8-2에서는 공통 조회 계약을 사용해 제품군별 비교를 구현한다. 가격 그룹에는 실제 공유 근거와 일치하는 비색상 옵션이 필요하다.
+
+### 8-2 공통 비교와 데이터 인계
+
+개발 MySQL에 007을 적용하고 [검수 실데이터](../backend/data/common-catalog-verified-8-2.json)로 신규 5모델·10 SKU를 등록했다. 스마트폰을 포함한 6제품군 비교의 [요청·응답과 입력 절차](ARCHITECTURE.md#8-2-제품-등록과-공통-비교)를 사용한다. 신규 5제품군의 가격은 전부 `null`이며 기존 스마트폰 가격 93건은 유지했다. 8-3은 공통 SKU의 사양·출처와 가격 유무를 기준으로 후보 평가를 연결한다.
+
+### 8-2.5 조원 제품 데이터 통합 및 다나와 가격 인계
+
+조원 프로젝트(`pc_final-main/backend/src/data/products.json`, 99모델·120 SKU)를 검증·변환하여 기존 8-2 데이터(5모델·10 SKU)를 보존한 채 신규 **59모델·67 SKU**를 추가 등록했다(신규 5개 제품군 합계 **64모델·77 SKU**, 스마트폰 포함 6개 제품군 공개 총 **108모델·387 SKU**). 다나와 실가격 매칭으로 신규 5개 제품군 중 **56개 SKU**(태블릿 26/28, 노트북 9/22, 스마트워치 7/12, 무선이어폰 12/13, 스피커 2/2)에 마지막 정상 참고 가격과 상품 링크(`pcode`)를 연결했고, 미확보 21개 SKU는 `null`로 유지했다. 기존 스마트폰(53모델·352 SKU·가격 93건) 및 사용자·보유 기기·추천 이력은 무변경 보존되었으며, 8-3 범용 추천 엔진에서 즉시 활용 가능하다.
+
+### 8-3A 범용 AI 추천 엔진 인계
+
+기존 스마트폰 추천(`smartphone-ranker-v2`, `recommendation-ranker.js`, `smartphones.js`)을 무변경 보존한 채, 태블릿·노트북·스마트워치·무선이어폰·스피커 5개 제품군의 로컬 추천 엔진([`catalog-recommendation-engine.js`](../backend/services/catalog-recommendation-engine.js))과 추천 API(`POST /api/analysis`, `POST /api/recommendations`, `POST /api/catalog/:category/recommendations`, `POST /api/catalog/:category/recommendation-candidates`)를 연결·검증했다. 미수집 가격 SKU(21개) 추천 제외, 스마트워치 iOS/Android 호환성 분리, 스피커 1모델(`JBL Flip 7`) 단일 추천 및 색상 병합(`color_options`), 서버 순위 고정 및 Gemini 장애 시 서버 폴백 설명, 내부 점수 비노출을 확인했다(`catalog-recommendation.test.js` 및 기존 스마트폰 추천 테스트 25/25 통과, Gemini Live 2회 호출 검증 완료). 다음 단계는 **8-3B (다중 제품군 보유 기기 업그레이드 판단 확장)** 및 프론트엔드 제품군별 추천 UI 연결이다.
+
+### 8-3B 범용 보유 기기·업그레이드 판단 엔진 인계
+
+기존 `owned_devices` 테이블 DDL 변경 없이 신규 5개 제품군(`tablet`, `laptop`, `smartwatch`, `earbuds`, `speaker`)의 카탈로그 SKU/모델(`catalog_sku_id`, `catalog_model_id`) 및 수동 사양·구매가(`purchase_price_krw`)·불편 사항 등록과 범용 업그레이드 판단 엔진([`catalog-upgrade-advisor.js`](../backend/services/catalog-upgrade-advisor.js))을 구현·연결했다. 동일 제품군 내 사양 비교, 중고 시세 미차감 원칙, 동일 모델/SKU 교체 차단, 미수집 가격 후보 제외, 정보 부족 시 `CLARIFY` 및 서버 주도 `KEEP / REPLACE / DEFER / CLARIFY` 결정을 검증했다(`catalog-upgrade.test.js` 10개 시나리오 및 관련 테스트 12/12 통과, Gemini Live 1회 호출 검증 완료). 다음 단계는 **8-4 관리자 API 및 대시보드(`catalog_models`·`catalog_skus`·`catalog_price_observations`·`catalog_admin_events` 관리 및 공개/검증 상태 전환)** 구현이다.

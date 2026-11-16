@@ -29,7 +29,7 @@ const apiModule = load('api/recommendations.js', {
 })
 
 const appButtonComponent = load('components/AppButton.vue').default
-const resultComponent = load('components/RecommendationResult.vue').default
+const resultComponent = load('components/RecommendationResult.vue', { '../utils/deviceImages.js': { resolveDeviceImage: () => null } }).default
 
 const historyView = load('views/HistoryView.vue', {
   '../components/AppButton.vue': { __esModule: true, default: appButtonComponent },

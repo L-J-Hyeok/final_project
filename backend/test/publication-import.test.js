@@ -12,7 +12,9 @@ test('publication states fail closed; legacy verified kept',()=>{
  assert.equal(publication.isPublic({verified:1}),true);
 });
 test('SQL before/after/partial migration always checks verified and production-only',()=>{
- assert.equal(publication.predicate([]),'(s.verified = 1 AND s.is_test = 0 AND v.verified = 1)');
+ assert.match(publication.predicate([]),/s\.verified = 1 AND s\.is_test = 0/);
+ assert.match(publication.predicate([]),/v\.verified = 1/);
+ for(const code of Object.keys(require('../services/smartphone-sales-channel').CARRIERS))assert.ok(publication.predicate([]).includes(code));
  const sql=publication.predicate([{table_name:'smartphones'},{table_name:'smartphone_variants'}]);
  assert.match(sql,/s.review_status/);assert.match(sql,/v.review_status/);
  assert.doesNotMatch(publication.predicate([{table_name:'smartphones'}],false),/v\./);

@@ -1,0 +1,330 @@
+{
+  "totalTargetedFromFailures": 29,
+  "newlyAcquiredPrices": 25,
+  "insertedToDb": 24,
+  "remainingMissingGroups": 4,
+  "successfulList": [
+    {
+      "group": "Galaxy S25 SM-S931N 256GB",
+      "model_name": "Galaxy S25",
+      "domestic_model_number": "SM-S931N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "amount_krw": 1165650,
+      "pcode": "75001853",
+      "productName": "삼성전자 갤럭시S25 256GB , 자급제 (네이비)",
+      "originalListingColor": "네이비",
+      "rep_variant_id": "90001407"
+    },
+    {
+      "group": "Galaxy S25+ SM-S936N 256GB",
+      "model_name": "Galaxy S25+",
+      "domestic_model_number": "SM-S936N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "amount_krw": 1491490,
+      "pcode": "102125705",
+      "productName": "삼성전자 갤럭시S25 플러스 256GB , 자급제 (네이비)",
+      "originalListingColor": "네이비",
+      "rep_variant_id": "90001413"
+    },
+    {
+      "group": "Galaxy S25 Ultra SM-S938N 256GB",
+      "model_name": "Galaxy S25 Ultra",
+      "domestic_model_number": "SM-S938N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "amount_krw": 1444990,
+      "pcode": "102126383",
+      "productName": "삼성전자 갤럭시S25 울트라 256GB , 자급제 (티타늄 그레이)",
+      "originalListingColor": "티타늄 그레이",
+      "rep_variant_id": "90001420"
+    },
+    {
+      "group": "Galaxy S25 Ultra SM-S938N 512GB",
+      "model_name": "Galaxy S25 Ultra",
+      "domestic_model_number": "SM-S938N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "amount_krw": 1763200,
+      "pcode": "102126491",
+      "productName": "삼성전자 갤럭시S25 울트라 512GB , 자급제 (티타늄 실버블루)",
+      "originalListingColor": "티타늄 실버",
+      "rep_variant_id": "90001423"
+    },
+    {
+      "group": "Galaxy S25 Ultra SM-S938N 1024GB",
+      "model_name": "Galaxy S25 Ultra",
+      "domestic_model_number": "SM-S938N",
+      "storage_gb": 1024,
+      "ram_gb": 16,
+      "amount_krw": 2087000,
+      "pcode": "102126533",
+      "productName": "삼성전자 갤럭시S25 울트라 1TB , 자급제 (티타늄 그레이)",
+      "originalListingColor": "티타늄 그레이",
+      "rep_variant_id": "90000504"
+    },
+    {
+      "group": "Galaxy S25 Ultra SM-S938N 1024GB",
+      "model_name": "Galaxy S25 Ultra",
+      "domestic_model_number": "SM-S938N",
+      "storage_gb": 1024,
+      "ram_gb": 16,
+      "amount_krw": 2087000,
+      "pcode": "102126533",
+      "productName": "삼성전자 갤럭시S25 울트라 1TB , 자급제 (티타늄 그레이)",
+      "originalListingColor": "티타늄 그레이",
+      "rep_variant_id": "90000504"
+    },
+    {
+      "group": "Galaxy S25 Edge SM-S937N 256GB",
+      "model_name": "Galaxy S25 Edge",
+      "domestic_model_number": "SM-S937N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "amount_krw": 1144150,
+      "pcode": "79401875",
+      "productName": "삼성전자 갤럭시S25 엣지 256GB , 자급제 (티타늄 실버)",
+      "originalListingColor": "티타늄 실버",
+      "rep_variant_id": "90001426"
+    },
+    {
+      "group": "Galaxy S25 Edge SM-S937N 512GB",
+      "model_name": "Galaxy S25 Edge",
+      "domestic_model_number": "SM-S937N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "amount_krw": 1474920,
+      "pcode": "79401899",
+      "productName": "삼성전자 갤럭시S25 엣지 512GB , 자급제 (티타늄 실버)",
+      "originalListingColor": "티타늄 실버",
+      "rep_variant_id": "90001429"
+    },
+    {
+      "group": "Galaxy S25 FE SM-S731N 256GB",
+      "model_name": "Galaxy S25 FE",
+      "domestic_model_number": "SM-S731N",
+      "storage_gb": 256,
+      "ram_gb": 8,
+      "amount_krw": 1000000,
+      "pcode": "97124351",
+      "productName": "삼성전자 갤럭시S25 FE 256GB , 자급제 (네이비)",
+      "originalListingColor": "네이비",
+      "rep_variant_id": "90001430"
+    },
+    {
+      "group": "Galaxy Z Flip8 SM-F776N 256GB",
+      "model_name": "Galaxy Z Flip8",
+      "domestic_model_number": "SM-F776N",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "amount_krw": 1385050,
+      "pcode": "122720221",
+      "productName": "삼성전자 갤럭시Z 플립8 256GB , 자급제 (핑크)",
+      "originalListingColor": "핑크",
+      "rep_variant_id": "90001477"
+    },
+    {
+      "group": "Galaxy Z Flip8 SM-F776N 512GB",
+      "model_name": "Galaxy Z Flip8",
+      "domestic_model_number": "SM-F776N",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "amount_krw": 1583990,
+      "pcode": "123621635",
+      "productName": "삼성전자 갤럭시Z 플립8 512GB , 자급제 (핑크)",
+      "originalListingColor": "핑크",
+      "rep_variant_id": "90001480"
+    },
+    {
+      "group": "iPhone Air A3517 256GB",
+      "model_name": "iPhone Air",
+      "domestic_model_number": "A3517",
+      "storage_gb": 256,
+      "ram_gb": 8,
+      "amount_krw": 1500000,
+      "pcode": "102002939",
+      "productName": "APPLE 아이폰 에어 256GB , 자급제 (라이트골드)",
+      "originalListingColor": "라이트 골드",
+      "rep_variant_id": "90001500"
+    },
+    {
+      "group": "iPhone Air A3517 512GB",
+      "model_name": "iPhone Air",
+      "domestic_model_number": "A3517",
+      "storage_gb": 512,
+      "ram_gb": 8,
+      "amount_krw": 1463000,
+      "pcode": "102003002",
+      "productName": "APPLE 아이폰 에어 512GB , 자급제 (라이트골드)",
+      "originalListingColor": "라이트 골드",
+      "rep_variant_id": "90001504"
+    },
+    {
+      "group": "iPhone 18 Pro A3714 256GB",
+      "model_name": "iPhone 18 Pro",
+      "domestic_model_number": "A3714",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "amount_krw": 1940250,
+      "pcode": "124117279",
+      "productName": "APPLE 아이폰 18 프로 256GB , 자급제 (버건디)",
+      "originalListingColor": "버건디",
+      "rep_variant_id": "90001522"
+    },
+    {
+      "group": "iPhone 18 Pro A3714 512GB",
+      "model_name": "iPhone 18 Pro",
+      "domestic_model_number": "A3714",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "amount_krw": 2199320,
+      "pcode": "124182446",
+      "productName": "APPLE 아이폰 18 프로 512GB , 자급제 (버건디)",
+      "originalListingColor": "버건디",
+      "rep_variant_id": "90001526"
+    },
+    {
+      "group": "iPhone 18 Pro A3714 1024GB",
+      "model_name": "iPhone 18 Pro",
+      "domestic_model_number": "A3714",
+      "storage_gb": 1024,
+      "ram_gb": 12,
+      "amount_krw": 2817750,
+      "pcode": "124198336",
+      "productName": "APPLE 아이폰 18 프로 1TB , 자급제 (버건디)",
+      "originalListingColor": "버건디",
+      "rep_variant_id": "90001622"
+    },
+    {
+      "group": "iPhone 18 Pro A3714 2048GB",
+      "model_name": "iPhone 18 Pro",
+      "domestic_model_number": "A3714",
+      "storage_gb": 2048,
+      "ram_gb": 12,
+      "amount_krw": 3695250,
+      "pcode": "124198342",
+      "productName": "APPLE 아이폰 18 프로 2TB , 자급제 (버건디)",
+      "originalListingColor": "버건디",
+      "rep_variant_id": "90001626"
+    },
+    {
+      "group": "iPhone 18 Pro Max A3717 256GB",
+      "model_name": "iPhone 18 Pro Max",
+      "domestic_model_number": "A3717",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "amount_krw": 2135250,
+      "pcode": "124117326",
+      "productName": "APPLE 아이폰 18 프로 맥스 256GB , 자급제 (버건디)",
+      "originalListingColor": "버건디",
+      "rep_variant_id": "90001528"
+    },
+    {
+      "group": "iPhone 18 Pro Max A3717 512GB",
+      "model_name": "iPhone 18 Pro Max",
+      "domestic_model_number": "A3717",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "amount_krw": 2427750,
+      "pcode": "124182440",
+      "productName": "APPLE 아이폰 18 프로 맥스 512GB , 자급제 (버건디)",
+      "originalListingColor": "버건디",
+      "rep_variant_id": "90001532"
+    },
+    {
+      "group": "iPhone 18 Pro Max A3717 1024GB",
+      "model_name": "iPhone 18 Pro Max",
+      "domestic_model_number": "A3717",
+      "storage_gb": 1024,
+      "ram_gb": 12,
+      "amount_krw": 3012750,
+      "pcode": "124198083",
+      "productName": "APPLE 아이폰 18 프로 맥스 1TB , 자급제 (버건디)",
+      "originalListingColor": "버건디",
+      "rep_variant_id": "90001632"
+    },
+    {
+      "group": "iPhone 18 Pro Max A3717 2048GB",
+      "model_name": "iPhone 18 Pro Max",
+      "domestic_model_number": "A3717",
+      "storage_gb": 2048,
+      "ram_gb": 12,
+      "amount_krw": 3890250,
+      "pcode": "124198129",
+      "productName": "APPLE 아이폰 18 프로 맥스 2TB , 자급제 (버건디)",
+      "originalListingColor": "버건디",
+      "rep_variant_id": "90001636"
+    },
+    {
+      "group": "iPhone Duo A3720 256GB",
+      "model_name": "iPhone Duo",
+      "domestic_model_number": "A3720",
+      "storage_gb": 256,
+      "ram_gb": 12,
+      "amount_krw": 3289980,
+      "pcode": "124154491",
+      "productName": "APPLE 아이폰 듀오 256GB , 자급제 (스타 화이트)",
+      "originalListingColor": "스타 화이트",
+      "rep_variant_id": "90001534"
+    },
+    {
+      "group": "iPhone Duo A3720 512GB",
+      "model_name": "iPhone Duo",
+      "domestic_model_number": "A3720",
+      "storage_gb": 512,
+      "ram_gb": 12,
+      "amount_krw": 3590000,
+      "pcode": "124469371",
+      "productName": "APPLE 아이폰 듀오 512GB , 자급제 (스타 화이트)",
+      "originalListingColor": "스타 화이트",
+      "rep_variant_id": "90001536"
+    },
+    {
+      "group": "iPhone Duo A3720 1024GB",
+      "model_name": "iPhone Duo",
+      "domestic_model_number": "A3720",
+      "storage_gb": 1024,
+      "ram_gb": 12,
+      "amount_krw": 4699990,
+      "pcode": "124469391",
+      "productName": "APPLE 아이폰 듀오 1TB , 자급제 (스타 화이트)",
+      "originalListingColor": "스타 화이트",
+      "rep_variant_id": "90001640"
+    },
+    {
+      "group": "iPhone Duo A3720 2048GB",
+      "model_name": "iPhone Duo",
+      "domestic_model_number": "A3720",
+      "storage_gb": 2048,
+      "ram_gb": 12,
+      "amount_krw": 5899990,
+      "pcode": "124469400",
+      "productName": "APPLE 아이폰 듀오 2TB , 자급제 (스타 화이트)",
+      "originalListingColor": "스타 화이트",
+      "rep_variant_id": "90001642"
+    }
+  ],
+  "stillFailedList": [
+    {
+      "group": "Galaxy A35 5G SM-A356N 128GB",
+      "reason": "NO_SEARCH_RESULTS",
+      "sampleTitle": null
+    },
+    {
+      "group": "Galaxy A25 5G SM-A256N 128GB",
+      "reason": "NO_SEARCH_RESULTS",
+      "sampleTitle": null
+    },
+    {
+      "group": "Galaxy A36 5G SM-A366N 128GB",
+      "reason": "NO_SEARCH_RESULTS",
+      "sampleTitle": null
+    },
+    {
+      "group": "Galaxy A37 5G SM-A376N 128GB",
+      "reason": "NO_SEARCH_RESULTS",
+      "sampleTitle": null
+    }
+  ]
+}

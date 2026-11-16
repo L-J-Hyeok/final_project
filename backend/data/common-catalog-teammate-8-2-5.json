@@ -1,0 +1,4921 @@
+[
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Apple",
+      "model_name": "iPad (A16) Wi-Fi",
+      "model_number": "A3354",
+      "released_on": null,
+      "weight_g": 477,
+      "official_product_url": "https://www.apple.com/kr/ipad-11/",
+      "specs_json": {
+        "release_month": "2025-04",
+        "chipset": "Apple A16",
+        "screen_inches": 11,
+        "display": "IPS LCD 2360 × 1640",
+        "pen_supported": true,
+        "keyboard_supported": true,
+        "battery_wh": 28.6
+      },
+      "source_name": "Apple 공식 사양",
+      "source_url": "https://support.apple.com/ko-kr/122240",
+      "publication_status": "public",
+      "verification_status": "verified",
+      "verified_at": "2026-11-16T07:37:58Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "A3354-128-silver",
+          "manufacturer_part_number": null,
+          "color": "실버",
+          "connectivity": "wifi",
+          "options_json": {},
+          "storage_gb": 128,
+          "ram_gb": null,
+          "source_name": "Apple 한국 스토어",
+          "source_url": "https://www.apple.com/kr/shop/buy-ipad/ipad/128gb-%EC%8B%A4%EB%B2%84-wifi",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "612390",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=77313098",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 2025 iPad A16 11세대( 128GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A3354",
+              "manufacturer_part_number": null,
+              "storage_gb": 128,
+              "ram_gb": null,
+              "color": "실버",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=77313098)"
+          }
+        ]
+      },
+      {
+        "sku": {
+          "sku_code": "A3354-256-silver",
+          "manufacturer_part_number": null,
+          "color": "실버",
+          "connectivity": "wifi",
+          "options_json": {},
+          "storage_gb": 256,
+          "ram_gb": null,
+          "source_name": "Apple 한국 스토어",
+          "source_url": "https://www.apple.com/kr/shop/buy-ipad/ipad/256gb-%EC%8B%A4%EB%B2%84-wifi",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "834870",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=77313149",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 2025 iPad A16 11세대( 256GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A3354",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": null,
+              "color": "실버",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=77313149)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Apple",
+      "model_name": "MacBook Air 13 (M5)",
+      "model_number": "A3449",
+      "released_on": "2026-03-11",
+      "weight_g": 1230,
+      "official_product_url": "https://www.apple.com/kr/macbook-air/",
+      "specs_json": {
+        "release_month": "2026-03",
+        "screen_inches": 13.6,
+        "display": "IPS LCD 2560 × 1664",
+        "battery_wh": 53.8,
+        "os": "macOS",
+        "ports": [
+          "Thunderbolt 4 (USB-C) × 2",
+          "MagSafe 3",
+          "3.5 mm"
+        ]
+      },
+      "source_name": "Apple 공식 사양",
+      "source_url": "https://support.apple.com/ko-kr/126320",
+      "publication_status": "public",
+      "verification_status": "verified",
+      "verified_at": "2026-11-16T07:37:58Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "A3449-16-512-8gpu-silver",
+          "manufacturer_part_number": null,
+          "color": "실버",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Apple M5 10코어",
+            "gpu": "Apple M5 8코어",
+            "storage_type": "SSD"
+          },
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "source_name": "Apple 한국 스토어",
+          "source_url": "https://www.apple.com/kr/shop/buy-mac/macbook-air/13-%EB%AA%A8%EB%8D%B8-silver-m5-%EC%B9%A9-10%EC%BD%94%EC%96%B4-cpu-8%EC%BD%94%EC%96%B4-gpu-16gb-%EB%A9%94%EB%AA%A8%EB%A6%AC-512gb-%EC%A0%80%EC%9E%A5-%EC%9E%A5%EC%B9%98",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1976250",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=106754228",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 맥북에어13 M5 10코어 CPU, 8코어 GPU 스카이( 램 16GB , SSD 512GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A3449",
+              "manufacturer_part_number": null,
+              "storage_gb": 512,
+              "ram_gb": 16,
+              "color": "실버",
+              "connectivity": "wifi",
+              "options_json": {
+                "cpu": "Apple M5 10코어",
+                "gpu": "Apple M5 8코어",
+                "storage_type": "SSD"
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=106754228)"
+          }
+        ]
+      },
+      {
+        "sku": {
+          "sku_code": "A3449-16-512-10gpu-starlight",
+          "manufacturer_part_number": null,
+          "color": "스타라이트",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Apple M5 10코어",
+            "gpu": "Apple M5 10코어",
+            "storage_type": "SSD"
+          },
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "source_name": "Apple 한국 스토어",
+          "source_url": "https://www.apple.com/kr/shop/buy-mac/macbook-air/13-%EB%AA%A8%EB%8D%B8-%EC%8A%A4%ED%83%80%EB%9D%BC%EC%9D%B4%ED%8A%B8-m5-%EC%B9%A9-10%EC%BD%94%EC%96%B4-cpu-10%EC%BD%94%EC%96%B4-gpu-16gb-%EB%A9%94%EB%AA%A8%EB%A6%AC-512gb-%EC%A0%80%EC%9E%A5-%EC%9E%A5%EC%B9%98",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "smartwatch",
+      "brand": "Samsung",
+      "model_name": "Galaxy Watch7 Bluetooth 40 mm",
+      "model_number": "SM-L300",
+      "released_on": "2024-07-24",
+      "weight_g": 28.8,
+      "official_product_url": "https://www.samsung.com/sec/watches/galaxy-watch/galaxy-watch7/specs/",
+      "specs_json": {
+        "gps": true,
+        "compatible_os": [
+          "Android 11 이상 (Google 모바일 서비스 지원, RAM 1.5GB 이상)"
+        ],
+        "screen_inches": 1.31,
+        "display": "Super AMOLED 432 × 432",
+        "battery_mah": 300,
+        "water_resistance": "5 ATM / IP68",
+        "sensors": [
+          "광학 심박",
+          "전기 심박",
+          "생체전기 임피던스",
+          "적외선 온도",
+          "가속도",
+          "자이로",
+          "기압",
+          "지자기",
+          "조도"
+        ]
+      },
+      "source_name": "Samsung 공식 사양",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-L300NZGAKOO/",
+      "publication_status": "public",
+      "verification_status": "verified",
+      "verified_at": "2026-11-16T07:37:58Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SM-L300NZGAKOO",
+          "manufacturer_part_number": "SM-L300NZGAKOO",
+          "color": "그린",
+          "connectivity": "bluetooth",
+          "options_json": {
+            "case_size_mm": 40
+          },
+          "storage_gb": null,
+          "ram_gb": null,
+          "source_name": "Samsung 국내 지원",
+          "source_url": "https://www.samsung.com/sec/support/model/SM-L300NZGAKOO/",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      },
+      {
+        "sku": {
+          "sku_code": "SM-L300NZEAKOO",
+          "manufacturer_part_number": "SM-L300NZEAKOO",
+          "color": "크림",
+          "connectivity": "bluetooth",
+          "options_json": {
+            "case_size_mm": 40
+          },
+          "storage_gb": null,
+          "ram_gb": null,
+          "source_name": "Samsung 국내 제품 페이지",
+          "source_url": "https://www.samsung.com/sec/watches/galaxywatch7-l300/SM-L300NZEAKOO/",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Samsung",
+      "model_name": "Galaxy Buds3",
+      "model_number": "SM-R530",
+      "released_on": "2024-07-24",
+      "weight_g": null,
+      "official_product_url": "https://www.samsung.com/sec/buds/galaxy-buds3-r530/",
+      "specs_json": {
+        "anc": true,
+        "codecs": [
+          "AAC",
+          "SBC",
+          "SSC",
+          "SSC-UHQ"
+        ],
+        "battery_hours": 5,
+        "battery_condition": "ANC 켜짐, 이어버드 단독 오디오 최대 재생",
+        "driver": "11 mm 1-way",
+        "wireless_charging": true,
+        "water_resistance": "IP57 (이어버드)",
+        "bluetooth_version": "5.4"
+      },
+      "source_name": "Samsung 공식 사양",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-R530NZWAKOO/",
+      "publication_status": "public",
+      "verification_status": "verified",
+      "verified_at": "2026-11-16T07:37:58Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SM-R530NZAAKOO",
+          "manufacturer_part_number": "SM-R530NZAAKOO",
+          "color": "실버",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "storage_gb": null,
+          "ram_gb": null,
+          "source_name": "Samsung 국내 제품 페이지",
+          "source_url": "https://www.samsung.com/sec/buds/galaxy-buds3-r530/SM-R530NZAAKOO/",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "129000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=59541506",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시 버즈3 SM-R530N ( 정품 )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-R530",
+              "manufacturer_part_number": "SM-R530NZAAKOO",
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "실버",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=59541506)"
+          }
+        ]
+      },
+      {
+        "sku": {
+          "sku_code": "SM-R530NZWAKOO",
+          "manufacturer_part_number": "SM-R530NZWAKOO",
+          "color": "화이트",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "storage_gb": null,
+          "ram_gb": null,
+          "source_name": "Samsung 국내 지원",
+          "source_url": "https://www.samsung.com/sec/support/model/SM-R530NZWAKOO/",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "129000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=59541506",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시 버즈3 SM-R530N ( 정품 )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-R530",
+              "manufacturer_part_number": "SM-R530NZWAKOO",
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "화이트",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=59541506)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "speaker",
+      "brand": "JBL",
+      "model_name": "JBL Flip 7",
+      "model_number": "FLIP 7",
+      "released_on": null,
+      "weight_g": 560,
+      "official_product_url": "https://www.samsung.com/sec/harman-life-style-audio/jbl-speaker-flip7-d2c/JBLFLIP7BLK/",
+      "specs_json": {
+        "power_w": 35,
+        "power_supply": "내장 충전 배터리 (17.28 Wh)",
+        "bluetooth_version": "5.4",
+        "battery_hours": 14,
+        "battery_condition": "최대 음악 재생, Playtime Boost 미사용",
+        "water_resistance": "IP68",
+        "dimensions_mm": [
+          182.5,
+          69.5,
+          71.5
+        ]
+      },
+      "source_name": "JBL 공식 사양",
+      "source_url": "https://kr.jbl.com/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw3c060571/pdfs/JBL_FLIP_7_Specsheet_KO.pdf",
+      "publication_status": "public",
+      "verification_status": "verified",
+      "verified_at": "2026-11-16T07:37:58Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "JBLFLIP7BLK",
+          "manufacturer_part_number": "JBLFLIP7BLK",
+          "color": "블랙",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "storage_gb": null,
+          "ram_gb": null,
+          "source_name": "Samsung 국내 제품 페이지",
+          "source_url": "https://www.samsung.com/sec/harman-life-style-audio/jbl-speaker-flip7-d2c/JBLFLIP7BLK/",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "129120",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=91189589",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "JBL FLIP 7 ( 정품 )",
+            "sku_match": {
+              "brand": "JBL",
+              "model_number": "FLIP 7",
+              "manufacturer_part_number": "JBLFLIP7BLK",
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "블랙",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=91189589)"
+          }
+        ]
+      },
+      {
+        "sku": {
+          "sku_code": "JBLFLIP7BLU",
+          "manufacturer_part_number": "JBLFLIP7BLU",
+          "color": "블루",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "storage_gb": null,
+          "ram_gb": null,
+          "source_name": "Samsung 국내 제품 페이지",
+          "source_url": "https://www.samsung.com/sec/harman-life-style-audio/jbl-speaker-flip7-d2c/JBLFLIP7BLU/",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "129120",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=91189589",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "JBL FLIP 7 ( 정품 )",
+            "sku_match": {
+              "brand": "JBL",
+              "model_number": "FLIP 7",
+              "manufacturer_part_number": "JBLFLIP7BLU",
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "블루",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=91189589)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "smartwatch",
+      "brand": "Samsung",
+      "model_name": "Galaxy Watch8 44mm",
+      "model_number": "SM-L330",
+      "released_on": "2025-07-25",
+      "weight_g": 33.8,
+      "official_product_url": "https://www.samsung.com/sec/watches/galaxy-watch8/",
+      "specs_json": {
+        "release_month": "2025-07",
+        "gps": true,
+        "compatible_os": [
+          "Wear OS Powered by Samsung (One UI 8 Watch)"
+        ],
+        "screen_inches": 1.5,
+        "display": "44mm 1.5형 Super AMOLED 사파이어 크리스탈",
+        "battery_mah": 435
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/watches/galaxy-watch8/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SAMSUNG-SM-L330-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "실버",
+          "connectivity": "bluetooth",
+          "options_json": {
+            "case_size_mm": 44
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/watches/galaxy-watch8/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "376870",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=93383597",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시 워치 8 44mm 블루투스 ( 정품 )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-L330",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "실버",
+              "connectivity": "bluetooth",
+              "options_json": {
+                "case_size_mm": 44
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=93383597)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Samsung",
+      "model_name": "Galaxy Tab S9 FE+",
+      "model_number": "SM-X610",
+      "released_on": "2023-10-16",
+      "weight_g": 627,
+      "official_product_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9-fe/specs/",
+      "specs_json": {
+        "release_month": "2023-10",
+        "chipset": "Exynos 1380",
+        "screen_inches": 12.4,
+        "display": "12.4형 WQXGA IPS LCD",
+        "battery_mah": 10090
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9-fe/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SAMSUNG-SM-X610-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "그레이",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9-fe/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "653890",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=30312806",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시탭 S9 FE 플러스 (램8GB, 128GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-X610",
+              "manufacturer_part_number": null,
+              "storage_gb": 128,
+              "ram_gb": 8,
+              "color": "그레이",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=30312806)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Samsung",
+      "model_name": "Galaxy Tab S9",
+      "model_number": "SM-X710",
+      "released_on": "2023-08-11",
+      "weight_g": 498,
+      "official_product_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9/specs/",
+      "specs_json": {
+        "release_month": "2023-08",
+        "chipset": "Snapdragon 8 Gen 2 for Galaxy",
+        "screen_inches": 11,
+        "display": "11.0형 Dynamic AMOLED 2X",
+        "battery_mah": 8400
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SAMSUNG-SM-X710-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "그라파이트",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1043000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=22298102",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시탭 S9 ( 128GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-X710",
+              "manufacturer_part_number": null,
+              "storage_gb": 128,
+              "ram_gb": 8,
+              "color": "그라파이트",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=22298102)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Samsung",
+      "model_name": "Galaxy Tab S9+",
+      "model_number": "SM-X810",
+      "released_on": "2023-08-11",
+      "weight_g": 581,
+      "official_product_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9/specs/",
+      "specs_json": {
+        "release_month": "2023-08",
+        "chipset": "Snapdragon 8 Gen 2 for Galaxy",
+        "screen_inches": 12.4,
+        "display": "12.4형 Dynamic AMOLED 2X",
+        "battery_mah": 10090
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SAMSUNG-SM-X810-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "그라파이트",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1299990",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=22044530",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시탭 S9 플러스 ( 256GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-X810",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 12,
+              "color": "그라파이트",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=22044530)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "smartwatch",
+      "brand": "Apple",
+      "model_name": "Apple Watch Series 11 46mm",
+      "model_number": "A3331",
+      "released_on": "2025-09-19",
+      "weight_g": 37.8,
+      "official_product_url": "https://www.apple.com/kr/apple-watch-series-11/",
+      "specs_json": {
+        "release_month": "2025-09",
+        "gps": true,
+        "compatible_os": [
+          "watchOS 12"
+        ],
+        "screen_inches": 1.96,
+        "display": "46mm 와이드 앵글 상시표시형 LTPO3 OLED (2000 니트)"
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/apple-watch-series-11/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "APPLE-A3331-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "제트 블랙 알루미늄",
+          "connectivity": "gps",
+          "options_json": {
+            "case_size_mm": 46
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/apple-watch-series-11/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "588890",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=96979337",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 워치 시리즈 11 46mm 제트블랙 알루미늄(스포츠밴드)",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A3331",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "제트 블랙 알루미늄",
+              "connectivity": "gps",
+              "options_json": {
+                "case_size_mm": 46
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=96979337)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Apple",
+      "model_name": "iPad Air 11 (M3)",
+      "model_number": "A3266",
+      "released_on": "2025-03-12",
+      "weight_g": 460,
+      "official_product_url": "https://www.apple.com/kr/ipad-air/specs/",
+      "specs_json": {
+        "release_month": "2025-03",
+        "chipset": "Apple M3 (8코어 CPU, 9코어 GPU)",
+        "screen_inches": 11,
+        "display": "11형 Liquid Retina IPS LCD"
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/ipad-air/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "APPLE-A3266-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "스페이스 그레이",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/ipad-air/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "966000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=77312582",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 2025 iPad Air 11 M3 ( 128GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A3266",
+              "manufacturer_part_number": null,
+              "storage_gb": 128,
+              "ram_gb": 8,
+              "color": "스페이스 그레이",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=77312582)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Apple",
+      "model_name": "iPad Air 13 (M3)",
+      "model_number": "A3268",
+      "released_on": "2025-03-12",
+      "weight_g": 616,
+      "official_product_url": "https://www.apple.com/kr/ipad-air/specs/",
+      "specs_json": {
+        "release_month": "2025-03",
+        "chipset": "Apple M3 (8코어 CPU, 9코어 GPU)",
+        "screen_inches": 13,
+        "display": "13형 Liquid Retina IPS LCD"
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/ipad-air/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "APPLE-A3268-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "스페이스 그레이",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/ipad-air/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1271430",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=77312609",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 2025 iPad Air 13 M3 ( 128GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A3268",
+              "manufacturer_part_number": null,
+              "storage_gb": 128,
+              "ram_gb": 8,
+              "color": "스페이스 그레이",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=77312609)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Apple",
+      "model_name": "iPad Pro 13 (M4)",
+      "model_number": "A2925",
+      "released_on": "2024-05-15",
+      "weight_g": 579,
+      "official_product_url": "https://www.apple.com/kr/ipad-pro/specs/",
+      "specs_json": {
+        "release_month": "2024-05",
+        "chipset": "Apple M4 칩 (9코어 또는 10코어 CPU, 10코어 GPU)",
+        "screen_inches": 13,
+        "display": "13인치 Ultra Retina XDR (탠덤 OLED, 120Hz ProMotion)",
+        "battery_wh": 38.99
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/ipad-pro/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "AP-IPP13M4-256-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "스페이스 블랙",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/ipad-pro/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "2135990",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=49645475",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 2024 iPad Pro 13 M4 ( 256GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A2925",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 8,
+              "color": "스페이스 블랙",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=49645475)"
+          }
+        ]
+      },
+      {
+        "sku": {
+          "sku_code": "AP-IPP13M4-512-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "실버",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/ipad-pro/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "2159900",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=52154063",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 2024 iPad Pro 13 M4 ( 512GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A2925",
+              "manufacturer_part_number": null,
+              "storage_gb": 512,
+              "ram_gb": 8,
+              "color": "실버",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=52154063)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Apple",
+      "model_name": "iPad Pro 11 (M4)",
+      "model_number": "A2836",
+      "released_on": "2024-05-15",
+      "weight_g": 444,
+      "official_product_url": "https://www.apple.com/kr/ipad-pro/specs/",
+      "specs_json": {
+        "release_month": "2024-05",
+        "chipset": "Apple M4 칩 (9코어 CPU, 10코어 GPU)",
+        "screen_inches": 11,
+        "display": "11인치 Ultra Retina XDR (탠덤 OLED, 120Hz ProMotion)",
+        "battery_wh": 31.29
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/ipad-pro/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "AP-IPP11M4-256-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "스페이스 블랙",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/ipad-pro/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1627470",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=49645481",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 2024 iPad Pro 11 M4 ( 256GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A2836",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 8,
+              "color": "스페이스 블랙",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=49645481)"
+          }
+        ]
+      },
+      {
+        "sku": {
+          "sku_code": "AP-IPP11M4-512-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "스페이스 블랙",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/ipad-pro/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1533450",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=52153847",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 2024 iPad Pro 11 M4 ( 512GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A2836",
+              "manufacturer_part_number": null,
+              "storage_gb": 512,
+              "ram_gb": 8,
+              "color": "스페이스 블랙",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=52153847)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Apple",
+      "model_name": "iPad Air 13 (M2)",
+      "model_number": "A2898",
+      "released_on": "2024-05-15",
+      "weight_g": 617,
+      "official_product_url": "https://www.apple.com/kr/ipad-air/specs/",
+      "specs_json": {
+        "release_month": "2024-05",
+        "chipset": "Apple M2 칩 (8코어 CPU, 9코어 GPU, 16코어 Neural Engine)",
+        "screen_inches": 13,
+        "display": "13인치 Liquid Retina IPS LCD (60Hz)",
+        "battery_wh": 36.59
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/ipad-air/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "AP-IPA13M2-128-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 128,
+          "ram_gb": 8,
+          "color": "스페이스 그레이",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/ipad-air/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1018670",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=49645295",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 2024 iPad Air 13 M2 ( 128GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A2898",
+              "manufacturer_part_number": null,
+              "storage_gb": 128,
+              "ram_gb": 8,
+              "color": "스페이스 그레이",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=49645295)"
+          }
+        ]
+      },
+      {
+        "sku": {
+          "sku_code": "AP-IPA13M2-256-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "스타라이트",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/ipad-air/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1298990",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=52153760",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 2024 iPad Air 13 M2 ( 256GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A2898",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 8,
+              "color": "스타라이트",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=52153760)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Apple",
+      "model_name": "iPad mini (A17 Pro)",
+      "model_number": "A2993",
+      "released_on": "2024-10-23",
+      "weight_g": 293,
+      "official_product_url": "https://www.apple.com/kr/ipad-mini/specs/",
+      "specs_json": {
+        "release_month": "2024-10",
+        "chipset": "Apple A17 Pro 칩 (6코어 CPU, 5코어 GPU, 16코어 Neural Engine)",
+        "screen_inches": 8.3,
+        "display": "8.3인치 Liquid Retina IPS LCD (60Hz)",
+        "battery_wh": 19.3
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/ipad-mini/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "AP-IPM7-128-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 128,
+          "ram_gb": null,
+          "color": "퍼플",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/ipad-mini/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "844550",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=71155355",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 2024 iPad mini A17 Pro 7세대( 128GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A2993",
+              "manufacturer_part_number": null,
+              "storage_gb": 128,
+              "ram_gb": null,
+              "color": "퍼플",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=71155355)"
+          }
+        ]
+      },
+      {
+        "sku": {
+          "sku_code": "AP-IPM7-256-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": null,
+          "color": "스페이스 그레이",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/ipad-mini/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1034200",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=71155364",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 2024 iPad mini A17 Pro 7세대( 256GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A2993",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": null,
+              "color": "스페이스 그레이",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=71155364)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Samsung",
+      "model_name": "Galaxy Tab S10 Ultra",
+      "model_number": "SM-X920",
+      "released_on": "2024-10-04",
+      "weight_g": 718,
+      "official_product_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s10/specs/",
+      "specs_json": {
+        "release_month": "2024-10",
+        "chipset": "MediaTek Dimensity 9300+ (옥타코어)",
+        "screen_inches": 14.6,
+        "display": "14.6인치 Dynamic AMOLED 2X (120Hz)",
+        "battery_mah": 11200,
+        "battery_wh": 43
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s10/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SM-X920-256-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "문스톤 그레이",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s10/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1610000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=67690268",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시탭 S10 울트라(램12GB, 256GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-X920",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 12,
+              "color": "문스톤 그레이",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=67690268)"
+          }
+        ]
+      },
+      {
+        "sku": {
+          "sku_code": "SM-X920-512-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "플래티넘 실버",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s10/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1859990",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=67690256",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시탭 S10 울트라(램12GB, 512GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-X920",
+              "manufacturer_part_number": null,
+              "storage_gb": 512,
+              "ram_gb": 12,
+              "color": "플래티넘 실버",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=67690256)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Samsung",
+      "model_name": "Galaxy Tab S10+",
+      "model_number": "SM-X820",
+      "released_on": "2024-10-04",
+      "weight_g": 571,
+      "official_product_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s10/specs/",
+      "specs_json": {
+        "release_month": "2024-10",
+        "chipset": "MediaTek Dimensity 9300+ (옥타코어)",
+        "screen_inches": 12.4,
+        "display": "12.4인치 Dynamic AMOLED 2X (120Hz)",
+        "battery_mah": 10090,
+        "battery_wh": 38.8
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s10/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SM-X820-256-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "문스톤 그레이",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s10/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1148990",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=67690235",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시탭 S10 플러스 ( 256GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-X820",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 12,
+              "color": "문스톤 그레이",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=67690235)"
+          }
+        ]
+      },
+      {
+        "sku": {
+          "sku_code": "SM-X820-512-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "플래티넘 실버",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s10/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1482780",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=67690241",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시탭 S10 플러스 ( 512GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-X820",
+              "manufacturer_part_number": null,
+              "storage_gb": 512,
+              "ram_gb": 12,
+              "color": "플래티넘 실버",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=67690241)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Samsung",
+      "model_name": "Galaxy Tab S9 Ultra",
+      "model_number": "SM-X910",
+      "released_on": "2023-08-11",
+      "weight_g": 732,
+      "official_product_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9/specs/",
+      "specs_json": {
+        "release_month": "2023-08",
+        "chipset": "Snapdragon 8 Gen 2 for Galaxy (옥타코어)",
+        "screen_inches": 14.6,
+        "display": "14.6인치 Dynamic AMOLED 2X (120Hz)",
+        "battery_mah": 11200,
+        "battery_wh": 43
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SM-X910-256-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "그라파이트",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1724990",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=22292927",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시탭 S9 울트라(램12GB, 256GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-X910",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 12,
+              "color": "그라파이트",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=22292927)"
+          }
+        ]
+      },
+      {
+        "sku": {
+          "sku_code": "SM-X910-512-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 12,
+          "color": "베이지",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1898460",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=21399134",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시탭 S9 울트라(램12GB, 512GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-X910",
+              "manufacturer_part_number": null,
+              "storage_gb": 512,
+              "ram_gb": 12,
+              "color": "베이지",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=21399134)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Samsung",
+      "model_name": "Galaxy Tab S9 FE",
+      "model_number": "SM-X510",
+      "released_on": "2023-10-16",
+      "weight_g": 523,
+      "official_product_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9-fe/specs/",
+      "specs_json": {
+        "release_month": "2023-10",
+        "chipset": "Samsung Exynos 1380 (옥타코어)",
+        "screen_inches": 10.9,
+        "display": "10.9인치 WUXGA+ TFT LCD (90Hz)",
+        "battery_mah": 8000,
+        "battery_wh": 30.9
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9-fe/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SM-X510-128-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "민트",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9-fe/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "774990",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=30312767",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시탭 S9 FE (램6GB, 128GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-X510",
+              "manufacturer_part_number": null,
+              "storage_gb": 128,
+              "ram_gb": 6,
+              "color": "민트",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=30312767)"
+          }
+        ]
+      },
+      {
+        "sku": {
+          "sku_code": "SM-X510-256-W",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "그레이",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/tablets/galaxy-tab-s9-fe/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "970650",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=30312827",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시탭 S9 FE (램8GB, 256GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-X510",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 8,
+              "color": "그레이",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=30312827)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "smartwatch",
+      "brand": "Apple",
+      "model_name": "Apple Watch Series 10 46mm",
+      "model_number": "A2999",
+      "released_on": "2024-09-20",
+      "weight_g": 36.4,
+      "official_product_url": "https://www.apple.com/kr/apple-watch-series-10/specs/",
+      "specs_json": {
+        "release_month": "2024-09",
+        "gps": true,
+        "compatible_os": [
+          "watchOS 11"
+        ],
+        "display": "46mm 와이드 앵글 LTPO3 OLED 상시표시형 Retina"
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/apple-watch-series-10/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "AP-AWS10-46-GPS",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "제트 블랙",
+          "connectivity": "gps",
+          "options_json": {
+            "case_size_mm": 46
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/apple-watch-series-10/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "518990",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=65929979",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 워치 시리즈 10 46mm 실버 알루미늄(스포츠밴드)",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A2999",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "제트 블랙",
+              "connectivity": "gps",
+              "options_json": {
+                "case_size_mm": 46
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=65929979)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "smartwatch",
+      "brand": "Apple",
+      "model_name": "Apple Watch Series 10 42mm",
+      "model_number": "A2997",
+      "released_on": "2024-09-20",
+      "weight_g": 30,
+      "official_product_url": "https://www.apple.com/kr/apple-watch-series-10/specs/",
+      "specs_json": {
+        "release_month": "2024-09",
+        "gps": true,
+        "compatible_os": [
+          "watchOS 11"
+        ],
+        "display": "42mm 와이드 앵글 LTPO3 OLED 상시표시형 Retina"
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/apple-watch-series-10/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "AP-AWS10-42-GPS",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "로즈 골드",
+          "connectivity": "gps",
+          "options_json": {
+            "case_size_mm": 42
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/apple-watch-series-10/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "484000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=65952797",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 워치 시리즈 10 42mm 실버 알루미늄(스포츠밴드)",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A2997",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "로즈 골드",
+              "connectivity": "gps",
+              "options_json": {
+                "case_size_mm": 42
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=65952797)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "smartwatch",
+      "brand": "Apple",
+      "model_name": "Apple Watch Ultra 2 49mm",
+      "model_number": "A2986",
+      "released_on": "2023-09-22",
+      "weight_g": 61.4,
+      "official_product_url": "https://www.apple.com/kr/apple-watch-ultra-2/specs/",
+      "specs_json": {
+        "release_month": "2023-09",
+        "gps": true,
+        "compatible_os": [
+          "watchOS 10"
+        ],
+        "display": "49mm LTPO2 OLED 상시표시형 Retina (최대 3000 니트)"
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://www.apple.com/kr/apple-watch-ultra-2/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "AP-AWU2-49-CELL",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "내추럴 티타늄",
+          "connectivity": "cellular",
+          "options_json": {
+            "case_size_mm": 49
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://www.apple.com/kr/apple-watch-ultra-2/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "smartwatch",
+      "brand": "Apple",
+      "model_name": "Apple Watch Series 9 45mm",
+      "model_number": "A2980",
+      "released_on": "2023-09-22",
+      "weight_g": 38.7,
+      "official_product_url": "https://support.apple.com/ko-kr/111833",
+      "specs_json": {
+        "release_month": "2023-09",
+        "gps": true,
+        "compatible_os": [
+          "watchOS 10"
+        ],
+        "display": "45mm LTPO OLED 상시표시형 Retina (최대 2000 니트)"
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 코리아 공식 공개 기술 사양",
+      "source_url": "https://support.apple.com/ko-kr/111833",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "AP-AWS9-45-GPS",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "미드나이트",
+          "connectivity": "gps",
+          "options_json": {
+            "case_size_mm": 45
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 코리아 공식 공개 기술 사양",
+          "source_url": "https://support.apple.com/ko-kr/111833",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "455630",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=28510814",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 워치 시리즈 9 45mm 미드나이트 알루미늄(스포츠밴드)",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A2980",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "미드나이트",
+              "connectivity": "gps",
+              "options_json": {
+                "case_size_mm": 45
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=28510814)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "smartwatch",
+      "brand": "Samsung",
+      "model_name": "Galaxy Watch Ultra 47mm",
+      "model_number": "SM-L705N",
+      "released_on": "2024-07-24",
+      "weight_g": 60.5,
+      "official_product_url": "https://www.samsung.com/sec/watches/galaxy-watch-ultra/specs/",
+      "specs_json": {
+        "release_month": "2024-07",
+        "gps": true,
+        "compatible_os": [
+          "Wear OS Powered by Samsung (One UI 6 Watch)"
+        ],
+        "screen_inches": 1.5,
+        "display": "47mm Super AMOLED (1.5인치, 사파이어 크리스탈)",
+        "battery_mah": 590
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/watches/galaxy-watch-ultra/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SM-L705N-47-LTE",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "티타늄 그레이",
+          "connectivity": "cellular",
+          "options_json": {
+            "case_size_mm": 47
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/watches/galaxy-watch-ultra/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "858990",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=59082029",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시 워치 울트라 47mm LTE ( 정품 )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-L705N",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "티타늄 그레이",
+              "connectivity": "cellular",
+              "options_json": {
+                "case_size_mm": 47
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=59082029)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "smartwatch",
+      "brand": "Samsung",
+      "model_name": "Galaxy Watch7 44mm",
+      "model_number": "SM-L310",
+      "released_on": "2024-07-24",
+      "weight_g": 33.8,
+      "official_product_url": "https://www.samsung.com/sec/watches/galaxy-watch7/specs/",
+      "specs_json": {
+        "release_month": "2024-07",
+        "gps": true,
+        "compatible_os": [
+          "Wear OS Powered by Samsung (One UI 6 Watch)"
+        ],
+        "screen_inches": 1.5,
+        "display": "44mm Super AMOLED (1.5인치)",
+        "battery_mah": 425
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/watches/galaxy-watch7/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SM-L310-44-BT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "그린",
+          "connectivity": "bluetooth",
+          "options_json": {
+            "case_size_mm": 44
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/watches/galaxy-watch7/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "smartwatch",
+      "brand": "Samsung",
+      "model_name": "Galaxy Watch6 Classic 47mm",
+      "model_number": "SM-R960",
+      "released_on": "2023-08-11",
+      "weight_g": 59,
+      "official_product_url": "https://www.samsung.com/sec/watches/galaxy-watch6-classic/specs/",
+      "specs_json": {
+        "release_month": "2023-08",
+        "gps": true,
+        "compatible_os": [
+          "Wear OS Powered by Samsung (One UI 5 Watch)"
+        ],
+        "screen_inches": 1.5,
+        "display": "47mm Super AMOLED (1.5인치, 물리 회전 베젤)",
+        "battery_mah": 425
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/watches/galaxy-watch6-classic/specs/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SM-R960-47-BT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "실버",
+          "connectivity": "bluetooth",
+          "options_json": {
+            "case_size_mm": 47
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/watches/galaxy-watch6-classic/specs/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "436240",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=23563166",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시 워치 6 클래식 47mm 블루투스 ( 정품 )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-R960",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "실버",
+              "connectivity": "bluetooth",
+              "options_json": {
+                "case_size_mm": 47
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=23563166)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "smartwatch",
+      "brand": "Samsung",
+      "model_name": "Galaxy Watch FE 40mm",
+      "model_number": "SM-R861",
+      "released_on": "2024-06-24",
+      "weight_g": 26.6,
+      "official_product_url": "https://www.samsung.com/sec/watches/galaxy-watch-fe/SM-R861NZKAKOO/",
+      "specs_json": {
+        "release_month": "2024-06",
+        "gps": true,
+        "compatible_os": [
+          "Wear OS Powered by Samsung (One UI 5 Watch)"
+        ],
+        "screen_inches": 1.2,
+        "display": "40mm Super AMOLED (1.2인치, 사파이어 크리스탈)",
+        "battery_mah": 247
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "삼성전자 공식 홈페이지 공개 사양",
+      "source_url": "https://www.samsung.com/sec/watches/galaxy-watch-fe/SM-R861NZKAKOO/",
+      "verified_at": "2026-11-06T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SM-R861-40-BT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "블랙",
+          "connectivity": "bluetooth",
+          "options_json": {
+            "case_size_mm": 40
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "삼성전자 공식 홈페이지 공개 사양",
+          "source_url": "https://www.samsung.com/sec/watches/galaxy-watch-fe/SM-R861NZKAKOO/",
+          "verified_at": "2026-11-06T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Lenovo",
+      "model_name": "Legion Tab (Y700 2nd Gen)",
+      "model_number": "TB-320FC",
+      "released_on": "2023-07-22",
+      "weight_g": 348,
+      "official_product_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/legion-tab/len102g0037",
+      "specs_json": {
+        "release_month": "2023-07",
+        "chipset": "Snapdragon 8+ Gen 1 (4nm)",
+        "screen_inches": 8.8,
+        "display": "8.8인치 2.5K LCD 게이밍 디스플레이 (500nits)",
+        "battery_mah": 6550
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Lenovo 공식 홈페이지 사양",
+      "source_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/legion-tab/len102g0037",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "LENOVO-TB-320FC-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "스톰그레이",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Lenovo 공식 홈페이지 사양",
+          "source_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/legion-tab/len102g0037",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "599000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=39916466",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "레노버 리전 Y700 2세대 ( 256GB )",
+            "sku_match": {
+              "brand": "Lenovo",
+              "model_number": "TB-320FC",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 12,
+              "color": "스톰그레이",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=39916466)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Lenovo",
+      "model_name": "Legion Tab (Y700 2024 3rd Gen)",
+      "model_number": "TB-321FU",
+      "released_on": "2024-09-29",
+      "weight_g": 350,
+      "official_product_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/legion-tab/len102g0037",
+      "specs_json": {
+        "release_month": "2024-09",
+        "chipset": "Snapdragon 8 Gen 3 (최고 사양 게이밍 SoC)",
+        "screen_inches": 8.8,
+        "display": "8.8인치 2.5K 초고주사율 게이밍 스크린",
+        "battery_mah": 6550
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Lenovo 공식 홈페이지 사양",
+      "source_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/legion-tab/len102g0037",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "LENOVO-TB-321FU-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 12,
+          "color": "카본블랙",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Lenovo 공식 홈페이지 사양",
+          "source_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/legion-tab/len102g0037",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "598990",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=74051327",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "레노버 리전 Y700 3세대 (램12GB, 256GB )",
+            "sku_match": {
+              "brand": "Lenovo",
+              "model_number": "TB-321FU",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 12,
+              "color": "카본블랙",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=74051327)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Lenovo",
+      "model_name": "Lenovo Tab P12 Pro",
+      "model_number": "TB-Q706F",
+      "released_on": "2022-12-01",
+      "weight_g": 565,
+      "official_product_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/lenovo-tab-p12-pro/wmd00000494",
+      "specs_json": {
+        "release_month": "2022-12",
+        "chipset": "Snapdragon 870",
+        "screen_inches": 12.6,
+        "display": "12.6인치 2K AMOLED (600nits Dolby Vision)",
+        "battery_mah": 10200
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Lenovo 공식 홈페이지 사양",
+      "source_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/lenovo-tab-p12-pro/wmd00000494",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "LENOVO-TB-Q706F-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "스톰그레이",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Lenovo 공식 홈페이지 사양",
+          "source_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/lenovo-tab-p12-pro/wmd00000494",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "464000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=15986408",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "레노버 탭 P12 프로 12.6( 256GB )",
+            "sku_match": {
+              "brand": "Lenovo",
+              "model_number": "TB-Q706F",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 8,
+              "color": "스톰그레이",
+              "connectivity": "wifi",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=15986408)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Lenovo",
+      "model_name": "Lenovo Tab P11 Pro (2nd Gen)",
+      "model_number": "TB-132FU",
+      "released_on": "2022-11-15",
+      "weight_g": 480,
+      "official_product_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/tab-p11-pro-2nd-gen/len102h0015",
+      "specs_json": {
+        "release_month": "2022-11",
+        "chipset": "MediaTek Kompanio 1300T (6nm)",
+        "screen_inches": 11.2,
+        "display": "11.2인치 2.5K OLED (600nits HDR10+)",
+        "battery_mah": 8200
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Lenovo 공식 홈페이지 사양",
+      "source_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/tab-p11-pro-2nd-gen/len102h0015",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "LENOVO-TB-132FU-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 128,
+          "ram_gb": 6,
+          "color": "오트",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Lenovo 공식 홈페이지 사양",
+          "source_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/tab-p11-pro-2nd-gen/len102h0015",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Lenovo",
+      "model_name": "Lenovo Tab M11",
+      "model_number": "TB-330FU",
+      "released_on": "2024-01-08",
+      "weight_g": 465,
+      "official_product_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/lenovo-tab-m11-(11-inch-mtk)/len102h0037",
+      "specs_json": {
+        "release_month": "2024-01",
+        "chipset": "MediaTek Helio G88",
+        "screen_inches": 11,
+        "display": "11.0인치 WUXGA IPS LCD (400nits)",
+        "battery_mah": 7040,
+        "pen_supported": true
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Lenovo 공식 홈페이지 사양",
+      "source_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/lenovo-tab-m11-(11-inch-mtk)/len102h0037",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "LENOVO-TB-330FU-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 64,
+          "ram_gb": 4,
+          "color": "루나그레이",
+          "connectivity": "wifi",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Lenovo 공식 홈페이지 사양",
+          "source_url": "https://www.lenovo.com/kr/ko/p/tablets/android-tablets/lenovo-tab-series/lenovo-tab-m11-(11-inch-mtk)/len102h0037",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Apple",
+      "model_name": "MacBook Pro 16 (M3 Max)",
+      "model_number": "A2992",
+      "released_on": "2023-11-07",
+      "weight_g": 2160,
+      "official_product_url": "https://support.apple.com/ko-kr/117737",
+      "specs_json": {
+        "release_month": "2023-11",
+        "cpu": "Apple M3 Max (16코어 CPU, 40코어 GPU, 하드웨어 레이트레이싱)",
+        "gpu": "Apple M3 Max (40코어 GPU)",
+        "screen_inches": 16.2,
+        "display": "16.2인치 Liquid Retina XDR (1600nits 피크)",
+        "refresh_hz": 120,
+        "battery_wh": 100,
+        "os": "macOS Sonoma",
+        "ports": [
+          "Thunderbolt 4 x3",
+          "HDMI",
+          "SDXC",
+          "MagSafe 3",
+          "Wi-Fi 6E"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 공식 홈페이지 사양",
+      "source_url": "https://support.apple.com/ko-kr/117737",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "APPLE-A2992-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 1024,
+          "ram_gb": 48,
+          "color": "스페이스 블랙",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Apple M3 Max (16코어 CPU, 40코어 GPU, 하드웨어 레이트레이싱)",
+            "gpu": "Apple M3 Max (40코어 GPU)",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 공식 홈페이지 사양",
+          "source_url": "https://support.apple.com/ko-kr/117737",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Apple",
+      "model_name": "MacBook Pro 14 (M3 Pro)",
+      "model_number": "A2991",
+      "released_on": "2023-11-07",
+      "weight_g": 1610,
+      "official_product_url": "https://support.apple.com/ko-kr/117736",
+      "specs_json": {
+        "release_month": "2023-11",
+        "cpu": "Apple M3 Pro (12코어 CPU, 18코어 GPU)",
+        "gpu": "Apple M3 Pro (18코어 GPU)",
+        "screen_inches": 14.2,
+        "display": "14.2인치 Liquid Retina XDR (1000nits 지속)",
+        "refresh_hz": 120,
+        "battery_wh": 72.4,
+        "os": "macOS Sonoma",
+        "ports": [
+          "Thunderbolt 4 x3",
+          "HDMI",
+          "SDXC",
+          "MagSafe 3"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 공식 홈페이지 사양",
+      "source_url": "https://support.apple.com/ko-kr/117736",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "APPLE-A2991-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 18,
+          "color": "실버",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Apple M3 Pro (12코어 CPU, 18코어 GPU)",
+            "gpu": "Apple M3 Pro (18코어 GPU)",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 공식 홈페이지 사양",
+          "source_url": "https://support.apple.com/ko-kr/117736",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Apple",
+      "model_name": "MacBook Pro 14 (M3)",
+      "model_number": "A2990",
+      "released_on": "2023-11-07",
+      "weight_g": 1550,
+      "official_product_url": "https://support.apple.com/ko-kr/117735",
+      "specs_json": {
+        "release_month": "2023-11",
+        "cpu": "Apple M3 (8코어 CPU, 10코어 GPU)",
+        "gpu": "Apple M3 (10코어 GPU)",
+        "screen_inches": 14.2,
+        "display": "14.2인치 Liquid Retina XDR",
+        "refresh_hz": 120,
+        "battery_wh": 70,
+        "os": "macOS Sonoma",
+        "ports": [
+          "Thunderbolt / USB 4 x2",
+          "HDMI",
+          "SDXC",
+          "MagSafe 3"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 공식 홈페이지 사양",
+      "source_url": "https://support.apple.com/ko-kr/117735",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "APPLE-A2990-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 8,
+          "color": "스페이스 그레이",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Apple M3 (8코어 CPU, 10코어 GPU)",
+            "gpu": "Apple M3 (10코어 GPU)",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 공식 홈페이지 사양",
+          "source_url": "https://support.apple.com/ko-kr/117735",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1849180",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=29621735",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 맥북프로14 M3 8코어 CPU, 10코어 GPU 실버( 램 8GB , SSD 512GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A2990",
+              "manufacturer_part_number": null,
+              "storage_gb": 512,
+              "ram_gb": 8,
+              "color": "스페이스 그레이",
+              "connectivity": "wifi",
+              "options_json": {
+                "cpu": "Apple M3 (8코어 CPU, 10코어 GPU)",
+                "gpu": "Apple M3 (10코어 GPU)",
+                "storage_type": "SSD"
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=29621735)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Apple",
+      "model_name": "MacBook Air 15 (M3)",
+      "model_number": "A3114",
+      "released_on": "2024-03-08",
+      "weight_g": 1510,
+      "official_product_url": "https://support.apple.com/ko-kr/118491",
+      "specs_json": {
+        "release_month": "2024-03",
+        "cpu": "Apple M3 (8코어 CPU, 10코어 GPU 팬리스)",
+        "gpu": "Apple M3 (10코어 GPU)",
+        "screen_inches": 15.3,
+        "display": "15.3인치 Liquid Retina (500nits)",
+        "refresh_hz": 60,
+        "battery_wh": 66.5,
+        "os": "macOS Sonoma",
+        "ports": [
+          "MagSafe 3",
+          "Thunderbolt / USB 4 x2",
+          "6스피커 사운드"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 공식 홈페이지 사양",
+      "source_url": "https://support.apple.com/ko-kr/118491",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "APPLE-A3114-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "미드나이트",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Apple M3 (8코어 CPU, 10코어 GPU 팬리스)",
+            "gpu": "Apple M3 (10코어 GPU)",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 공식 홈페이지 사양",
+          "source_url": "https://support.apple.com/ko-kr/118491",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "2339990",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=39250091",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 맥북에어15 M3 8코어 CPU, 10코어 GPU 블루( 램 16GB , SSD 512GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A3114",
+              "manufacturer_part_number": null,
+              "storage_gb": 512,
+              "ram_gb": 16,
+              "color": "미드나이트",
+              "connectivity": "wifi",
+              "options_json": {
+                "cpu": "Apple M3 (8코어 CPU, 10코어 GPU 팬리스)",
+                "gpu": "Apple M3 (10코어 GPU)",
+                "storage_type": "SSD"
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=39250091)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Apple",
+      "model_name": "MacBook Air 13 (M3)",
+      "model_number": "A3113",
+      "released_on": "2024-03-08",
+      "weight_g": 1240,
+      "official_product_url": "https://support.apple.com/ko-kr/118490",
+      "specs_json": {
+        "release_month": "2024-03",
+        "cpu": "Apple M3 (8코어 CPU, 8코어 GPU 팬리스)",
+        "gpu": "Apple M3 (8코어 GPU)",
+        "screen_inches": 13.6,
+        "display": "13.6인치 Liquid Retina (500nits)",
+        "refresh_hz": 60,
+        "battery_wh": 52.6,
+        "os": "macOS Sonoma",
+        "ports": [
+          "MagSafe 3",
+          "Thunderbolt / USB 4 x2",
+          "Wi-Fi 6E"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 공식 홈페이지 사양",
+      "source_url": "https://support.apple.com/ko-kr/118490",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "APPLE-A3113-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 8,
+          "color": "스타라이트",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Apple M3 (8코어 CPU, 8코어 GPU 팬리스)",
+            "gpu": "Apple M3 (8코어 GPU)",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 공식 홈페이지 사양",
+          "source_url": "https://support.apple.com/ko-kr/118490",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1550000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=39249161",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 맥북에어13 M3 8코어 CPU, 8코어 GPU 그레이( 램 8GB , SSD 256GB )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A3113",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 8,
+              "color": "스타라이트",
+              "connectivity": "wifi",
+              "options_json": {
+                "cpu": "Apple M3 (8코어 CPU, 8코어 GPU 팬리스)",
+                "gpu": "Apple M3 (8코어 GPU)",
+                "storage_type": "SSD"
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=39249161)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Samsung",
+      "model_name": "Galaxy Book4 Ultra",
+      "model_number": "NT960XGL-X94A",
+      "released_on": "2024-01-02",
+      "weight_g": 1860,
+      "official_product_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book4-ultra-nt960xgl-xd92g/",
+      "specs_json": {
+        "release_month": "2024-01",
+        "cpu": "Intel Core Ultra 9 185H (16코어 22스레드 NPU 내장)",
+        "gpu": "NVIDIA RTX 4070 Laptop (8GB)",
+        "screen_inches": 16,
+        "display": "16.0인치 Dynamic AMOLED 2X 터치 (안티리플렉션 120% DCI-P3)",
+        "refresh_hz": 120,
+        "battery_wh": 76,
+        "os": "Windows 11 Home (Galaxy Connected Experience)",
+        "ports": [
+          "Thunderbolt 4 x2",
+          "HDMI 2.1 8K@60Hz"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Samsung 공식 홈페이지 사양",
+      "source_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book4-ultra-nt960xgl-xd92g/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SAMSUNG-NT960XGL-X94A-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 1024,
+          "ram_gb": 32,
+          "color": "문스톤 그레이",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core Ultra 9 185H (16코어 22스레드 NPU 내장)",
+            "gpu": "NVIDIA RTX 4070 Laptop (8GB)",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Samsung 공식 홈페이지 사양",
+          "source_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book4-ultra-nt960xgl-xd92g/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Samsung",
+      "model_name": "Galaxy Book4 Pro 16",
+      "model_number": "NT960XGK-K71A",
+      "released_on": "2024-01-02",
+      "weight_g": 1560,
+      "official_product_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book4-pro-nt960xgk-kd72g/",
+      "specs_json": {
+        "release_month": "2024-01",
+        "cpu": "Intel Core Ultra 7 155H",
+        "gpu": "Intel Arc Graphics",
+        "screen_inches": 16,
+        "display": "16.0인치 Dynamic AMOLED 2X 터치스크린 (빛반사 방지 패널)",
+        "refresh_hz": 120,
+        "battery_wh": 76,
+        "os": "Windows 11 Home",
+        "ports": [
+          "Thunderbolt 4 x2",
+          "HDMI 2.1",
+          "USB-A 3.2",
+          "MicroSD"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Samsung 공식 홈페이지 사양",
+      "source_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book4-pro-nt960xgk-kd72g/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SAMSUNG-NT960XGK-K71A-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "플래티넘 실버",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core Ultra 7 155H",
+            "gpu": "Intel Arc Graphics",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Samsung 공식 홈페이지 사양",
+          "source_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book4-pro-nt960xgk-kd72g/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "2752370",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=31465046",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시북4 프로 NT960XGK-K71A (SSD 512GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "NT960XGK-K71A",
+              "manufacturer_part_number": null,
+              "storage_gb": 512,
+              "ram_gb": 16,
+              "color": "플래티넘 실버",
+              "connectivity": "wifi",
+              "options_json": {
+                "cpu": "Intel Core Ultra 7 155H",
+                "gpu": "Intel Arc Graphics",
+                "storage_type": "SSD"
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=31465046)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Samsung",
+      "model_name": "Galaxy Book4 Pro 14",
+      "model_number": "NT940XGK-K51A",
+      "released_on": "2024-01-02",
+      "weight_g": 1230,
+      "official_product_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book4-pro-nt940xgk-kl71g/",
+      "specs_json": {
+        "release_month": "2024-01",
+        "cpu": "Intel Core Ultra 5 125H",
+        "gpu": "Intel Arc Graphics",
+        "screen_inches": 14,
+        "display": "14.0인치 Dynamic AMOLED 2X 터치스크린",
+        "refresh_hz": 120,
+        "battery_wh": 63,
+        "os": "Windows 11 Home",
+        "ports": [
+          "Thunderbolt 4 x2",
+          "HDMI 2.1",
+          "MicroSD"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Samsung 공식 홈페이지 사양",
+      "source_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book4-pro-nt940xgk-kl71g/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SAMSUNG-NT940XGK-K51A-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "문스톤 그레이",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core Ultra 5 125H",
+            "gpu": "Intel Arc Graphics",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Samsung 공식 홈페이지 사양",
+          "source_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book4-pro-nt940xgk-kl71g/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Samsung",
+      "model_name": "Galaxy Book4 360",
+      "model_number": "NT750QGK-K71A",
+      "released_on": "2024-01-02",
+      "weight_g": 1460,
+      "official_product_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book4-360-nt750qgk-k51a/",
+      "specs_json": {
+        "release_month": "2024-01",
+        "cpu": "Intel Core Ultra 7 150U",
+        "screen_inches": 15.6,
+        "display": "15.6인치 FHD Super AMOLED (360도 회전 힌지, S펜 지원)",
+        "refresh_hz": 60,
+        "battery_wh": 68,
+        "os": "Windows 11 Home",
+        "ports": [
+          "Thunderbolt 4",
+          "USB Type-C",
+          "HDMI",
+          "S펜 기본 제공"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Samsung 공식 홈페이지 사양",
+      "source_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book4-360-nt750qgk-k51a/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SAMSUNG-NT750QGK-K71A-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "그레이",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core Ultra 7 150U",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Samsung 공식 홈페이지 사양",
+          "source_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book4-360-nt750qgk-k51a/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Samsung",
+      "model_name": "Galaxy Book3 Pro 16",
+      "model_number": "NT960XFG-K71A",
+      "released_on": "2023-02-17",
+      "weight_g": 1560,
+      "official_product_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book3-pro-nt960xfg-kc51g/",
+      "specs_json": {
+        "release_month": "2023-02",
+        "cpu": "Intel Core i7-1360P (13세대 랩터레이크)",
+        "screen_inches": 16,
+        "display": "16.0인치 Dynamic AMOLED 2X",
+        "refresh_hz": 120,
+        "battery_wh": 76,
+        "os": "Windows 11 Home",
+        "ports": [
+          "Thunderbolt 4 x2",
+          "HDMI",
+          "USB-A",
+          "AKG 쿼드 스피커"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Samsung 공식 홈페이지 사양",
+      "source_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book3-pro-nt960xfg-kc51g/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SAMSUNG-NT960XFG-K71A-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "그라파이트",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core i7-1360P (13세대 랩터레이크)",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Samsung 공식 홈페이지 사양",
+          "source_url": "https://www.samsung.com/sec/galaxy-book/galaxy-book3-pro-nt960xfg-kc51g/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "2390000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=18908435",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시북3 프로 NT960XFG-K71A (SSD 512GB )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "NT960XFG-K71A",
+              "manufacturer_part_number": null,
+              "storage_gb": 512,
+              "ram_gb": 16,
+              "color": "그라파이트",
+              "connectivity": "wifi",
+              "options_json": {
+                "cpu": "Intel Core i7-1360P (13세대 랩터레이크)",
+                "storage_type": "SSD"
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=18908435)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "LG",
+      "model_name": "LG gram Pro 16",
+      "model_number": "16Z90SP-ED7HK",
+      "released_on": "2024-01-08",
+      "weight_g": 1279,
+      "official_product_url": "https://www.lge.co.kr/notebook/16z90sp-ed70k",
+      "specs_json": {
+        "release_month": "2024-01",
+        "cpu": "Intel Core Ultra 7 155H",
+        "gpu": "NVIDIA RTX 3050 (4GB)",
+        "screen_inches": 16,
+        "display": "16.0인치 WQXGA IPS LCD (400nits 안티글레어)",
+        "refresh_hz": 144,
+        "battery_wh": 77,
+        "os": "Windows 11 Home (LG gram Link 탑재)",
+        "ports": [
+          "Thunderbolt 4",
+          "USB-C",
+          "HDMI",
+          "USB-A x2",
+          "Wi-Fi 6E"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "LG 공식 홈페이지 사양",
+      "source_url": "https://www.lge.co.kr/notebook/16z90sp-ed70k",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "LG-16Z90SP-ED7HK-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "에센스 화이트",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core Ultra 7 155H",
+            "gpu": "NVIDIA RTX 3050 (4GB)",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "LG 공식 홈페이지 사양",
+          "source_url": "https://www.lge.co.kr/notebook/16z90sp-ed70k",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "2851590",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=31475579",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "LG전자 2024 그램 프로16 16Z90SP-ED7HK (SSD 512GB )",
+            "sku_match": {
+              "brand": "LG",
+              "model_number": "16Z90SP-ED7HK",
+              "manufacturer_part_number": null,
+              "storage_gb": 512,
+              "ram_gb": 16,
+              "color": "에센스 화이트",
+              "connectivity": "wifi",
+              "options_json": {
+                "cpu": "Intel Core Ultra 7 155H",
+                "gpu": "NVIDIA RTX 3050 (4GB)",
+                "storage_type": "SSD"
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=31475579)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "LG",
+      "model_name": "LG gram 16 (2024)",
+      "model_number": "16Z90S-GA50K",
+      "released_on": "2024-01-08",
+      "weight_g": 1199,
+      "official_product_url": "https://www.lge.co.kr/notebook/16z90s-ga56k",
+      "specs_json": {
+        "release_month": "2024-01",
+        "cpu": "Intel Core Ultra 5 125H",
+        "gpu": "Intel Arc Graphics",
+        "screen_inches": 16,
+        "display": "16.0인치 WQXGA 대화면 안티글레어 IPS",
+        "refresh_hz": 60,
+        "battery_wh": 80,
+        "os": "Windows 11 Home",
+        "ports": [
+          "Thunderbolt 4 x2",
+          "HDMI",
+          "USB-A x2",
+          "MicroSD"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "LG 공식 홈페이지 사양",
+      "source_url": "https://www.lge.co.kr/notebook/16z90s-ga56k",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "LG-16Z90S-GA50K-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "옵시디언 블랙",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core Ultra 5 125H",
+            "gpu": "Intel Arc Graphics",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "LG 공식 홈페이지 사양",
+          "source_url": "https://www.lge.co.kr/notebook/16z90s-ga56k",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1946710",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=54964391",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "LG전자 2024 그램16 16Z90S-GA50K (SSD 512GB )",
+            "sku_match": {
+              "brand": "LG",
+              "model_number": "16Z90S-GA50K",
+              "manufacturer_part_number": null,
+              "storage_gb": 512,
+              "ram_gb": 16,
+              "color": "옵시디언 블랙",
+              "connectivity": "wifi",
+              "options_json": {
+                "cpu": "Intel Core Ultra 5 125H",
+                "gpu": "Intel Arc Graphics",
+                "storage_type": "SSD"
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=54964391)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "LG",
+      "model_name": "LG gram 14 (2024)",
+      "model_number": "14Z90S-GA50K",
+      "released_on": "2024-01-08",
+      "weight_g": 999,
+      "official_product_url": "https://www.lge.co.kr/notebook/14z90s-ga50k",
+      "specs_json": {
+        "release_month": "2024-01",
+        "cpu": "Intel Core Ultra 5 125H",
+        "screen_inches": 14,
+        "display": "14.0인치 WUXGA IPS LCD (16:10 비율)",
+        "refresh_hz": 60,
+        "battery_wh": 72,
+        "os": "Windows 11 Home",
+        "ports": [
+          "Thunderbolt 4 x2",
+          "HDMI",
+          "USB 3.2 Gen2"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "LG 공식 홈페이지 사양",
+      "source_url": "https://www.lge.co.kr/notebook/14z90s-ga50k",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "LG-14Z90S-GA50K-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 256,
+          "ram_gb": 16,
+          "color": "스노우 화이트",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core Ultra 5 125H",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "LG 공식 홈페이지 사양",
+          "source_url": "https://www.lge.co.kr/notebook/14z90s-ga50k",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "1507790",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=31978592",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "LG전자 2024 그램14 14Z90S-GA50K (SSD 256GB )",
+            "sku_match": {
+              "brand": "LG",
+              "model_number": "14Z90S-GA50K",
+              "manufacturer_part_number": null,
+              "storage_gb": 256,
+              "ram_gb": 16,
+              "color": "스노우 화이트",
+              "connectivity": "wifi",
+              "options_json": {
+                "cpu": "Intel Core Ultra 5 125H",
+                "storage_type": "SSD"
+              }
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=31978592)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "LG",
+      "model_name": "LG UltraGear 17 게이밍",
+      "model_number": "17G90Q-BA76K",
+      "released_on": "2023-03-15",
+      "weight_g": 2640,
+      "official_product_url": "https://www.lge.co.kr/notebook/17u70q-pa76k",
+      "specs_json": {
+        "release_month": "2023-03",
+        "cpu": "Intel Core i7-13700H",
+        "gpu": "NVIDIA GeForce RTX 4060 (8GB)",
+        "screen_inches": 17.3,
+        "display": "17.3인치 WQXGA 고주사율 IPS 게이밍 디스플레이",
+        "refresh_hz": 240,
+        "battery_wh": 93,
+        "os": "Windows 11 Home",
+        "ports": [
+          "베이퍼챔버 쿨링",
+          "Thunderbolt 4",
+          "HDMI 2.1",
+          "RJ45 유선랜"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "LG 공식 홈페이지 사양",
+      "source_url": "https://www.lge.co.kr/notebook/17u70q-pa76k",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "LG-17G90Q-BA76K-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "퍼플 그레이",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core i7-13700H",
+            "gpu": "NVIDIA GeForce RTX 4060 (8GB)",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "LG 공식 홈페이지 사양",
+          "source_url": "https://www.lge.co.kr/notebook/17u70q-pa76k",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Lenovo",
+      "model_name": "ThinkPad X1 Carbon Gen 12",
+      "model_number": "21KC002LKR",
+      "released_on": "2024-03-20",
+      "weight_g": 1090,
+      "official_product_url": "https://www.lenovo.com/kr/ko/p/laptops/thinkpad/thinkpadx1/thinkpad-x1-carbon-gen-12-(14-inch-intel)/len101t0083",
+      "specs_json": {
+        "release_month": "2024-03",
+        "cpu": "Intel Core Ultra 7 155H (인텔 AI NPU 탑재)",
+        "screen_inches": 14,
+        "display": "14.0인치 2.8K OLED (120Hz 400nits HDR500 True Black)",
+        "refresh_hz": 120,
+        "battery_wh": 57,
+        "os": "Windows 11 Pro",
+        "ports": [
+          "Thunderbolt 4 x2",
+          "USB-A x2",
+          "HDMI 2.1",
+          "Wi-Fi 7"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Lenovo 공식 홈페이지 사양",
+      "source_url": "https://www.lenovo.com/kr/ko/p/laptops/thinkpad/thinkpadx1/thinkpad-x1-carbon-gen-12-(14-inch-intel)/len101t0083",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "LENOVO-21KC002LKR-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 1024,
+          "ram_gb": 32,
+          "color": "매트 블랙",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core Ultra 7 155H (인텔 AI NPU 탑재)",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Lenovo 공식 홈페이지 사양",
+          "source_url": "https://www.lenovo.com/kr/ko/p/laptops/thinkpad/thinkpadx1/thinkpad-x1-carbon-gen-12-(14-inch-intel)/len101t0083",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Lenovo",
+      "model_name": "Legion Pro 7i Gen 9",
+      "model_number": "16IRX9H-83DE",
+      "released_on": "2024-04-10",
+      "weight_g": 2620,
+      "official_product_url": "https://www.lenovo.com/kr/ko/p/laptops/legion-laptops/legion-7-series/legion-pro-7i-gen-9-(16-inch-intel)/len101g0034",
+      "specs_json": {
+        "release_month": "2024-04",
+        "cpu": "Intel Core i9-14900HX (24코어 32스레드 5.8GHz 터보)",
+        "gpu": "NVIDIA RTX 4080 12GB",
+        "screen_inches": 16,
+        "display": "16.0인치 WQXGA PureSight Gaming (500nits 100% DCI-P3)",
+        "refresh_hz": 240,
+        "battery_wh": 99.9,
+        "os": "Windows 11 Home (Lenovo Vantage AI 엔진)",
+        "ports": [
+          "Thunderbolt 4",
+          "HDMI 2.1",
+          "2.5G 유선랜"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Lenovo 공식 홈페이지 사양",
+      "source_url": "https://www.lenovo.com/kr/ko/p/laptops/legion-laptops/legion-7-series/legion-pro-7i-gen-9-(16-inch-intel)/len101g0034",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "LENOVO-16IRX9H-83DE-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 1024,
+          "ram_gb": 32,
+          "color": "이클립스 블랙",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core i9-14900HX (24코어 32스레드 5.8GHz 터보)",
+            "gpu": "NVIDIA RTX 4080 12GB",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Lenovo 공식 홈페이지 사양",
+          "source_url": "https://www.lenovo.com/kr/ko/p/laptops/legion-laptops/legion-7-series/legion-pro-7i-gen-9-(16-inch-intel)/len101g0034",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Lenovo",
+      "model_name": "Yoga Slim 7i Aura Edition",
+      "model_number": "15ILL9-83HM",
+      "released_on": "2024-09-24",
+      "weight_g": 1530,
+      "official_product_url": "https://www.lenovo.com/kr/ko/p/laptops/yoga/yoga-slim-series/yoga-slim-7i-aura-edition-gen-9-(15-inch-intel)/len101y0048",
+      "specs_json": {
+        "release_month": "2024-09",
+        "cpu": "Intel Core Ultra 7 256V (루나레이크 47 NPU TOPS 차세대 AI)",
+        "screen_inches": 15.3,
+        "display": "15.3인치 2.8K PureSight Pro LCD (500nits 100% sRGB/DCI-P3)",
+        "refresh_hz": 120,
+        "battery_wh": 70,
+        "os": "Windows 11 Home (Smart Share 탑재)",
+        "ports": [
+          "Thunderbolt 4 x2",
+          "HDMI 2.1",
+          "Wi-Fi 7"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Lenovo 공식 홈페이지 사양",
+      "source_url": "https://www.lenovo.com/kr/ko/p/laptops/yoga/yoga-slim-series/yoga-slim-7i-aura-edition-gen-9-(15-inch-intel)/len101y0048",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "LENOVO-15ILL9-83HM-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "루나 그레이",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core Ultra 7 256V (루나레이크 47 NPU TOPS 차세대 AI)",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Lenovo 공식 홈페이지 사양",
+          "source_url": "https://www.lenovo.com/kr/ko/p/laptops/yoga/yoga-slim-series/yoga-slim-7i-aura-edition-gen-9-(15-inch-intel)/len101y0048",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "ASUS",
+      "model_name": "ROG Zephyrus G16 (2024)",
+      "model_number": "GU605MZ-QR064W",
+      "released_on": "2024-02-15",
+      "weight_g": 1850,
+      "official_product_url": "https://rog.asus.com/kr/laptops/rog-zephyrus/rog-zephyrus-g16-2024/",
+      "specs_json": {
+        "release_month": "2024-02",
+        "cpu": "Intel Core Ultra 9 185H",
+        "gpu": "NVIDIA RTX 4080 (12GB 115W TGP)",
+        "screen_inches": 16,
+        "display": "16.0인치 ROG Nebula 2.5K OLED (G-SYNC 0.2ms 응답)",
+        "refresh_hz": 240,
+        "battery_wh": 90,
+        "os": "Windows 11 Home",
+        "ports": [
+          "Thunderbolt 4",
+          "HDMI 2.1 FRL",
+          "SD카드 슬롯",
+          "Slash 라이팅"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "ASUS 공식 홈페이지 사양",
+      "source_url": "https://rog.asus.com/kr/laptops/rog-zephyrus/rog-zephyrus-g16-2024/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "ASUS-GU605MZ-QR064W-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 1024,
+          "ram_gb": 32,
+          "color": "이클립스 그레이",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core Ultra 9 185H",
+            "gpu": "NVIDIA RTX 4080 (12GB 115W TGP)",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "ASUS 공식 홈페이지 사양",
+          "source_url": "https://rog.asus.com/kr/laptops/rog-zephyrus/rog-zephyrus-g16-2024/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "ASUS",
+      "model_name": "Zenbook 14 OLED (2024)",
+      "model_number": "UX3405MA-QD346W",
+      "released_on": "2024-01-10",
+      "weight_g": 1200,
+      "official_product_url": "https://www.asus.com/kr/laptops/for-home/zenbook/asus-zenbook-14-oled-ux3405/",
+      "specs_json": {
+        "release_month": "2024-01",
+        "cpu": "Intel Core Ultra 7 155H",
+        "gpu": "Intel Arc Graphics",
+        "screen_inches": 14,
+        "display": "14.0인치 3K ASUS Lumina OLED (120Hz 600nits 100% DCI-P3)",
+        "refresh_hz": 120,
+        "battery_wh": 75,
+        "os": "Windows 11 Home",
+        "ports": [
+          "Thunderbolt 4 x2",
+          "HDMI 2.1",
+          "USB-A 3.2",
+          "Harman Kardon 스피커"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "ASUS 공식 홈페이지 사양",
+      "source_url": "https://www.asus.com/kr/laptops/for-home/zenbook/asus-zenbook-14-oled-ux3405/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "ASUS-UX3405MA-QD346W-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "폰더 블루",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Intel Core Ultra 7 155H",
+            "gpu": "Intel Arc Graphics",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "ASUS 공식 홈페이지 사양",
+          "source_url": "https://www.asus.com/kr/laptops/for-home/zenbook/asus-zenbook-14-oled-ux3405/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "ASUS",
+      "model_name": "TUF Gaming A15 (2023)",
+      "model_number": "FA507NV-LP013",
+      "released_on": "2023-04-12",
+      "weight_g": 2200,
+      "official_product_url": "https://www.asus.com/kr/laptops/for-gaming/tuf-gaming/asus-tuf-gaming-a15-2023/",
+      "specs_json": {
+        "release_month": "2023-04",
+        "cpu": "AMD Ryzen 7 7735HS (8코어 16스레드 4.75GHz)",
+        "gpu": "NVIDIA RTX 4060 8GB (140W TGP",
+        "screen_inches": 15.6,
+        "display": "15.6인치 FHD IPS 게이밍 (100% sRGB G-SYNC)",
+        "refresh_hz": 144,
+        "battery_wh": 90,
+        "os": "Windows 11 Home",
+        "ports": [
+          "MUX 스위치)",
+          "USB4",
+          "HDMI 2.1"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "ASUS 공식 홈페이지 사양",
+      "source_url": "https://www.asus.com/kr/laptops/for-gaming/tuf-gaming/asus-tuf-gaming-a15-2023/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "ASUS-FA507NV-LP013-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "color": "메카 그레이",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "AMD Ryzen 7 7735HS (8코어 16스레드 4.75GHz)",
+            "gpu": "NVIDIA RTX 4060 8GB (140W TGP",
+            "storage_type": "SSD"
+          },
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "ASUS 공식 홈페이지 사양",
+          "source_url": "https://www.asus.com/kr/laptops/for-gaming/tuf-gaming/asus-tuf-gaming-a15-2023/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Apple",
+      "model_name": "AirPods Pro 2 (USB-C MagSafe)",
+      "model_number": "A3048",
+      "released_on": "2023-09-22",
+      "weight_g": 5.3,
+      "official_product_url": "https://www.apple.com/kr/airpods-pro/",
+      "specs_json": {
+        "release_month": "2023-09",
+        "anc": true,
+        "battery_hours": 6,
+        "battery_condition": "6시간 (ANC 켜고, 충전 케이스 포함 시 최대 30시간 음악 재생)",
+        "driver": "Apple H2 오디오 프로세서 (케이스 내 U1 초광대역 칩 탑재)",
+        "bluetooth_version": "5.3",
+        "water_resistance": "IP54",
+        "wireless_charging": true
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 공식 홈페이지 사양",
+      "source_url": "https://www.apple.com/kr/airpods-pro/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "APPLE-A3048-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "화이트",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 공식 홈페이지 사양",
+          "source_url": "https://www.apple.com/kr/airpods-pro/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "339370",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=28208783",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 에어팟 프로 2 맥세이프 USB-C MTJV3KH/A( 정품 )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A3048",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "화이트",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=28208783)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Apple",
+      "model_name": "AirPods 4 (노이즈 캔슬링 모델)",
+      "model_number": "A3056",
+      "released_on": "2024-09-20",
+      "weight_g": 4.3,
+      "official_product_url": "https://www.apple.com/kr/airpods-4/",
+      "specs_json": {
+        "release_month": "2024-09",
+        "anc": true,
+        "battery_hours": 4,
+        "battery_condition": "4시간 (ANC 켜고, 케이스 포함 최대 20시간 재생)",
+        "driver": "Apple H2 헤드폰 칩 (오픈형 구조 최초 액티브 노이즈 캔슬링 탑재)",
+        "bluetooth_version": "5.3",
+        "water_resistance": "IP54",
+        "wireless_charging": true
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 공식 홈페이지 사양",
+      "source_url": "https://www.apple.com/kr/airpods-4/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "APPLE-A3056-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "화이트",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 공식 홈페이지 사양",
+          "source_url": "https://www.apple.com/kr/airpods-4/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "176650",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=65919884",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 에어팟 4 액티브 노이즈 캔슬링 MXP93KH/A( 정품 )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A3056",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "화이트",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=65919884)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Apple",
+      "model_name": "AirPods 4 (일반 모델)",
+      "model_number": "A3050",
+      "released_on": "2024-09-20",
+      "weight_g": 4.3,
+      "official_product_url": "https://www.apple.com/kr/airpods-4/",
+      "specs_json": {
+        "release_month": "2024-09",
+        "anc": false,
+        "battery_hours": 5,
+        "battery_condition": "5시간 (케이스 포함 최대 30시간 재생)",
+        "driver": "Apple H2 헤드폰 칩",
+        "bluetooth_version": "5.3",
+        "water_resistance": "IP54"
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Apple 공식 홈페이지 사양",
+      "source_url": "https://www.apple.com/kr/airpods-4/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "APPLE-A3050-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "화이트",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Apple 공식 홈페이지 사양",
+          "source_url": "https://www.apple.com/kr/airpods-4/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "149590",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=65920016",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "APPLE 에어팟 4 MXP63KH/A( 정품 )",
+            "sku_match": {
+              "brand": "Apple",
+              "model_number": "A3050",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "화이트",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=65920016)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Samsung",
+      "model_name": "Galaxy Buds3 Pro",
+      "model_number": "SM-R630",
+      "released_on": "2024-07-24",
+      "weight_g": 5.4,
+      "official_product_url": "https://www.samsung.com/sec/audio-sound/galaxy-buds3-pro-r630/SM-R630NZAAKOO/",
+      "specs_json": {
+        "release_month": "2024-07",
+        "anc": true,
+        "battery_hours": 6,
+        "battery_condition": "6시간 (ANC 켜고, 충전 케이스 포함 시 최대 26시간 재생)",
+        "driver": "Samsung Dual Amplifier + Planar Tweeter 칩셋 (블레이드 라이트 탑재)",
+        "bluetooth_version": "5.4",
+        "water_resistance": "IP57"
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Samsung 공식 홈페이지 사양",
+      "source_url": "https://www.samsung.com/sec/audio-sound/galaxy-buds3-pro-r630/SM-R630NZAAKOO/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SAMSUNG-SM-R630-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "실버",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Samsung 공식 홈페이지 사양",
+          "source_url": "https://www.samsung.com/sec/audio-sound/galaxy-buds3-pro-r630/SM-R630NZAAKOO/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "210290",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=59537216",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시 버즈3 프로 SM-R630N ( 정품 )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-R630",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "실버",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=59537216)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Samsung",
+      "model_name": "Galaxy Buds FE (가성비 ANC)",
+      "model_number": "SM-R400",
+      "released_on": "2023-10-18",
+      "weight_g": 5.6,
+      "official_product_url": "https://www.samsung.com/sec/audio-sound/galaxy-buds-fe-r400/SM-R400NZAAROO/",
+      "specs_json": {
+        "release_month": "2023-10",
+        "anc": true,
+        "battery_hours": 6,
+        "battery_condition": "6시간 (ANC 켜고, 케이스 포함 최대 21시간 재생)",
+        "driver": "Samsung High-Efficiency ANC Processor (윙팁 안정형 디자인)",
+        "bluetooth_version": "5.2",
+        "codecs": [
+          "SSC",
+          "AAC",
+          "SBC"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Samsung 공식 홈페이지 사양",
+      "source_url": "https://www.samsung.com/sec/audio-sound/galaxy-buds-fe-r400/SM-R400NZAAROO/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SAMSUNG-SM-R400-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "그라파이트",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Samsung 공식 홈페이지 사양",
+          "source_url": "https://www.samsung.com/sec/audio-sound/galaxy-buds-fe-r400/SM-R400NZAAROO/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Samsung",
+      "model_name": "Galaxy Buds2 Pro (24bit 하이파이)",
+      "model_number": "SM-R510",
+      "released_on": "2022-11-01",
+      "weight_g": 5.5,
+      "official_product_url": "https://www.samsung.com/sec/audio-sound/galaxy-buds2-pro-r510/SM-R510NLAAKOO/",
+      "specs_json": {
+        "release_month": "2022-11",
+        "anc": true,
+        "battery_hours": 5,
+        "battery_condition": "5시간 (ANC 켜고, 케이스 포함 18시간)",
+        "driver": "Samsung 24bit Hi-Fi Sound Engine (동축 2웨이 드라이버 우퍼+트위터)",
+        "bluetooth_version": "5.3",
+        "water_resistance": "IPX7",
+        "codecs": [
+          "SSC Hi-Fi",
+          "SSC"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Samsung 공식 홈페이지 사양",
+      "source_url": "https://www.samsung.com/sec/audio-sound/galaxy-buds2-pro-r510/SM-R510NLAAKOO/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SAMSUNG-SM-R510-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "보라 퍼플",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Samsung 공식 홈페이지 사양",
+          "source_url": "https://www.samsung.com/sec/audio-sound/galaxy-buds2-pro-r510/SM-R510NLAAKOO/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "216890",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=17641574",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "삼성전자 갤럭시 버즈 2 프로 SM-R510( 정품 )",
+            "sku_match": {
+              "brand": "Samsung",
+              "model_number": "SM-R510",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "보라 퍼플",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=17641574)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Sony",
+      "model_name": "Sony WF-1000XM5 이어폰",
+      "model_number": "WF-1000XM5",
+      "released_on": "2023-08-07",
+      "weight_g": 5.9,
+      "official_product_url": "https://store.sony.co.kr/product-view/102148154",
+      "specs_json": {
+        "release_month": "2023-08",
+        "anc": true,
+        "battery_hours": 8,
+        "battery_condition": "8시간 (ANC 켜고, 충전 케이스 포함 시 최대 24시간)",
+        "driver": "Sony 통합 프로세서 V2 + HD 노이즈 캔슬링 프로세서 QN2e (8.4mm Dynamic Driver X)",
+        "bluetooth_version": "5.3",
+        "water_resistance": "IPX4",
+        "codecs": [
+          "LDAC",
+          "LC3"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Sony 공식 홈페이지 사양",
+      "source_url": "https://store.sony.co.kr/product-view/102148154",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SONY-WF-1000XM5-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "블랙",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Sony 공식 홈페이지 사양",
+          "source_url": "https://store.sony.co.kr/product-view/102148154",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "234760",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=27250154",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "SONY WF-1000XM5 ( 정품 )",
+            "sku_match": {
+              "brand": "Sony",
+              "model_number": "WF-1000XM5",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "블랙",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=27250154)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Sony",
+      "model_name": "Sony LinkBuds S 이어폰",
+      "model_number": "WF-LS900N",
+      "released_on": "2022-11-01",
+      "weight_g": 4.8,
+      "official_product_url": "https://store.sony.co.kr/product-view/102148126",
+      "specs_json": {
+        "release_month": "2022-11",
+        "anc": true,
+        "battery_hours": 6,
+        "battery_condition": "6시간 (ANC 켜고, 케이스 포함 최대 20시간)",
+        "driver": "Sony 통합 프로세서 V1 (초소형 5mm 고음질 드라이버)",
+        "bluetooth_version": "5.2",
+        "water_resistance": "IPX4",
+        "codecs": [
+          "LDAC"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Sony 공식 홈페이지 사양",
+      "source_url": "https://store.sony.co.kr/product-view/102148126",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SONY-WF-LS900N-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "어스 블루",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Sony 공식 홈페이지 사양",
+          "source_url": "https://store.sony.co.kr/product-view/102148126",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "249000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=17218223",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "SONY 링크 버즈 S WF-LS900N ( 정품 )",
+            "sku_match": {
+              "brand": "Sony",
+              "model_number": "WF-LS900N",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "어스 블루",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=17218223)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Bose",
+      "model_name": "Bose QuietComfort Ultra Earbuds",
+      "model_number": "QC-ULTRA-EB",
+      "released_on": "2023-10-19",
+      "weight_g": 6.2,
+      "official_product_url": "https://www.bose.co.kr/product/quietcomfort-ultra-earbuds",
+      "specs_json": {
+        "release_month": "2023-10",
+        "anc": true,
+        "battery_hours": 6,
+        "battery_condition": "6시간 (케이스 포함 최대 24시간)",
+        "driver": "Bose Custom Immersive Audio Processor + CustomTune 청력 보정 기술",
+        "bluetooth_version": "5.3",
+        "water_resistance": "IPX4",
+        "codecs": [
+          "aptX Adaptive"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Bose 공식 홈페이지 사양",
+      "source_url": "https://www.bose.co.kr/product/quietcomfort-ultra-earbuds",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "BOSE-QC-ULTRA-EB-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "화이트 스모크",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Bose 공식 홈페이지 사양",
+          "source_url": "https://www.bose.co.kr/product/quietcomfort-ultra-earbuds",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "206000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=28376288",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "BOSE QC 울트라 이어버드 ( 정품 )",
+            "sku_match": {
+              "brand": "Bose",
+              "model_number": "QC-ULTRA-EB",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "화이트 스모크",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=28376288)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Bose",
+      "model_name": "Bose QuietComfort Earbuds (2024)",
+      "model_number": "QC-EB-2024",
+      "released_on": "2024-09-18",
+      "weight_g": 5.8,
+      "official_product_url": "https://www.bose.co.kr/product/quietcomfort-earbuds",
+      "specs_json": {
+        "release_month": "2024-09",
+        "anc": true,
+        "battery_hours": 8.5,
+        "battery_condition": "8.5시간 (충전 케이스 포함 시 최대 31.5시간)",
+        "driver": "Bose Active Noise Cancelling Engine",
+        "bluetooth_version": "5.3",
+        "water_resistance": "IPX4",
+        "wireless_charging": true
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Bose 공식 홈페이지 사양",
+      "source_url": "https://www.bose.co.kr/product/quietcomfort-earbuds",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "BOSE-QC-EB-2024-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "칠드 라일락",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Bose 공식 홈페이지 사양",
+          "source_url": "https://www.bose.co.kr/product/quietcomfort-earbuds",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "195000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=67512923",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "BOSE QC 이어버드 2024 년형( 정품 )",
+            "sku_match": {
+              "brand": "Bose",
+              "model_number": "QC-EB-2024",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "칠드 라일락",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=67512923)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Sennheiser",
+      "model_name": "Sennheiser Momentum True Wireless 4",
+      "model_number": "MTW4",
+      "released_on": "2024-02-29",
+      "weight_g": 6.2,
+      "official_product_url": "https://www.sennheiser-hearing.com/ko-KR/p/momentum-true-wireless-4/",
+      "specs_json": {
+        "release_month": "2024-02",
+        "anc": true,
+        "battery_hours": 7.5,
+        "battery_condition": "7.5시간 (ANC 켜고, 패브릭 케이스 포함 시 최대 30시간)",
+        "driver": "Sennheiser TrueResponse 7mm 드라이버 + Qualcomm S5 Sound Platform",
+        "bluetooth_version": "5.4",
+        "codecs": [
+          "aptX Lossless",
+          "LC3"
+        ]
+      },
+      "publication_status": "public",
+      "verification_status": "verified",
+      "sale_status": "unknown",
+      "source_name": "Sennheiser 공식 홈페이지 사양",
+      "source_url": "https://www.sennheiser-hearing.com/ko-KR/p/momentum-true-wireless-4/",
+      "verified_at": "2026-11-12T00:00:00.000Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SENNHEISER-MTW4-DEFAULT",
+          "manufacturer_part_number": null,
+          "storage_gb": null,
+          "ram_gb": null,
+          "color": "블랙 코퍼",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "publication_status": "public",
+          "verification_status": "verified",
+          "sale_status": "unknown",
+          "source_name": "Sennheiser 공식 홈페이지 사양",
+          "source_url": "https://www.sennheiser-hearing.com/ko-KR/p/momentum-true-wireless-4/",
+          "verified_at": "2026-11-12T00:00:00.000Z"
+        },
+        "prices": [
+          {
+            "seller_name": "다나와 기준 최저가",
+            "amount_minor": "299000",
+            "currency": "KRW",
+            "product_url": "https://prod.danawa.com/info/?pcode=36205724",
+            "observed_at": "2026-11-16T08:38:31.357Z",
+            "checked_at": "2026-11-16T08:38:31.357Z",
+            "listing_title": "젠하이저 모멘텀 트루 와이어리스 4 MTW 4 ( 정품 )",
+            "sku_match": {
+              "brand": "Sennheiser",
+              "model_number": "MTW4",
+              "manufacturer_part_number": null,
+              "storage_gb": null,
+              "ram_gb": null,
+              "color": "블랙 코퍼",
+              "connectivity": "bluetooth",
+              "options_json": {}
+            },
+            "new_item": true,
+            "domestic_unit": true,
+            "unconditional": true,
+            "available": true,
+            "storage_authorized": true,
+            "reuse_basis": "danawa-cli v3.0.0 searchDanawa 모델·옵션·국내 정품 신품 조건 일치 확인 (pcode=36205724)"
+          }
+        ]
+      }
+    ]
+  }
+]

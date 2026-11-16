@@ -61,7 +61,7 @@ async function renderRecommendationResult(props) {
 
 const ACTIVE_DANAWA_PRICE = {
   price_source: 'danawa_reference',
-  price_label: '다나와 기준 최저가',
+  price_label: '다나와 수집 당시 참고 가격',
   is_reference_price: true,
   purchase_verified: false,
   development_only: false,
@@ -74,7 +74,7 @@ const ACTIVE_DANAWA_PRICE = {
   checked_at: '2026-11-12T06:00:00.000Z',
   observed_at: '2026-11-12T06:00:00.000Z',
   expires_at: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString(),
-  warning: '다나와 기준 최저가(참고용)입니다. 배송비·재고·결제 조건에 따라 실제 최종 결제가격과 다를 수 있으며, 예산 충족이나 교체 권장 확정 근거로 사용되지 않습니다.',
+  warning: '다나와 수집 당시 참고 가격(참고용)입니다. 배송비·재고·결제 조건에 따라 실제 최종 결제가격과 다를 수 있으며, 예산 충족이나 교체 권장 확정 근거로 사용되지 않습니다.',
 }
 
 const EXPIRED_DANAWA_PRICE = {
@@ -82,7 +82,7 @@ const EXPIRED_DANAWA_PRICE = {
   expires_at: new Date(Date.now() - 60 * 1000).toISOString(),
 }
 
-test('SpecComparison renders 다나와 기준 최저가, link, checked timestamp, disclaimer, and hides expired prices', async () => {
+test('SpecComparison renders 다나와 수집 당시 참고 가격, link, checked timestamp, disclaimer, and hides expired prices', async () => {
   const html = await renderSpecComparison({
     defaultExpanded: true,
     category: 'smartphone',
@@ -111,15 +111,15 @@ test('SpecComparison renders 다나와 기준 최저가, link, checked timestamp
   })
 
   assert.ok(html.includes('918,000원'))
-  assert.ok(html.includes('다나와 기준 최저가'))
+  assert.ok(html.includes('다나와 수집 당시 참고 가격'))
   assert.ok(html.includes('실제 최종 결제가격'))
   assert.ok(html.includes('https://prod.danawa.com/info/?pcode=33921003'))
   assert.ok(html.includes('다나와 상품 보기'))
-  assert.ok(html.includes('가격 조회 시각'))
+  assert.ok(html.includes('가격 수집 시각'))
   assert.ok(html.includes('가격 정보 없음'))
 })
 
-test('RecommendationResult & upgrade comparison render 다나와 기준 최저가 consistently without claiming purchase verification', async () => {
+test('RecommendationResult & upgrade comparison render 다나와 수집 당시 참고 가격 consistently without claiming purchase verification', async () => {
   const html = await renderRecommendationResult({
     result: {
       status: 'recommend',
@@ -151,13 +151,13 @@ test('RecommendationResult & upgrade comparison render 다나와 기준 최저�
     },
   })
 
-  assert.ok(html.includes('다나와 기준 최저가'))
+  assert.ok(html.includes('다나와 수집 당시 참고 가격'))
   assert.ok(html.includes('918,000원'))
   assert.ok(html.includes('실제 최종 결제가격'))
   assert.ok(html.includes('https://prod.danawa.com/info/?pcode=33921003'))
   assert.ok(html.includes('다나와 상품 보기'))
-  assert.ok(html.includes('조회 시각:'))
-  assert.ok(html.includes('다나와 기준 최저가 (참고용)'))
+  assert.ok(html.includes('수집 시각:'))
+  assert.ok(html.includes('다나와 수집 당시 참고 가격'))
   assert.ok(!html.includes('검증된 판매가 · 배송비 포함'))
 })
 

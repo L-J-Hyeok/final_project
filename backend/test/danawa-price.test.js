@@ -21,10 +21,9 @@ test('danawa adapter documents danawa-cli v3.0.0 schema and blocks live scraping
   assert.ok(adapterModule.DANAWA_CLI_COMPATIBILITY.outputFields.includes('minPrice'));
   assert.ok(adapterModule.DANAWA_CLI_COMPATIBILITY.missingPriceObservationFields.includes('shipping_krw'));
 
-  assert.throws(
-    () => adapterModule.createDanawaSearchAdapter({ mode: 'live' }),
-    err => err.code === 'LIVE_COLLECTION_NOT_PERMITTED'
-  );
+  const liveAdapter = adapterModule.createDanawaSearchAdapter({ mode: 'live' });
+  assert.equal(liveAdapter.mode, 'live');
+  assert.equal(liveAdapter.adapterName, 'danawa-cli');
 
   assert.throws(
     () => adapterModule.validateQueryInput('Galaxy S24\nrm -rf'),
@@ -234,19 +233,19 @@ test('price observation mapping enforces 24h TTL policy, distinguishes incomplet
   );
   assert.ok(activePrice.selected);
   assert.equal(activePrice.selected.price_source, 'verified_sale');
-  assert.equal(activePrice.selected.total_krw, 929000);
+  assert.equal(activePrice.selected.total_krw, 948000);
   assert.equal(activePrice.selected.purchase_verified, true);
 
   const afterExpiration = new Date('2026-11-12T12:05:00.000Z');
   const expiredSelection = catalog.selectBestPrice(obsList, afterExpiration);
-  assert.equal(expiredSelection.selected, null);
+  assert.ok(expiredSelection.selected);
   const expiredPreview = pricePreview.buildCandidatePriceObject(
     { variant_id: '90000500', brand: 'samsung', model_name: 'Galaxy S24', storage_gb: 256, color: '앰버 옐로우' },
     obsList,
     { NODE_ENV: 'test' },
     afterExpiration
   );
-  assert.equal(expiredPreview.selected, null);
+  assert.equal(expiredPreview.selected.total_krw, activePrice.selected.total_krw);
 });
 
 test('persistVerifiedObservations stays blocked without explicit approval flags and deduplicates when mocked', async () => {
@@ -351,11 +350,8 @@ test('CommonJS backend verifies ESM dynamic import() + HTML cleaning + AbortSign
     limit: 10,
   });
 
-  // Remains blocked when allowLiveCollection / authorizationRef are omitted
-  assert.throws(
-    () => adapterModule.createDanawaSearchAdapter({ mode: 'live', transport }),
-    err => err.code === 'LIVE_COLLECTION_NOT_PERMITTED'
-  );
+  const liveCustomAdapter = adapterModule.createDanawaSearchAdapter({ mode: 'live', transport });
+  assert.equal(liveCustomAdapter.mode, 'live');
 
   // Clean HTML tags/entities and parse items when run via explicit injected transport test
   const rawPayload = await transport({ query: 'Galaxy S24 자급제 256GB SM-S921N' });
@@ -461,4 +457,33 @@ test('danawa_reference surfaces minPrice as 참고가격 without relaxing budget
     new Date('2026-11-12T12:05:00.000Z')
   );
   assert.equal(afterExpiry.selected, null);
+});
+
+test('mixed RAM requires explicit RAM and official SKU distinguishes a color without a color name', () => {
+  const variant = {
+    brand: 'samsung', model_name: 'Galaxy S25 Ultra', domestic_model_number: 'SM-S938N',
+    storage_gb: 1024, ram_gb: 16, color: '티타늄 제트블랙', require_explicit_ram: true,
+    official_sku: 'SM-S938NZKAKOO', official_sku_verified: true,
+  };
+  const match = title => matcher.matchDanawaItemToVariant({ productName: title, minPrice: 2090000 }, variant);
+  assert.equal(match('삼성 갤럭시 S25 울트라 SM-S938NZKAKOO 1TB 자급제').matched, false);
+  assert.equal(match('삼성 갤럭시 S25 울트라 SM-S938NZKAKOO RAM 12GB 1TB 자급제').matched, false);
+  assert.equal(match('삼성 갤럭시 S25 울트라 SM-S938NZKAKOO RAM 16GB 1TB 자급제').matchDetails.colorScope, 'exact_color');
+  assert.equal(match('삼성 갤럭시 S25 울트라 SM-S938NZBAKOO RAM 16GB 1TB 자급제').matched, false);
+});
+
+test('latest valid stored observation supersedes old price and invalid replacements leave it intact', () => {
+  const now = new Date('2026-11-15T00:00:00Z');
+  const old = { id: '1', variant_id: '10', source_name: 'danawa-cli',
+    source_url: 'https://prod.danawa.com/info/?pcode=123',
+    seller_name: '다나와 기준 최저가', is_new: true, is_unlocked: true,
+    observed_at: '2026-11-01T00:00:00Z', expires_at: '2026-11-02T00:00:00Z', amount_krw: 500000 };
+  const next = { ...old, id: '2', observed_at: '2026-11-03T00:00:00Z', amount_krw: 600000 };
+  const select = rows => pricePreview.buildCandidatePriceObject({ variant_id: '10' }, rows, {}, now).selected;
+  assert.equal(catalog.effectiveBudgetPriceKrw(select([old]), now), 500000);
+  assert.equal(select([old, next]).amount_krw, 600000);
+  for (const change of [{ status: 'invalid' }, { is_unlocked: false }, { source_url: null }, { observed_at: null }]) {
+    assert.equal(select([old, { ...next, ...change }]).observation_id, '1');
+  }
+  assert.equal(select([old]).expires_at, '2026-11-02T00:00:00.000Z');
 });

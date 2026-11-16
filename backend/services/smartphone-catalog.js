@@ -92,8 +92,20 @@ function isWithinReleaseWindow(releasedOnKr, nowInput = new Date()) {
 
 const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
 
+function observationColorScope(conditionsText) {
+  return conditionsText?.match(/\[scope:(capacity_common|exact_color)\](?: \[color_origin:[^\]]+\])?$/)?.[1] || null;
+}
+
+function compareObservationRecency(a, b) {
+  const elapsed = new Date(b.observed_at) - new Date(a.observed_at);
+  if (elapsed !== 0) return elapsed;
+  const left = BigInt(String(a.id));
+  const right = BigInt(String(b.id));
+  return left === right ? 0 : left > right ? -1 : 1;
+}
+
 // Evaluate a single price observation against reference timestamp `now`
-function evaluateObservation(obs, nowInput = new Date()) {
+function evaluateObservation(obs, nowInput = new Date(), { pending = false } = {}) {
   const now = nowInput instanceof Date ? nowInput : new Date(nowInput);
   const nowMs = now.getTime();
   const observedAt = obs.observed_at instanceof Date ? obs.observed_at : new Date(obs.observed_at);
@@ -108,18 +120,31 @@ function evaluateObservation(obs, nowInput = new Date()) {
     ? amount + shipping
     : null;
 
-  const validPeriod = Number.isFinite(obsMs) && Number.isFinite(expMs) && expMs > obsMs && (expMs - obsMs) <= TWENTY_FOUR_HOURS_MS;
-  const isFresh = validPeriod && obsMs <= nowMs && nowMs < expMs;
-  const isFuture = Number.isFinite(obsMs) && obsMs > nowMs;
-  const isExpired = validPeriod && nowMs >= expMs;
+  const observed = obs.observed_at != null && Number.isFinite(obsMs) && obsMs <= nowMs;
 
   const flagsOk = ['unconditional', 'in_stock', 'is_new', 'is_unlocked'].every(key => obs[key] === true || obs[key] === 1);
   let metadata = obs.price_metadata_json || null;
   if (typeof metadata === 'string') { try { metadata = JSON.parse(metadata); } catch (_) { metadata = {}; } }
   const sellerPolicy = require('./danawa-seller-prices');
   const designated = !metadata || sellerPolicy.isAllowedSeller(metadata.seller_key);
-  const eligible = isFresh && !isFuture && flagsOk && total !== null
-    && designated && (!metadata || (metadata.version === 1 && metadata.price_type === 'verified_sale'));
+  const priceSource = metadata?.price_type || (obs.seller_name === '다나와 기준 최저가' ? 'danawa_reference' : 'verified_sale');
+  let validUrl = false;
+  try {
+    const url = new URL(obs.source_url);
+    validUrl = ['https:', 'http:'].includes(url.protocol) && !url.username && !url.password;
+  } catch (_) { /* Missing or malformed observation source. */ }
+  const invalid = [obs, metadata].some(row => row && (
+    row.invalidated_at || row.voided_at || row.cancelled_at || row.revoked_at ||
+    row.valid === false || row.invalidated === true ||
+    ['invalid', 'voided', 'cancelled', 'revoked', 'rejected'].includes(row.status)
+  ));
+  const usable = observed && !invalid && (pending || /^[1-9]\d*$/.test(String(obs.id))) &&
+    obs.variant_id != null && typeof obs.source_name === 'string' && obs.source_name.trim() &&
+    validUrl && Number.isSafeInteger(amount) && amount > 0;
+  const referenceUsable = Boolean(usable && priceSource === 'danawa_reference' &&
+    [obs.is_new, obs.is_unlocked].every(flag => flag === true || flag === 1));
+  const eligible = Boolean(usable && priceSource === 'verified_sale' && flagsOk && total !== null
+    && designated && (!metadata || (metadata.version === 1 && metadata.price_type === 'verified_sale')));
 
   return {
     observation_id: String(obs.id),
@@ -132,7 +157,11 @@ function evaluateObservation(obs, nowInput = new Date()) {
     total_krw: total,
     observed_at: Number.isFinite(obsMs) ? observedAt.toISOString() : null,
     expires_at: Number.isFinite(expMs) ? expiresAt.toISOString() : null,
-    price_source: metadata ? metadata.price_type : 'verified_sale',
+    price_source: priceSource,
+    observation_usable: Boolean(usable),
+    reference_usable: referenceUsable,
+    retained_observation: eligible || referenceUsable,
+    color_scope: observationColorScope(obs.conditions_text),
     danawa_product_url: metadata?.danawa_product_url || null,
     seller_product_url: metadata?.seller_product_url || null,
     danawa_product_code: metadata?.product_code || null,
@@ -145,7 +174,7 @@ function evaluateObservation(obs, nowInput = new Date()) {
     in_stock: obs.in_stock == null ? null : Boolean(obs.in_stock),
     is_new: obs.is_new == null ? null : Boolean(obs.is_new),
     is_unlocked: obs.is_unlocked == null ? null : Boolean(obs.is_unlocked),
-    is_expired: !isFresh || isExpired,
+    is_expired: false,
     eligible
   };
 }
@@ -158,15 +187,15 @@ function selectBestPrice(observations, nowInput = new Date()) {
   }
   const latestMap = new Map();
   for (const raw of observations) {
-    const key = `${raw.source_name}\u0000${raw.seller_name}`;
+    const evaluated = evaluateObservation(raw, nowInput);
+    if (!evaluated.retained_observation && !(evaluated.observation_usable && evaluated.price_source === 'reference_sale')) continue;
+    const key = `${observationColorScope(raw.conditions_text) === 'capacity_common' ? 'common' : 'direct'}\u0000${raw.source_name}\u0000${raw.seller_name}`;
     const current = latestMap.get(key);
     if (!current) {
       latestMap.set(key, raw);
       continue;
     }
-    const rawTime = new Date(raw.observed_at).getTime();
-    const curTime = new Date(current.observed_at).getTime();
-    if (rawTime > curTime || (rawTime === curTime && BigInt(String(raw.id)) > BigInt(String(current.id)))) {
+    if (compareObservationRecency(raw, current) < 0) {
       latestMap.set(key, raw);
     }
   }
@@ -195,7 +224,7 @@ function selectBestPrice(observations, nowInput = new Date()) {
 }
 
 function validateCatalogQuery(q) {
-  object(q, ['brand', 'os', 'storage_gb', 'only_recommendable', 'include_test', 'limit', 'cursor']);
+  object(q, ['brand', 'os', 'storage_gb', 'only_recommendable', 'include_test', 'limit', 'cursor', 'comparison']);
   let limit = 20;
   if (q.limit !== undefined) {
     if (typeof q.limit !== 'string' || !/^[1-9][0-9]?$/.test(q.limit)) throw fail();
@@ -220,7 +249,13 @@ function validateCatalogQuery(q) {
     include_test = q.include_test === 'true';
     if (include_test && process.env.NODE_ENV !== 'test') throw fail();
   }
-  return { brand, os, storage_gb, only_recommendable, include_test, limit, cursor };
+  if (q.comparison !== undefined && !['true', 'false'].includes(q.comparison)) throw fail();
+  return { brand, os, storage_gb, only_recommendable, include_test, limit, cursor, comparison: q.comparison === 'true' };
+}
+
+// Preserve explicit flagship-only requirements even when analysis omits them.
+function requiresFlagship(text) {
+  return typeof text === 'string' && /(?:플래그십|flagship)(?:\s*(?:스마트폰|모델|제품|기종))?(?:은|이|를)?\s*(?:필수|만(?=\s|추천|$))|(?:필수|반드시|무조건)\s*(?:고성능\s*)?(?:플래그십|flagship)/iu.test(text);
 }
 
 // Validate candidate search / recommendation input body.
@@ -232,6 +267,8 @@ function validateCandidateInput(body, profileSmartphone = {}) {
   if (!isPlainObject(body.hard)) throw fail();
   object(body.hard, [
     'budget_max_krw',
+    'budget_unlimited',
+    'unsupported_requirements',
     'usages',
     'allowed_brands',
     'required_os',
@@ -245,9 +282,11 @@ function validateCandidateInput(body, profileSmartphone = {}) {
   const h = body.hard;
   const questions = [];
 
+  const budgetUnlimited = boolOption(h.budget_unlimited) === true;
+  if (budgetUnlimited && h.budget_max_krw != null) throw fail();
   let budget_max_krw = null;
   if (h.budget_max_krw === undefined || h.budget_max_krw === null) {
-    questions.push('최대 예산(원)을 확인해 주세요.');
+    if (!budgetUnlimited) questions.push('최대 예산(원)을 확인해 주세요.');
   } else {
     budget_max_krw = integer(h.budget_max_krw, 1, 10000000);
   }
@@ -300,6 +339,15 @@ function validateCandidateInput(body, profileSmartphone = {}) {
     ? null
     : id(body.replacement_device_id);
   const purchase_reason = str(body.purchase_reason, 300, true);
+  const unsupported = h.unsupported_requirements === undefined ? [] : h.unsupported_requirements;
+  if (!Array.isArray(unsupported) || unsupported.length > 10) throw fail();
+  const unsupported_requirements = [...new Set(unsupported.map(item => str(item, 200)))];
+  if (requiresFlagship(purchase_reason) && !unsupported_requirements.some(requiresFlagship)) {
+    unsupported_requirements.push('플래그십 필수');
+  }
+  for (const requirement of unsupported_requirements) {
+    questions.push(`현재 카탈로그에서 필수 조건 “${requirement}”을(를) 검증할 수 없습니다. 검증 가능한 조건으로 구체화하거나 이 조건을 완화할지 알려 주세요.`);
+  }
   const upgrade_context = body.upgrade_context === undefined ? null : body.upgrade_context;
 
   let include_test = false;
@@ -313,6 +361,8 @@ function validateCandidateInput(body, profileSmartphone = {}) {
     expected_profile_version,
     hard: {
       budget_max_krw,
+      ...(budgetUnlimited ? { budget_unlimited: true } : {}),
+      ...(unsupported_requirements.length ? { unsupported_requirements } : {}),
       usages,
       allowed_brands,
       required_os,
@@ -331,11 +381,21 @@ function validateCandidateInput(body, profileSmartphone = {}) {
   };
 }
 
-function effectiveBudgetPriceKrw(price) {
-  if (!price || !price.eligible) return null;
-  if (Number.isSafeInteger(price.total_krw) && price.total_krw > 0) return price.total_krw;
-  if (price.development_only === true && Number.isSafeInteger(price.budget_basis_krw) && price.budget_basis_krw > 0) {
-    return price.budget_basis_krw;
+function effectiveBudgetPriceKrw(price, now = new Date()) {
+  if (!price || price.is_expired) return null;
+  if (!price.retained_observation && price.expires_at != null) {
+    const expiry = Date.parse(price.expires_at);
+    if (!Number.isFinite(expiry) || expiry <= new Date(now).getTime()) return null;
+  }
+  if (price.eligible) {
+    if (Number.isSafeInteger(price.total_krw) && price.total_krw > 0) return price.total_krw;
+    if (price.development_only === true && Number.isSafeInteger(price.budget_basis_krw) && price.budget_basis_krw > 0) {
+      return price.budget_basis_krw;
+    }
+  }
+  if (price.price_source === 'danawa_reference' && !price.is_expired && price.observation_id) {
+    const basis = Number(price.budget_basis_krw || price.amount_krw);
+    if (Number.isSafeInteger(basis) && basis > 0) return basis;
   }
   return null;
 }
@@ -358,22 +418,23 @@ function matchesHardConditions(candidate, hard, nowInput = new Date()) {
   }
   if (hard.require_5g && candidate.supports_5g !== true && candidate.supports_5g !== 1) return false;
   if (hard.require_wireless_charging && candidate.wireless_charging !== true && candidate.wireless_charging !== 1) return false;
-  const basisPrice = effectiveBudgetPriceKrw(candidate.price);
+  const basisPrice = effectiveBudgetPriceKrw(candidate.price, nowInput);
   if (basisPrice === null) return false;
   if (hard.budget_max_krw !== null && basisPrice > hard.budget_max_krw) return false;
   return true;
 }
 
 // Compute verified objective reason codes that AI can later reference without hallucinating
-function buildEligibleReasons(candidate, hard, soft, replacementDevice) {
+function buildEligibleReasons(candidate, hard, soft, replacementDevice, now = new Date()) {
   const reasons = [];
   if (hard.min_storage_gb !== null && Number(candidate.storage_gb) >= hard.min_storage_gb) {
     reasons.push({ code: 'storage_meets_requirement', field: 'storage_gb', value: Number(candidate.storage_gb) });
   }
-  const basisPrice = effectiveBudgetPriceKrw(candidate.price);
-  if (hard.budget_max_krw !== null && basisPrice !== null && basisPrice < hard.budget_max_krw) {
+  const basisPrice = effectiveBudgetPriceKrw(candidate.price, now);
+  if (hard.budget_max_krw !== null && basisPrice !== null && basisPrice <= hard.budget_max_krw) {
     reasons.push({ code: 'budget_headroom', field: 'total_krw', value: hard.budget_max_krw - basisPrice });
   }
+  if (hard.budget_unlimited && basisPrice !== null) reasons.push({ code: 'eligible_price', field: 'total_krw', value: basisPrice });
   if (Array.isArray(soft.preferred_brands) && soft.preferred_brands.includes(candidate.brand)) {
     reasons.push({ code: 'preferred_brand_match', field: 'brand', value: candidate.brand });
   }
@@ -427,15 +488,20 @@ function buildRelaxationQuestions(hard) {
 module.exports = {
   fail,
   id,
+  integer,
+  str,
   object,
   kstDateString,
   releaseWindowKst,
   isWithinReleaseWindow,
   evaluateObservation,
+  observationColorScope,
+  compareObservationRecency,
   selectBestPrice,
   effectiveBudgetPriceKrw,
   validateCatalogQuery,
   validateCandidateInput,
+  requiresFlagship,
   matchesHardConditions,
   buildEligibleReasons,
   buildRelaxationQuestions

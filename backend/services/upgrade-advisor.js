@@ -564,7 +564,7 @@ const INTENT_VALUES = ['high', 'moderate', 'low_or_keep_if_okay'];
 
 function validateUpgradeContextInput(rawContext) {
   if (rawContext === undefined || rawContext === null) return null;
-  catalog.object(rawContext, ['satisfied_aspects', 'pain_points', 'replacement_intent']);
+  catalog.object(rawContext, ['satisfied_aspects', 'pain_points', 'replacement_intent', 'no_pain_confirmed']);
   const satisfied_aspects = rawContext.satisfied_aspects === undefined || rawContext.satisfied_aspects === null
     ? []
     : Array.isArray(rawContext.satisfied_aspects) &&
@@ -589,7 +589,8 @@ function validateUpgradeContextInput(rawContext) {
       ? rawContext.replacement_intent
       : (() => { throw catalog.fail('INVALID_INPUT', 422); })();
 
-  return { satisfied_aspects, pain_points, replacement_intent };
+  if (rawContext.no_pain_confirmed !== undefined && (typeof rawContext.no_pain_confirmed !== 'boolean' || (rawContext.no_pain_confirmed && pain_points.length))) throw catalog.fail();
+  return { satisfied_aspects, pain_points, replacement_intent, ...(rawContext.no_pain_confirmed ? { no_pain_confirmed: true } : {}) };
 }
 
 
@@ -607,13 +608,19 @@ const UPGRADE_NEED_LABELS = {
   os_ecosystem: 'OS·생태계'
 };
 
+const MEASURED_UPGRADE_METRICS = {
+  performance: ['cpu', 'gpu', 'sustained'],
+  camera: ['camera_photo', 'camera_video'],
+  battery: ['battery_runtime']
+};
+
 function evaluateUpgradeDecision(context) {
   const owned = context.replacement_device;
   if (!owned) return null;
   const conditions = context.purchase_conditions || {};
   const u = conditions.upgrade_context;
   const result = (status, questions = [], reasons = []) => ({ status, questions, reasons, eligible_variant_ids: [] });
-  if (!u || !conditions.purchase_reason || (!u.satisfied_aspects?.length && !u.pain_points?.length)) {
+  if (!u || !conditions.purchase_reason || (!u.satisfied_aspects?.length && !u.pain_points?.length && !u.no_pain_confirmed)) {
     return result('clarify', ['교체를 고려하는 이유와 현재 기기의 만족 항목 또는 불편 항목을 알려 주세요.']);
   }
   if (owned.category !== 'smartphone' || !owned.product?.verified) {
@@ -627,29 +634,52 @@ function evaluateUpgradeDecision(context) {
   if (!candidates.length) return result('defer', [], ['현재 예산·필수 조건과 확인 가능한 가격을 충족하는 교체 후보가 없습니다. 가격 하락이나 신제품 출시는 예측하지 않습니다.']);
   const needs = u.pain_points.length ? u.pain_points : (conditions.soft?.priorities || []);
   if (!needs.length) return result('clarify', ['교체로 개선하고 싶은 항목을 선택해 주세요.']);
-  const verifiableNeeds = needs.filter(need => VERIFIABLE_UPGRADE_NEEDS.has(need));
-  const unverifiedNeeds = needs.filter(need => !VERIFIABLE_UPGRADE_NEEDS.has(need));
+  const current = owned.product;
+  const compareMeasurements = require('./smartphone-performance').compareMeasurements;
+  const evidence = context.performanceMeasurements || [];
+  const measuredByCandidate = new Map();
+  let chipsetComparisonAvailable = false;
+  for (const candidate of candidates) {
+    const pairs = evidence.length ? compareMeasurements(evidence, current, candidate).comparisons : [];
+    const devicePairs = [];
+    for (const pair of pairs) {
+      const chipset = pair.owned.evidence_kind === 'chipset_reference' || pair.candidate.evidence_kind === 'chipset_reference';
+      if (!chipset) devicePairs.push(pair);
+      else if (pair.metric === 'cpu' || pair.metric === 'gpu') chipsetComparisonAvailable = true;
+    }
+    measuredByCandidate.set(String(candidate.variant_id), devicePairs);
+  }
+  const chipsetCautions = needs.includes('performance') && chipsetComparisonAvailable
+    ? ['동일 시험의 칩셋 CPU·GPU 자료는 기본 성능 참고값입니다. 기기의 발열·지속 성능 개선은 기기별 시험으로 확인합니다.']
+    : [];
+  const measuredFor = (pairs, need) => pairs.filter(pair => MEASURED_UPGRADE_METRICS[need]?.includes(pair.metric));
+  const verifiableNeeds = needs.filter(need => VERIFIABLE_UPGRADE_NEEDS.has(need) ||
+    [...measuredByCandidate.values()].some(pairs => measuredFor(pairs, need).length));
+  const unverifiedNeeds = needs.filter(need => !verifiableNeeds.includes(need));
   const formatNeeds = list => list.map(need => UPGRADE_NEED_LABELS[need] || need).join('·');
 
   if (!verifiableNeeds.length) {
     return result('defer', [], [
-      `선택하신 항목(${formatNeeds(unverifiedNeeds)})에 대한 동일 기준 실측·시세 비교 데이터가 없어 교체를 권장하기 어렵습니다. 수리 비용·배터리 상태 또는 용도별 성능 자료를 확인한 뒤 다시 판단해 주세요.`
+      `선택하신 항목(${formatNeeds(unverifiedNeeds)})에 대한 동일 기준 실측·시세 비교 데이터가 없어 교체를 권장하기 어렵습니다. 수리 비용·배터리 상태 또는 용도별 성능 자료를 확인한 뒤 다시 판단해 주세요.`,
+      ...chipsetCautions
     ]);
   }
 
-  const current = owned.product;
   const gain = (c, field, lower = false) => current[field] != null && c[field] != null && (lower ? Number(c[field]) < Number(current[field]) : Number(c[field]) > Number(current[field]));
   const improves = (c, need) => {
     if (need === 'storage') return gain(c, 'storage_gb');
     if (need === 'portability') return gain(c, 'weight_g', true);
     if (need === 'display') return gain(c, 'refresh_hz');
     if (need === 'os_ecosystem') return !!conditions.soft?.preferred_os && c.os === conditions.soft.preferred_os && current.os !== c.os;
-    return false;
+    const pairs = measuredFor(measuredByCandidate.get(String(c.variant_id)) || [], need);
+    // A targeted benefit requires a meaningful gain without measured regression in that field.
+    return pairs.some(pair => pair.change_percent >= 10) && pairs.every(pair => pair.change_percent >= 0);
   };
   const eligible = candidates.filter(c => verifiableNeeds.every(need => improves(c, need)));
   if (!eligible.length) {
     return result('defer', [], [
-      `말씀하신 개선 항목(${formatNeeds(verifiableNeeds)})을 객관적으로 충족하는 교체 후보를 현재 데이터에서 찾지 못했습니다. 수리 비용·배터리 상태 또는 조건을 조정한 뒤 다시 판단해 주세요.`
+      `말씀하신 개선 항목(${formatNeeds(verifiableNeeds)})을 객관적으로 충족하는 교체 후보를 현재 데이터에서 찾지 못했습니다. 수리 비용·배터리 상태 또는 조건을 조정한 뒤 다시 판단해 주세요.`,
+      ...chipsetCautions
     ]);
   }
   const unverifiedCautions = unverifiedNeeds.length
@@ -662,7 +692,7 @@ function evaluateUpgradeDecision(context) {
     eligible_variant_ids: eligible.map(c => String(c.variant_id)),
     verified_needs: verifiableNeeds,
     unverified_needs: unverifiedNeeds,
-    unverified_cautions: unverifiedCautions
+    unverified_cautions: [...unverifiedCautions, ...chipsetCautions]
   };
 }
 

@@ -9,59 +9,36 @@
       <!-- Category Tabs -->
       <div class="category-tabs" role="tablist" aria-label="기기 카테고리 전환">
         <button
+          v-for="category in categories"
+          :key="category.code"
           type="button"
           role="tab"
-          :class="['cat-tab-btn', { active: activeCategory === 'smartphone' }]"
-          :aria-selected="activeCategory === 'smartphone'"
-          @click="switchCategory('smartphone')"
+          :class="['cat-tab-btn', { active: activeCategory === category.code }]"
+          :aria-selected="activeCategory === category.code"
+          @click="switchCategory(category.code)"
         >
-          스마트폰 ({{ groupedSmartphoneModels.length || '...' }})
-        </button>
-        <button
-          type="button"
-          role="tab"
-          :class="['cat-tab-btn', { active: activeCategory === 'tablet' }]"
-          :aria-selected="activeCategory === 'tablet'"
-          @click="switchCategory('tablet')"
-        >
-          태블릿 ({{ supplementalData.tablets.length }})
-        </button>
-        <button
-          type="button"
-          role="tab"
-          :class="['cat-tab-btn', { active: activeCategory === 'smartwatch' }]"
-          :aria-selected="activeCategory === 'smartwatch'"
-          @click="switchCategory('smartwatch')"
-        >
-          스마트워치 ({{ supplementalData.smartwatches.length }})
-        </button>
-        <button
-          type="button"
-          role="tab"
-          :class="['cat-tab-btn', { active: activeCategory === 'laptop' }]"
-          :aria-selected="activeCategory === 'laptop'"
-          @click="switchCategory('laptop')"
-        >
-          노트북 <small class="tab-badge">준비 중</small>
+          {{ category.label }}<span v-if="category.code === 'smartphone' && groupedSmartphoneModels.length"> ({{ groupedSmartphoneModels.length }})</span>
         </button>
       </div>
     </div>
 
-    <!-- Laptop Preparation Notice -->
-    <div v-if="activeCategory === 'laptop'" class="laptop-notice">
-      <v-alert type="info" variant="tonal" class="mb-4">
-        <strong>노트북 카테고리는 현재 데이터 준비 중입니다.</strong>
-        <p class="mt-2">향후 업데이트에서 다양한 노트북 사양 비교를 지원할 예정이에요. 상단 탭에서 스마트폰, 태블릿, 스마트워치 비교를 이용해 보세요.</p>
-      </v-alert>
-      <div class="laptop-placeholder-card">
-        <v-icon icon="mdi-laptop" size="64" color="primary" />
-        <h3>노트북 비교 기능 준비 중</h3>
-        <p>조원 제공 원본 데이터에 노트북 제품이 포함되어 있지 않아 현재 신규 데이터 수집 및 구축을 준비하고 있습니다.</p>
-        <button type="button" class="back-cat-btn" @click="switchCategory('smartphone')">스마트폰 비교로 돌아가기</button>
-      </div>
-    </div>
+    <v-alert v-if="categoryError" type="error" variant="tonal">
+      {{ categoryError }}
+      <button type="button" class="retry-btn" @click="loadCategories">다시 시도</button>
+    </v-alert>
 
-    <!-- Active Device Comparison Content -->
+    <CatalogComparison
+      v-if="activeCategory !== 'smartphone'"
+      :key="activeCategory"
+      :category="activeCategory"
+      :label="currentCategoryLabel"
+      :api="catalogApi"
+      :initial-model-id="route.query?.model_id"
+      :initial-sku-id="route.query?.sku_id"
+      :peer-model-id="route.query?.peer_model_id"
+      :peer-sku-id="route.query?.peer_sku_id"
+      :initial-variants="route.query?.variants"
+    />
     <template v-else>
       <!-- Auth check notice for smartphone API -->
       <v-alert
@@ -81,40 +58,23 @@
         <button type="button" class="retry-btn" @click="loadSmartphoneCatalog">다시 시도</button>
       </v-alert>
 
-      <!-- Supplemental Data Notice for Tablets & Smartwatches -->
-      <div v-if="activeCategory === 'tablet' || activeCategory === 'smartwatch'" class="supplemental-source-banner">
-        <v-icon icon="mdi-information-outline" size="18" />
-        <span>
-          현재 <strong>{{ activeCategory === 'tablet' ? '태블릿' : '스마트워치' }}</strong>는 조원 제공 참고 데이터를 읽기 전용으로 표시하고 있습니다.
-          실제 판매처의 최신 가격 및 재고와 다를 수 있습니다.
-        </span>
-      </div>
-
       <!-- Compare Controls Toolbar -->
       <div class="compare-toolbar">
         <div class="toolbar-left">
           <span>{{ currentCategoryLabel }} 비교</span>
-          <small>{{ activeCategory === 'smartphone' ? '검증된 정규 DB 연동' : '조원 제공 참고 데이터 기반' }}</small>
+          <small>검증된 정규 DB 연동</small>
         </div>
 
         <div class="toolbar-center">
           <!-- Quick Slot Selectors for fast switching -->
-          <div class="quick-pickers" v-if="activeCategory === 'smartphone' ? groupedSmartphoneModels.length : currentCatalog.length">
+          <div class="quick-pickers" v-if="groupedSmartphoneModels.length">
             <label class="quick-field">
               <span class="quick-label">기기 1</span>
               <select v-model="quickSlot1" class="quick-select" @change="onQuickSelect(0, $event.target.value)">
                 <option value="">선택 안 됨</option>
-                <template v-if="activeCategory === 'smartphone'">
                   <option v-for="m in groupedSmartphoneModels" :key="m.modelKey" :value="m.modelKey">
                     [{{ m.brand === 'samsung' ? '삼성' : '애플' }}] {{ m.model_name }}
                   </option>
-                </template>
-                <template v-else>
-                  <option v-for="p in currentCatalog" :key="p.variant_id || p.id" :value="p.variant_id || p.id">
-                    [{{ p.brand_name || (p.brand === 'samsung' ? '삼성' : '애플') }}] {{ p.model_name }}
-                    {{ p.storage_gb ? `(${p.storage_gb}GB${p.color ? ` · ${p.color}` : ''})` : (p.specs?.storage ? `(${p.specs.storage})` : '') }}
-                  </option>
-                </template>
               </select>
             </label>
 
@@ -124,17 +84,9 @@
               <span class="quick-label">기기 2</span>
               <select v-model="quickSlot2" class="quick-select" @change="onQuickSelect(1, $event.target.value)">
                 <option value="">선택 안 됨</option>
-                <template v-if="activeCategory === 'smartphone'">
                   <option v-for="m in groupedSmartphoneModels" :key="m.modelKey" :value="m.modelKey">
                     [{{ m.brand === 'samsung' ? '삼성' : '애플' }}] {{ m.model_name }}
                   </option>
-                </template>
-                <template v-else>
-                  <option v-for="p in currentCatalog" :key="p.variant_id || p.id" :value="p.variant_id || p.id">
-                    [{{ p.brand_name || (p.brand === 'samsung' ? '삼성' : '애플') }}] {{ p.model_name }}
-                    {{ p.storage_gb ? `(${p.storage_gb}GB${p.color ? ` · ${p.color}` : ''})` : (p.specs?.storage ? `(${p.specs.storage})` : '') }}
-                  </option>
-                </template>
               </select>
             </label>
 
@@ -144,17 +96,9 @@
                 <span class="quick-label">기기 3</span>
                 <select v-model="quickSlot3" class="quick-select" @change="onQuickSelect(2, $event.target.value)">
                   <option value="">선택 안 됨</option>
-                  <template v-if="activeCategory === 'smartphone'">
                     <option v-for="m in groupedSmartphoneModels" :key="m.modelKey" :value="m.modelKey">
                       [{{ m.brand === 'samsung' ? '삼성' : '애플' }}] {{ m.model_name }}
                     </option>
-                  </template>
-                  <template v-else>
-                    <option v-for="p in currentCatalog" :key="p.variant_id || p.id" :value="p.variant_id || p.id">
-                      [{{ p.brand_name || (p.brand === 'samsung' ? '삼성' : '애플') }}] {{ p.model_name }}
-                      {{ p.storage_gb ? `(${p.storage_gb}GB${p.color ? ` · ${p.color}` : ''})` : (p.specs?.storage ? `(${p.specs.storage})` : '') }}
-                    </option>
-                  </template>
                 </select>
               </label>
             </template>
@@ -219,8 +163,8 @@
       <div class="compare-notes">
         <p>• ‘값 다름’ 표시는 기기 간 사양 차이를 안내하며, 더 우수한 제품이라는 뜻이 아닙니다.</p>
         <p>• 스마트폰은 검증된 MySQL 데이터베이스를 연동하며, 미공개(pending) 모델은 노출되지 않습니다.</p>
-        <p>• 태블릿과 스마트워치는 조원 제공 참고 데이터 원문을 충실히 표시하며, 임의로 수치를 가공하지 않았습니다.</p>
-        <p>• 일반 스펙 비교는 AI를 호출하지 않으며, 실시간 제품 카탈로그 및 참고 데이터에서 직접 불러옵니다.</p>
+
+        <p>• 일반 스펙 비교는 AI를 호출하지 않으며, 공개 제품 카탈로그에서 직접 불러옵니다.</p>
         <p>• 표시된 출고가 및 개발용 참고 가격은 실제 판매처의 현재 판매가 및 재고와 다를 수 있습니다.</p>
       </div>
 
@@ -285,16 +229,12 @@
                 </span>
                 <div>
                   <strong class="item-model-name">{{ item.model_name }}</strong>
-                  <span v-if="activeCategory === 'smartphone'" class="item-sub">
+                  <span class="item-sub">
                     {{ item.domestic_model_number || '모델번호 없음' }}
                     {{ item.storages?.length ? `· ${item.storages.map(formatCapacityBadge).join(' / ')}` : '' }}
                     {{ item.colors?.length ? `· 색상 ${item.colors.length}종` : '' }}
                   </span>
-                  <span v-else class="item-sub">
-                    {{ item.domestic_model_number || '모델번호 없음' }}
-                    {{ item.storage_gb ? `· ${item.storage_gb}GB` : (item.specs?.storage ? `· ${item.specs.storage}` : '') }}
-                    {{ item.color ? `· ${item.color}` : '' }}
-                  </span>
+
                 </div>
               </div>
               <div class="item-right">
@@ -320,19 +260,26 @@
 <script setup>
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import SpecComparison from '../components/SpecComparison.vue'
 import { useMemberApi, memberMessage } from '../composables/useMemberApi'
 import { createSmartphoneApi } from '../api/smartphones'
-import supplementalData from '../data/supplemental-devices.json'
+import CatalogComparison from '../components/CatalogComparison.vue'
+import { createCatalogApi } from '../api/catalog'
+import { request } from '../api/client'
 
 const store = useStore()
 const route = useRoute() || { query: {} }
+const router = useRouter()
 const memberApi = useMemberApi()
 const phoneApi = createSmartphoneApi(memberApi)
 
-// Category state: 'smartphone' | 'tablet' | 'smartwatch' | 'laptop'
-const activeCategory = ref('smartphone')
+const catalogApi = createCatalogApi(request)
+const categories = ref([{ code: 'smartphone', label: '스마트폰' }])
+const categoryError = ref('')
+let categoriesLoading = false
+
+const activeCategory = ref(route.query?.category || 'smartphone')
 
 const count = ref(2)
 const showDiffOnly = ref(false)
@@ -360,12 +307,23 @@ const abortController = new AbortController()
 
 const isLoggedIn = computed(() => !!store.state.user)
 
-const currentCategoryLabel = computed(() => {
-  if (activeCategory.value === 'tablet') return '태블릿'
-  if (activeCategory.value === 'smartwatch') return '스마트워치'
-  if (activeCategory.value === 'laptop') return '노트북'
-  return '스마트폰'
-})
+const currentCategoryLabel = computed(() => categories.value.find(item => item.code === activeCategory.value)?.label)
+
+async function loadCategories() {
+  if (categoriesLoading) return
+  categoriesLoading = true
+  categoryError.value = ''
+  try {
+    categories.value = (await catalogApi.categories(abortController.signal)).data
+    if (route.query?.category && categories.value.some(c => c.code === route.query.category)) {
+      activeCategory.value = route.query.category
+    }
+  } catch (error) {
+    if (!abortController.signal.aborted) categoryError.value = memberMessage(error)
+  } finally {
+    categoriesLoading = false
+  }
+}
 
 function isValidColorName(color) {
   if (!color || typeof color !== 'string') return false
@@ -389,11 +347,7 @@ function modelGroupKey(item) {
   return `${String(item.brand || '').toLowerCase()}::${String(item.model_name || '').trim().toLowerCase()}`
 }
 
-const currentCatalog = computed(() => {
-  if (activeCategory.value === 'tablet') return supplementalData.tablets || []
-  if (activeCategory.value === 'smartwatch') return supplementalData.smartwatches || []
-  return smartphoneCatalog.value
-})
+const currentCatalog = smartphoneCatalog
 
 const groupedSmartphoneModels = computed(() => {
   const groups = new Map()
@@ -481,18 +435,7 @@ const filteredCatalog = computed(() => {
       return model.includes(q) || num.includes(q) || brand.includes(q) || brandKr.includes(q) || chipset.includes(q)
     })
   }
-  return currentCatalog.value.filter(item => {
-    if (item.is_test) return false
-    if (pickerBrand.value !== 'all' && item.brand !== pickerBrand.value) return false
-    if (!q) return true
-    const model = (item.model_name || '').toLowerCase()
-    const num = (item.domestic_model_number || '').toLowerCase()
-    const color = (item.color || '').toLowerCase()
-    const storage = item.storage_gb ? `${item.storage_gb}gb` : ''
-    const brand = (item.brand || '').toLowerCase()
-    const brandKr = brand === 'samsung' ? '삼성' : brand === 'apple' ? '애플' : ''
-    return model.includes(q) || num.includes(q) || color.includes(q) || storage.includes(q) || brand.includes(q) || brandKr.includes(q)
-  })
+  return []
 })
 
 function setCount(n) {
@@ -500,15 +443,9 @@ function setCount(n) {
 }
 
 function syncQuickSlots() {
-  if (activeCategory.value === 'smartphone') {
-    quickSlot1.value = modelGroupKey(selectedSlots.value[0])
-    quickSlot2.value = modelGroupKey(selectedSlots.value[1])
-    quickSlot3.value = modelGroupKey(selectedSlots.value[2])
-    return
-  }
-  quickSlot1.value = selectedSlots.value[0]?.variant_id || selectedSlots.value[0]?.id || ''
-  quickSlot2.value = selectedSlots.value[1]?.variant_id || selectedSlots.value[1]?.id || ''
-  quickSlot3.value = selectedSlots.value[2]?.variant_id || selectedSlots.value[2]?.id || ''
+  quickSlot1.value = modelGroupKey(selectedSlots.value[0])
+  quickSlot2.value = modelGroupKey(selectedSlots.value[1])
+  quickSlot3.value = modelGroupKey(selectedSlots.value[2])
 }
 
 function onQuickSelect(slotIndex, id) {
@@ -525,11 +462,7 @@ function onQuickSelect(slotIndex, id) {
     }
     return
   }
-  const item = currentCatalog.value.find(p => String(p.variant_id || p.id) === String(id))
-  if (item) {
-    selectedSlots.value[slotIndex] = item
-    syncQuickSlots()
-  }
+
 }
 
 function openPicker(slotIndex) {
@@ -569,10 +502,12 @@ function initCategoryDefaults() {
       return
     }
     const samsung =
+      models.find(m => m.brand === 'samsung' && m.representative?.price) ||
       models.find(m => m.brand === 'samsung' && m.representative?.details_json?.main_resolution_px && m.colors.length > 1 && m.storages.length > 1) ||
       models.find(m => m.brand === 'samsung') ||
       models[0]
     const apple =
+      models.find(m => m.brand === 'apple' && m.representative?.price && m.modelKey !== samsung?.modelKey) ||
       models.find(m => m.brand === 'apple' && m.representative?.details_json?.main_resolution_px && m.colors.length > 1 && m.storages.length > 1 && m.modelKey !== samsung?.modelKey) ||
       models.find(m => m.brand === 'apple' && m.modelKey !== samsung?.modelKey) ||
       models[1]
@@ -585,28 +520,17 @@ function initCategoryDefaults() {
     return
   }
 
-  const cat = currentCatalog.value
-  if (!cat || cat.length < 2) {
-    selectedSlots.value = [null, null, null]
-    syncQuickSlots()
-    return
-  }
-  // Try to pick one Samsung and one Apple
-  const samsung = cat.find(p => p.brand === 'samsung') || cat[0]
-  const apple = cat.find(p => p.brand === 'apple' && (p.variant_id || p.id) !== (samsung?.variant_id || samsung?.id)) || cat[1]
-  selectedSlots.value = [samsung || null, apple || null, null]
-  syncQuickSlots()
 }
 
 function switchCategory(cat) {
+  if (activeCategory.value === cat) return
   activeCategory.value = cat
   pickerOpen.value = false
-  catalogError.value = ''
-  if (cat === 'laptop') {
-    selectedSlots.value = [null, null, null]
-    return
+  selectedSlots.value = [null, null, null]
+  if (cat === 'smartphone') initCategoryDefaults()
+  if (router?.replace) {
+    router.replace({ path: route.path, query: { ...route.query, category: cat } })
   }
-  initCategoryDefaults()
 }
 
 function parseQueryVariantIds() {
@@ -669,11 +593,11 @@ async function loadSmartphoneCatalog() {
   loading.value = true
   catalogError.value = ''
   try {
-    const res = await phoneApi.listAll({ only_recommendable: false, limit: 50 }, abortController.signal)
+    const res = await phoneApi.listAll({ only_recommendable: false, comparison: true, limit: 50 }, abortController.signal)
     const list = Array.isArray(res.data) ? res.data : []
     smartphoneCatalog.value = list.filter(p => !p.is_test && p.verified !== false)
 
-    if (parseQueryVariantIds().length && activeCategory.value !== 'smartphone') {
+    if (!route.query?.category && parseQueryVariantIds().length && activeCategory.value !== 'smartphone') {
       activeCategory.value = 'smartphone'
     }
     if (activeCategory.value === 'smartphone') {
@@ -690,9 +614,12 @@ async function loadSmartphoneCatalog() {
 
 watch(
   () => route.query,
-  () => {
+  (newQ) => {
+    if (newQ?.category && newQ.category !== activeCategory.value) {
+      activeCategory.value = newQ.category
+    }
     if (!smartphoneCatalog.value.length) return
-    if (parseQueryVariantIds().length && activeCategory.value !== 'smartphone') {
+    if (!newQ?.category && parseQueryVariantIds().length && activeCategory.value !== 'smartphone') {
       activeCategory.value = 'smartphone'
     }
     if (activeCategory.value === 'smartphone') {
@@ -703,6 +630,7 @@ watch(
 )
 
 onMounted(() => {
+  loadCategories()
   loadSmartphoneCatalog()
 })
 
@@ -739,68 +667,6 @@ onBeforeUnmount(() => {
   border-color: #111111;
   color: #ffffff;
   font-weight: 700;
-}
-.tab-badge {
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 9999px;
-  background: #f4f4f5;
-  color: #71717a;
-  margin-left: 4px;
-}
-.cat-tab-btn.active .tab-badge {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
-.laptop-notice {
-  margin: 32px 0;
-}
-.laptop-placeholder-card {
-  padding: 60px 24px;
-  text-align: center;
-  border: 1px dashed #d4d4d8;
-  border-radius: 16px;
-  background: #f5f5f7;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-.laptop-placeholder-card h3 {
-  font-size: 18px;
-  font-weight: 750;
-  color: #111111;
-}
-.laptop-placeholder-card p {
-  font-size: 13px;
-  color: #52525b;
-  max-width: 480px;
-}
-.back-cat-btn {
-  margin-top: 12px;
-  padding: 10px 22px;
-  background: #111111;
-  color: #ffffff;
-  border: none;
-  border-radius: 9999px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.back-cat-btn:hover {
-  background: #27272a;
-}
-.supplemental-source-banner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background: #fffbeb;
-  border: 1px solid #fde68a;
-  border-radius: 10px;
-  color: #92400e;
-  font-size: 13px;
-  margin-bottom: 20px;
 }
 .auth-notice, .error-notice {
   margin-bottom: 24px;

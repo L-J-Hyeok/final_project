@@ -30,6 +30,7 @@ app.get('/api/health/db', require('./routes/db-health'));
 app.use('/api', require('./auth/middleware')(authConfig));
 app.use('/api', require('./routes/member'));
 app.use('/api', require('./routes/smartphones'));
+app.use('/api/catalog', require('./routes/catalog'));
 app.use('/api', require('./routes/upgrade-offers'));
 app.use('/api', require('./routes/recommendations'));
 app.use('/api/admin', require('./routes/admin-candidates')());
@@ -46,9 +47,9 @@ app.use(function(err, req, res, next) {
     var codes = { INVALID_INPUT: 422, CSRF_INVALID: 403, RATE_LIMITED: 429,
       AUTH_BUSY: 429, REGISTRATION_CONFLICT: 409, INVALID_CREDENTIALS: 401, AUTH_REQUIRED: 401,
       ADMIN_REQUIRED: 403, ADMIN_REVIEW_DISABLED: 403, APPROVAL_POLICY_VIOLATION: 409, DUPLICATE_CANDIDATE: 409,
-      PROFILE_CHANGED: 409, PROFILE_INCOMPLETE: 409, CANDIDATES_CHANGED: 409, DEVICE_LIMIT: 409,
+      CONVERSATION_CHANGED: 409, CONVERSATION_EXPIRED: 409, PROFILE_CHANGED: 409, PROFILE_INCOMPLETE: 409, CANDIDATES_CHANGED: 409, DEVICE_LIMIT: 409,
       NOT_FOUND: 404, VERSION_EXHAUSTED: 409,
-      AI_INVALID_RESULT: 502, AI_UNAVAILABLE: 502, AI_TIMEOUT: 504, AI_KEY_MISSING: 503, AI_CONFIG_INVALID: 503, AI_MODEL_NOT_ALLOWED: 503 };
+      AI_INVALID_RESULT: 502, AI_RESPONSE_PARSE_FAILED: 502, AI_RESPONSE_EMPTY: 502, AI_OUTPUT_TRUNCATED: 502, AI_UNAVAILABLE: 502, AI_TIMEOUT: 504, AI_KEY_MISSING: 503, AI_CONFIG_INVALID: 503, AI_MODEL_NOT_ALLOWED: 503 };
     var status = codes[err.code] || (err.type === 'entity.parse.failed' ? 400 : err.type === 'entity.too.large' ? 413 : err.status === 404 ? 404 : 503);
     var code = codes[err.code] ? err.code : status === 400 ? 'INVALID_JSON' : status === 413 ? 'BODY_TOO_LARGE' : status === 404 ? 'NOT_FOUND' : 'SERVICE_UNAVAILABLE';
     var adminMessages = {

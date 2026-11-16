@@ -33,6 +33,8 @@ async function loadExistingSmartphoneVariants(db, options = {}) {
     whereClauses.push(await productPublication.sql(db));
   } else {
     whereClauses.push('s.is_test = 0');
+    // Administrative approval bypass must not include carrier-only collection targets.
+    whereClauses.push(require('./smartphone-sales-channel').sql('s', true));
   }
 
   if (Array.isArray(options.variantIds) && options.variantIds.length > 0) {
@@ -59,6 +61,13 @@ async function loadExistingSmartphoneVariants(db, options = {}) {
       v.ram_gb,
       v.ram_identity_gb,
       v.color,
+      JSON_UNQUOTE(JSON_EXTRACT(v.review_metadata_json, '$.official_sku')) AS official_sku,
+      JSON_EXTRACT(v.review_metadata_json, '$.official_sku_verified') = CAST('true' AS JSON) AS official_sku_verified,
+      EXISTS (
+        SELECT 1 FROM smartphone_variants sibling
+        WHERE sibling.smartphone_id = v.smartphone_id AND sibling.storage_gb = v.storage_gb
+          AND sibling.ram_gb IS NOT NULL AND NOT (sibling.ram_gb <=> v.ram_gb)
+      ) AS require_explicit_ram,
       v.launch_price_krw,
       s.review_status AS smartphone_review_status,
       v.review_status AS variant_review_status
@@ -141,7 +150,7 @@ function mapMatchedOfferToPriceObservation(matchResult, variant, options = {}) {
     is_unlocked: item.is_unlocked,
   };
 
-  const evaluation = catalog.evaluateObservation(observationPayload, now);
+  const evaluation = catalog.evaluateObservation(observationPayload, now, { pending: true });
   if (!evaluation.eligible && blockingReasons.length === 0) {
     blockingReasons.push('CATALOG_EVALUATION_INELIGIBLE');
   }
@@ -214,6 +223,8 @@ function buildDanawaReferencePrice(matchResult, variant, options = {}) {
     is_new: true,
     is_unlocked: true,
     is_mock: isMock,
+    is_color_specific: matchResult.matchDetails?.isColorSpecific === true,
+    color_scope: matchResult.matchDetails?.colorScope || (matchResult.matchDetails?.isColorSpecific ? 'exact_color' : 'capacity_common'),
     warning: DANAWA_REFERENCE_WARNING,
     match_details: matchResult.matchDetails || null,
   };
@@ -222,7 +233,10 @@ function buildDanawaReferencePrice(matchResult, variant, options = {}) {
 function selectBestDanawaReferencePrice(referencePrices = []) {
   const valid = referencePrices.filter(r => r && Number.isSafeInteger(r.amount_krw) && r.amount_krw > 0 && r.is_expired === false);
   if (valid.length === 0) return null;
-  return [...valid].sort((a, b) => a.amount_krw - b.amount_krw)[0];
+  // If an exact_color price exists for this variant, prioritize it over capacity_common!
+  const exactColor = valid.filter(r => r.color_scope === 'exact_color');
+  const candidates = exactColor.length > 0 ? exactColor : valid;
+  return [...candidates].sort((a, b) => a.amount_krw - b.amount_krw)[0];
 }
 
 function loadMockDanawaReferenceFixtures(fixturePath = DEFAULT_MOCK_FIXTURE_PATH) {
@@ -250,7 +264,6 @@ function resolveVariantDanawaReferencePrice(variant, options = {}) {
     const ttlHours = validateTtlHours(options.ttlHours);
     const isMock = options.isMock !== false;
 
-    const adapter = adapterModule.createDanawaSearchAdapter({ mode: 'mock', fixtures });
     const queries = adapterModule.buildVariantSearchQueries(variant);
     let candidateItems = [];
     // Resolve synchronously via mock batches/maps without live HTTP requests.
@@ -267,8 +280,6 @@ function resolveVariantDanawaReferencePrice(variant, options = {}) {
         }
       }
     } else {
-      const resolvedSync = adapter.buildSearchPlan([variant]);
-      void resolvedSync;
       if (fixtures.byVariantId && variant.variant_id && fixtures.byVariantId[String(variant.variant_id)]) {
         candidateItems = adapterModule.parseCliSearchPayload(fixtures.byVariantId[String(variant.variant_id)]);
       } else if (fixtures.byDomesticModelNumber) {
@@ -350,16 +361,31 @@ async function runDanawaPriceDryRun(options = {}) {
     exclusionBreakdown: {},
   };
 
+  const searches = new Map();
   for (const variant of variants) {
-    const searchResult = await options.adapter.searchVariant(variant, options.searchOptions);
+    const sameCapacity = variants.filter(peer => peer.domestic_model_number === variant.domestic_model_number
+      && Number(peer.storage_gb) === Number(variant.storage_gb));
+    const knownRam = new Set(sameCapacity.filter(peer => peer.ram_gb != null).map(peer => Number(peer.ram_gb)));
+    const target = { ...variant, require_explicit_ram: Boolean(variant.require_explicit_ram) || knownRam.size > 1 };
+    const key = JSON.stringify([target.brand, target.domestic_model_number, target.storage_gb, target.ram_gb, target.require_explicit_ram]);
+    if (options.adapter.mode !== 'live' || !searches.has(key)) {
+      searches.set(key, await options.adapter.searchVariant(target, { ...options.searchOptions, colorSpecific: false }));
+    }
+    const searchResult = searches.get(key);
     if (searchResult.executedLiveRequest) {
       summary.executedLiveRequest = true;
     }
 
-    const items = searchResult.items || [];
+    let items = searchResult.items || [];
+    if (options.adapter.mode === 'live' && options.searchOptions?.colorSpecific
+      && target.color && !matcher.evaluateVariantCandidates(items, target, { requireExplicitColor: true }).bestMatch) {
+      const colorResult = await options.adapter.searchVariant(target, { ...options.searchOptions, colorSpecific: true });
+      items = [...items, ...(colorResult.items || [])];
+      summary.executedLiveRequest ||= Boolean(colorResult.executedLiveRequest);
+    }
     summary.totalItemsInspected += items.length;
 
-    const matchEval = matcher.evaluateVariantCandidates(items, variant, {
+    const matchEval = matcher.evaluateVariantCandidates(items, target, {
       requireDomesticModelNumber: options.requireDomesticModelNumber !== false,
     });
 
@@ -424,6 +450,7 @@ async function runDanawaPriceDryRun(options = {}) {
       })),
       bestSelectedPrice: bestPriceSelection.selected,
       bestReferencePrice,
+      bestCommonReferencePrice: selectBestDanawaReferencePrice(referencePrices.filter(price => price.color_scope === 'capacity_common')),
     });
   }
 
@@ -485,6 +512,7 @@ async function persistVerifiedObservations(db, mappedCandidates = [], options = 
           amount_krw: p.amount_krw,
           shipping_krw: p.shipping_krw,
           expires_at: { [Op.gt]: now },
+          observed_at: { [Op.lte]: now },
         },
         transaction,
       });
@@ -509,6 +537,158 @@ async function persistVerifiedObservations(db, mappedCandidates = [], options = 
   };
 }
 
+function mapDanawaReferenceToObservationPayload(refPrice, variant, options = {}) {
+  if (!refPrice || !Number.isSafeInteger(Number(refPrice.amount_krw)) || Number(refPrice.amount_krw) <= 0) return null;
+  const now = parseValidDate(options.now) || new Date();
+  const ttlHours = validateTtlHours(options.ttlHours);
+  const observedAt = parseValidDate(refPrice.observed_at || refPrice.checked_at) || now;
+  const explicitExpiresAt = parseValidDate(refPrice.expires_at);
+  const expiresAt = explicitExpiresAt || new Date(observedAt.getTime() + ttlHours * 60 * 60 * 1000);
+  const productCode = refPrice.danawa_product_code || refPrice.productCode || (typeof refPrice.danawa_product_url === 'string' ? refPrice.danawa_product_url.match(/pcode=(\d+)/)?.[1] : null) || null;
+  const danawaUrl = refPrice.danawa_product_url || refPrice.source_url || (productCode ? `https://prod.danawa.com/info/?pcode=${productCode}` : null);
+  if (!danawaUrl) return null;
+
+  const variantId = String(variant.variant_id != null ? variant.variant_id : variant.id);
+
+  const colorOriginTag = refPrice.match_details?.originalListingColor
+    ? `[color_origin:${refPrice.match_details.originalListingColor}]`
+    : '';
+
+  return {
+    variant_id: variantId,
+    source_name: options.sourceName || DEFAULT_SOURCE_NAME,
+    source_url: danawaUrl,
+    seller_name: DANAWA_REFERENCE_LABEL,
+    amount_krw: Number(refPrice.amount_krw),
+    shipping_krw: null,
+    observed_at: observedAt,
+    expires_at: expiresAt,
+    conditions_text: `다나와 검색 기준 참고 최저가 (판매조건·배송비 미확인) [pcode:${productCode || 'unknown'}] ${colorOriginTag ? colorOriginTag + ' ' : ''}[scope:${refPrice.color_scope === 'capacity_common' ? 'capacity_common' : refPrice.color_scope === 'exact_color' ? 'exact_color' : 'unknown'}]`,
+    unconditional: 0,
+    in_stock: 0,
+    is_new: 1,
+    is_unlocked: 1,
+    product_code: productCode,
+  };
+}
+
+async function persistDanawaReferenceObservations(db, referenceOffers = [], options = {}) {
+  if (options.apply !== true || options.allowDbWrite !== true) {
+    return {
+      applied: false,
+      reason: 'DRY_RUN_ONLY',
+      insertedCount: 0,
+      updatedPriceCount: 0,
+      skippedDuplicatesCount: 0,
+      totalConsidered: referenceOffers.length,
+    };
+  }
+
+  if (typeof options.permissionRef !== 'string' || options.permissionRef.trim().length < 3) {
+    const err = new Error('DB persistence requires a valid authorization permissionRef');
+    err.code = 'WRITE_PERMISSION_REF_REQUIRED';
+    throw err;
+  }
+
+  const PriceObservationModel = db?.models?.price_observations || db?.models?.PriceObservation;
+  if (!PriceObservationModel) {
+    const err = new Error('Sequelize PriceObservation model is required for persistence');
+    err.code = 'PRICE_OBSERVATION_MODEL_REQUIRED';
+    throw err;
+  }
+
+  const { Op } = require('sequelize');
+  const now = parseValidDate(options.now) || new Date();
+  let insertedCount = 0;
+  let updatedPriceCount = 0;
+  let skippedDuplicatesCount = 0;
+  const insertedRecords = [];
+
+  await db.transaction(async (transaction) => {
+    const sortedOffers = [...referenceOffers].sort((left, right) => {
+      const id = offer => String(offer.payload?.variant_id ?? offer.variant_id ?? offer.variant?.variant_id ?? offer.variant?.id ?? '');
+      return id(left).localeCompare(id(right));
+    });
+    for (const ref of sortedOffers) {
+      const p = ref.payload || (ref.variant_id ? ref : mapDanawaReferenceToObservationPayload(ref.refPrice || ref, ref.variant || ref, options));
+      if (!p || !p.variant_id || !Number.isSafeInteger(Number(p.amount_krw)) || Number(p.amount_krw) <= 0) continue;
+      const observedAt = parseValidDate(p.observed_at);
+      const expiresAt = parseValidDate(p.expires_at);
+      if (!observedAt || !expiresAt || observedAt > now || expiresAt <= now
+        || expiresAt - observedAt > TWENTY_FOUR_HOURS_MS) continue;
+
+      const variantsModel = db.models.smartphone_variants;
+      if (variantsModel) await variantsModel.findByPk(p.variant_id, { transaction, lock: transaction.LOCK.UPDATE });
+
+      const latestActive = await PriceObservationModel.findOne({
+        where: {
+          variant_id: p.variant_id,
+          source_name: p.source_name || DEFAULT_SOURCE_NAME,
+          seller_name: DANAWA_REFERENCE_LABEL,
+          expires_at: { [Op.gt]: now },
+          observed_at: { [Op.lte]: now },
+          ...(p.conditions_text?.match(/\[scope:[a-z_]+\]$/)
+            ? { conditions_text: { [Op.like]: '%'+p.conditions_text.match(/\[scope:[a-z_]+\]$/)[0] } }
+            : {}),
+
+        },
+        order: [['observed_at', 'DESC'], ['id', 'DESC']],
+        transaction,
+        lock: transaction.LOCK.UPDATE,
+      });
+
+      if (latestActive) {
+        if (Number(latestActive.amount_krw) === Number(p.amount_krw)
+          && latestActive.source_url === p.source_url && latestActive.conditions_text === p.conditions_text
+          && new Date(latestActive.expires_at) - new Date(latestActive.observed_at) <= TWENTY_FOUR_HOURS_MS) {
+          skippedDuplicatesCount += 1;
+          continue;
+        }
+        updatedPriceCount += 1;
+      }
+
+      const createData = {
+        variant_id: p.variant_id,
+        source_name: p.source_name || DEFAULT_SOURCE_NAME,
+        source_url: p.source_url,
+        seller_name: DANAWA_REFERENCE_LABEL,
+        amount_krw: Number(p.amount_krw),
+        shipping_krw: null,
+        observed_at: p.observed_at,
+        expires_at: p.expires_at,
+        conditions_text: p.conditions_text,
+        unconditional: 0,
+        in_stock: 0,
+        is_new: 1,
+        is_unlocked: 1,
+      };
+
+      if (PriceObservationModel.rawAttributes?.price_metadata_json) {
+        createData.price_metadata_json = {
+          version: 1,
+          price_type: 'danawa_reference',
+          product_code: p.product_code || null,
+          danawa_product_url: p.source_url,
+          is_reference_price: true,
+          warning: DANAWA_REFERENCE_WARNING,
+        };
+      }
+
+      const created = await PriceObservationModel.create(createData, { transaction });
+      insertedCount += 1;
+      insertedRecords.push(created);
+    }
+  });
+
+  return {
+    applied: true,
+    insertedCount,
+    updatedPriceCount,
+    skippedDuplicatesCount,
+    insertedRecords,
+  };
+}
+
 async function syncVariantPrices(db, { variants, adapter, options = {} } = {}) {
   if (!adapter || typeof adapter.searchVariant !== 'function') {
     const err = new Error('An initialized Danawa search adapter is required');
@@ -518,9 +698,21 @@ async function syncVariantPrices(db, { variants, adapter, options = {} } = {}) {
 
   const now = parseValidDate(options.now) || new Date();
   const ttlHours = validateTtlHours(options.ttlHours);
-  const targetVariants = Array.isArray(variants)
+  if (options.apply === true && options.allowDbWrite === true && adapter.mode === 'mock'
+    && db?.config?.database === 'final_project') {
+    throw Object.assign(new Error('Mock prices require an isolated database'), { code: 'MOCK_WRITE_BLOCKED' });
+  }
+  let targetVariants = Array.isArray(variants)
     ? variants
     : await loadExistingSmartphoneVariants(db, options);
+  if (adapter.mode === 'live' && db && Array.isArray(variants) && variants.length) {
+    targetVariants = await loadExistingSmartphoneVariants(db, {
+      variantIds: variants.map(variant => variant.variant_id ?? variant.id),
+      limit: variants.length,
+    });
+  }
+  const { CARRIERS } = require('./smartphone-sales-channel');
+  targetVariants = targetVariants.filter(variant => !CARRIERS[variant.domestic_model_number]);
 
   const dryRunResult = await runDanawaPriceDryRun({
     db,
@@ -555,12 +747,48 @@ async function syncVariantPrices(db, { variants, adapter, options = {} } = {}) {
       err.code = 'DB_REQUIRED';
       throw err;
     }
-    persistenceResult = await persistVerifiedObservations(db, allMappedCandidates, {
-      apply: true,
-      allowDbWrite: true,
-      permissionRef: options.permissionRef,
-      now,
-    });
+    if (options.persistReferencePrices === true || options.persistMode === 'reference') {
+      const rawOffers = dryRunResult.variantReports.flatMap(report =>
+        [...new Set([report.bestReferencePrice, report.bestCommonReferencePrice])]
+          .filter(refPrice => refPrice && (!options.searchOptions?.exactOnly || refPrice.color_scope === 'exact_color'))
+          .map(refPrice => ({ refPrice, variant: report.variant }))
+      );
+
+      // Deduplicate capacity_common reference offers across colors of the same (smartphone_id, storage_gb)
+      let referenceOffers = rawOffers;
+      if (options.deduplicateCapacityCommon !== false) {
+        const seenCapacityKeys = new Set();
+        const deduped = [];
+        for (const ro of rawOffers) {
+          const isColorSpecific = ro.refPrice?.color_scope === 'exact_color';
+          if (!isColorSpecific && ro.variant?.smartphone_id && ro.variant?.storage_gb && ro.variant.ram_gb != null) {
+            const capKey = `${ro.variant.smartphone_id}:${ro.variant.storage_gb}:${ro.variant.ram_gb ?? 'unknown'}:${ro.refPrice.danawa_product_url}:${ro.refPrice.amount_krw}`;
+            if (seenCapacityKeys.has(capKey)) {
+              continue; // Avoid duplicate observation for same model+storage across colors
+            }
+            seenCapacityKeys.add(capKey);
+          }
+          deduped.push(ro);
+        }
+        referenceOffers = deduped;
+      }
+
+      persistenceResult = await persistDanawaReferenceObservations(db, referenceOffers, {
+        apply: true,
+        allowDbWrite: true,
+        permissionRef: options.permissionRef,
+        now,
+        ttlHours,
+        sourceName: options.sourceName,
+      });
+    } else {
+      persistenceResult = await persistVerifiedObservations(db, allMappedCandidates, {
+        apply: true,
+        allowDbWrite: true,
+        permissionRef: options.permissionRef,
+        now,
+      });
+    }
   }
 
   return {
@@ -606,5 +834,7 @@ module.exports = {
   resolveVariantDanawaReferencePrice,
   runDanawaPriceDryRun,
   persistVerifiedObservations,
+  mapDanawaReferenceToObservationPayload,
+  persistDanawaReferenceObservations,
   syncVariantPrices,
 };

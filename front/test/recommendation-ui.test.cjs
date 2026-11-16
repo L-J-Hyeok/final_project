@@ -3,14 +3,14 @@ const {parse,compileScript}=require('@vue/compiler-sfc'),{transformSync}=require
 const root=path.resolve(__dirname,'../src')
 function load(file,mocks={}){const source=fs.readFileSync(path.join(root,file),'utf8');const js=file.endsWith('.vue')?compileScript(parse(source).descriptor,{id:'test-recommendation',inlineTemplate:true}).content:source;const code=transformSync(js,{configFile:false,babelrc:false,plugins:['@babel/plugin-transform-modules-commonjs']}).code;const module={exports:{}};new Function('require','module','exports',code)(name=>mocks[name]||require(name),module,module.exports);return module.exports}
 const api=load('api/recommendations.js',{'./client':{request:()=>{throw Error('Unexpected real request')}}})
-const component=load('components/RecommendationResult.vue').default
+const component=load('components/RecommendationResult.vue', { '../utils/deviceImages.js': { resolveDeviceImage: () => null } }).default
 async function html(props){const app=vue.createSSRApp(component,props);for(const name of ['v-card','v-alert','router-link'])app.component(name,{setup:(_,ctx)=>()=>vue.h('div',ctx.attrs,ctx.slots.default?.())});return renderToString(app)}
 const item={variant_id:'42',product:{model_name:'서버 제품',domestic_model_number:'MODEL-KR',storage_gb:256,ram_gb:null,color:'검정'},reasons:[{description:'서버가 검증한 추천 근거'}],price:{price_source:'official_launch',development_only:true,purchase_verified:false,budget_basis_krw:1000000,total_krw:null,warning:'서버 경고'}}
 test('request contract preserves hard budget and soft brand without fixture bypass',()=>{const body=api.buildRecommendationRequest({budget:'1500000',usages:['video'],brands:['samsung']},3);assert.deepEqual(body,{expected_profile_version:3,hard:{budget_max_krw:1500000,usages:['video']},soft:{preferred_brands:['samsung']}});assert(!('include_test' in body));for(const budget of ['',0,-1,1.5,10000001])assert.throws(()=>api.buildRecommendationRequest({budget,usages:['video'],brands:[]},3));assert.throws(()=>api.buildRecommendationRequest({budget:1,usages:[],brands:[]},3))})
 test('API wrapper uses profile GET and one recommendation POST, returns unchanged response',async()=>{const calls=[],response={data:{status:'recommend',items:[item]}};const client=api.createRecommendationApi(async(...args)=>{calls.push(args);return response});const signal=new AbortController().signal;await client.profile(signal);const body=api.buildRecommendationRequest({budget:1000000,usages:['video'],brands:[]},2);assert.equal(await client.recommend(body,signal),response);assert.deepEqual(calls,[['/api/profile',{signal}],['/api/recommendations',{method:'POST',body,signal}]])})
 test('Mock response renders returned product, option, evidence and unknown RAM',async()=>{const s=await html({result:{status:'recommend',items:[item]}});for(const text of ['서버 제품','MODEL-KR','256GB','정보 없음','검정','서버가 검증한 추천 근거'])assert(s.includes(text))})
-test('official launch and reference prices are explicitly non-purchasable development prices',async()=>{for(const source of ['official_launch','reference_sale']){const s=await html({result:{status:'recommend',items:[{...item,price:{...item.price,price_source:source}}]}});assert(s.includes('개발용'));assert(s.includes('실제 구매 가능 가격이 아닙니다'));assert(s.includes('서버 경고'));assert(s.includes('1,000,000원'));assert(!s.includes('검증된 판매가 · 배송비 포함'))}})
-test('verified sale displays shipping-inclusive total; missing price never becomes zero',async()=>{let s=await html({result:{status:'recommend',items:[{...item,price:{price_source:'verified_sale',purchase_verified:true,total_krw:1200000}}]}});assert(s.includes('검증된 판매가 · 배송비 포함'));assert(s.includes('1,200,000원'));s=await html({result:{status:'recommend',items:[{...item,price:{price_source:null,total_krw:null}}]}});assert(s.includes('현재 판매가 정보 없음'));assert(!s.includes('>0원'))})
+test('official launch and reference prices are explicitly non-purchasable development prices',async()=>{for(const source of ['official_launch','reference_sale']){const s=await html({result:{status:'recommend',items:[{...item,price:{...item.price,price_source:source}}]}});assert(s.includes('개발용'));assert(s.includes('실제 구매 가능 가격이 아닙니다'));assert(s.includes('서버 경고'));assert(s.includes('1,000,000원'));assert(!s.includes('수집 당시 참고 가격 · 배송비 포함'))}})
+test('verified sale displays shipping-inclusive total; missing price never becomes zero',async()=>{let s=await html({result:{status:'recommend',items:[{...item,price:{price_source:'verified_sale',purchase_verified:true,total_krw:1200000}}]}});assert(s.includes('수집 당시 참고 가격 · 배송비 포함'));assert(s.includes('1,200,000원'));s=await html({result:{status:'recommend',items:[{...item,price:{price_source:null,total_krw:null}}]}});assert(s.includes('현재 판매가 정보 없음'));assert(!s.includes('>0원'))})
 test('loading, error and no-match states are distinct and accessible',async()=>{assert((await html({loading:true})).includes('role="status"'));assert((await html({error:'서버 연결 오류'})).includes('role="alert"'));const s=await html({result:{status:'no_match',questions:['예산을 확인해 주세요.']}});assert(s.includes('추천 결과가 없어요'));assert(s.includes('예산을 확인해 주세요.'));assert(!s.includes('서버 제품'))})
 test('clarify, keep and defer responses do not pretend to recommend products',async()=>{for(const status of ['clarify','keep','defer']){const s=await html({result:{status,items:[item],questions:['서버 질문']}});assert(s.includes('서버 질문'));assert(!s.includes('서버 제품'))}})
 test('auth, profile conflict and server failures have separate user messages',()=>{assert.match(api.recommendationMessage({status:401}),/로그인/);assert.match(api.recommendationMessage({code:'PROFILE_INCOMPLETE'}),/프로필/);assert.match(api.recommendationMessage({code:'AI_TIMEOUT'}),/시간/);assert.match(api.recommendationMessage({code:'NETWORK_ERROR'}),/자동으로 다시 전송하지/);assert.match(api.recommendationMessage({status:503}),/완료하지 못/)} )
@@ -29,6 +29,7 @@ test('RecommendView renders 3-step guided wizard with budget presets, usage card
   const appBtn=load('components/AppButton.vue').default
   const view=load('views/RecommendView.vue',{
     '../components/AppButton.vue':{__esModule:true,default:appBtn},
+    '../components/RecommendationQuestions.vue':{__esModule:true,default:{render:()=>null}},
     '../components/RecommendationResult.vue':{__esModule:true,default:component},
     '../composables/useMemberApi':{useMemberApi:()=>async()=>({data:null})},
     'vue-router':{useRoute:()=>({query:{}})},
@@ -68,7 +69,8 @@ test('RecommendView adapts heading on /upgrade route',async()=>{
  const appBtn=load('components/AppButton.vue').default;
  const view=load('views/RecommendView.vue',{
   '../components/AppButton.vue':{__esModule:true,default:appBtn},
-  '../components/RecommendationResult.vue':{__esModule:true,default:component},
+  '../components/RecommendationQuestions.vue':{__esModule:true,default:{render:()=>null}},
+    '../components/RecommendationResult.vue':{__esModule:true,default:component},
   '../composables/useMemberApi':{useMemberApi:()=>async()=>({data:null})},
   'vue-router':{useRoute:()=>({path:'/upgrade',query:{}})},
   '../api/recommendations':api
@@ -79,3 +81,39 @@ test('RecommendView adapts heading on /upgrade route',async()=>{
  const s=await renderToString(app);
  assert(s.includes('지금 스마트폰을 바꿀 때일까요?'));
 });
+
+test('changing color updates the comparison SKU without changing the selected configuration or price', async () => {
+  const root = { children: [] }
+  const renderer = vue.createRenderer({
+    createElement: tag => ({ tag, children: [], props: {} }),
+    createText: text => ({ text }), createComment: text => ({ text }),
+    setText: (node, text) => { node.text = text },
+    setElementText: (node, text) => { node.text = text; node.children = [] },
+    insert: (node, parent) => { node.parent = parent; parent.children.push(node) },
+    remove: node => { if (node.parent) node.parent.children.splice(node.parent.children.indexOf(node), 1) },
+    parentNode: node => node.parent, nextSibling: () => null,
+    patchProp: (node, key, _, value) => { node.props[key] = value }
+  })
+  const price = { price_source: 'danawa_reference', amount_krw: 337000, danawa_product_url: 'https://prod.danawa.com/info/?pcode=99' }
+  const options = [{ variant_id: '42', color: '검정' }, { variant_id: '43', color: '파랑' }]
+  const interactiveComponent = load('components/RecommendationResult.vue', { vue: { ...vue, Transition: (_, ctx) => ctx.slots.default?.() }, '../utils/deviceImages.js': { resolveDeviceImage: () => null } }).default
+  const app = renderer.createApp(interactiveComponent, { result: { status: 'recommend', items: [
+    { ...item, price, recommendation_score: 54.49, color_options: options },
+    { ...item, variant_id: '77', product: { ...item.product, model_name: '다른 모델' } }
+  ] } })
+  for (const name of ['v-card', 'v-alert', 'router-link']) {
+    app.component(name, { setup: (_, ctx) => () => vue.h('div', ctx.attrs, ctx.slots.default?.()) })
+  }
+  app.mount(root)
+  const flatten = node => [node, ...(node.children || []).flatMap(flatten)]
+  const nodes = () => flatten(root)
+  const selects = nodes().filter(node => node.tag === 'select')
+  assert.equal(selects.length, 1)
+  selects[0].props.onChange({ target: { value: '43' } })
+  await vue.nextTick()
+  assert.equal(selects[0].props.value, '43')
+  assert(nodes().some(node => node.props?.to?.includes('variants=43%2C77')))
+  assert(nodes().some(node => node.props?.href === price.danawa_product_url))
+  const texts = nodes().map(node => node.text).join(' ')
+  for (const expected of ['256GB', '54.49', '337,000원']) assert(texts.includes(expected))
+})

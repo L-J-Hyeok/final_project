@@ -1,0 +1,1525 @@
+{
+  "generated_at": "2026-11-16T08:38:31.357Z",
+  "source_counts": {
+    "total_models": 99,
+    "total_skus": 120,
+    "by_original_category": {
+      "smartwatch": {
+        "models": 10,
+        "skus": 10
+      },
+      "tablet": {
+        "models": 19,
+        "skus": 27
+      },
+      "smartphone": {
+        "models": 30,
+        "skus": 43
+      },
+      "laptop": {
+        "models": 20,
+        "skus": 20
+      },
+      "audio": {
+        "models": 20,
+        "skus": 20
+      }
+    }
+  },
+  "duplicates_with_existing_db": [
+    {
+      "category_code": "tablet",
+      "brand": "Apple",
+      "model_name": "iPad (A16)",
+      "model_number": "A3354",
+      "existing_model_name": "iPad (A16) Wi-Fi",
+      "existing_sku_codes": [
+        "A3354-128-silver",
+        "A3354-256-silver"
+      ],
+      "teammate_sku_codes": [
+        "APPLE-A3354-DEFAULT"
+      ],
+      "sku_count": 1,
+      "resolution": "preserve_existing_model_and_skus"
+    },
+    {
+      "category_code": "earbuds",
+      "brand": "Samsung",
+      "model_name": "Galaxy Buds3",
+      "model_number": "SM-R530",
+      "existing_model_name": "Galaxy Buds3",
+      "existing_sku_codes": [
+        "SM-R530NZAAKOO",
+        "SM-R530NZWAKOO"
+      ],
+      "teammate_sku_codes": [
+        "SAMSUNG-SM-R530-DEFAULT"
+      ],
+      "sku_count": 1,
+      "resolution": "preserve_existing_model_and_skus"
+    }
+  ],
+  "excluded_items": [
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy S24 FE",
+      "model_number": "SM-S721N",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy Z Flip7",
+      "model_number": "SM-F766N",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy Z Fold7",
+      "model_number": "SM-F966N",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy S25",
+      "model_number": "SM-S931N",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy S25+",
+      "model_number": "SM-S936N",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy S25 Ultra",
+      "model_number": "SM-S938N",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone 15 Plus",
+      "model_number": "A3094",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone 16e",
+      "model_number": "A3409",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone 17",
+      "model_number": "A3520",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone Air",
+      "model_number": "A3517",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone 17 Pro",
+      "model_number": "A3523",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone 17 Pro Max",
+      "model_number": "A3526",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone 16 Pro Max",
+      "model_number": "A3296",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone 16 Pro",
+      "model_number": "A3293",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone 16 Plus",
+      "model_number": "A3290",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone 16",
+      "model_number": "A3287",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone 15 Pro Max",
+      "model_number": "A3106",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone 15 Pro",
+      "model_number": "A3102",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Apple",
+      "model_name": "iPhone 15",
+      "model_number": "A3090",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy S24 Ultra",
+      "model_number": "SM-S928N",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy S24+",
+      "model_number": "SM-S926N",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy S24",
+      "model_number": "SM-S921N",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy Z Fold6",
+      "model_number": "SM-F956N",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy Z Flip6",
+      "model_number": "SM-F741N",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy S23 Ultra",
+      "model_number": "SM-S918N",
+      "sku_count": 2
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Samsung",
+      "model_name": "Galaxy A35 5G",
+      "model_number": "SM-A356N",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Sony",
+      "model_name": "Xperia 1 VI",
+      "model_number": "XQ-EC72",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Sony",
+      "model_name": "Xperia 10 VI",
+      "model_number": "XQ-ES72",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Sony",
+      "model_name": "Xperia 5 V",
+      "model_number": "XQ-DE72",
+      "sku_count": 1
+    },
+    {
+      "reason": "existing_smartphone_catalog_preserved",
+      "original_category": "smartphone",
+      "brand": "Sony",
+      "model_name": "Xperia 1 V",
+      "model_number": "XQ-DQ72",
+      "sku_count": 1
+    },
+    {
+      "reason": "unsupported_audio_headphone",
+      "original_category": "audio",
+      "brand": "Apple",
+      "model_name": "AirPods Max (USB-C, 2024)",
+      "model_number": "A3184",
+      "sku_count": 1
+    },
+    {
+      "reason": "unsupported_audio_headphone",
+      "original_category": "audio",
+      "brand": "Sony",
+      "model_name": "Sony WH-1000XM5 헤드폰",
+      "model_number": "WH-1000XM5",
+      "sku_count": 1
+    },
+    {
+      "reason": "unsupported_audio_headphone",
+      "original_category": "audio",
+      "brand": "Sony",
+      "model_name": "Sony WH-1000XM4 헤드폰",
+      "model_number": "WH-1000XM4",
+      "sku_count": 1
+    },
+    {
+      "reason": "unsupported_audio_headphone",
+      "original_category": "audio",
+      "brand": "Sony",
+      "model_name": "Sony ULT WEAR 헤드폰",
+      "model_number": "WH-ULT900N",
+      "sku_count": 1
+    },
+    {
+      "reason": "unsupported_audio_headphone",
+      "original_category": "audio",
+      "brand": "Bose",
+      "model_name": "Bose QuietComfort Ultra Headphones",
+      "model_number": "QC-ULTRA-HP",
+      "sku_count": 1
+    },
+    {
+      "reason": "unsupported_audio_headphone",
+      "original_category": "audio",
+      "brand": "Bose",
+      "model_name": "Bose QuietComfort Headphones",
+      "model_number": "QC-HP-2023",
+      "sku_count": 1
+    },
+    {
+      "reason": "unsupported_audio_headphone",
+      "original_category": "audio",
+      "brand": "Sennheiser",
+      "model_name": "Sennheiser Momentum 4 Wireless",
+      "model_number": "M4AEBT",
+      "sku_count": 1
+    },
+    {
+      "reason": "unsupported_audio_headphone",
+      "original_category": "audio",
+      "brand": "Beats",
+      "model_name": "Beats Studio Pro 헤드폰",
+      "model_number": "A2924",
+      "sku_count": 1
+    }
+  ],
+  "validation_errors": [],
+  "new_models_count": 59,
+  "new_skus_count": 67,
+  "total_common_catalog_models": 64,
+  "total_common_catalog_skus": 77,
+  "price_collection": {
+    "total_skus": 77,
+    "matched_skus": 56,
+    "unmatched_skus": 21,
+    "by_category": {
+      "tablet": {
+        "total_skus": 28,
+        "matched_skus": 26,
+        "unmatched_skus": 2
+      },
+      "laptop": {
+        "total_skus": 22,
+        "matched_skus": 9,
+        "unmatched_skus": 13
+      },
+      "smartwatch": {
+        "total_skus": 12,
+        "matched_skus": 7,
+        "unmatched_skus": 5
+      },
+      "earbuds": {
+        "total_skus": 13,
+        "matched_skus": 12,
+        "unmatched_skus": 1
+      },
+      "speaker": {
+        "total_skus": 2,
+        "matched_skus": 2,
+        "unmatched_skus": 0
+      }
+    },
+    "matched_details": [
+      {
+        "category": "tablet",
+        "brand": "Apple",
+        "model_name": "iPad (A16) Wi-Fi",
+        "model_number": "A3354",
+        "sku_code": "A3354-128-silver",
+        "storage_gb": 128,
+        "ram_gb": null,
+        "connectivity": "wifi",
+        "amount_minor": "612390",
+        "product_url": "https://prod.danawa.com/info/?pcode=77313098",
+        "listing_title": "APPLE 2025 iPad A16 11세대( 128GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Apple",
+        "model_name": "iPad (A16) Wi-Fi",
+        "model_number": "A3354",
+        "sku_code": "A3354-256-silver",
+        "storage_gb": 256,
+        "ram_gb": null,
+        "connectivity": "wifi",
+        "amount_minor": "834870",
+        "product_url": "https://prod.danawa.com/info/?pcode=77313149",
+        "listing_title": "APPLE 2025 iPad A16 11세대( 256GB )"
+      },
+      {
+        "category": "laptop",
+        "brand": "Apple",
+        "model_name": "MacBook Air 13 (M5)",
+        "model_number": "A3449",
+        "sku_code": "A3449-16-512-8gpu-silver",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "amount_minor": "1976250",
+        "product_url": "https://prod.danawa.com/info/?pcode=106754228",
+        "listing_title": "APPLE 맥북에어13 M5 10코어 CPU, 8코어 GPU 스카이( 램 16GB , SSD 512GB )"
+      },
+      {
+        "category": "earbuds",
+        "brand": "Samsung",
+        "model_name": "Galaxy Buds3",
+        "model_number": "SM-R530",
+        "sku_code": "SM-R530NZAAKOO",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "129000",
+        "product_url": "https://prod.danawa.com/info/?pcode=59541506",
+        "listing_title": "삼성전자 갤럭시 버즈3 SM-R530N ( 정품 )"
+      },
+      {
+        "category": "earbuds",
+        "brand": "Samsung",
+        "model_name": "Galaxy Buds3",
+        "model_number": "SM-R530",
+        "sku_code": "SM-R530NZWAKOO",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "129000",
+        "product_url": "https://prod.danawa.com/info/?pcode=59541506",
+        "listing_title": "삼성전자 갤럭시 버즈3 SM-R530N ( 정품 )"
+      },
+      {
+        "category": "speaker",
+        "brand": "JBL",
+        "model_name": "JBL Flip 7",
+        "model_number": "FLIP 7",
+        "sku_code": "JBLFLIP7BLK",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "129120",
+        "product_url": "https://prod.danawa.com/info/?pcode=91189589",
+        "listing_title": "JBL FLIP 7 ( 정품 )"
+      },
+      {
+        "category": "speaker",
+        "brand": "JBL",
+        "model_name": "JBL Flip 7",
+        "model_number": "FLIP 7",
+        "sku_code": "JBLFLIP7BLU",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "129120",
+        "product_url": "https://prod.danawa.com/info/?pcode=91189589",
+        "listing_title": "JBL FLIP 7 ( 정품 )"
+      },
+      {
+        "category": "smartwatch",
+        "brand": "Samsung",
+        "model_name": "Galaxy Watch8 44mm",
+        "model_number": "SM-L330",
+        "sku_code": "SAMSUNG-SM-L330-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "376870",
+        "product_url": "https://prod.danawa.com/info/?pcode=93383597",
+        "listing_title": "삼성전자 갤럭시 워치 8 44mm 블루투스 ( 정품 )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Samsung",
+        "model_name": "Galaxy Tab S9 FE+",
+        "model_number": "SM-X610",
+        "sku_code": "SAMSUNG-SM-X610-DEFAULT",
+        "storage_gb": 128,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "653890",
+        "product_url": "https://prod.danawa.com/info/?pcode=30312806",
+        "listing_title": "삼성전자 갤럭시탭 S9 FE 플러스 (램8GB, 128GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Samsung",
+        "model_name": "Galaxy Tab S9",
+        "model_number": "SM-X710",
+        "sku_code": "SAMSUNG-SM-X710-DEFAULT",
+        "storage_gb": 128,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "1043000",
+        "product_url": "https://prod.danawa.com/info/?pcode=22298102",
+        "listing_title": "삼성전자 갤럭시탭 S9 ( 128GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Samsung",
+        "model_name": "Galaxy Tab S9+",
+        "model_number": "SM-X810",
+        "sku_code": "SAMSUNG-SM-X810-DEFAULT",
+        "storage_gb": 256,
+        "ram_gb": 12,
+        "connectivity": "wifi",
+        "amount_minor": "1299990",
+        "product_url": "https://prod.danawa.com/info/?pcode=22044530",
+        "listing_title": "삼성전자 갤럭시탭 S9 플러스 ( 256GB )"
+      },
+      {
+        "category": "smartwatch",
+        "brand": "Apple",
+        "model_name": "Apple Watch Series 11 46mm",
+        "model_number": "A3331",
+        "sku_code": "APPLE-A3331-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "gps",
+        "amount_minor": "588890",
+        "product_url": "https://prod.danawa.com/info/?pcode=96979337",
+        "listing_title": "APPLE 워치 시리즈 11 46mm 제트블랙 알루미늄(스포츠밴드)"
+      },
+      {
+        "category": "tablet",
+        "brand": "Apple",
+        "model_name": "iPad Air 11 (M3)",
+        "model_number": "A3266",
+        "sku_code": "APPLE-A3266-DEFAULT",
+        "storage_gb": 128,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "966000",
+        "product_url": "https://prod.danawa.com/info/?pcode=77312582",
+        "listing_title": "APPLE 2025 iPad Air 11 M3 ( 128GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Apple",
+        "model_name": "iPad Air 13 (M3)",
+        "model_number": "A3268",
+        "sku_code": "APPLE-A3268-DEFAULT",
+        "storage_gb": 128,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "1271430",
+        "product_url": "https://prod.danawa.com/info/?pcode=77312609",
+        "listing_title": "APPLE 2025 iPad Air 13 M3 ( 128GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Apple",
+        "model_name": "iPad Pro 13 (M4)",
+        "model_number": "A2925",
+        "sku_code": "AP-IPP13M4-256-W",
+        "storage_gb": 256,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "2135990",
+        "product_url": "https://prod.danawa.com/info/?pcode=49645475",
+        "listing_title": "APPLE 2024 iPad Pro 13 M4 ( 256GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Apple",
+        "model_name": "iPad Pro 13 (M4)",
+        "model_number": "A2925",
+        "sku_code": "AP-IPP13M4-512-W",
+        "storage_gb": 512,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "2159900",
+        "product_url": "https://prod.danawa.com/info/?pcode=52154063",
+        "listing_title": "APPLE 2024 iPad Pro 13 M4 ( 512GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Apple",
+        "model_name": "iPad Pro 11 (M4)",
+        "model_number": "A2836",
+        "sku_code": "AP-IPP11M4-256-W",
+        "storage_gb": 256,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "1627470",
+        "product_url": "https://prod.danawa.com/info/?pcode=49645481",
+        "listing_title": "APPLE 2024 iPad Pro 11 M4 ( 256GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Apple",
+        "model_name": "iPad Pro 11 (M4)",
+        "model_number": "A2836",
+        "sku_code": "AP-IPP11M4-512-W",
+        "storage_gb": 512,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "1533450",
+        "product_url": "https://prod.danawa.com/info/?pcode=52153847",
+        "listing_title": "APPLE 2024 iPad Pro 11 M4 ( 512GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Apple",
+        "model_name": "iPad Air 13 (M2)",
+        "model_number": "A2898",
+        "sku_code": "AP-IPA13M2-128-W",
+        "storage_gb": 128,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "1018670",
+        "product_url": "https://prod.danawa.com/info/?pcode=49645295",
+        "listing_title": "APPLE 2024 iPad Air 13 M2 ( 128GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Apple",
+        "model_name": "iPad Air 13 (M2)",
+        "model_number": "A2898",
+        "sku_code": "AP-IPA13M2-256-W",
+        "storage_gb": 256,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "1298990",
+        "product_url": "https://prod.danawa.com/info/?pcode=52153760",
+        "listing_title": "APPLE 2024 iPad Air 13 M2 ( 256GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Apple",
+        "model_name": "iPad mini (A17 Pro)",
+        "model_number": "A2993",
+        "sku_code": "AP-IPM7-128-W",
+        "storage_gb": 128,
+        "ram_gb": null,
+        "connectivity": "wifi",
+        "amount_minor": "844550",
+        "product_url": "https://prod.danawa.com/info/?pcode=71155355",
+        "listing_title": "APPLE 2024 iPad mini A17 Pro 7세대( 128GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Apple",
+        "model_name": "iPad mini (A17 Pro)",
+        "model_number": "A2993",
+        "sku_code": "AP-IPM7-256-W",
+        "storage_gb": 256,
+        "ram_gb": null,
+        "connectivity": "wifi",
+        "amount_minor": "1034200",
+        "product_url": "https://prod.danawa.com/info/?pcode=71155364",
+        "listing_title": "APPLE 2024 iPad mini A17 Pro 7세대( 256GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Samsung",
+        "model_name": "Galaxy Tab S10 Ultra",
+        "model_number": "SM-X920",
+        "sku_code": "SM-X920-256-W",
+        "storage_gb": 256,
+        "ram_gb": 12,
+        "connectivity": "wifi",
+        "amount_minor": "1610000",
+        "product_url": "https://prod.danawa.com/info/?pcode=67690268",
+        "listing_title": "삼성전자 갤럭시탭 S10 울트라(램12GB, 256GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Samsung",
+        "model_name": "Galaxy Tab S10 Ultra",
+        "model_number": "SM-X920",
+        "sku_code": "SM-X920-512-W",
+        "storage_gb": 512,
+        "ram_gb": 12,
+        "connectivity": "wifi",
+        "amount_minor": "1859990",
+        "product_url": "https://prod.danawa.com/info/?pcode=67690256",
+        "listing_title": "삼성전자 갤럭시탭 S10 울트라(램12GB, 512GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Samsung",
+        "model_name": "Galaxy Tab S10+",
+        "model_number": "SM-X820",
+        "sku_code": "SM-X820-256-W",
+        "storage_gb": 256,
+        "ram_gb": 12,
+        "connectivity": "wifi",
+        "amount_minor": "1148990",
+        "product_url": "https://prod.danawa.com/info/?pcode=67690235",
+        "listing_title": "삼성전자 갤럭시탭 S10 플러스 ( 256GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Samsung",
+        "model_name": "Galaxy Tab S10+",
+        "model_number": "SM-X820",
+        "sku_code": "SM-X820-512-W",
+        "storage_gb": 512,
+        "ram_gb": 12,
+        "connectivity": "wifi",
+        "amount_minor": "1482780",
+        "product_url": "https://prod.danawa.com/info/?pcode=67690241",
+        "listing_title": "삼성전자 갤럭시탭 S10 플러스 ( 512GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Samsung",
+        "model_name": "Galaxy Tab S9 Ultra",
+        "model_number": "SM-X910",
+        "sku_code": "SM-X910-256-W",
+        "storage_gb": 256,
+        "ram_gb": 12,
+        "connectivity": "wifi",
+        "amount_minor": "1724990",
+        "product_url": "https://prod.danawa.com/info/?pcode=22292927",
+        "listing_title": "삼성전자 갤럭시탭 S9 울트라(램12GB, 256GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Samsung",
+        "model_name": "Galaxy Tab S9 Ultra",
+        "model_number": "SM-X910",
+        "sku_code": "SM-X910-512-W",
+        "storage_gb": 512,
+        "ram_gb": 12,
+        "connectivity": "wifi",
+        "amount_minor": "1898460",
+        "product_url": "https://prod.danawa.com/info/?pcode=21399134",
+        "listing_title": "삼성전자 갤럭시탭 S9 울트라(램12GB, 512GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Samsung",
+        "model_name": "Galaxy Tab S9 FE",
+        "model_number": "SM-X510",
+        "sku_code": "SM-X510-128-W",
+        "storage_gb": 128,
+        "ram_gb": 6,
+        "connectivity": "wifi",
+        "amount_minor": "774990",
+        "product_url": "https://prod.danawa.com/info/?pcode=30312767",
+        "listing_title": "삼성전자 갤럭시탭 S9 FE (램6GB, 128GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Samsung",
+        "model_name": "Galaxy Tab S9 FE",
+        "model_number": "SM-X510",
+        "sku_code": "SM-X510-256-W",
+        "storage_gb": 256,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "970650",
+        "product_url": "https://prod.danawa.com/info/?pcode=30312827",
+        "listing_title": "삼성전자 갤럭시탭 S9 FE (램8GB, 256GB )"
+      },
+      {
+        "category": "smartwatch",
+        "brand": "Apple",
+        "model_name": "Apple Watch Series 10 46mm",
+        "model_number": "A2999",
+        "sku_code": "AP-AWS10-46-GPS",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "gps",
+        "amount_minor": "518990",
+        "product_url": "https://prod.danawa.com/info/?pcode=65929979",
+        "listing_title": "APPLE 워치 시리즈 10 46mm 실버 알루미늄(스포츠밴드)"
+      },
+      {
+        "category": "smartwatch",
+        "brand": "Apple",
+        "model_name": "Apple Watch Series 10 42mm",
+        "model_number": "A2997",
+        "sku_code": "AP-AWS10-42-GPS",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "gps",
+        "amount_minor": "484000",
+        "product_url": "https://prod.danawa.com/info/?pcode=65952797",
+        "listing_title": "APPLE 워치 시리즈 10 42mm 실버 알루미늄(스포츠밴드)"
+      },
+      {
+        "category": "smartwatch",
+        "brand": "Apple",
+        "model_name": "Apple Watch Series 9 45mm",
+        "model_number": "A2980",
+        "sku_code": "AP-AWS9-45-GPS",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "gps",
+        "amount_minor": "455630",
+        "product_url": "https://prod.danawa.com/info/?pcode=28510814",
+        "listing_title": "APPLE 워치 시리즈 9 45mm 미드나이트 알루미늄(스포츠밴드)"
+      },
+      {
+        "category": "smartwatch",
+        "brand": "Samsung",
+        "model_name": "Galaxy Watch Ultra 47mm",
+        "model_number": "SM-L705N",
+        "sku_code": "SM-L705N-47-LTE",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "cellular",
+        "amount_minor": "858990",
+        "product_url": "https://prod.danawa.com/info/?pcode=59082029",
+        "listing_title": "삼성전자 갤럭시 워치 울트라 47mm LTE ( 정품 )"
+      },
+      {
+        "category": "smartwatch",
+        "brand": "Samsung",
+        "model_name": "Galaxy Watch6 Classic 47mm",
+        "model_number": "SM-R960",
+        "sku_code": "SM-R960-47-BT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "436240",
+        "product_url": "https://prod.danawa.com/info/?pcode=23563166",
+        "listing_title": "삼성전자 갤럭시 워치 6 클래식 47mm 블루투스 ( 정품 )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Lenovo",
+        "model_name": "Legion Tab (Y700 2nd Gen)",
+        "model_number": "TB-320FC",
+        "sku_code": "LENOVO-TB-320FC-DEFAULT",
+        "storage_gb": 256,
+        "ram_gb": 12,
+        "connectivity": "wifi",
+        "amount_minor": "599000",
+        "product_url": "https://prod.danawa.com/info/?pcode=39916466",
+        "listing_title": "레노버 리전 Y700 2세대 ( 256GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Lenovo",
+        "model_name": "Legion Tab (Y700 2024 3rd Gen)",
+        "model_number": "TB-321FU",
+        "sku_code": "LENOVO-TB-321FU-DEFAULT",
+        "storage_gb": 256,
+        "ram_gb": 12,
+        "connectivity": "wifi",
+        "amount_minor": "598990",
+        "product_url": "https://prod.danawa.com/info/?pcode=74051327",
+        "listing_title": "레노버 리전 Y700 3세대 (램12GB, 256GB )"
+      },
+      {
+        "category": "tablet",
+        "brand": "Lenovo",
+        "model_name": "Lenovo Tab P12 Pro",
+        "model_number": "TB-Q706F",
+        "sku_code": "LENOVO-TB-Q706F-DEFAULT",
+        "storage_gb": 256,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "464000",
+        "product_url": "https://prod.danawa.com/info/?pcode=15986408",
+        "listing_title": "레노버 탭 P12 프로 12.6( 256GB )"
+      },
+      {
+        "category": "laptop",
+        "brand": "Apple",
+        "model_name": "MacBook Pro 14 (M3)",
+        "model_number": "A2990",
+        "sku_code": "APPLE-A2990-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "1849180",
+        "product_url": "https://prod.danawa.com/info/?pcode=29621735",
+        "listing_title": "APPLE 맥북프로14 M3 8코어 CPU, 10코어 GPU 실버( 램 8GB , SSD 512GB )"
+      },
+      {
+        "category": "laptop",
+        "brand": "Apple",
+        "model_name": "MacBook Air 15 (M3)",
+        "model_number": "A3114",
+        "sku_code": "APPLE-A3114-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "amount_minor": "2339990",
+        "product_url": "https://prod.danawa.com/info/?pcode=39250091",
+        "listing_title": "APPLE 맥북에어15 M3 8코어 CPU, 10코어 GPU 블루( 램 16GB , SSD 512GB )"
+      },
+      {
+        "category": "laptop",
+        "brand": "Apple",
+        "model_name": "MacBook Air 13 (M3)",
+        "model_number": "A3113",
+        "sku_code": "APPLE-A3113-DEFAULT",
+        "storage_gb": 256,
+        "ram_gb": 8,
+        "connectivity": "wifi",
+        "amount_minor": "1550000",
+        "product_url": "https://prod.danawa.com/info/?pcode=39249161",
+        "listing_title": "APPLE 맥북에어13 M3 8코어 CPU, 8코어 GPU 그레이( 램 8GB , SSD 256GB )"
+      },
+      {
+        "category": "laptop",
+        "brand": "Samsung",
+        "model_name": "Galaxy Book4 Pro 16",
+        "model_number": "NT960XGK-K71A",
+        "sku_code": "SAMSUNG-NT960XGK-K71A-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "amount_minor": "2752370",
+        "product_url": "https://prod.danawa.com/info/?pcode=31465046",
+        "listing_title": "삼성전자 갤럭시북4 프로 NT960XGK-K71A (SSD 512GB )"
+      },
+      {
+        "category": "laptop",
+        "brand": "Samsung",
+        "model_name": "Galaxy Book3 Pro 16",
+        "model_number": "NT960XFG-K71A",
+        "sku_code": "SAMSUNG-NT960XFG-K71A-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "amount_minor": "2390000",
+        "product_url": "https://prod.danawa.com/info/?pcode=18908435",
+        "listing_title": "삼성전자 갤럭시북3 프로 NT960XFG-K71A (SSD 512GB )"
+      },
+      {
+        "category": "laptop",
+        "brand": "LG",
+        "model_name": "LG gram Pro 16",
+        "model_number": "16Z90SP-ED7HK",
+        "sku_code": "LG-16Z90SP-ED7HK-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "amount_minor": "2851590",
+        "product_url": "https://prod.danawa.com/info/?pcode=31475579",
+        "listing_title": "LG전자 2024 그램 프로16 16Z90SP-ED7HK (SSD 512GB )"
+      },
+      {
+        "category": "laptop",
+        "brand": "LG",
+        "model_name": "LG gram 16 (2024)",
+        "model_number": "16Z90S-GA50K",
+        "sku_code": "LG-16Z90S-GA50K-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "amount_minor": "1946710",
+        "product_url": "https://prod.danawa.com/info/?pcode=54964391",
+        "listing_title": "LG전자 2024 그램16 16Z90S-GA50K (SSD 512GB )"
+      },
+      {
+        "category": "laptop",
+        "brand": "LG",
+        "model_name": "LG gram 14 (2024)",
+        "model_number": "14Z90S-GA50K",
+        "sku_code": "LG-14Z90S-GA50K-DEFAULT",
+        "storage_gb": 256,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "amount_minor": "1507790",
+        "product_url": "https://prod.danawa.com/info/?pcode=31978592",
+        "listing_title": "LG전자 2024 그램14 14Z90S-GA50K (SSD 256GB )"
+      },
+      {
+        "category": "earbuds",
+        "brand": "Apple",
+        "model_name": "AirPods Pro 2 (USB-C MagSafe)",
+        "model_number": "A3048",
+        "sku_code": "APPLE-A3048-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "339370",
+        "product_url": "https://prod.danawa.com/info/?pcode=28208783",
+        "listing_title": "APPLE 에어팟 프로 2 맥세이프 USB-C MTJV3KH/A( 정품 )"
+      },
+      {
+        "category": "earbuds",
+        "brand": "Apple",
+        "model_name": "AirPods 4 (노이즈 캔슬링 모델)",
+        "model_number": "A3056",
+        "sku_code": "APPLE-A3056-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "176650",
+        "product_url": "https://prod.danawa.com/info/?pcode=65919884",
+        "listing_title": "APPLE 에어팟 4 액티브 노이즈 캔슬링 MXP93KH/A( 정품 )"
+      },
+      {
+        "category": "earbuds",
+        "brand": "Apple",
+        "model_name": "AirPods 4 (일반 모델)",
+        "model_number": "A3050",
+        "sku_code": "APPLE-A3050-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "149590",
+        "product_url": "https://prod.danawa.com/info/?pcode=65920016",
+        "listing_title": "APPLE 에어팟 4 MXP63KH/A( 정품 )"
+      },
+      {
+        "category": "earbuds",
+        "brand": "Samsung",
+        "model_name": "Galaxy Buds3 Pro",
+        "model_number": "SM-R630",
+        "sku_code": "SAMSUNG-SM-R630-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "210290",
+        "product_url": "https://prod.danawa.com/info/?pcode=59537216",
+        "listing_title": "삼성전자 갤럭시 버즈3 프로 SM-R630N ( 정품 )"
+      },
+      {
+        "category": "earbuds",
+        "brand": "Samsung",
+        "model_name": "Galaxy Buds2 Pro (24bit 하이파이)",
+        "model_number": "SM-R510",
+        "sku_code": "SAMSUNG-SM-R510-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "216890",
+        "product_url": "https://prod.danawa.com/info/?pcode=17641574",
+        "listing_title": "삼성전자 갤럭시 버즈 2 프로 SM-R510( 정품 )"
+      },
+      {
+        "category": "earbuds",
+        "brand": "Sony",
+        "model_name": "Sony WF-1000XM5 이어폰",
+        "model_number": "WF-1000XM5",
+        "sku_code": "SONY-WF-1000XM5-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "234760",
+        "product_url": "https://prod.danawa.com/info/?pcode=27250154",
+        "listing_title": "SONY WF-1000XM5 ( 정품 )"
+      },
+      {
+        "category": "earbuds",
+        "brand": "Sony",
+        "model_name": "Sony LinkBuds S 이어폰",
+        "model_number": "WF-LS900N",
+        "sku_code": "SONY-WF-LS900N-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "249000",
+        "product_url": "https://prod.danawa.com/info/?pcode=17218223",
+        "listing_title": "SONY 링크 버즈 S WF-LS900N ( 정품 )"
+      },
+      {
+        "category": "earbuds",
+        "brand": "Bose",
+        "model_name": "Bose QuietComfort Ultra Earbuds",
+        "model_number": "QC-ULTRA-EB",
+        "sku_code": "BOSE-QC-ULTRA-EB-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "206000",
+        "product_url": "https://prod.danawa.com/info/?pcode=28376288",
+        "listing_title": "BOSE QC 울트라 이어버드 ( 정품 )"
+      },
+      {
+        "category": "earbuds",
+        "brand": "Bose",
+        "model_name": "Bose QuietComfort Earbuds (2024)",
+        "model_number": "QC-EB-2024",
+        "sku_code": "BOSE-QC-EB-2024-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "195000",
+        "product_url": "https://prod.danawa.com/info/?pcode=67512923",
+        "listing_title": "BOSE QC 이어버드 2024 년형( 정품 )"
+      },
+      {
+        "category": "earbuds",
+        "brand": "Sennheiser",
+        "model_name": "Sennheiser Momentum True Wireless 4",
+        "model_number": "MTW4",
+        "sku_code": "SENNHEISER-MTW4-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "amount_minor": "299000",
+        "product_url": "https://prod.danawa.com/info/?pcode=36205724",
+        "listing_title": "젠하이저 모멘텀 트루 와이어리스 4 MTW 4 ( 정품 )"
+      }
+    ],
+    "unmatched_details": [
+      {
+        "category": "laptop",
+        "brand": "Apple",
+        "model_name": "MacBook Air 13 (M5)",
+        "model_number": "A3449",
+        "sku_code": "A3449-16-512-10gpu-starlight",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "queries": [
+          "APPLE 맥북에어 13 M5 램16GB SSD 512GB",
+          "맥북에어 13 M5 512GB"
+        ],
+        "reasons": [
+          "APPLE 맥북에어13 <b>M5</b> 10코어 CPU, 8코어 GPU 실버(<b>램</b><b>16GB</b>, <b>SSD</b> <b>512GB</b>) -> [MACBOOK_GPU_CORE_MISMATCH:expected=10,found=8]",
+          "APPLE 맥북에어13 <b>M5</b> 10코어 CPU, 8코어 GPU 스카이(<b>램</b><b>16GB</b>, <b>SSD</b> <b>512GB</b>) -> [MACBOOK_GPU_CORE_MISMATCH:expected=10,found=8]",
+          "APPLE 맥북에어13 <b>M5</b> 10코어 CPU, 8코어 GPU 블루(<b>램</b><b>16GB</b>, <b>SSD</b> <b>512GB</b>) -> [MACBOOK_GPU_CORE_MISMATCH:expected=10,found=8]",
+          "APPLE 맥북에어13 <b>M5</b> 10코어 CPU, 8코어 GPU 골드(<b>램</b><b>16GB</b>, <b>SSD</b> <b>512GB</b>) -> [MACBOOK_GPU_CORE_MISMATCH:expected=10,found=8]",
+          "APPLE 맥북에어13 <b>M5</b> 10코어 CPU, 8코어 GPU 실버(램16GB, SSD <b>512GB</b>) -> [MACBOOK_GPU_CORE_MISMATCH:expected=10,found=8]"
+        ]
+      },
+      {
+        "category": "smartwatch",
+        "brand": "Samsung",
+        "model_name": "Galaxy Watch7 Bluetooth 40 mm",
+        "model_number": "SM-L300",
+        "sku_code": "SM-L300NZGAKOO",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "queries": [
+          "삼성전자 갤럭시워치7 40mm 블루투스 정품",
+          "SM-L300 40mm"
+        ],
+        "reasons": [
+          "삼성전자 <b>갤럭시</b><b>워치</b><b>7</b> <b>40mm</b> <b>블루투스</b>(<b>정품</b>) -> [ABOVE_LAUNCH_PRICE_RATIO]",
+          "삼성전자 <b>갤럭시</b><b>워치</b><b>7</b> <b>40mm</b> LTE(<b>정품</b>) -> [ABOVE_LAUNCH_PRICE_RATIO, WATCH_CONN_MISMATCH:expected=bluetooth,found=cellular]",
+          "삼성전자 갤럭시워치7 <b>40mm</b> 블루투스(정품) -> [ABOVE_LAUNCH_PRICE_RATIO]",
+          "삼성전자 갤럭시워치7 <b>40mm</b> LTE(정품) -> [ABOVE_LAUNCH_PRICE_RATIO, WATCH_CONN_MISMATCH:expected=bluetooth,found=cellular]"
+        ]
+      },
+      {
+        "category": "smartwatch",
+        "brand": "Samsung",
+        "model_name": "Galaxy Watch7 Bluetooth 40 mm",
+        "model_number": "SM-L300",
+        "sku_code": "SM-L300NZEAKOO",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "queries": [
+          "삼성전자 갤럭시워치7 40mm 블루투스 정품",
+          "SM-L300 40mm"
+        ],
+        "reasons": [
+          "삼성전자 <b>갤럭시</b><b>워치</b><b>7</b> <b>40mm</b> <b>블루투스</b>(<b>정품</b>) -> [ABOVE_LAUNCH_PRICE_RATIO]",
+          "삼성전자 <b>갤럭시</b><b>워치</b><b>7</b> <b>40mm</b> LTE(<b>정품</b>) -> [ABOVE_LAUNCH_PRICE_RATIO, WATCH_CONN_MISMATCH:expected=bluetooth,found=cellular]",
+          "삼성전자 갤럭시워치7 <b>40mm</b> 블루투스(정품) -> [ABOVE_LAUNCH_PRICE_RATIO]",
+          "삼성전자 갤럭시워치7 <b>40mm</b> LTE(정품) -> [ABOVE_LAUNCH_PRICE_RATIO, WATCH_CONN_MISMATCH:expected=bluetooth,found=cellular]"
+        ]
+      },
+      {
+        "category": "smartwatch",
+        "brand": "Apple",
+        "model_name": "Apple Watch Ultra 2 49mm",
+        "model_number": "A2986",
+        "sku_code": "AP-AWU2-49-CELL",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "cellular",
+        "queries": [
+          "APPLE 애플워치 울트라2 49mm 티타늄 정품"
+        ],
+        "reasons": [
+          "NO_SEARCH_RESULTS:APPLE 애플워치 울트라2 49mm 티타늄 정품"
+        ]
+      },
+      {
+        "category": "smartwatch",
+        "brand": "Samsung",
+        "model_name": "Galaxy Watch7 44mm",
+        "model_number": "SM-L310",
+        "sku_code": "SM-L310-44-BT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "queries": [
+          "삼성전자 갤럭시워치7 44mm 블루투스 정품",
+          "SM-L310 44mm"
+        ],
+        "reasons": [
+          "삼성전자 <b>갤럭시</b><b>워치</b><b>7</b> <b>44mm</b> <b>블루투스</b>(<b>정품</b>) -> [ABOVE_LAUNCH_PRICE_RATIO]",
+          "삼성전자 <b>갤럭시</b><b>워치</b><b>7</b> <b>44mm</b> LTE(<b>정품</b>) -> [ABOVE_LAUNCH_PRICE_RATIO, WATCH_CONN_MISMATCH:expected=bluetooth,found=cellular]",
+          "삼성전자 갤럭시워치7 <b>44mm</b> 블루투스(정품) -> [ABOVE_LAUNCH_PRICE_RATIO]"
+        ]
+      },
+      {
+        "category": "smartwatch",
+        "brand": "Samsung",
+        "model_name": "Galaxy Watch FE 40mm",
+        "model_number": "SM-R861",
+        "sku_code": "SM-R861-40-BT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "queries": [
+          "삼성전자 갤럭시워치 FE 40mm 블루투스 정품",
+          "SM-R861 40mm"
+        ],
+        "reasons": [
+          "삼성전자 <b>갤럭시</b><b>워치</b> <b>FE</b> <b>40mm</b> <b>블루투스</b> 알루미늄 골프패키지(<b>정품</b>) -> [ABOVE_LAUNCH_PRICE_RATIO]",
+          "NO_SEARCH_RESULTS:SM-R861 40mm"
+        ]
+      },
+      {
+        "category": "tablet",
+        "brand": "Lenovo",
+        "model_name": "Lenovo Tab P11 Pro (2nd Gen)",
+        "model_number": "TB-132FU",
+        "sku_code": "LENOVO-TB-132FU-DEFAULT",
+        "storage_gb": 128,
+        "ram_gb": 6,
+        "connectivity": "wifi",
+        "queries": [
+          "레노버 탭 P11 Pro 2세대 128GB"
+        ],
+        "reasons": [
+          "레노버 <b>탭</b> <b>P11</b> 프로 <b>2세대</b> 11.2+펜,키보드(<b>128GB</b>) -> [ABOVE_LAUNCH_PRICE_RATIO, LENOVO_TAB_MISMATCH:TB-132FU]"
+        ]
+      },
+      {
+        "category": "tablet",
+        "brand": "Lenovo",
+        "model_name": "Lenovo Tab M11",
+        "model_number": "TB-330FU",
+        "sku_code": "LENOVO-TB-330FU-DEFAULT",
+        "storage_gb": 64,
+        "ram_gb": 4,
+        "connectivity": "wifi",
+        "queries": [
+          "레노버 탭 M11 64GB"
+        ],
+        "reasons": [
+          "레노버 샤오신패드 2022 해외구매(램4GB,<b>64GB</b>) -> [OVERSEAS_KEYWORD:해외구매, LENOVO_TAB_MISMATCH:TB-330FU]"
+        ]
+      },
+      {
+        "category": "laptop",
+        "brand": "Apple",
+        "model_name": "MacBook Pro 16 (M3 Max)",
+        "model_number": "A2992",
+        "sku_code": "APPLE-A2992-DEFAULT",
+        "storage_gb": 1024,
+        "ram_gb": 48,
+        "connectivity": "wifi",
+        "queries": [
+          "APPLE 맥북프로 16 M3 Max 램48GB SSD 1TB",
+          "맥북프로 16 M3 Max 1TB"
+        ],
+        "reasons": [
+          "APPLE 맥북프로16 <b>M3</b>맥스 <b>16</b>코어 CPU, 40코어 GPU 블랙 중고(<b>램</b><b>48GB</b>, <b>SSD</b> <b>1TB</b>) -> [USED_OR_REFURB_KEYWORD:중고, EXTRA_DISQUALIFIED:중고]",
+          "APPLE 맥북프로16 <b>M3</b>맥스 14코어 CPU, 30코어 GPU 실버(램36GB, SSD <b>1TB</b>) -> [LAPTOP_RAM_MISMATCH:expected=48,found=36, MACBOOK_GPU_CORE_MISMATCH:expected=40,found=30, MACBOOK_EXPLICIT_RAM_REQUIRED:48]",
+          "APPLE 맥북프로16 <b>M3</b>맥스 <b>16</b>코어 CPU, 40코어 GPU 블랙 중고(램48GB, SSD <b>1TB</b>) -> [USED_OR_REFURB_KEYWORD:중고, EXTRA_DISQUALIFIED:중고]",
+          "APPLE 맥북프로16 <b>M3</b>맥스 14코어 CPU, 30코어 GPU 블랙(램36GB, SSD <b>1TB</b>) -> [ABOVE_LAUNCH_PRICE_RATIO, LAPTOP_RAM_MISMATCH:expected=48,found=36, MACBOOK_GPU_CORE_MISMATCH:expected=40,found=30, MACBOOK_EXPLICIT_RAM_REQUIRED:48]"
+        ]
+      },
+      {
+        "category": "laptop",
+        "brand": "Apple",
+        "model_name": "MacBook Pro 14 (M3 Pro)",
+        "model_number": "A2991",
+        "sku_code": "APPLE-A2991-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 18,
+        "connectivity": "wifi",
+        "queries": [
+          "APPLE 맥북프로 14 M3 Pro 램18GB SSD 512GB",
+          "맥북프로 14 M3 Pro 512GB"
+        ],
+        "reasons": [
+          "APPLE 맥북프로14 <b>M3</b><b>프로</b> 11코어 CPU, <b>14</b>코어 GPU 실버(<b>램</b><b>18GB</b>, <b>SSD</b> <b>512GB</b>) -> [MACBOOK_GPU_CORE_MISMATCH:expected=18,found=14]",
+          "APPLE 맥북프로14 <b>M3</b><b>프로</b> 11코어 CPU, <b>14</b>코어 GPU 블랙(<b>램</b><b>18GB</b>, <b>SSD</b> <b>512GB</b>) -> [MACBOOK_GPU_CORE_MISMATCH:expected=18,found=14]",
+          "APPLE 맥북프로14 <b>M3</b><b>프로</b> 11코어 CPU, <b>14</b>코어 GPU 블랙 중고(<b>램</b><b>18GB</b>, <b>SSD</b> <b>512GB</b>) -> [USED_OR_REFURB_KEYWORD:중고, EXTRA_DISQUALIFIED:중고, MACBOOK_GPU_CORE_MISMATCH:expected=18,found=14]",
+          "APPLE 맥북프로14 <b>M3</b> 8코어 CPU, 10코어 GPU 실버(램8GB, SSD <b>512GB</b>) -> [LAPTOP_RAM_MISMATCH:expected=18,found=8, MACBOOK_CHIP_MISMATCH:expected=M3_Pro, MACBOOK_GPU_CORE_MISMATCH:expected=18,found=10, MACBOOK_EXPLICIT_RAM_REQUIRED:18]",
+          "APPLE 맥북프로14 <b>M3</b><b>프로</b> 11코어 CPU, <b>14</b>코어 GPU 실버(램18GB, SSD <b>512GB</b>) -> [MACBOOK_GPU_CORE_MISMATCH:expected=18,found=14]"
+        ]
+      },
+      {
+        "category": "laptop",
+        "brand": "Samsung",
+        "model_name": "Galaxy Book4 Ultra",
+        "model_number": "NT960XGL-X94A",
+        "sku_code": "SAMSUNG-NT960XGL-X94A-DEFAULT",
+        "storage_gb": 1024,
+        "ram_gb": 32,
+        "connectivity": "wifi",
+        "queries": [
+          "NT960XGL-X94A 1TB",
+          "NT960XGL-X94A"
+        ],
+        "reasons": [
+          "NO_SEARCH_RESULTS:NT960XGL-X94A 1TB",
+          "삼성전자 갤럭시북4 울트라 <b>NT960XGL-X94A</b>(SSD 2TB) -> [ABOVE_LAUNCH_PRICE_RATIO, LAPTOP_STORAGE_MISMATCH:expected=1024,found=2048]"
+        ]
+      },
+      {
+        "category": "laptop",
+        "brand": "Samsung",
+        "model_name": "Galaxy Book4 Pro 14",
+        "model_number": "NT940XGK-K51A",
+        "sku_code": "SAMSUNG-NT940XGK-K51A-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "queries": [
+          "NT940XGK-K51A 512GB",
+          "NT940XGK-K51A"
+        ],
+        "reasons": [
+          "NO_SEARCH_RESULTS:NT940XGK-K51A 512GB",
+          "NO_SEARCH_RESULTS:NT940XGK-K51A"
+        ]
+      },
+      {
+        "category": "laptop",
+        "brand": "Samsung",
+        "model_name": "Galaxy Book4 360",
+        "model_number": "NT750QGK-K71A",
+        "sku_code": "SAMSUNG-NT750QGK-K71A-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "queries": [
+          "NT750QGK-K71A 512GB",
+          "NT750QGK-K71A"
+        ],
+        "reasons": [
+          "NO_SEARCH_RESULTS:NT750QGK-K71A 512GB",
+          "NO_SEARCH_RESULTS:NT750QGK-K71A"
+        ]
+      },
+      {
+        "category": "laptop",
+        "brand": "LG",
+        "model_name": "LG UltraGear 17 게이밍",
+        "model_number": "17G90Q-BA76K",
+        "sku_code": "LG-17G90Q-BA76K-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "queries": [
+          "17G90Q-BA76K 512GB",
+          "17G90Q-BA76K"
+        ],
+        "reasons": [
+          "NO_SEARCH_RESULTS:17G90Q-BA76K 512GB",
+          "NO_SEARCH_RESULTS:17G90Q-BA76K"
+        ]
+      },
+      {
+        "category": "laptop",
+        "brand": "Lenovo",
+        "model_name": "ThinkPad X1 Carbon Gen 12",
+        "model_number": "21KC002LKR",
+        "sku_code": "LENOVO-21KC002LKR-DEFAULT",
+        "storage_gb": 1024,
+        "ram_gb": 32,
+        "connectivity": "wifi",
+        "queries": [
+          "21KC002LKR 1TB",
+          "21KC002LKR"
+        ],
+        "reasons": [
+          "NO_SEARCH_RESULTS:21KC002LKR 1TB",
+          "NO_SEARCH_RESULTS:21KC002LKR"
+        ]
+      },
+      {
+        "category": "laptop",
+        "brand": "Lenovo",
+        "model_name": "Legion Pro 7i Gen 9",
+        "model_number": "16IRX9H-83DE",
+        "sku_code": "LENOVO-16IRX9H-83DE-DEFAULT",
+        "storage_gb": 1024,
+        "ram_gb": 32,
+        "connectivity": "wifi",
+        "queries": [
+          "16IRX9H-83DE 1TB",
+          "16IRX9H-83DE"
+        ],
+        "reasons": [
+          "NO_SEARCH_RESULTS:16IRX9H-83DE 1TB",
+          "NO_SEARCH_RESULTS:16IRX9H-83DE"
+        ]
+      },
+      {
+        "category": "laptop",
+        "brand": "Lenovo",
+        "model_name": "Yoga Slim 7i Aura Edition",
+        "model_number": "15ILL9-83HM",
+        "sku_code": "LENOVO-15ILL9-83HM-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "queries": [
+          "15ILL9-83HM 512GB",
+          "15ILL9-83HM"
+        ],
+        "reasons": [
+          "레노버 요가 Slim 7i 15ILL9(SSD <b>512GB</b>) -> [ABOVE_LAUNCH_PRICE_RATIO, LAPTOP_MODEL_CODE_MISMATCH:15ILL9-83HM]",
+          "레노버 요가 Slim 7i 15ILL9 Aura Edition(SSD 1TB) -> [ABOVE_LAUNCH_PRICE_RATIO, LAPTOP_STORAGE_MISMATCH:expected=512,found=1024, LAPTOP_MODEL_CODE_MISMATCH:15ILL9-83HM]",
+          "레노버 요가 Slim 7i 15ILL9(SSD 512GB) -> [ABOVE_LAUNCH_PRICE_RATIO, LAPTOP_MODEL_CODE_MISMATCH:15ILL9-83HM]"
+        ]
+      },
+      {
+        "category": "laptop",
+        "brand": "ASUS",
+        "model_name": "ROG Zephyrus G16 (2024)",
+        "model_number": "GU605MZ-QR064W",
+        "sku_code": "ASUS-GU605MZ-QR064W-DEFAULT",
+        "storage_gb": 1024,
+        "ram_gb": 32,
+        "connectivity": "wifi",
+        "queries": [
+          "GU605MZ-QR064W 1TB",
+          "GU605MZ-QR064W"
+        ],
+        "reasons": [
+          "NO_SEARCH_RESULTS:GU605MZ-QR064W 1TB",
+          "NO_SEARCH_RESULTS:GU605MZ-QR064W"
+        ]
+      },
+      {
+        "category": "laptop",
+        "brand": "ASUS",
+        "model_name": "Zenbook 14 OLED (2024)",
+        "model_number": "UX3405MA-QD346W",
+        "sku_code": "ASUS-UX3405MA-QD346W-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "queries": [
+          "UX3405MA-QD346W 512GB",
+          "UX3405MA-QD346W"
+        ],
+        "reasons": [
+          "NO_SEARCH_RESULTS:UX3405MA-QD346W 512GB",
+          "NO_SEARCH_RESULTS:UX3405MA-QD346W"
+        ]
+      },
+      {
+        "category": "laptop",
+        "brand": "ASUS",
+        "model_name": "TUF Gaming A15 (2023)",
+        "model_number": "FA507NV-LP013",
+        "sku_code": "ASUS-FA507NV-LP013-DEFAULT",
+        "storage_gb": 512,
+        "ram_gb": 16,
+        "connectivity": "wifi",
+        "queries": [
+          "FA507NV-LP013 512GB",
+          "FA507NV-LP013"
+        ],
+        "reasons": [
+          "ASUS TUF Gaming A15 <b>FA507NV-LP013</b> WIN11(SSD <b>512GB</b>) -> [ABOVE_LAUNCH_PRICE_RATIO]",
+          "ASUS TUF Gaming A15 <b>FA507NV-LP013</b> 64GB램(SSD <b>512GB</b>) -> [ABOVE_LAUNCH_PRICE_RATIO, LAPTOP_STORAGE_MISMATCH:expected=512,found=64,512]",
+          "ASUS TUF Gaming A15 <b>FA507NV-LP013</b> WIN10 64GB램(SSD <b>512GB</b>) -> [ABOVE_LAUNCH_PRICE_RATIO, LAPTOP_STORAGE_MISMATCH:expected=512,found=64,512]",
+          "ASUS TUF Gaming A15 <b>FA507NV-LP013</b> WIN11 64GB램(SSD <b>512GB</b>) -> [ABOVE_LAUNCH_PRICE_RATIO, LAPTOP_STORAGE_MISMATCH:expected=512,found=64,512]",
+          "ASUS TUF Gaming A15 <b>FA507NV-LP013</b> WIN11 16GB램(SSD <b>512GB</b>) -> [ABOVE_LAUNCH_PRICE_RATIO]"
+        ]
+      },
+      {
+        "category": "earbuds",
+        "brand": "Samsung",
+        "model_name": "Galaxy Buds FE (가성비 ANC)",
+        "model_number": "SM-R400",
+        "sku_code": "SAMSUNG-SM-R400-DEFAULT",
+        "storage_gb": null,
+        "ram_gb": null,
+        "connectivity": "bluetooth",
+        "queries": [
+          "삼성전자 갤럭시 버즈 FE SM-R400N 정품"
+        ],
+        "reasons": [
+          "삼성전자 <b>갤럭시</b> <b>버즈</b> <b>FE</b> SM-R400(<b>정품</b>) -> [ABOVE_LAUNCH_PRICE_RATIO]"
+        ]
+      }
+    ]
+  }
+}

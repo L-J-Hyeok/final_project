@@ -173,3 +173,82 @@ test('T07/T11: Recommendation validator strictly blocks non-candidate IDs, price
   assert.equal(resBadSpec.valid, false);
   assert.ok(resBadSpec.errors.some(e => e.startsWith('SPEC_EVIDENCE_MISMATCH')));
 });
+
+test('unsupported mandatory requirements survive analysis and block candidate search', () => {
+  const catalog = require('../services/smartphone-catalog');
+  const output = {
+    draft: {
+      hard: { budget_max_krw: 800000, usages: ['gaming'], unsupported_requirements: ['벤치마크 2000점 이상'] },
+      soft: { priorities: ['performance'] }
+    }
+  };
+  const { draft } = validator.validateAnalysisOutput('purchase', output, '고성능 플래그십만 추천해 주세요.');
+  const parsed = catalog.validateCandidateInput({ expected_profile_version: 1, ...draft });
+  assert.deepEqual(parsed.hard.unsupported_requirements, ['플래그십 필수', '벤치마크 2000점 이상']);
+  assert.equal(parsed.clarify_questions.length, 2);
+  assert.match(parsed.clarify_questions[0], /플래그십 필수/);
+});
+
+test('recommendation final check accepts stored common reference and rejects changed, invalid, missing or over-budget price', async () => {
+  const connection = require('../db/connection');
+  const phones = require('../routes/smartphones');
+  const { verifySnapshotFreshness } = require('../routes/recommendations');
+  const now = new Date();
+  const row = {
+    variant_id: '1', smartphone_id: '2', phone_verified: true, variant_verified: true,
+    domestic_model_number: 'SM-S921N', model_name: 'Galaxy S24', os: 'android', brand: 'samsung',
+    released_on_kr: now.toISOString().slice(0, 10), storage_gb: 256
+  };
+  const observation = {
+    id: '3', variant_id: '1', seller_name: '다나와 기준 최저가', source_name: 'danawa-cli', source_url: 'https://prod.danawa.com/info/?pcode=123', is_new: true, is_unlocked: true,
+    conditions_text: '[scope:capacity_common]', amount_krw: 400000,
+    observed_at: new Date(+now - 1000).toISOString(),
+    expires_at: new Date(+now + 300000).toISOString()
+  };
+  const snap = { ...row, price: {
+    observation_id: '3', price_source: 'danawa_reference', budget_basis_krw: 400000,
+    eligible: false, expires_at: observation.expires_at
+  } };
+  const hard = { allowed_brands: ['samsung'], budget_max_krw: 500000, min_storage_gb: null, max_weight_g: null, min_refresh_hz: null };
+  const originals = [connection.getDatabase, phones.publicationWhere, phones.fetchPricesByVariantIds];
+  observation.observed_at = new Date(+now - 72 * 3600000).toISOString();
+  observation.expires_at = new Date(+now - 48 * 3600000).toISOString();
+  snap.price.retained_observation = true;
+  let prices = [observation];
+  try {
+    connection.getDatabase = () => ({ query: async () => [row] });
+    phones.publicationWhere = async () => '1=1';
+    phones.fetchPricesByVariantIds = async () => new Map([['1', prices]]);
+    const fresh = conditions => verifySnapshotFreshness([snap], conditions, now);
+    assert.equal(await fresh(hard), true);
+    assert.equal(await fresh({ ...hard, budget_max_krw: 399999 }), false);
+    for (const changed of [{ id: '4' }, { amount_krw: 410000 }, { status: 'invalid' }]) {
+      prices = [{ ...observation, ...changed }];
+      assert.equal(await fresh(hard), false);
+    }
+    prices = [];
+    assert.equal(await fresh(hard), false);
+  } finally {
+    [connection.getDatabase, phones.publicationWhere, phones.fetchPricesByVariantIds] = originals;
+  }
+});
+
+test('Gemini transport enforces the recommendation status schema and distinguishes malformed responses', async t => {
+  const ai = require('../services/ai-adapter');
+  const adapter = ai.createAiAdapter();
+  const env = { AI_PROVIDER: 'gemini', GEMINI_API_KEY: 'fixture-only' };
+  let fixture;
+  t.mock.method(global, 'fetch', async (_url, request) => {
+    assert.deepEqual(JSON.parse(request.body).generationConfig.responseSchema.properties.status.enum, ['recommend']);
+    return new Response(JSON.stringify(fixture.body), { status: fixture.status || 200 });
+  });
+
+  fixture = { body: { candidates: [{ content: { parts: [{ thought: true, text: 'internal' }, { text: '{"status":' }, { text: '"recommend"}' }] } }] } };
+  assert.equal((await adapter.recommend({ aiContext: {} }, env)).output.status, 'recommend');
+  fixture = { body: { candidates: [{ finishReason: 'MAX_TOKENS' }] } };
+  await assert.rejects(adapter.recommend({ aiContext: {} }, env), { code: 'AI_OUTPUT_TRUNCATED' });
+  fixture = { body: { candidates: [{ content: { parts: [{ text: '{ invalid' }] } }] } };
+  await assert.rejects(adapter.recommend({ aiContext: {} }, env), { code: 'AI_RESPONSE_PARSE_FAILED' });
+  fixture = { status: 503, body: {} };
+  await assert.rejects(adapter.recommend({ aiContext: {} }, env), { code: 'AI_UNAVAILABLE' });
+});

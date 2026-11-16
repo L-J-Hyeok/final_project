@@ -45,8 +45,8 @@ test('latest per seller precedes eligibility; price updates change lowest stored
   const a2 = { ...a, id: 3, amount_krw: 820000, observed_at: new Date(now.getTime()+1000) };
   assert.equal(catalog.selectBestPrice([a,b,a2],new Date(now.getTime()+2000)).selected.seller_name,'G마켓');
   const gone = { ...a2,id:4,in_stock:false };
-  assert.equal(catalog.selectBestPrice([a,b,gone],new Date(now.getTime()+2000)).selected.seller_name,'G마켓');
-  assert.equal(catalog.selectBestPrice([a,b],new Date(now.getTime()+86400000)).selected,null);
+  assert.equal(catalog.selectBestPrice([a,b,gone],new Date(now.getTime()+2000)).selected.seller_name,'쿠팡');
+  assert.equal(catalog.selectBestPrice([a,b],new Date(now.getTime()+86400000)).selected.total_krw,803000);
 });
 test('stored seller price flows into candidate DTO, budget and upgrade comparison without AI price generation', () => {
   const row = { ...variant, released_on_kr:'2024-01-31',os:'android',weight_g:167,refresh_hz:120, supports_5g:true };

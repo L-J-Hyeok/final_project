@@ -263,6 +263,12 @@ test('analysis, recommendation lifecycle, hallucination defense, concurrency con
 
     assert.equal(recOk.status, 'recommend');
     assert.equal(recOk.items.length, 2);
+    assert.equal(recOk.ranking_policy_version, 'smartphone-ranker-v1');
+    assert.equal(recOk.explanation_source, 'ai');
+    const serializedOk = JSON.stringify(recOk);
+    assert.equal(serializedOk.includes('_internal_score'), false);
+    assert.equal(serializedOk.includes('_internal_weights'), false);
+    assert.equal(serializedOk.includes('metric_scores'), false);
     // 삼성 선호 + 더 저렴한 가격(950,000 vs 990,000)이므로 vSamsung256이 rank 1이어야 함
     assert.equal(recOk.items[0].variant_id, String(vSamsung256.id));
     assert.equal(recOk.items[0].rank, 1);
@@ -292,7 +298,7 @@ test('analysis, recommendation lifecycle, hallucination defense, concurrency con
     assert.ok(recNoMatch.questions.length >= 2);
     recRouter.setAiAdapter(null);
 
-    // 8. AI가 후보에 없는 제품 ID나 조작된 근거를 반환할 때 1회 재시도 후 502 AI_INVALID_RESULT 차단 및 failed 기록 확인
+    // 8. AI가 후보에 없는 제품 ID나 순위 변조를 반환할 때 1회 재시도 후 서버 폴백 설명(201, server_fallback)으로 안전하게 대체되는지 확인
     let attemptCount = 0;
     recRouter.setAiAdapter(aiModule.createAiAdapter({
       mockRecommendFn: async () => {
@@ -322,9 +328,12 @@ test('analysis, recommendation lifecycle, hallucination defense, concurrency con
       hard: { budget_max_krw: 1000000, usages: ['video'], min_storage_gb: 256, max_weight_g: 145 },
       include_test: true
     });
-    check(badAiRes, 502);
-    assert.equal(badAiRes.body.error.code, 'AI_INVALID_RESULT');
-    assert.equal(attemptCount, 2, 'Must retry exactly once (total 2 attempts) and stop');
+    const badAiData = check(badAiRes, 201);
+    assert.equal(badAiData.explanation_source, 'server_fallback');
+    assert.equal(badAiData.ai_fallback_reason, 'AI_INVALID_RESULT');
+    assert.equal(badAiData.items[0].variant_id, String(vSamsung256.id));
+    assert.equal(badAiData.items[0].rank, 1);
+    assert.equal(attemptCount, 2, 'Must retry exactly once (total 2 attempts) and fall back to server explanation');
     recRouter.setAiAdapter(null);
 
     // 9. AI 처리 도중 가격이 변동/만료된 경우 저장 직전 409 CANDIDATES_CHANGED로 차단되는지 확인
@@ -379,25 +388,32 @@ test('analysis, recommendation lifecycle, hallucination defense, concurrency con
     check(await req(a, 'DELETE', '/recommendations/' + recOk.id, {}), 204);
     check(await req(a, 'GET', '/recommendations/' + recOk.id), 404);
 
-    // 13. 오류 처리 검증: AI 요청 실패(502 AI_UNAVAILABLE), 타임아웃(504 AI_TIMEOUT), 잘못된 출력(502 AI_INVALID_RESULT), 그리고 분당 5회 초과 시 사용량 제한(429 RATE_LIMITED)
+    // 13. 오류 처리 검증: /analysis는 AI 실패(502 AI_UNAVAILABLE) 및 타임아웃(504 AI_TIMEOUT) 반환,
+    // /recommendations는 AI 장애/타임아웃 시 서버 폴백 설명(201 server_fallback) 제공, 분당 5회 초과 시 429 RATE_LIMITED 차단
     // User B는 앞서 9번에서 1회 호출했으므로 앞으로 4회 더 호출 가능하고 6번째 호출에서 429가 발생해야 함
     for (const [errCode, expectedHttp, path, body] of [
       ['AI_UNAVAILABLE', 502, '/analysis', { purpose: 'purchase', text: '80만원 이하 삼성폰' }],
       ['AI_TIMEOUT', 504, '/analysis', { purpose: 'purchase', text: '80만원 이하 삼성폰' }],
-      ['AI_UNAVAILABLE', 502, '/recommendations', { expected_profile_version: 2, hard: { budget_max_krw: 1000000, usages: ['video'], min_storage_gb: 256, max_weight_g: 145 }, include_test: true }],
-      ['AI_TIMEOUT', 504, '/recommendations', { expected_profile_version: 2, hard: { budget_max_krw: 1000000, usages: ['video'], min_storage_gb: 256, max_weight_g: 145 }, include_test: true }]
+      ['AI_UNAVAILABLE', 201, '/recommendations', { expected_profile_version: 2, hard: { budget_max_krw: 1000000, usages: ['video'], min_storage_gb: 256, max_weight_g: 145 }, include_test: true }],
+      ['AI_TIMEOUT', 201, '/recommendations', { expected_profile_version: 2, hard: { budget_max_krw: 1000000, usages: ['video'], min_storage_gb: 256, max_weight_g: 145 }, include_test: true }]
     ]) {
       recRouter.setAiAdapter(aiModule.createAiAdapter({
         mockAnalyzeFn: async () => {
           throw Object.assign(new Error(errCode), { code: errCode, status: expectedHttp });
         },
         mockRecommendFn: async () => {
-          throw Object.assign(new Error(errCode), { code: errCode, status: expectedHttp });
+          throw Object.assign(new Error(errCode), { code: errCode, status: expectedHttp === 201 ? 502 : expectedHttp });
         }
       }));
       const errRes = await req(b, 'POST', path, body);
-      check(errRes, expectedHttp);
-      assert.equal(errRes.body.error.code, errCode);
+      const data = check(errRes, expectedHttp);
+      if (path === '/analysis') {
+        assert.equal(errRes.body.error.code, errCode);
+      } else {
+        assert.equal(data.explanation_source, 'server_fallback');
+        assert.equal(data.ai_fallback_reason, errCode);
+        assert.equal(data.items[0].variant_id, String(vSamsung256.id));
+      }
     }
     recRouter.setAiAdapter(null);
 

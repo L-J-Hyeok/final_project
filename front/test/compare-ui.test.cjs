@@ -603,3 +603,38 @@ test('SpecComparison displays 1 representative official render per slot and upda
   assert.equal(html.includes('dual-render-stage'), false)
   assert.equal(html.includes('gallery-stage'), false)
 })
+
+test('common catalog client follows after cursor and sends exact category/model/SKU selections', async () => {
+  const { createCatalogApi } = load('api/catalog.js')
+  const requests = []
+  const controller = new AbortController()
+  const api = createCatalogApi(async (path, options) => {
+    requests.push(path)
+    assert.equal(options.signal, controller.signal)
+    if (path.includes('after=90')) return { data: [{ model_id: '91' }], next_cursor: null }
+    if (path.includes('/models?')) return { data: [{ model_id: '90' }], next_cursor: '90' }
+    return { data: [], next_cursor: null }
+  })
+
+  assert.deepEqual(await api.models('speaker', controller.signal), [{ model_id: '90' }, { model_id: '91' }])
+  await api.skus('speaker', '90', controller.signal)
+  await api.compare('speaker', ['90:12', '90:13'], controller.signal)
+  assert.deepEqual(requests, [
+    '/api/catalog/speaker/models?limit=30',
+    '/api/catalog/speaker/models?limit=30&after=90',
+    '/api/catalog/speaker/models/90/skus?limit=30',
+    '/api/catalog/speaker/compare?items=90%3A12%2C90%3A13'
+  ])
+})
+
+test('option chips select real configurations and preserve unrelated options where possible', () => {
+  const { skuDimensions, chooseSku, priceStatusLabel } = load('utils/catalogComparison.js')
+  const a = { sku_id: '11', color: '실버', ram_gb: 16, options: { gpu: '8코어' } }
+  const b = { sku_id: '12', color: '스타라이트', ram_gb: 16, options: { gpu: '10코어' } }
+  const dimensions = skuDimensions('laptop', [a, b])
+  assert.deepEqual(dimensions.map(group => group.key), ['gpu', 'ram_gb', 'color'])
+  assert.deepEqual(chooseSku([a, b], dimensions, a, 'gpu', '10코어', () => false), { sku: b, changed: ['color'] })
+  assert.equal(chooseSku([a, b], dimensions, a, 'gpu', '10코어', sku => sku === b), null)
+  assert.equal(priceStatusLabel('price_excluded'), '가격 검증 제외')
+  assert.equal(priceStatusLabel('unrecognized'), '가격 확인 불가')
+})

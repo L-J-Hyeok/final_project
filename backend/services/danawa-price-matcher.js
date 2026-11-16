@@ -140,7 +140,7 @@ const QUALIFIER_TOKENS = [
   { key: 'mini', pattern: /\b(mini)\b|미니/i },
   { key: 'air', pattern: /\b(air)\b|에어/i },
   { key: 'duo', pattern: /\b(duo)\b|듀오/i },
-  { key: 'lite', pattern: /\b(lite)\b|라이트/i },
+  { key: 'lite', pattern: /\b(lite)\b|라이트(?!\s*(?:골드|블루|그린))/i },
   { key: 'e_suffix', pattern: /\b(?:16|17|18)e\b/i },
 ];
 
@@ -455,6 +455,9 @@ function verifyStorageAndRam(title, variant) {
   }
 
   const expectedRam = variant.ram_gb != null ? Number(variant.ram_gb) : null;
+  if (variant.require_explicit_ram && ramValues.length === 0) {
+    return { ok: false, reason: 'RAM_MISSING' };
+  }
   if (ramValues.length > 0) {
     if (expectedRam == null) {
       return { ok: false, reason: 'RAM_CONFLICT_DB_NULL', extractedRam: ramValues };
@@ -590,17 +593,37 @@ function matchDanawaItemToVariant(item = {}, variant = {}, options = {}) {
     };
   }
 
+  const sku = variant.official_sku_verified ? normalizeText(variant.official_sku) : '';
+  const skuMatches = sku && new RegExp(`(?:^|[^A-Z0-9])${escapeRegExp(sku)}(?:$|[^A-Z0-9])`, 'i').test(title);
+  const samsungSkus = extractSamsungModelCodes(title).filter(code => code.full !== code.base);
+  const appleSkus = title.match(/\b[A-Z0-9]{5}KH\/A\b/gi) || [];
+  const explicitSkus = [...samsungSkus.map(code => code.full), ...appleSkus];
   const colorCheck = verifyColor(title, variant);
+  if (explicitSkus.length && (sku
+    ? !skuMatches || explicitSkus.some(code => code.toUpperCase() !== sku.toUpperCase())
+    : !colorCheck.ok || explicitSkus.length > 1)) {
+    return { matched: false, disqualified: false, exclusionCategory: 'sku_mismatch', reasons: ['SKU_NOT_CONFIRMED'], item };
+  }
   if (!colorCheck.ok) {
-    return {
-      matched: false,
-      disqualified: false,
-      exclusionCategory: 'color_mismatch',
-      reasons: [colorCheck.reason],
-      item,
-    };
+    if (colorCheck.reason === 'COLOR_MISSING' && options.requireExplicitColor !== true) {
+      // Color is omitted in listing title (common capacity listing from Danawa search)
+      // Allowed per confirmed pricing policy (model + storage + unlocked/sales conditions)
+    } else if (options.allowSpecificColorAsCommon === true && (colorCheck.reason === 'COLOR_MISMATCH' || colorCheck.reason === 'COLOR_AMBIGUOUS')) {
+      // Allowed: specific color listing accepted as candidate for group common reference price
+    } else {
+      return {
+        matched: false,
+        disqualified: false,
+        exclusionCategory: 'color_mismatch',
+        reasons: [colorCheck.reason],
+        item,
+      };
+    }
   }
 
+  const isExactColorMatch = Boolean(skuMatches) || (colorCheck.ok && Array.isArray(colorCheck.extractedColors) && colorCheck.extractedColors.length > 0);
+  const originalListingColor = colorCheck.extractedColors?.[0] || null;
+  const colorScope = (options.forceCapacityCommon || !isExactColorMatch) ? 'capacity_common' : 'exact_color';
   return {
     matched: true,
     disqualified: false,
@@ -610,7 +633,10 @@ function matchDanawaItemToVariant(item = {}, variant = {}, options = {}) {
       domesticModelNumberMatched: domesticModel.matched,
       storageGb: capacityCheck.extractedStorage[0],
       ramGb: capacityCheck.extractedRam.length === 1 ? capacityCheck.extractedRam[0] : null,
-      color: colorCheck.extractedColors[0],
+      color: isExactColorMatch ? (colorCheck.extractedColors?.[0] || variant.color) : null,
+      colorScope,
+      isColorSpecific: isExactColorMatch,
+      originalListingColor,
       unlockedConfirmed: true,
     },
     item,

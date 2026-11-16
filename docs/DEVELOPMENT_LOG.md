@@ -825,3 +825,38 @@ Antigravity. `/compare` (`SpecComparison.vue`)의 스마트폰·태블릿·스�
 - 다나와 MCP에 판매처 조회 경로가 있지만 현재 세션 플러그인 미연결, 저장·재사용 권한 미확인. 다섯 지정 판매처 실가격 모두 미확보. 실제 Gemini 호출 없음.
 - 기존 Gemini 순위 선택은 유지: 서버 가격 계산/예산/업그레이드 비용 경로는 연결했지만 AI 설명 전용 순위 정책은 미구현.
 - 문서: PRICE_COLLECTION_PLAN, CURRENT_STATUS, AI_HANDOFF, TEST_PLAN, DEVELOPMENT_LOG 갱신. 다음: 인가된 데이터 공급·저장 조건 확보 및 정상 동작하는 격리 MySQL에서005/이력/동시성/HTTP 검증. 편집 종료.
+
+## MySQL signal11 및 판매처 저장 실제 검증 — 2026-11-13 11:53 KST, Codex
+
+- 기존 코드/규칙 맥락 재사용. 새 `/tmp/kiki-mysql-audit.2LkKv5/data`에서 `mysqld --no-defaults --initialize-insecure` 1회 재현. 디렉터리/로그 생성은 성공했지만 메모리 초기화 `Aligned_atomic<long>` → `Shared_spin_lock` → `delegates_init`에서 signal11. SQL·포트 연결 전 실패하므로005 SQL 또는 서비스 포트 충돌의 증거 없음. 이전 /tmp 로그는 더 이상 존재하지 않아 이번 로그를 확보함.
+- `sysctl -n hw.cachelinesize`와 프로세스 목록 조회는 현재 도구 환경에서 Operation not permitted. [MySQL8.0.45 소스](https://raw.githubusercontent.com/mysql/mysql-server/mysql-8.0.45/sql/memory/aligned_atomic.h)의 Apple 분기는 sysctl 실패를 확인하지 않고 cacheline 값을 메모리 정렬 계산에 사용한다. 따라서 실행 제한으로 인한0값/정렬 초기화 실패가 강한 원인 후보이며, 제한 없는 환경과 직접 비교한 확정 진단은 아님. 바이너리 패치/권한 우회/재설치/기존 서버 재시작 없음.
+- 기존 로컬 MySQL8.0.45 접속은 정상. 앱 DB를 선택하지 않는 bootstrap 연결로 새로운 무작위 테스트 DB·계정만 생성하고, 테스트 쿼리는 해당 DB 전용 권한 계정에서 수행. 기존 final_project.users SELECT조차 차단되는지 확인함.
+- 신규 파일 `backend/test/danawa-seller-prices.mysql.test.js`. 기본 SKIP/명시적 실행, 고유명 충돌 시 중단, 기존 DB DROP 없음, 비밀값 비출력, finally 임시 DB·계정 정리. 기존 고정명 테스트 DB를 삭제하는 하니스는 실행하지 않음.
+- 실제 MySQL13시나리오+상위1=14/14, 관련 Mock16/16 통과.005 SQL 실제 적용, 판매처별 저장·이력·중복·최저가·만료·NULL·롤백·동시 중복·pending 차단, 실제 Express HTTP 목록/상세200 및pending404 확인. 테스트가격은 합성 데이터로만 구성. 최종 테스트 DB·계정 정리 확인.
+- 시행 중 테스트 준비 오류2종 수정: 비밀번호 생성기에 서버 정책에 맞는 문자군 추가,005 재실행은 CHECK중복/컬럼중복 중 어느 것을 먼저 반환해도 명확한 중복거절과 데이터/FK불변을 검증하도록 수정. 가격 처리 서비스·마이그레이션 원본 수정 불필요.
+- 갱신 문서: CURRENT_STATUS, AI_HANDOFF, TEST_PLAN, PRICE_COLLECTION_PLAN, DEVELOPMENT_LOG. 프론트/추천엔진/제품·회원 데이터/운영 및 개발 DB 스키마/Git 쓰기 무변경.
+- 남음: 새 프로세스 초기화 오류는 별도 환경에서 확인 필요. 실제 다나와 인가된 데이터/저장 권한 확보 및 개발 DB005 적용 전 백업/기존 스키마 점검. Codex 편집 종료.
+
+## 3-4단계 실제 반영 — 2026-11-14 01:33 KST (Codex)
+
+- 53모델·352옵션·가격3건 및 기존 ID/FK 보존. 자급제 공개44모델·310옵션/97조합. 통신사7모델19옵션은 보존·비노출, 불명확 S25 Ultra 색상3옵션은 pending.
+- 94개 기존 옵션 검증 재사용, 공식 품번 확정8건. 충돌·출처 불일치 품번은 미검증 주장으로 보존. 남은26조합은 실제 공개 옵션만 대상으로 준비 완료(전체 색상 승인 아님).
+- 무게1건·카메라NULL4건·색상표기2건 정정. Apple RAM/비공개17 Pro 화면 및 기존2026 상세자료 전체 재검증은 미완료.
+- 41/41 단위·Mock 회귀, 실제MySQL/임시Express HTTP12/12. 가격수집·유료AI·브라우저·실제추천저장 미실행. 가격97조합은 자료 준비 기준이며 외부접근허가/실제매칭은 별도.
+- PRODUCT_DATA_COLLECTION_STANDARD.md 및 docs/templates의 CSV3개 작성(자동등록 없음). 상세 결과·백업·역변경은 [stage34 감사 기록](audits/stage34/README.md). 코드/DB 반영 완료, Codex 편집 종료.
+- 다음: danawa-cli 허용 접근·RAM별 정확한 가격 매칭 → TTL → 추천 백엔드 통합. Git 쓰기 없음.
+
+## 3-5 가격 연동 · 2026-11-14 KST
+
+기존 CLI 어댑터의 조회 중복, 혼재 RAM/SKU 매칭과 공통 참고가 범위를 보완했다. 개발 DB 3건 보존. 97조합 중 Fresh 3 / Stale 0 / Missing 94. 단위·Mock·표시 37, 격리 MySQL 15, 읽기 전용 HTTP 15 통과. 실가격 수집은 권한 확인 대기. 상세는 PRICE_COLLECTION_PLAN의 3-5 절.
+
+## 가격 공유 안전성 수정 — 2026-11-14 KST
+- smartphones.fetchPricesByVariantIds의 레거시 가격 공유 및 NULL RAM 우회 조건 제거. 명시적 capacity_common, 동일 모델·용량, 양쪽에서 확인된 동일 RAM, 공개 피어, 유효 TTL만 공유한다. exact_color나 범위 미확인 값은 원본 옵션에서만 제공한다. 응답에 임의 capacity_common 표식을 추가하지 않는다.
+- 실제 개발 DB 53모델/352옵션, 공개44모델/310옵션/97조합. 이전104는 통신사7조합을 포함한 수치. 통신사 상세·목록 제외 및 가격 없는 상세 정상 응답 확인.
+- 관측802·803·804는 다나와 URL과 pcode만 있고 공통 적용 근거가 기록되어 있지 않다. 원본 옵션90001390·90001375·90000477에 유지. 이전 백업과 전체 가격행 동일. 범위 확정은 기존 수집 원문에서 색상 공통·용량·RAM 근거가 확보될 때 별도 검토하며 이번 DB 수정0.
+- 격리 MySQL15/15(실제 HTTP로 공통 공유, exact/unknown 차단, 다른 RAM/용량 및 양쪽NULL 차단 포함), 단위·표시19/19, 개발 DB 읽기 전용 HTTP15/15 통과. 테스트 스키마·계정 정리 완료. 실제 브라우저 미실행, 비교 표시는 기존 함수 테스트로 검증.
+- 수정 코드 backend/routes/smartphones.js, backend/test/danawa-seller-prices.mysql.test.js. 최신 코드 임시 Express에서 검증. 기존 개발 서버 재시작 필요.
+
+## 백엔드 가격 코드 정리 (2026-11-15 KST)
+
+카탈로그와 비교 라우트의 가격 범위 판독 및 최신 관측치 비교를 공통화했다. 미호출 candidatePriceDTO, 오프라인 미리보기에서 결과를 버리던 검색 계획 생성, 수집 스크립트 두 곳의 중복 용량 포매터를 제거했다. 운영용 수집·보완·복구 진입점과 추천의 예산·순위 판단 기준은 유지했다. 관련 단위 테스트 55/55, 비교 API 310 SKU 응답 전후 일치, 가격 이력 93건 동일.

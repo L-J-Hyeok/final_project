@@ -23,7 +23,7 @@ test('T05: 3-year KST calendar release window and leap-day handling', () => {
   assert.equal(catalog.isWithinReleaseWindow('2025-02-27', '2028-02-29'), false);
 });
 
-test('T06/T08/T15: price observation freshness (<24h), seller latest-first rule, and shipping-included total', () => {
+test('T06/T08/T15: last normal price retention, seller latest-normal rule, and shipping-included total', () => {
   const now = new Date('2026-11-09T12:00:00.000Z');
   const baseObs = {
     id: '10',
@@ -48,14 +48,14 @@ test('T06/T08/T15: price observation freshness (<24h), seller latest-first rule,
   assert.equal(justUnder.is_expired, false);
   assert.equal(justUnder.total_krw, 1000000);
 
-  // Exactly 24h (now == expires_at) -> expired & ineligible
+  // An old expiry timestamp does not invalidate the last normal price.
   const exact24h = catalog.evaluateObservation({
     ...baseObs,
     observed_at: '2026-11-08T12:00:00.000Z',
     expires_at: '2026-11-09T12:00:00.000Z'
   }, now);
-  assert.equal(exact24h.eligible, false);
-  assert.equal(exact24h.is_expired, true);
+  assert.equal(exact24h.eligible, true);
+  assert.equal(exact24h.is_expired, false);
 
   // Future observed_at -> ineligible
   const futureObs = catalog.evaluateObservation({
@@ -76,8 +76,8 @@ test('T06/T08/T15: price observation freshness (<24h), seller latest-first rule,
     assert.equal(res.eligible, false, `Expected ${flag}=false to be ineligible`);
   }
 
-  // Seller latest-first rule: SellerA had cheap price earlier (900,000), but latest observation from SellerA is out of stock.
-  // SellerB has valid price (950,000). Must NOT fall back to SellerA's older cheap price; must pick SellerB.
+  // An unusable new observation does not displace SellerA's last normal price.
+  // If that older observation is explicitly invalidated, use SellerB instead.
   const observations = [
     {
       ...baseObs,
@@ -113,9 +113,14 @@ test('T06/T08/T15: price observation freshness (<24h), seller latest-first rule,
 
   const best = catalog.selectBestPrice(observations, now);
   assert.ok(best.selected);
-  assert.equal(best.selected.seller_name, 'SellerB');
-  assert.equal(best.selected.total_krw, 950000);
+  assert.equal(best.selected.seller_name, 'SellerA');
+  assert.equal(best.selected.total_krw, 900000);
   assert.equal(best.latest_by_seller.length, 2);
+  const withoutInvalid = catalog.selectBestPrice([
+    { ...observations[0], status: 'invalid' }, ...observations.slice(1)
+  ], now);
+  assert.equal(withoutInvalid.selected.seller_name, 'SellerB');
+  assert.equal(withoutInvalid.selected.total_krw, 950000);
 });
 
 test('T07/T09/T14: hard vs soft condition validation, null spec rejection, and clarify questions', () => {

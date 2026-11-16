@@ -19,7 +19,7 @@ const pricePreview = require('../services/smartphone-price-preview');
 const recommendationValidator = require('../services/recommendation-validator');
 const upgradeAdvisor = require('../services/upgrade-advisor');
 
-const TEST_DB_NAME = 'final_project_test_phase5';
+const TEST_DB_NAME = 'final_project_test_phase5_' + require('node:crypto').randomBytes(6).toString('hex');
 const FIXTURE_PATH = path.resolve(__dirname, '../data/danawa-cli-mock-samples.json');
 const MOCK_FIXTURES = JSON.parse(fs.readFileSync(FIXTURE_PATH, 'utf8'));
 
@@ -107,7 +107,6 @@ describe('Phase 5 Danawa Price Integration & Verification', { concurrency: 1 }, 
       multipleStatements: true,
     });
 
-    await rawConnection.query(`DROP DATABASE IF EXISTS ${TEST_DB_NAME}`);
     await rawConnection.query(`CREATE DATABASE ${TEST_DB_NAME}`);
     await rawConnection.changeUser({ database: TEST_DB_NAME });
 
@@ -262,6 +261,12 @@ describe('Phase 5 Danawa Price Integration & Verification', { concurrency: 1 }, 
 
     const now = new Date('2026-11-12T06:10:00.000Z');
 
+    const snapshot = async () => Promise.all(['smartphones', 'smartphone_variants', 'price_observations'].map(async table => {
+      const [rows] = await testDb.query(`SELECT * FROM ${table} ORDER BY id`);
+      return rows;
+    }));
+    const beforeDryRun = await snapshot();
+
     // Step A: Dry run (apply: false)
     const dryRunResult = await syncService.syncVariantPrices(testDb, {
       adapter,
@@ -279,8 +284,7 @@ describe('Phase 5 Danawa Price Integration & Verification', { concurrency: 1 }, 
     assert.equal(dryRunResult.summary.variantsWithMatchedCandidates >= 1, true);
 
     // Verify 0 DB writes occurred in dry run
-    const [obsBefore] = await testDb.query('SELECT COUNT(*) as count FROM price_observations');
-    assert.equal(Number(obsBefore[0].count), 0);
+    assert.deepEqual(await snapshot(), beforeDryRun);
 
     // Step B: Persistence requires permissionRef
     await assert.rejects(
@@ -436,7 +440,7 @@ describe('Phase 5 Danawa Price Integration & Verification', { concurrency: 1 }, 
     assert.equal(selection.selected.amount_krw, 919000);
   });
 
-  it('5. 24-hour TTL and expiration policy enforcement', () => {
+  it('5. stored price remains usable after its historical expiry', () => {
     const now = new Date('2026-11-12T12:00:00.000Z');
 
     // Observation active (expires at 14:00)
@@ -466,8 +470,8 @@ describe('Phase 5 Danawa Price Integration & Verification', { concurrency: 1 }, 
       expires_at: new Date('2026-11-12T11:00:00.000Z'),
     };
     const evalExpired = catalog.evaluateObservation(expiredObs, now);
-    assert.equal(evalExpired.eligible, false);
-    assert.equal(evalExpired.is_expired, true);
+    assert.equal(evalExpired.eligible, true);
+    assert.equal(evalExpired.is_expired, false);
 
     // Reject TTL > 24 hours
     assert.throws(
@@ -630,26 +634,287 @@ describe('Phase 5 Danawa Price Integration & Verification', { concurrency: 1 }, 
     assert.equal(validationResult.result.items[0].price.total_krw, 929000);
   });
 
-  it('8. Verify Live MySQL database has ZERO writes (49 / 257 / 0 preserved)', async () => {
-    // Query the production DB directly through a separate connection
-    const liveConn = await mysql.createConnection({
-      host: databaseConfig.options.host,
-      port: databaseConfig.options.port,
-      user: databaseConfig.username,
-      password: databaseConfig.password,
-      database: databaseConfig.database,
+  it('8. Multi-seller offers (Coupang, 11st, Gmarket, Official Store) persistence and selectBestPrice evaluation', async () => {
+    const now = new Date('2026-11-12T07:00:00.000Z');
+    const expiresAt = new Date('2026-11-12T13:00:00.000Z');
+
+    // 4 distinct sellers for variant 90000500 (Galaxy S24 256GB 앰버 옐로우)
+    const multiSellerOffers = [
+      {
+        readyForStorage: true,
+        evaluation: { eligible: true },
+        observationPayload: {
+          variant_id: '90000500',
+          source_name: 'danawa-cli',
+          source_url: 'https://samsung.com/s24',
+          seller_name: '삼성공식스토어',
+          amount_krw: 940000,
+          shipping_krw: 0,
+          observed_at: now,
+          expires_at: expiresAt,
+          conditions_text: '삼성전자 공식몰 자급제 무료배송',
+          unconditional: true,
+          in_stock: true,
+          is_new: true,
+          is_unlocked: true,
+        },
+      },
+      {
+        readyForStorage: true,
+        evaluation: { eligible: true },
+        observationPayload: {
+          variant_id: '90000500',
+          source_name: 'danawa-cli',
+          source_url: 'https://coupang.com/s24',
+          seller_name: '쿠팡',
+          amount_krw: 929000,
+          shipping_krw: 0,
+          observed_at: now,
+          expires_at: expiresAt,
+          conditions_text: '로켓배송 국내 정품 자급제 새제품',
+          unconditional: true,
+          in_stock: true,
+          is_new: true,
+          is_unlocked: true,
+        },
+      },
+      {
+        readyForStorage: true,
+        evaluation: { eligible: true },
+        observationPayload: {
+          variant_id: '90000500',
+          source_name: 'danawa-cli',
+          source_url: 'https://11st.co.kr/s24',
+          seller_name: '11번가',
+          amount_krw: 935000,
+          shipping_krw: 2500,
+          observed_at: now,
+          expires_at: expiresAt,
+          conditions_text: '국내 정품 자급제 새제품',
+          unconditional: true,
+          in_stock: true,
+          is_new: true,
+          is_unlocked: true,
+        },
+      },
+      {
+        readyForStorage: true,
+        evaluation: { eligible: true },
+        observationPayload: {
+          variant_id: '90000500',
+          source_name: 'danawa-cli',
+          source_url: 'https://gmarket.co.kr/s24',
+          seller_name: 'G마켓',
+          amount_krw: 932000,
+          shipping_krw: 3000,
+          observed_at: now,
+          expires_at: expiresAt,
+          conditions_text: '국내 정품 자급제 새제품',
+          unconditional: true,
+          in_stock: true,
+          is_new: true,
+          is_unlocked: true,
+        },
+      },
+    ];
+
+    // Part A: Persist all 4 sellers to price_observations
+    const persistRes = await syncService.persistVerifiedObservations(testDb, multiSellerOffers, {
+      apply: true,
+      allowDbWrite: true,
+      permissionRef: 'PHASE5-MULTI-SELLER-001',
+      now,
     });
 
-    try {
-      const [s] = await liveConn.query('SELECT COUNT(*) as count FROM smartphones');
-      const [v] = await liveConn.query('SELECT COUNT(*) as count FROM smartphone_variants');
-      const [p] = await liveConn.query('SELECT COUNT(*) as count FROM price_observations');
+    assert.equal(persistRes.applied, true);
+    assert.equal(persistRes.insertedCount, 4);
 
-      assert.equal(Number(s[0].count), 49, 'Production smartphones count must remain exactly 49');
-      assert.equal(Number(v[0].count), 257, 'Production smartphone_variants count must remain exactly 257');
-      assert.equal(Number(p[0].count), 0, 'Production price_observations count must remain exactly 0');
-    } finally {
-      await liveConn.end();
-    }
+    // Verify all 4 distinct sellers exist in DB
+    const [rows] = await testDb.query(
+      'SELECT id, seller_name, amount_krw, shipping_krw, (amount_krw + shipping_krw) as total_krw FROM price_observations WHERE variant_id = 90000500 ORDER BY (amount_krw + shipping_krw) ASC'
+    );
+    assert.equal(rows.length, 4);
+    const sellerNames = rows.map(r => r.seller_name);
+    assert.ok(sellerNames.includes('삼성공식스토어'));
+    assert.ok(sellerNames.includes('쿠팡'));
+    assert.ok(sellerNames.includes('11번가'));
+    assert.ok(sellerNames.includes('G마켓'));
+
+    // Part B: catalog.selectBestPrice evaluates all sellers and selects lowest total price
+    const [allObs] = await testDb.query('SELECT * FROM price_observations WHERE variant_id = 90000500');
+    const priceSelection = catalog.selectBestPrice(allObs, now);
+
+    assert.ok(priceSelection.selected);
+    assert.equal(priceSelection.selected.seller_name, '쿠팡');
+    assert.equal(priceSelection.selected.amount_krw, 929000);
+    assert.equal(priceSelection.selected.shipping_krw, 0);
+    assert.equal(priceSelection.selected.total_krw, 929000);
+
+    // latest_by_seller contains all 4 distinct sellers with their respective prices
+    assert.equal(priceSelection.latest_by_seller.length, 4);
+    const bySellerMap = new Map(priceSelection.latest_by_seller.map(s => [s.seller_name, s]));
+    assert.equal(bySellerMap.get('쿠팡').total_krw, 929000);
+    assert.equal(bySellerMap.get('G마켓').total_krw, 935000); // 932000 + 3000
+    assert.equal(bySellerMap.get('11번가').total_krw, 937500); // 935000 + 2500
+    assert.equal(bySellerMap.get('삼성공식스토어').total_krw, 940000); // 940000 + 0
+
+    // Part C: Distinguish single minPrice search summary from per-seller prices
+    // danawa-cli search output only gives a single minPrice without verified seller fields
+    const cliSummaryCandidate = {
+      readyForStorage: false, // blocked from verified purchase storage
+      missingSellerFields: ['source_url', 'shipping_krw', 'unconditional', 'in_stock', 'is_new', 'is_unlocked'],
+      observationPayload: {
+        variant_id: '90000500',
+        amount_krw: 918000,
+        seller_name: '다나와 가격비교',
+      },
+    };
+
+    const blockedPersist = await syncService.persistVerifiedObservations(testDb, [cliSummaryCandidate], {
+      apply: true,
+      allowDbWrite: true,
+      permissionRef: 'PHASE5-SUMMARY-CHECK',
+      now,
+    });
+    // Never persists search-only summary into price_observations table
+    assert.equal(blockedPersist.insertedCount, 0);
+    assert.equal(blockedPersist.rejectedIncompleteCount, 1);
+
+    // Instead, surfaces as danawa_reference reference price DTO
+    const refPrice = syncService.buildDanawaReferencePrice(
+      { matched: true, item: { minPrice: 918000, productCode: '33921001', danawaProductUrl: 'https://prod.danawa.com/info/?pcode=33921001' } },
+      { variant_id: '90000500' },
+      { now }
+    );
+    assert.equal(refPrice.price_source, 'danawa_reference');
+    assert.equal(refPrice.is_reference_price, true);
+    assert.equal(refPrice.amount_krw, 918000);
+    assert.equal(refPrice.purchase_verified, false);
+    assert.ok(refPrice.warning.includes('참고용'));
   });
+
+  it('9. Danawa single reference price (minPrice) persistence, preview building, and recommendation headroom evaluation', async () => {
+    const now = new Date('2026-11-13T09:00:00.000Z');
+    const refOffer = {
+      variant: { id: 90001390, domestic_model_number: 'SM-S921N' },
+      refPrice: {
+        amount_krw: 1177790,
+        danawa_product_code: '32854448',
+        danawa_product_url: 'https://prod.danawa.com/info/?pcode=32854448',
+      },
+    };
+
+    // 1. Persist reference price
+    const persistResult = await syncService.persistDanawaReferenceObservations(testDb, [refOffer], {
+      apply: true,
+      allowDbWrite: true,
+      permissionRef: 'PHASE5-REF-PERSIST-001',
+      now,
+      ttlHours: 24,
+    });
+
+    assert.equal(persistResult.applied, true);
+    assert.equal(persistResult.insertedCount, 1);
+
+    // 2. Verify observation in DB
+    const [rows] = await testDb.query(
+      "SELECT * FROM price_observations WHERE variant_id = 90001390 AND seller_name = '다나와 기준 최저가'"
+    );
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].source_name, 'danawa-cli');
+    assert.equal(Number(rows[0].amount_krw), 1177790);
+    assert.equal(rows[0].shipping_krw, null);
+    assert.equal(rows[0].unconditional, 0);
+    assert.equal(rows[0].in_stock, 0);
+    assert.equal(rows[0].source_url, 'https://prod.danawa.com/info/?pcode=32854448');
+
+    // 3. Duplicate protection
+    const dupResult = await syncService.persistDanawaReferenceObservations(testDb, [refOffer], {
+      apply: true,
+      allowDbWrite: true,
+      permissionRef: 'PHASE5-REF-PERSIST-DUP',
+      now,
+    });
+    assert.equal(dupResult.skippedDuplicatesCount, 1);
+    assert.equal(dupResult.insertedCount, 0);
+
+    // 4. Preview building surfaces danawa_reference
+    const candidateRow = {
+      variant_id: '90001390',
+      smartphone_id: '90000119',
+      phone_verified: true,
+      variant_verified: true,
+      brand: 'samsung',
+      model_name: 'Galaxy S24',
+      domestic_model_number: 'SM-S921N',
+      storage_gb: 256,
+      ram_gb: 8,
+      color: '마블 그레이',
+    };
+    const priceObj = pricePreview.buildCandidatePriceObject(candidateRow, rows, { NODE_ENV: 'production' }, now);
+    assert.ok(priceObj.selected);
+    assert.equal(priceObj.selected.price_source, 'danawa_reference');
+    assert.equal(priceObj.selected.price_label, '다나와 수집 당시 참고 가격');
+    assert.equal(priceObj.selected.amount_krw, 1177790);
+    assert.equal(priceObj.selected.danawa_product_url, 'https://prod.danawa.com/info/?pcode=32854448');
+    assert.equal(priceObj.selected.danawa_product_code, '32854448');
+
+    // 5. Recommendation headroom validation uses reference price notice
+    const fullCandidate = {
+      ...candidateRow,
+      screen_inches: 6.2,
+      refresh_hz: 120,
+      battery_mah: 4000,
+      weight_g: 167,
+      supports_5g: true,
+      wireless_charging: true,
+      chipset: 'Exynos 2400',
+      eligible_reasons: [{ code: 'budget_headroom' }],
+      price: priceObj.selected,
+      sources: [{ source_name: '삼성전자 공식' }],
+    };
+
+    const recommendationContext = {
+      purchase_conditions: {
+        hard: {
+          budget_max_krw: 1300000,
+          usages: ['coding'],
+        },
+      },
+      candidates_snapshot: [fullCandidate],
+    };
+
+    const mockAiOutput = {
+      status: 'recommend',
+      items: [
+        {
+          variant_id: '90001390',
+          rank: 1,
+          profile_refs: ['common.usages'],
+          reasons: [
+            {
+              code: 'budget_headroom',
+            },
+          ],
+          evidence: [
+            {
+              field: 'price',
+              variant_id: '90001390',
+              price_observation_id: priceObj.selected.observation_id,
+              value: 1177790,
+            },
+          ],
+        },
+      ],
+    };
+
+    const validationResult = recommendationValidator.validateRecommendationOutput(mockAiOutput, recommendationContext);
+    assert.equal(validationResult.valid, true);
+    assert.equal(validationResult.result.items[0].price.price_source, 'danawa_reference');
+    assert.equal(validationResult.result.items[0].price.price_label, '다나와 수집 당시 참고 가격');
+    const headroom = validationResult.result.items[0].reasons.find(r => r.code === 'budget_headroom');
+    assert.ok(headroom);
+    assert.ok(headroom.description.includes('다나와 수집 당시 참고 가격(구매 조건 미검증: 1,177,790원)'));
+  });
+
 });

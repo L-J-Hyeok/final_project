@@ -122,7 +122,7 @@ function formatVariantRow(row, priceSummary, now) {
   };
 }
 
-async function fetchPricesByVariantIds(variantIds, t) {
+async function fetchPricesByVariantIds(variantIds, t, { commonOnly = false, comparison = false } = {}) {
   const map = new Map();
   if (!variantIds.length) return map;
   for (const id of variantIds) map.set(String(id), []);
@@ -134,9 +134,51 @@ async function fetchPricesByVariantIds(variantIds, t) {
     { replacements: { variantIds }, type: QueryTypes.SELECT, transaction: t }
   );
   for (const r of rows) {
+    if (comparison) {
+      const price = catalog.evaluateObservation(r);
+      if (price.color_scope !== 'capacity_common' || !price.reference_usable) continue;
+    }
     const list = map.get(String(r.variant_id));
-    if (list) list.push(r);
+    if (list && (!commonOnly || catalog.observationColorScope(r.conditions_text) !== 'exact_color')) list.push(r);
   }
+
+  // Only explicitly scoped reference observations can be shared with a peer.
+  const now = new Date();
+  const missingIds = variantIds;
+  if (missingIds.length) {
+    const peerPublication = (await publication.sql(db(), { transaction: t })).replaceAll('v.', 'peer_v.');
+    const peerRows = await db().query(
+      `SELECT p.*, CAST(p.id AS CHAR) AS id, CAST(p.variant_id AS CHAR) AS variant_id,
+              CAST(target_v.id AS CHAR) AS target_variant_id
+       FROM smartphone_variants target_v
+       JOIN smartphones s ON s.id = target_v.smartphone_id
+       JOIN smartphone_variants peer_v ON peer_v.smartphone_id = target_v.smartphone_id
+         AND peer_v.storage_gb = target_v.storage_gb
+         AND peer_v.id <> target_v.id
+         AND peer_v.ram_gb = target_v.ram_gb
+       JOIN price_observations p ON p.variant_id = peer_v.id
+       WHERE target_v.id IN (:missingIds) AND ${peerPublication}
+         AND p.seller_name = '다나와 기준 최저가'
+         AND p.conditions_text LIKE '%[scope:capacity_common]%'
+         AND p.conditions_text NOT LIKE '%[scope:exact_color]%'
+       ORDER BY p.observed_at DESC, p.id DESC`,
+      { replacements: { missingIds }, type: QueryTypes.SELECT, transaction: t }
+    );
+    for (const peer of peerRows) {
+      const price = catalog.evaluateObservation(peer, now);
+      if (!price.reference_usable || price.color_scope !== 'capacity_common') continue;
+      map.get(peer.target_variant_id)?.push(peer);
+    }
+  }
+
+  if (comparison) {
+    // Every color in the group uses the same latest observation, including its link.
+    for (const prices of map.values()) {
+      prices.sort(catalog.compareObservationRecency);
+      prices.splice(1);
+    }
+  }
+
   return map;
 }
 
@@ -193,11 +235,11 @@ router.get('/smartphones', wrap(async (req, res) => {
   const rows = await db().query(sql, { replacements, type: QueryTypes.SELECT });
   const hasMore = rows.length > q.limit;
   const pageRows = rows.slice(0, q.limit);
-  const priceMap = await fetchPricesByVariantIds(pageRows.map(r => r.variant_id));
+  const priceMap = await fetchPricesByVariantIds(pageRows.map(r => r.variant_id), undefined, { comparison: q.comparison });
 
   const data = pageRows.map(row => {
     const obs = priceMap.get(String(row.variant_id)) || [];
-    const priceSummary = pricePreview.buildCandidatePriceObject(row, obs, process.env, now);
+    const priceSummary = pricePreview.buildCandidatePriceObject(row, obs, q.comparison ? {} : process.env, now);
     return formatVariantRow(row, priceSummary, now);
   });
 
@@ -238,7 +280,7 @@ router.get('/smartphones/:variantId', wrap(async (req, res) => {
 }));
 
 // Core candidate search logic extracted for reuse by both POST /api/recommendation-candidates and POST /api/recommendations
-async function searchCandidatesForUser(uid, body, now = new Date()) {
+async function searchCandidatesForUser(uid, body, now = new Date(), { allowBudgetlessKeep = false } = {}) {
   const { minDate, maxDate } = catalog.releaseWindowKst(now);
 
   const context = await db().transaction(async t => {
@@ -254,6 +296,10 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
     const cleanPhonePrefs = memberRouter.stripInternalSmartphoneKeys(p.smartphone_json || {});
     const input = catalog.validateCandidateInput(body, cleanPhonePrefs);
     input.upgrade_context = upgradeAdvisor.validateUpgradeContextInput(input.upgrade_context);
+    const budgetlessKeep = allowBudgetlessKeep && input.hard.budget_max_krw === null &&
+      input.upgrade_context?.no_pain_confirmed && input.upgrade_context.replacement_intent === 'low_or_keep_if_okay';
+    if (budgetlessKeep) input.clarify_questions = input.clarify_questions.filter(q => q !== '최대 예산(원)을 확인해 주세요.');
+
     if (p.version !== input.expected_profile_version) {
       throw catalog.fail('PROFILE_CHANGED', 409);
     }
@@ -322,6 +368,16 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
 
   const { profile, input, replacementDevice } = context;
 
+  // Without a purchase budget, evaluate only the owned device; never offer a purchase.
+  if (allowBudgetlessKeep && input.hard.budget_max_krw === null && !input.hard.budget_unlimited && replacementDevice && !input.clarify_questions.length) {
+    return {
+      status: 'no_match', input, profile_version: profile.version, candidates: [], questions: [],
+      ai_context: { replacement_device: replacementDevice, candidates_snapshot: [],
+        purchase_conditions: { hard: input.hard, soft: input.soft, purchase_reason: input.purchase_reason, upgrade_context: input.upgrade_context } }
+    };
+  }
+
+
   // 1. If required purchase conditions are missing or contradictory -> clarify
   if (input.clarify_questions.length > 0) {
     return {
@@ -386,7 +442,7 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
 
   const sql = `${VARIANT_JOIN_SQL} WHERE ${where.join(' AND ')} ORDER BY v.id ASC`;
   const variantRows = await db().query(sql, { replacements, type: QueryTypes.SELECT });
-  const priceMap = await fetchPricesByVariantIds(variantRows.map(r => r.variant_id));
+  const priceMap = await fetchPricesByVariantIds(variantRows.map(r => r.variant_id), undefined, { commonOnly: true });
 
   const matchedCandidates = [];
   for (const row of variantRows) {
@@ -399,7 +455,7 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
     if (!catalog.matchesHardConditions(candidateObj, h, now)) continue;
 
     const formatted = formatVariantRow(row, priceSummary, now);
-    const eligibleReasons = catalog.buildEligibleReasons(formatted, h, input.soft, replacementDevice);
+    const eligibleReasons = catalog.buildEligibleReasons(formatted, h, input.soft, replacementDevice, now);
     const comparison = replacementDevice
       ? upgradeAdvisor.buildDeviceCandidateComparison(replacementDevice.product, formatted)
       : null;
@@ -412,6 +468,11 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
       released_on_kr: formatted.released_on_kr,
       os: formatted.os,
       chipset: formatted.chipset,
+      dimensions_mm: (formatted.details_json?.dimensions_folded_h_w_d_mm ||
+        formatted.details_json?.dimensions_unfolded_h_w_d_mm) ?? null,
+      camera_specs: Object.fromEntries(['main_camera_mp', 'ultrawide_camera_mp', 'front_camera_mp']
+        .filter(key => Number.isFinite(formatted.details_json?.[key]) && formatted.details_json[key] > 0)
+        .map(key => [key, formatted.details_json[key]])),
       screen_inches: formatted.screen_inches,
       refresh_hz: formatted.refresh_hz,
       battery_mah: formatted.battery_mah,
@@ -423,6 +484,7 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
       color: formatted.color,
       sources: formatted.sources,
       price: {
+        eligible: formatted.price.eligible,
         observation_id: formatted.price.observation_id ?? null,
         price_source: formatted.price.price_source || 'verified_sale',
         total_krw: formatted.price.total_krw ?? null,
@@ -437,6 +499,7 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
         seller_name: formatted.price.seller_name ?? null,
         observed_at: formatted.price.observed_at ?? null,
         expires_at: formatted.price.expires_at ?? null,
+        retained_observation: formatted.price.retained_observation === true,
         checked_at: formatted.price.checked_at ?? formatted.price.observed_at ?? null,
         conditions_text: formatted.price.conditions_text ?? null,
         warning: formatted.price.warning ?? null
@@ -470,78 +533,6 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
     };
   }
 
-  // 4. More than 40 candidates -> evaluate owned-device keep/defer/clarify or narrow to verified upgrades first
-  if (matchedCandidates.length > 40) {
-    if (replacementDevice) {
-      const earlyUpgradeDecision = upgradeAdvisor.evaluateUpgradeDecision({
-        replacement_device: replacementDevice,
-        purchase_conditions: {
-          hard: h,
-          soft: input.soft,
-          purchase_reason: input.purchase_reason,
-          upgrade_context: input.upgrade_context
-        },
-        candidates_snapshot: matchedCandidates
-      });
-      if (earlyUpgradeDecision?.status === 'recommend') {
-        const upgradedCandidates = matchedCandidates.filter(c =>
-          earlyUpgradeDecision.eligible_variant_ids.includes(String(c.variant_id))
-        );
-        if (upgradedCandidates.length > 40) {
-          return {
-            status: 'clarify',
-            clarify_reason: 'too_many_candidates',
-            as_of: now.toISOString(),
-            profile_version: profile.version,
-            input,
-            candidate_count: upgradedCandidates.length,
-            candidates: [],
-            questions: [
-              `조건을 만족하는 교체 후보가 ${upgradedCandidates.length}개로 너무 많습니다. 선호 제조사·저장 용량·예산 범위를 조금 더 구체화해 주세요.`
-            ],
-            keep_current_evaluation: keepAssessment,
-            ai_context: null
-          };
-        }
-        matchedCandidates.splice(0, matchedCandidates.length, ...upgradedCandidates);
-      } else if (earlyUpgradeDecision && ['keep', 'defer', 'clarify'].includes(earlyUpgradeDecision.status)) {
-        return {
-          status: 'clarify',
-          clarify_reason: 'too_many_candidates',
-          upgrade_decision: earlyUpgradeDecision,
-          as_of: now.toISOString(),
-          profile_version: profile.version,
-          input,
-          candidate_count: matchedCandidates.length,
-          candidates: [],
-          questions: [
-            `조건을 만족하는 후보가 ${matchedCandidates.length}개로 너무 많습니다. 선호 제조사·저장 용량·예산 범위를 조금 더 구체화해 주세요.`
-          ],
-          keep_current_evaluation: keepAssessment,
-          ai_context: null
-        };
-      }
-    }
-
-    if (matchedCandidates.length > 40) {
-      return {
-        status: 'clarify',
-        clarify_reason: 'too_many_candidates',
-        as_of: now.toISOString(),
-        profile_version: profile.version,
-        input,
-        candidate_count: matchedCandidates.length,
-        candidates: [],
-        questions: [
-          `조건을 만족하는 후보가 ${matchedCandidates.length}개로 너무 많습니다. 선호 제조사·저장 용량·예산 범위를 조금 더 구체화해 주세요.`
-        ],
-        keep_current_evaluation: keepAssessment,
-        ai_context: null
-      };
-    }
-  }
-
-  // 5. 1..40 candidates -> candidate_ready with structured AI input snapshot (no PII/secrets)
   return {
     status: 'candidates_ready',
     as_of: now.toISOString(),
@@ -572,7 +563,7 @@ async function searchCandidatesForUser(uid, body, now = new Date()) {
 }
 
 // POST /api/recommendation-candidates — Validate profile/owned devices, filter candidates by hard conditions,
-// handle 0 / >40 / clarify cases, and structure verified candidate payload for downstream AI recommendation.
+// handle empty / clarify cases, and structure verified candidate payload for downstream AI recommendation.
 router.post('/recommendation-candidates', wrap(async (req, res) => {
   const result = await searchCandidatesForUser(req.session.user_id, req.body, new Date());
   const responseData = { ...result };

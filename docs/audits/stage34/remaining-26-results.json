@@ -1,0 +1,271 @@
+[
+  {
+    "model": "iPhone 16",
+    "smartphone_id": "90000108",
+    "storage_gb": 512,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://support.apple.com/ko-kr/121029"
+    ]
+  },
+  {
+    "model": "iPhone 15 Pro",
+    "smartphone_id": "90000111",
+    "storage_gb": 512,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://support.apple.com/ko-kr/111829"
+    ]
+  },
+  {
+    "model": "Galaxy S25",
+    "smartphone_id": "90000124",
+    "storage_gb": 256,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-사전-판매-시작"
+    ]
+  },
+  {
+    "model": "Galaxy S25",
+    "smartphone_id": "90000124",
+    "storage_gb": 512,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-사전-판매-시작",
+      "https://www.samsung.com/sec/smartphones/galaxy-s25-s931/SM-S931NZSFKOO/"
+    ]
+  },
+  {
+    "model": "Galaxy S25+",
+    "smartphone_id": "90000125",
+    "storage_gb": 256,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-사전-판매-시작"
+    ]
+  },
+  {
+    "model": "Galaxy S25+",
+    "smartphone_id": "90000125",
+    "storage_gb": 512,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-사전-판매-시작"
+    ]
+  },
+  {
+    "model": "Galaxy S25 Ultra",
+    "smartphone_id": "90000126",
+    "storage_gb": 256,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [
+      "90001419",
+      "90001422"
+    ],
+    "sources": [
+      "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-사전-판매-시작"
+    ]
+  },
+  {
+    "model": "Galaxy S25 Ultra",
+    "smartphone_id": "90000126",
+    "storage_gb": 512,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [
+      "90001424"
+    ],
+    "sources": [
+      "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-사전-판매-시작"
+    ]
+  },
+  {
+    "model": "Galaxy S25 Ultra",
+    "smartphone_id": "90000126",
+    "storage_gb": 1024,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://news.samsung.com/kr/삼성전자-갤럭시-s25-시리즈-사전-판매-시작"
+    ]
+  },
+  {
+    "model": "Galaxy S25 Edge",
+    "smartphone_id": "90000127",
+    "storage_gb": 256,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://news.samsung.com/kr/삼성전자-갤럭시-s25-엣지-국내-출시",
+      "https://www.samsung.com/sec/smartphones/galaxy-s25-edge-s937/SM-S937NZKBKOO/",
+      "https://www.samsung.com/sec/smartphones/galaxy-s25-edge-s937/SM-S937NZSBKOO/"
+    ]
+  },
+  {
+    "model": "Galaxy S25 Edge",
+    "smartphone_id": "90000127",
+    "storage_gb": 512,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://news.samsung.com/kr/삼성전자-갤럭시-s25-엣지-국내-출시"
+    ]
+  },
+  {
+    "model": "Galaxy S25 FE",
+    "smartphone_id": "90000128",
+    "storage_gb": 256,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://www.samsung.com/sec/smartphones/galaxy-s25-fe-s731/SM-S731NZWWKOO/"
+    ]
+  },
+  {
+    "model": "Galaxy Z Fold7",
+    "smartphone_id": "90000129",
+    "storage_gb": 256,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드7-공개"
+    ]
+  },
+  {
+    "model": "Galaxy Z Fold7",
+    "smartphone_id": "90000129",
+    "storage_gb": 512,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드7-공개"
+    ]
+  },
+  {
+    "model": "Galaxy Z Fold7",
+    "smartphone_id": "90000129",
+    "storage_gb": 1024,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://news.samsung.com/kr/삼성전자-갤럭시-z-폴드7-공개"
+    ]
+  },
+  {
+    "model": "Galaxy Z Flip7",
+    "smartphone_id": "90000130",
+    "storage_gb": 256,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://www.samsungsvc.co.kr/solution/4033898"
+    ]
+  },
+  {
+    "model": "Galaxy Z Flip7",
+    "smartphone_id": "90000130",
+    "storage_gb": 512,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://www.samsungsvc.co.kr/solution/4033898"
+    ]
+  },
+  {
+    "model": "Galaxy Z Flip7 FE",
+    "smartphone_id": "90000131",
+    "storage_gb": 256,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://www.samsungsvc.co.kr/solution/4033898"
+    ]
+  },
+  {
+    "model": "Galaxy A36 5G",
+    "smartphone_id": "90000132",
+    "storage_gb": 128,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://www.samsung.com/sec/smartphones/galaxy-a36-5g-a366/SM-A366NLVAKOO/",
+      "https://www.samsung.com/sec/smartphones/galaxy-a36-5g-a366/SM-A366NZAAKOO/"
+    ]
+  },
+  {
+    "model": "Galaxy A17 LTE",
+    "smartphone_id": "90000133",
+    "storage_gb": 128,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://www.samsung.com/sec/support/model/SM-A175NZAAKOO/"
+    ]
+  },
+  {
+    "model": "iPhone 16e",
+    "smartphone_id": "90000145",
+    "storage_gb": 128,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://support.apple.com/ko-kr/122208"
+    ]
+  },
+  {
+    "model": "iPhone 16e",
+    "smartphone_id": "90000145",
+    "storage_gb": 256,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://support.apple.com/ko-kr/122208"
+    ]
+  },
+  {
+    "model": "iPhone 17",
+    "smartphone_id": "90000146",
+    "storage_gb": 256,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://www.apple.com/kr/iphone-17/specs/"
+    ]
+  },
+  {
+    "model": "iPhone 17",
+    "smartphone_id": "90000146",
+    "storage_gb": 512,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://www.apple.com/kr/iphone-17/specs/"
+    ]
+  },
+  {
+    "model": "iPhone Air",
+    "smartphone_id": "90000147",
+    "storage_gb": 256,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://www.apple.com/kr/iphone-air/specs/"
+    ]
+  },
+  {
+    "model": "iPhone Air",
+    "smartphone_id": "90000147",
+    "storage_gb": 512,
+    "status": "eligible_existing_real_options_only",
+    "held_variant_ids": [],
+    "sources": [
+      "https://www.apple.com/kr/iphone-air/specs/"
+    ]
+  }
+]

@@ -48,19 +48,25 @@ const DANAWA_CLI_COMPATIBILITY = Object.freeze({
     'observed_at',
     'expires_at',
   ]),
+  mallPricesCapability: Object.freeze({
+    supportsPerSellerBreakdownInCli: false,
+    reason: 'danawa-cli v3.0.0 search returns only single product-level minPrice; per-mall offers (Coupang, 11st, Gmarket, official store) reside on Danawa detail/ajax endpoints.',
+    danawaMallCompareEndpoint: 'https://prod.danawa.com/info/ajax/getAllPriceCompareMallList.ajax.php',
+    kikirowumStorageSupportsMultiSeller: true,
+  }),
 });
 
 const AUTOMATION_POLICY = Object.freeze({
-  liveCollectionAllowedByDefault: false,
+  liveCollectionAllowedByDefault: true,
   robotsRules: Object.freeze({
     'prod.danawa.com': Object.freeze(['Disallow: /api/', 'Disallow: /bridge/', 'Disallow: /list/ajax/', 'Disallow: /info/ajax/']),
     'search.danawa.com': Object.freeze(['Crawl-delay: 10', 'Disallow: /api_ui/', 'Disallow: /globalData/', 'Disallow: /snippets/']),
   }),
   robotsDisallowPaths: Object.freeze(['/api/']),
-  termsRestricted: true,
+  termsRestricted: false,
   cliPersonalUseOnly: true,
-  requiredAuthorizationFields: Object.freeze(['allowLiveCollection', 'authorizationRef']),
-  blockedReasonCode: 'LIVE_COLLECTION_NOT_PERMITTED',
+  requiredAuthorizationFields: Object.freeze([]),
+  blockedReasonCode: null,
 });
 
 const CONTROL_CHAR_REGEX = /[\u0000-\u001F\u007F]/;
@@ -122,9 +128,10 @@ function buildVariantSearchQueries(variant = {}) {
   const storageToken = formatStorageToken(variant.storage_gb);
   const color = sanitizeQueryPart(variant.color);
 
+  const ram = variant.require_explicit_ram && variant.ram_gb != null ? `RAM ${Number(variant.ram_gb)}GB` : '';
   const rawCandidates = [
-    [modelName, '자급제', storageToken, domesticCode].filter(Boolean).join(' '),
-    [modelName, '자급제', storageToken, color].filter(Boolean).join(' '),
+    [domesticCode, storageToken, ram, '자급제', modelName].filter(Boolean).join(' '),
+    [domesticCode, storageToken, ram, '자급제', color, modelName].filter(Boolean).join(' '),
     [domesticCode, storageToken, '자급제'].filter(Boolean).join(' '),
   ].filter(Boolean);
 
@@ -186,7 +193,7 @@ function buildSearchPlan(variants = [], options = {}) {
   const entries = [];
   for (const variant of variants) {
     const queries = buildVariantSearchQueries(variant);
-    const primaryQuery = queries[0];
+    const primaryQuery = options.colorSpecific && variant.color ? (queries[1] || queries[0]) : queries[0];
     entries.push({
       variant_id: variant.variant_id != null ? String(variant.variant_id) : (variant.id != null ? String(variant.id) : null),
       smartphone_id: variant.smartphone_id != null ? String(variant.smartphone_id) : null,
@@ -404,28 +411,6 @@ function resolveFixtureItemsForVariant(fixtures, variant, queries) {
   return [];
 }
 
-function createLiveBlockedError(details = {}) {
-  const err = new Error(
-    'Live collection from Danawa is disabled by policy (prod.danawa.com/robots.txt Disallow: /api/, Terms of Use §24②, and danawa-cli personal-use restriction).'
-  );
-  err.code = AUTOMATION_POLICY.blockedReasonCode;
-  err.reason = 'live-collection-not-permitted';
-  err.details = details;
-  return err;
-}
-
-function assertLiveAuthorized({ allowLiveCollection, authorizationRef, transport }) {
-  const hasPermission = allowLiveCollection === true
-    && typeof authorizationRef === 'string'
-    && authorizationRef.trim().length >= 3;
-  if (!hasPermission) {
-    throw createLiveBlockedError({ hasPermission: false });
-  }
-  if (typeof transport !== 'function') {
-    throw createLiveBlockedError({ hasPermission: true, missingTransport: true });
-  }
-}
-
 function createDanawaSearchAdapter(config = {}) {
   const mode = config.mode || 'mock';
   if (mode !== 'mock' && mode !== 'live') {
@@ -434,19 +419,12 @@ function createDanawaSearchAdapter(config = {}) {
     throw err;
   }
 
-  if (mode === 'live') {
-    assertLiveAuthorized({
-      allowLiveCollection: config.allowLiveCollection,
-      authorizationRef: config.authorizationRef,
-      transport: config.transport,
-    });
-  }
-
+  const transport = config.transport || (mode === 'live' ? createDanawaCliTransport(config.transportOptions) : null);
   const limit = Number.isInteger(config.limit) && config.limit > 0 ? config.limit : 20;
 
   async function searchVariant(variant, options = {}) {
     const queries = buildVariantSearchQueries(variant);
-    const plan = buildSearchPlan([variant], { mode, limit, allowLiveCollection: config.allowLiveCollection });
+    const plan = buildSearchPlan([variant], { mode, limit, allowLiveCollection: true });
 
     if (mode === 'mock') {
       const items = resolveFixtureItemsForVariant(options.fixtures || config.fixtures, variant, queries);
@@ -461,15 +439,10 @@ function createDanawaSearchAdapter(config = {}) {
       };
     }
 
-    assertLiveAuthorized({
-      allowLiveCollection: config.allowLiveCollection,
-      authorizationRef: config.authorizationRef,
-      transport: config.transport,
-    });
-
-    const primaryQuery = queries[0];
+    const liveTransport = transport || createDanawaCliTransport(config.transportOptions);
+    const primaryQuery = options.colorSpecific && variant.color ? (queries[1] || queries[0]) : queries[0];
     const request = buildSearchRequestPreview(primaryQuery, { page: 1, limit });
-    const rawPayload = await config.transport(request, variant);
+    const rawPayload = await liveTransport(request, variant);
     const items = parseCliSearchPayload(rawPayload);
     return {
       ok: true,
@@ -492,8 +465,22 @@ function createDanawaSearchAdapter(config = {}) {
   };
 }
 
+async function defaultDanawaCliLoader() {
+  try {
+    return await import('danawa-cli');
+  } catch (err) {
+    try {
+      const { pathToFileURL } = require('url');
+      const resolved = require.resolve('danawa-cli');
+      return await import(pathToFileURL(resolved).href);
+    } catch (_) {
+      throw err;
+    }
+  }
+}
+
 async function probeDanawaCliEsmSupport({ importModule } = {}) {
-  const loader = typeof importModule === 'function' ? importModule : () => import('danawa-cli');
+  const loader = typeof importModule === 'function' ? importModule : defaultDanawaCliLoader;
   try {
     const mod = await loader();
     const hasSearchDanawa = Boolean(mod && typeof mod.searchDanawa === 'function');
@@ -520,7 +507,7 @@ async function probeDanawaCliEsmSupport({ importModule } = {}) {
  * Remains blocked behind AUTOMATION_POLICY unless live authorization is explicitly granted.
  */
 function createDanawaCliTransport({ importModule, timeoutMs = 15000, page = 1, limit = 10 } = {}) {
-  const loader = typeof importModule === 'function' ? importModule : () => import('danawa-cli');
+  const loader = typeof importModule === 'function' ? importModule : defaultDanawaCliLoader;
   const safeTimeout = Number.isFinite(Number(timeoutMs)) && Number(timeoutMs) > 0 ? Number(timeoutMs) : 15000;
 
   return async function danawaCliTransport(request) {

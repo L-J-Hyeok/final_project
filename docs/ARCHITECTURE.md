@@ -436,3 +436,167 @@ executeTest() 기본은 DB 접속 없이 계획 반환. apply:true와 정확한 
 - `ai-adapter.js`를 통해 Gemini 3.5 Flash Lite 모델과 JSON 스키마 기반 응답 통신.
 - 모델 호출 전후 엄격한 사양·근거 검증(`recommendation-validator.js`)을 거쳐 환각(Hallucination) 및 임의 가격/사양 조작을 100% 차단.
 - `.env` 및 API 키는 환경 변수를 통해서만 참조하며, 대화/로그/클라이언트 응답에 원문, 일부 문자열, 해시 노출을 엄격히 금지.
+
+## 스마트폰 모델 중심 추천
+
+공개 자급제 후보를 필수 조건과 가격으로 걸러 전부 평가한다. 카탈로그 모델 ID와 국내 모델번호로 묶고, 서버 순위에서 가장 높은 용량·RAM 구성을 모델별 대표로 확정한다. 최대 3개 대표만 Gemini 설명에 전달하며, 최종 가격·후보 검증은 유지한다. 대표 SKU와 같은 구성의 선택 색상 SKU를 구분한다. 색상을 바꿔도 점수·공통 참고가·링크는 유지하며 RAM이 미확인이면 다른 SKU와 동일 구성으로 추정하지 않는다.
+
+순위 정책 `smartphone-ranker-v2`는 휴대성 선호가 명시되면 무게와 화면 크기를 함께 평가하고 둘 중 적합도가 낮은 쪽을 더 크게 반영한다. 이는 필수 조건을 추가하지 않는다. 저장 공간과 RAM은 용도별 평가 기준에 도달한 이후 추가 점수의 증가 폭이 줄어든다. 이 기준은 사용자 저장 공간 사용량 추정치가 아니며, 명시한 최소 용량은 별도 필수 필터다. 카메라 선호를 별도 저장 공간 가중치로 치환하지 않고 성능 선호에 따른 RAM 가중치 증가 폭을 줄였다. 실측 게임 성능, 촬영 품질, 배터리 사용 시간은 근거가 없으면 불확실성을 표시한다. 가격 점수와 가격 적격 조건은 기존 정책을 따른다.
+
+후속 대화 설계: 신규 추천은 프로필과 자연어에서 예산·용도·필수 조건을 추출한다. 최소 저장 용량을 지정하면 필수 조건으로 적용하며, 모른다고 답하면 프로필·용도·예산을 근거로 서버가 결정한다. 업그레이드는 소유권을 확인한 등록 기기 사양을 우선 사용하고, 부족한 만족도·불편·교체 이유만 질문한다. 저장 공간이 문제라면 실제 사용량을 물을 수 있다. 기존 성능과 근거 있는 체감 개선, 구매 비용, 수리 등 비구매 대안을 고려하며 불만족만으로 교체하지 않는다. KEEP/REPLACE/DEFER/CLARIFY를 유지한다. 두 흐름 모두 기존 응답을 보존하며 정보가 충분하면 추가 질문 없이 진행한다. 다중 턴 상태와 질문 UI는 스마트폰 MVP에 구현했다.
+
+`GET/POST /api/recommendations/conversation`은 로그인 세션과 기존 CSRF를 사용한다. 최초 원문만 기존 구매 분석기로 구조화하고, 이후 응답은 서버가 발급한 질문 ID와 상담 버전으로 검증한다. 서버는 답한 항목만 병합하고 임의의 조건 객체는 받지 않는다. 프로필 버전이 바뀌면 재개하지 않는다. 예산과 필수 조건을 충족하는 실제 용량이 여러 개이고 게임·촬영에 용량이 중요할 때 질문한다. 업그레이드는 소유 기기를 먼저 확인하고 불편이 없고 만족하는 경우 구매 후보 없이 기존 KEEP 검증을 실행할 수 있다.
+
+상담에서 예산 상한 없음은 `hard.budget_unlimited`로 기록한다. 금액 상한만 생략하고 가격의 최신성과 적격성은 검사한다. 검증할 수 없는 필수 조건은 사용자가 구체적인 무게로 바꾸거나 명시적으로 제외할 수 있다. 조건을 유지하면 추천을 중단하고 답변 수정 경로를 제공한다. 서버 순위가 확정된 경우 Gemini 설명의 `status`는 `recommend`이며, 서버는 검증된 근거 코드와 증거를 사용해 표시 문장을 생성한다.
+
+상담은 로그인 세션당 하나, 서버 메모리에 마지막 활동 기준 20분간 유지한다. 새 상담이 이전 상담을 대체하고, 로그아웃 또는 서버 재시작 시 사라진다. 답변 제출·수정 합계는 20회로 제한한다. 중간 질문이나 최초 원문을 추천 이력에 저장하지 않으며 최종 추천은 기존 검증 및 이력 저장 경로를 재사용한다. 서버를 여러 대 운영할 때는 별도의 공유 상담 저장소가 필요하다.
+
+### 스마트폰 실측 근거 저장과 비교
+
+`smartphone_performance_measurements`는 스마트폰 모델과 선택 SKU에 실측값, 단위, 시험 이름·버전·조건·기기 설정, 출처, 측정일·확인일, 검증 상태를 연결한다. 내부 등록 경로는 국내 모델번호와 SKU 소속을 확인한다. 시험 식별자는 지표·단위·시험 버전·조건·설정·출처를 포함하고, 제품 범위·출처 URL·측정일을 더한 관측 키는 중복을 막는다. 검증 상태가 verified인 행만 조회하고 동일 시험 식별자끼리 원본 수치를 나란히 제공한다. 특정 SKU의 자료는 다른 SKU에 공유하지 않는다.
+
+추천 API는 서버 순위 확정 후 선택된 후보에만 검증 근거를 첨부하고, 검증된 보유 기기가 있으면 비교 가능 여부도 반환한다. 기존 순위와 교체 판단은 그대로 동작하며, 테이블이 아직 없거나 데이터가 비어 있으면 기존 응답 형식을 사용한다. `node db/migrate-performance.js --apply <database-name>`은 명시적으로 지정한 DB에 추가 테이블을 생성한다.
+
+향후 범용 측정 계층은 출처·이용 허용 범위, 관측 이력, 시험 정의, 검증 상태, 정규화된 값·단위, 시험 호환 판정을 공유한다. 시험에서 통제한 조건과 기기별 실제 설정·OS·하드웨어를 별도 필드로 관리하고 호환 규칙을 시험별로 버전 관리한다. 두 번째 카탈로그가 추가될 때 공통 제품·SKU 참조를 실제 외래 키로 연결하고, 스마트폰 관측의 원본 ID와 출처를 보존해 이관한다. 제품군별 점수 모듈은 공통 추천 흐름에서 선택하도록 분리한다. 현재 `smartphone-ranker-v2`는 스마트폰 전용 함수이며, 제품군별 모듈을 선택하는 공통 진입점은 후속 설계다.
+
+| 제품군 | 평가 모듈의 주요 지표 |
+| --- | --- |
+| 스마트폰 | 게임·촬영·휴대성·배터리 |
+| 태블릿 | 생산성·필기·성능·배터리 |
+| 노트북 | CPU·GPU·발열·전력·휴대성 |
+| 스마트워치 | 센서·배터리·운동 추적 |
+| 무선이어폰 | ANC·음질·지연·배터리 |
+| 스피커 | 음질·출력·연결성 |
+
+7-4단계에서 게임·성능 우선 요청의 CPU/GPU 실측 입력을 서버 순위에 연결했다. 예산과 필수 조건을 통과한 모든 구성에 공통으로 적용되는 검증 시험만 사용한다. 시험별 최고값으로 나눈 상대 점수를 구하고, 사용할 수 있는 CPU·GPU 점수의 평균을 기존 RAM 평가와 절반씩 반영한다. 지표별 시험 하나를 결정적으로 선택한다. 공통 시험이 없으면 기존 v2 점수를 그대로 계산한다. 업그레이드의 교체 여부는 기존 로컬 정책으로 결정하며 구매 후보 응답에 같은 시험의 보유 기기 비교를 첨부한다. 가격은 다음 정상 관측이 들어올 때까지 기존 참고 가격을 사용한다.
+
+성능 처리의 공통 경계는 제품·구성 식별, 시험 호환성, 검증 자료로 제한한다. 스마트폰은 첫 MVP이며 추후 태블릿·노트북·워치·이어폰·스피커·PC 부품별로 지표와 점수 정책을 선택한다. 기기 실측, 같은 칩셋의 CPU/GPU 참고값, 사양 기반 보조 평가, 자료 없음을 구분한다. 칩셋 참고값으로 기기 발열·배터리·카메라를 평가하지 않으며 PC-FIT 호환성은 별도 로컬 규칙으로 처리한다. 현재 점수 경로에는 검증된 기기 실측만 연결되어 있다.
+
+Google 공개 문서상 현재 Gemini 모델은 Search Grounding을 지원한다. 검색 응답을 추출하여 별도 랭커의 점수 입력으로 이용하는 권한이 확인될 때까지 검색 어댑터·캐시·저장은 보류한다. Gemini의 현재 요청 분석과 추천 설명은 기존 경로를 사용한다.
+
+### 7-5 성능 평가 파이프라인
+
+추천 요청이 카탈로그·가격·예산을 통과하면 검증된 DB 측정과 승인된 외부 근거를 조회한다. 서버 환경 변수 `PERFORMANCE_SOURCE_FILE`은 운영자가 검수한 JSON 배열 파일을 가리킨다. 각 항목에는 `category`, `kind`, `dimension`, `model`, `domestic_model_number`, `chipset`, 선택적 `variant_id`, `url`, `source_name`, `rights_reference`, `allow_rank_use`, `reviewed_value`, `unit`, `method_name`, `method_version`, `test_conditions`, `device_settings`, `measured_on`, `checked_on`을 넣는다. 칩셋 참고 자료는 제품명·국내 모델번호 대신 정확한 칩셋으로 연결하며 CPU·GPU에 한정한다. 지표 키는 `cpu_single`, `cpu_multi`, `gpu`, `gaming_fps`, `sustained`, `camera_photo`, `camera_video`, `battery_runtime`이다. 서버 등록 URL 조회가 성공하고 구조화 값이 검수값과 일치해야 사용한다. 요청당 최대 8개 URL·24개 항목을 한 번 호출한다. 외부 원본·추출값은 즉시 응답에만 제공하며 성능 DB·추천 이력·상담 복원 상태에 쓰지 않는다.
+
+시험별 점수는 동일 시험 최고값 대비 비율이며 해당 시험이 있는 모든 적격 구성에서만 활성화한다. CPU·GPU·게임 결과는 기존 RAM 지표에 절반을 반영한다. 사진·영상 실측은 촬영 우선 요청에서 15%를 배정하고, 배터리 실측은 용량 점수와 절반씩 반영한다. 소형 선호 시 모든 후보의 실측 외형 규격이 있으면 무게·화면 기반 휴대성의 20%를 상대 부피로 보완한다. 폴더블은 접은 규격을 우선한다. 비교 가능한 실측과 가격이 확보되면 가격 지표의 25%를 비가격 종합점수/기존 참고 가격으로 반영한다. 카메라 사양은 참고 정보이며 화질 실측으로 변환하지 않는다.
+
+업그레이드는 기존 로컬 만족도·불편·예산 정책에 동일 시험 기기 실측 비교를 더한다. 해당 불편 분야의 비교 지표 중 10% 이상 개선이 하나 이상 있고 비교 가능한 지표의 하락이 없을 때 객관적 개선을 인정한다. 칩셋 참고값은 이 판단에서 제외한다. URL 서비스는 제품군·제품 식별자와 지표를 입력으로 받으며 스마트폰 외 제품군의 카탈로그와 평가 모듈은 후속 범위다. PC-FIT 호환성 검사는 별도의 서버 규칙을 적용한다.
+
+### 7-6 요청 시 성능 자료 자동 탐색
+
+`performance-discovery.js`는 제품군·카탈로그 제품·필요 지표를 입력으로 받는다. 스마트폰 배터리 조회는 [FixIndex 공개 JSON과 이용 조건](https://fixindex.eu/data/)을 사용한다. 제조사·모델명으로 [EPREL](https://energy-efficient-products.ec.europa.eu/product-list/smartphones-and-tablets_en) 등록을 찾고 등록번호로 공개 제품 정보 PDF를 구성한다. Gemini URL Context에서 PDF 본문 조회, 국내 카탈로그와 동일한 규제 모델번호, 원본 단위 및 JSON 공개 수치와의 일치를 모두 확인한다. 시험지의 정수 시간만 분으로 환산하며 미공개 측정일은 NULL로 유지한다. 응답에 원본과 데이터 이용 조건을 포함한다.
+
+사용 목적·선호·교체 불편에서 관련 지표를 선택하며 외부에는 사용자 원문을 전송하지 않는다. 수동 승인 파일 `PERFORMANCE_SOURCE_FILE`은 보조 경로로 유지한다. 요청당 12초, 최대 8개 URL·24항목을 단일 Gemini 호출로 처리하며 서비스 동시 조회는 2건이다. Gemini 429에는 60초간 외부 조회를 건너뛴다. 실패 시 로컬 자료와 기존 점수로 진행한다. 측정값은 해당 응답에서만 사용한다.
+
+해당 분야의 동일 시험이 전체 적격 구성에 적용될 때 점수에 반영한다. 동일 조건의 기기 실측 시험을 칩셋 참고 시험보다 우선한다. 업그레이드는 보유 기기와 후보의 동일 시험 기기 실측만 사용한다. 공급자 조회와 자료 구조는 공통 경계로 두며 충전·배터리·열·호환성 등 제품군별 평가 정책은 별개다. 현재 자동 공급자는 스마트폰 배터리에 연결되어 있다.
+
+### 7-7 부분 실측에 대한 점수 보정
+
+전체 적격 구성이 동일 시험을 공유하면 기존 반영 방식을 적용한다. 해당 분야의 완전 비교가 없으면 같은 시험에서 두 모델 이상이 측정된 자료를 고른다. 기기 실측을 우선하고 시험 호환 키가 다른 집단은 합산하지 않는다. 각 관측을 시험 최고값으로 나누고 모델별 상대값 평균을 빼며, 전체 모델에서 측정 모델이 차지하는 비율을 곱한다. 여기에 해당 분야 가중치의 절반을 적용하고 모든 부분 보정의 합을 ±0.025로 제한한다. 미측정 구성의 기존 점수와 가격 점수는 그대로다. 같은 색상 구성이 많아도 시험 평균에는 영향을 주지 않는다.
+
+요청의 자동 URL은 최대 세 개다. 업그레이드에서는 확인 가능한 기존 기기 URL을 우선하고, 남은 URL은 날짜에 따라 순환한다. 점수 계산은 여전히 모든 적격 구성에 적용한다. 칩셋 CPU·GPU 비교는 업그레이드의 참고 설명에 사용하고, 기기 성능이나 지속 성능 향상의 판정 근거는 동일 시험의 기기 실측을 사용한다.
+
+### 7-8 칩셋 참조값 식별
+
+`chipset-performance.js`는 제조사에서 확인한 동등 표기만 같은 키로 해석한다. GPU 코어 또는 CPU 구성이 다른 Apple 칩은 국내 모델 식별자로 구분하고, 구성 확인이 필요한 이름만 있는 측정치는 제외한다. Galaxy S25 FE SM-S731N의 Exynos 2400e 원본 표기는 벤치마크 매칭에서만 제조사가 확인한 Exynos 2400으로 처리한다. 카탈로그 DB 원본과 기기 실측의 모델번호 검증은 유지한다.
+
+같은 시험과 출처에서 중복된 칩셋 별칭은 한 번만 조회한다. Geekbench GPU는 원본의 Metal·Vulkan·OpenCL을 확인하고 비교 키에 포함한다. 업무·코딩·가성비 선호도 CPU·GPU 자료를 요청하며 게임 FPS·지속 시험은 성능/게임 목적에서 요청한다. 동등 시험에 대한 v2 점수와 부분 실측 ±0.025 한도는 유지한다. 출처 조건을 확인한 자료는 제품군별 실제 구성과 대응해야 하므로 PC 부품·태블릿 등에도 같은 조회 및 비교 경계를 재사용할 수 있다.
+
+### 7-9 성능 조회와 팀 인계
+
+서버가 공개 후보를 고르고 허용된 피드에서 원본 URL을 찾은 뒤 Gemini URL Context로 읽는다. 서버가 수치·단위·제품 식별자·시험을 대조하고 순위와 업그레이드 여부를 확정한다. Gemini 설명은 추천 대상·순위·가격을 바꿀 수 없다. 외부 수치와 비교는 즉시 응답에 한해 제공하며 이력 및 상담 복원은 원본 수치를 보관하지 않는다. Search Grounding은 사용자에게 검색 결과와 검색 제안을 함께 보여주는 기능이며 현재 추천 화면에 연결하지 않았다. 별도 랭커용 URL·수치 추출에는 이용하지 않는다. [Gemini 이용 조건](https://ai.google.dev/gemini-api/terms)
+
+URL 조회 예산은 12초, 자동 URL은 최대 3개로 유지한다. Gemini 호출 타이머는 응답 본문 읽기까지 적용한다. 설명과 최대 한 번의 검증 재시도는 요청 시작 기준 45초 예산에서 남은 시간을 공유한다. 필수 DB 처리와 응답 전송은 이 AI 예산 밖에서 마무리할 수 있다. 성능 조회가 Gemini 429를 반환하면 해당 요청은 재호출 없이 서버 설명으로 완료한다. 성능 조회 쿨다운은 기존 60초다.
+
+#### 팀 실행 절차
+
+- macOS·Windows에서 동일한 프로젝트 Node 버전으로 맞춘다. 현재 검증 환경은 Node 26과 MySQL 8.0.16 이상 8.0.x다. `backend`에서 `npm ci`, `npm run db:check`, `npm start`를 실행한다. 별도 터미널의 `front`에서 `npm ci`, `npm run serve`를 실행한다. Vue 기본 주소는 `http://127.0.0.1:8080`이고 API 프록시는 `127.0.0.1:3000`이다. Windows에서 실행 정책이 `npm.ps1`을 차단하면 CMD 또는 `npm.cmd`를 사용한다.
+- 실제 값은 팀원별로 설정한다. `backend/.env.example`을 기준으로 `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, 32바이트 이상의 `SESSION_SECRET`, 브라우저 주소와 동일한 `APP_ORIGIN`을 지정한다. 오프라인은 `AI_PROVIDER=mock`으로 실행한다. 실제 호출은 `AI_PROVIDER=gemini`, 서버 측 `GEMINI_API_KEY`, 선택적인 `GEMINI_MODEL`을 사용한다. 기본 포트의 변경이 필요한 경우 `PORT`와 Vue 프록시를 함께 검토한다. `ADMIN_EMAILS`와 선택적인 `PERFORMANCE_SOURCE_FILE`은 서버 프로세스 환경에 주입한다. 현재 자동 로더의 허용 목록에는 이 두 항목이 없다.
+- 신규 로컬 DB는 비어 있는 전용 스키마를 만든 후 `npm run db:migrate`로 001을 적용한다. 현재 운영과 동일한 확장 스키마가 필요하면 검토된 SQL 또는 승인된 스키마 사본으로 002·003, 필요한 관리자 작업용 004와 판매처별 가격 확장용 005를 준비한다. 초안은 기존 DB에 자동 적용하지 않는다. 성능 테이블은 `node db/migrate-performance.js --apply <대상_DB명>`으로 추가한다. `node scripts/seed-verified-smartphones.js`로 먼저 검증용 시드를 확인하고 전용 개발 DB에서만 `--apply`한다. 기본 시드 범위는 16모델·29옵션이다. 44모델과 참고 가격까지 필요한 팀원은 승인된 제품·가격 사본을 별도로 사용한다.
+
+#### HTTP 계약
+
+| 영역 | 권한과 경로 |
+| --- | --- |
+| 공개 카탈로그 | `GET /api/health/db`, `GET /api/smartphones`, `GET /api/smartphones/:variantId`. 카탈로그 목록은 페이지 커서를 사용한다. |
+| 인증 | `GET /api/auth/csrf`, `POST /api/auth/register`, `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/logout` |
+| 로그인 사용자 | `GET/PUT /api/profile`, `GET /api/owned-device-options`, `GET/POST /api/owned-devices`, `PUT/DELETE /api/owned-devices/:id`, `GET /api/upgrade-offer`, `PUT /api/upgrade-offer/state` |
+| 상담·추천 | `POST /api/analysis`, `POST /api/recommendation-candidates`, `POST /api/recommendations`, `GET/POST /api/recommendations/conversation`, `GET /api/recommendations`, `GET /api/recommendations/:id` |
+| 관리자 | `GET /api/admin/session`, `GET /api/admin/candidates`, 상세 및 해당 후보의 `review`·`register` 경로. 서버가 관리자 권한을 확인한다. |
+
+세션 쿠키를 유지하고 JSON 변경 요청에는 `X-CSRF-Token`을 전달한다. 로그인 성공 응답에서 갱신된 토큰을 사용한다. 카탈로그 보유 기기 등록 본문은 `{"variant_id":"…"}`다. 가입 후 프로필을 확정하고 GET 응답의 버전을 다음 변경·추천 요청에 사용한다.
+
+직접 추천의 예시 본문은 `{"expected_profile_version":2,"hard":{"budget_max_krw":1500000,"usages":["gaming"],"min_storage_gb":256,"allowed_brands":["samsung"]},"soft":{"priorities":["performance"]}}`이다. 필수 제조사는 `hard.allowed_brands`, 선호는 `soft.preferred_brands`다. 예산 무제한은 `hard.budget_unlimited:true`로 보내고 예산 상한을 함께 보내지 않는다. 업그레이드는 본인 `replacement_device_id`와 `purchase_reason`, `upgrade_context`를 추가한다. 교체 의향 값은 `high`, `moderate`, `low_or_keep_if_okay`다.
+
+추천 응답은 `data.status`로 `recommend`·`no_match`·`clarify`·`keep`·`defer`를 구분한다. 업그레이드 교체 판단은 `recommend`다. `items[].product`에 모델·용량·RAM, `items[].color_options`에 동일 구성의 색상 SKU, `items[].price`에 참고 가격·출처·관측 시각·다나와 URL이 있다. `performance_source_status`는 자료 조회 상태이고, 채택한 지표의 실제 수치는 해당 카드의 `performance_evidence`에서 확인한다.
+
+상담은 `{"action":"start","mode":"purchase","text":"…"}`로 시작한다. 업그레이드는 `mode:"upgrade"`와 본인 `replacement_device_id`를 보낸다. `data.conversation.questions`의 질문에 `action:"answer"`, `id`, `revision`, `question_id`, `answer`로 응답한다. `resume`은 현재 `id`·`revision`을 사용한다. 초안은 세션별 서버 메모리에 있으며 만료 기준은 20분이다. 종료 후 새로운 상담을 시작할 수 있다.
+
+오류 본문은 `error.code`와 `error.message`다. 401은 로그인 필요, 403은 CSRF 또는 관리자 권한, 404는 대상 미존재 또는 소유권 불일치, 422는 입력 형식 오류다. 409의 `PROFILE_CHANGED`는 프로필 새로 조회, `CONVERSATION_CHANGED`는 상담 상태 새로 조회, `CONVERSATION_EXPIRED`는 상담 재시작, `CANDIDATES_CHANGED`는 후보 재조회가 필요하다. 429는 `Retry-After`를 따른다. 외부 자료만 실패하면 추천 자체는 사양 기반으로 진행한다.
+
+제품 정보의 제출 양식과 승인 절차는 [데이터 수집 표준](PRODUCT_DATA_COLLECTION_STANDARD.md)을 따른다. 판매가는 기존 `price_observations` 공급 경로로 들어오며, 승인된 모델·용량·RAM의 마지막 정상 참고 관측치를 사용한다. 성능은 검수한 기기 관측을 `smartphone-performance.js`의 내부 등록 경로로 입력하거나, 이용 조건이 확인된 원본을 설정해 요청 내에서 검증한다. 공개 성능 입력 API와 제품 CSV 자동 등록은 현재 제공 범위 밖이다.
+
+## 8-1 공통 제품 카탈로그
+
+스마트폰은 기존 `smartphones`, `smartphone_variants`, `price_observations`를 공통 DTO로 읽는다. `catalog_models`는 스마트폰을 별도로 등록할 수 없게 한다. 공통 API의 식별자는 `category`와 `model_id` 또는 `sku_id`를 함께 사용한다. 스마트폰 ID는 기존 모델·변형 ID와 동일하다. 보유 기기 및 추천 이력의 기존 FK와 API는 유지된다.
+
+007은 `catalog_categories`, `catalog_models`, `catalog_skus`, `catalog_price_groups`, `catalog_price_observations`, `catalog_admin_events`를 추가한다. 모델에는 브랜드·모델번호·출시일·무게·공식 링크·출처와 공개/판매/검증 상태를, SKU에는 옵션 식별자·제조사 부품번호·용량·RAM·색상·연결 방식을 둔다. 모델의 `specs_json`과 SKU의 `options_json`은 제품군별 허용 키와 타입을 서버에서 검증한다. SQL은 JSON 객체, 모델과 SKU의 중복 방지, 복합 FK 및 공개 상태 제약을 강제한다.
+
+| 제품군 | 모델 사양 | SKU의 대표 옵션 |
+| --- | --- | --- |
+| 스마트폰 | 기존 칩셋·화면·카메라·배터리·무게 및 상세 사양 | 기존 용량·RAM·색상 |
+| 태블릿 | 칩셋·화면·펜·배터리 | 저장 용량·RAM·Wi-Fi/셀룰러·색상 |
+| 노트북 | CPU·GPU·화면·배터리(Wh) | CPU·GPU·RAM·저장 용량과 종류·화면 구성 |
+| 스마트워치 | 센서·GPS·배터리·방수·호환 OS | 케이스 크기·재질·밴드·연결 방식·색상 |
+| 무선이어폰 | ANC·코덱·지연·배터리 | 색상·연결 방식 |
+| 스피커 | 출력·오디오 포맷·크기·전원 방식 | 색상·연결 방식·오디오 구성 |
+
+새 제품군의 참고 가격은 같은 통화의 정상 관측치 중 가장 최근 행을 사용한다. 모델 단위 가격은 모델 상세에만 반환한다. SKU에는 해당 SKU의 관측치 또는 명시적으로 연결한 가격 그룹을 적용한다. 그룹 연결에는 공유 근거 URL과 확인된 비색상 옵션의 동일 지문이 필요하다. 신규 수집기가 없으며 가격의 출처, 실제 관측·확인 시각 및 이력을 보존한다.
+
+| 공개 GET | 동작 |
+| --- | --- |
+| `/api/catalog/categories` | 고정 6개 제품군 코드와 표시명 |
+| `/api/catalog/:category/models` | 모델 목록·사양. `q`(모델명 또는 모델번호), `brand` 필터 |
+| `/api/catalog/:category/models/:modelId` | 모델 공통 정보·제품군 사양·출처 및 모델 단위 `reference_price` |
+| `/api/catalog/:category/models/:modelId/skus` | 공개 SKU·옵션 및 SKU/그룹 참고 가격 |
+
+목록과 SKU 조회는 `limit` 기본 30, 최대 100, `sort=id_asc|id_desc` 및 `after=<next_cursor>`를 받는다. 정렬과 필터를 유지해 다음 페이지를 요청한다. 상세와 SKU는 `currency`로 통화를 선택할 수 있으며 기본값은 `KRW`다. 참고 가격은 `amount_minor`(문자열), `currency`, `product_url`, `seller_name`, `observed_at`, `checked_at`, `scope`, `label`을 반환한다. 예를 들어 제품 데이터가 없는 태블릿의 목록은 007 적용 후 `{"data":[],"next_cursor":null}`, 개별 가격이 없으면 `"reference_price":null`이다. 미공개·미검증 대상 상세는 404, 입력 형식 오류는 422다.
+
+공개 모델과 SKU는 모두 검증 완료가 필요하며 테스트 모델은 제외한다. 기존 관리자 권한은 `requireAdmin`으로 확인한다. 공통 쓰기 경로를 연결하는 후속 단계에서는 검증 훅이 실행되는 Sequelize 인스턴스 작업과 승인·감사 기록을 같은 트랜잭션으로 묶는다. 감사 기록은 사용자·모델·선택 SKU를 참조한다. 8-1에서는 조회 라우트와 감사 저장 구조를 제공한다.
+
+팀 개발 DB에 적용할 때 001 및 기존 스마트폰 확장 여부를 먼저 확인하고 백업한 후, `backend`에서 `node db/migrate-catalog.js --apply <대상_DB명>`을 실행한다. 명령은 실제 연결 DB명이 다르면 중단한다. 기존 DB에 007을 적용하지 않은 상태에서도 제품군 목록과 스마트폰 읽기 경로는 사용할 수 있다. 나머지 제품군 요청은 테이블을 만들기 전까지 503이다.
+
+## 8-2 제품 등록과 공통 비교
+
+`GET /api/catalog/:category/compare?items=<modelId>:<skuId>,<modelId>:<skuId>`는 동일 제품군의 서로 다른 SKU 선택 2~3개를 요청 순서대로 비교한다. 한 모델의 용량·색상·GPU 옵션도 비교할 수 있다. 선택마다 모델·SKU 관계와 공개 상태를 확인한다. 잘못된 관계·비공개 SKU는 404, 같은 선택 중복·개수 오류는 422다. `currency`의 기본값은 KRW다.
+
+응답의 `data.items[].model`과 `data.items[].sku`에는 모델 사양과 실제 옵션, 출처·확인 상태, SKU 단위 참고 가격이 들어간다. 가격이 확인된 경우 같은 가격 객체에 상품 링크, 관측 시각, `price_source`가 포함된다. 예를 들어 실제 iPad 비교 요청은 `/api/catalog/tablet/compare?items=1:1,1:2`이며 `data.fields`의 저장 용량 항목은 `{"key":"storage_gb","values":[128,256],"has_unknown":false,"higher_sku_ids":["2"]}`다. 값이 없으면 `null`과 `has_unknown:true`를 쓴다. 수치 우세 표시는 직접 비교할 수 있는 용량·RAM으로 제한한다. 사진 품질, 배터리 시간이나 가격을 임의로 환산해 우위를 표시하지 않는다.
+
+팀원은 `backend/data/common-catalog-verified-8-2.json`과 같은 구조로 모델·정확한 국내 SKU 및 출처를 정리한다. `backend`에서 `node scripts/import-common-catalog.js <입력.json>`을 실행하면 입력 검증만 수행한다. 백업과 대상 확인 후 `--apply <대상_DB명>`을 붙이면 공통 테이블 안에서 한 트랜잭션으로 반영한다. 동일 입력을 재실행하면 새 행이 생기지 않으며, 기존 행과 충돌하는 데이터는 전체 배치에서 롤백한다. 제품 수정·승인 전환은 후속 관리자 경로에 맡긴다.
+
+공개 가격 입력은 업체별 일반 판매 상품에서 독립적으로 확인한 제조사·모델번호·SKU 식별자·용량·RAM·색상·연결 방식·구성을 대조한다. 신품·국내 판매·일반 구매·판매 가능·저장/표시 권한과 그 근거를 기록한다. 다나와는 공개 상품 상세 `pcode` URL만 받고, 상품명에서 부적합 판매 조건을 추가 검사한다. 이 검증은 입력을 점검하며 공급처의 이용 권한을 부여하지 않는다. 스크립트가 외부 URL을 열거나 예약 수집을 수행하지 않는다. 정상 관측치와 확인 시각은 이력으로 남고, 기존 스마트폰 관측치는 그대로 사용한다.
+
+## 8-2.5 조원 제품 데이터 통합 및 다나와 가격 연동
+
+- [`teammate-catalog-converter.js`](../backend/services/teammate-catalog-converter.js)는 조원 프로젝트(`pc_final-main/backend/src/data/products.json`, 99모델·120 SKU)를 읽어 공통 카탈로그 규격으로 정규화한다. 기존 스마트폰 카탈로그(53모델·352 SKU)를 보존하기 위해 스마트폰 30모델·43 SKU를 제외하고, 오디오 20모델 중 지원 범위 밖인 오버이어 헤드폰 8모델·8 SKU를 제외한 무선이어폰 12모델·12 SKU만 분류한다. 기존 8-2 등록 모델과 중복되는 `iPad (A16)`(`A3354`) 및 `Galaxy Buds3`(`SM-R530`) 2모델·2 SKU는 기존 모델·SKU ID와 검증 사양을 우선 유지하고, 신규 **59모델·67 SKU**(태블릿 18모델·26 SKU, 노트북 20모델·20 SKU, 스마트워치 10모델·10 SKU, 무선이어폰 11모델·11 SKU)를 추가한다.
+- [`catalog-danawa-matcher.js`](../backend/services/catalog-danawa-matcher.js) 및 [`prepare-teammate-catalog-8-2-5.js`](../backend/scripts/prepare-teammate-catalog-8-2-5.js)는 신규 5개 제품군 전체(64모델·77 SKU)에 대해 제조사·모델번호·저장 용량·RAM·연결 방식(Wi-Fi/셀룰러, Bluetooth/GPS/LTE)·케이스 크기·CPU/GPU 코어 구성 및 국내 정품 신품 조건을 대조하여 다나와 참고 가격과 상세 상품 URL(`https://prod.danawa.com/info/?pcode=...`)을 매칭한다. 중고·리퍼·해외직구·번들·액세서리 및 출고가 대비 비정상 품절 할증가(>150%)나 저가(<30%)는 제외하고 가격을 `null`로 유지한다.
+- 생성된 통합 파일 [`common-catalog-teammate-8-2-5.json`](../backend/data/common-catalog-teammate-8-2-5.json)은 기존 `node scripts/import-common-catalog.js data/common-catalog-teammate-8-2-5.json [--apply final_project]`로 검증·적용하며, 재실행 시 중복 생성 없이 `{models:0,skus:0,prices:0}`을 보장한다.
+
+## 8-3A 범용 AI 추천 엔진 (태블릿·노트북·스마트워치·무선이어폰·스피커)
+
+- 기존 스마트폰 추천(`smartphone-ranker-v2`, `smartphones`, `smartphone_variants`, `price_observations`)은 수정 없이 그대로 유지하며, 신규 5개 제품군(`tablet`, `laptop`, `smartwatch`, `earbuds`, `speaker`)은 [`catalog-recommendation-engine.js`](../backend/services/catalog-recommendation-engine.js)를 통해 공통 파이프라인(`요구사항 정규화 → 공개 검증 모델·SKU 및 최신 정상 가격 조회 → 필수 조건·OS 호환성 필터링 → 제품군별 로컬 점수화 → 모델별 최적 대표 SKU 최대 3개 선정 → Gemini 추천 설명 및 서버 폴백`)으로 처리한다.
+- **API 계약:**
+  - `POST /api/analysis`: `purpose="purchase"` 요청 시 선택적 `category` 입력 또는 자연어 문맥 감지를 통해 6개 제품군 코드(`draft.category`)와 제품군별 필수 조건(`require_pen`, `require_keyboard`, `require_anc`, `require_cellular`, `require_water_resistance`, `require_gps`, `require_discrete_gpu`, `compatible_os`, `min_ram_gb`, `min_storage_gb`, `max_weight_g`, `min_refresh_hz`) 및 제조사(`samsung`, `apple`, `lg`, `lenovo`, `asus`, `sony`, `bose`, `sennheiser`, `jbl`)를 추출한다.
+  - `POST /api/recommendations` (요청 본문 `category` 지정) 및 `POST /api/catalog/:category/recommendations`, `POST /api/catalog/:category/recommendation-candidates`: `category`가 생략되거나 `"smartphone"`이면 기존 스마트폰 추천 엔진을 실행하고, 신규 5개 제품군이면 제품군별 랭커(`tablet-ranker-v1`, `laptop-ranker-v1`, `smartwatch-ranker-v1`, `earbuds-ranker-v1`, `speaker-ranker-v1`)를 실행한다.
+- **가격·근거·안전성 규칙:**
+  - `catalog_price_observations`의 정상 참고 가격이 없는 SKU(미수집 21개 SKU)는 예산·가성비 기반 추천 후보에서 제외하며(`missing_price_policy: 'excluded_from_budget_and_value_evaluation'`), 출고가 대체나 임의 가격 생성을 금지한다.
+  - 스마트워치는 `compatible_os` 기준(`ios` → Apple Watch, `android` → Galaxy Watch)으로 호환 불일치 후보를 엄격히 제외한다.
+  - 후보가 3개 미만인 제품군(예: 스피커 `JBL Flip 7` 1모델·2색상 SKU)은 가능한 개수(1개)만 추천하고 동일 사양의 색상 SKU는 `color_options`로 묶어 모델 중복 추천을 방지한다. 내부 점수나 가중치 수치는 응답에 노출하지 않는다.
+
+## 8-3B 범용 보유 기기·업그레이드 판단 엔진
+
+- **보유 기기 구조(무스키마 변경)**: 기존 `owned_devices` 테이블의 `variant_id`는 스마트폰 전용 외래키로 보존하고, 신규 5개 제품군(`tablet`, `laptop`, `smartwatch`, `earbuds`, `speaker`)은 `variant_id=NULL`과 `manual_specs_json._catalog_ref`(`catalog_model_id`, `catalog_sku_id`) 및 `_device_meta`(`purchase_price_krw`, `purchase_date`, `pain_points`, `usages`)를 통해 공통 카탈로그 ID와 스마트폰 ID를 혼동 없이 분리 저장한다.
+- **서버 업그레이드 결정([`catalog-upgrade-advisor.js`](../backend/services/catalog-upgrade-advisor.js))**: 동일 제품군 내에서 보유 기기와 적격 후보의 확인된 사양만 비교하여 서버가 `upgrade_decision` (`REPLACE` / `KEEP` / `DEFER` / `CLARIFY`, DB `status`: `recommend` / `keep` / `defer` / `clarify`)을 확정한다.
+  - CPU/칩셋 모델명이나 출시 연도만으로 임의 성능 향상률을 생성하지 않으며, 배터리 정격 용량(`mAh`/`Wh`)과 사용 시간(`battery_hours`)은 동일 단위끼리만 비교한다.
+  - 보유 기기 구매가(`purchase_price_krw`)와 후보의 현재 다나와 참고 가격(`reference_price`)을 구분하고, 미확인 중고 판매가는 차감하지 않는다(`resale_value_estimated: false`).
+  - 보유 기기와 동일한 모델 또는 동일 SKU로의 교체는 `SAME_MODEL_OR_SKU_AS_OWNED`로 제외하며, 미수집 가격 후보만 존재하거나 검증 가능한 사양 개선이 없으면 `DEFER`, 보유 기기 사양/목적 정보가 부족하거나 타 제품군 기기가 전달되면 `CLARIFY`를 반환한다.

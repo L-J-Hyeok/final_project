@@ -194,11 +194,11 @@
                 rel="noopener noreferrer"
                 class="spec-external-link hero-danawa-link"
               >
-                다나와 상품 보기
+                다나와에서 가격 비교하기 (다나와 상품 보기)
               </a>
               <small v-if="category === 'smartphone' && product.seller_price_summary?.lowest">
-                지정 판매처 중 최저가: {{ Number(product.seller_price_summary.lowest.total_krw).toLocaleString('ko-KR') }}원 (배송비 포함)
-                · {{ product.seller_price_summary.lowest.seller_name }}
+                지정 판매처 수집 당시 참고 가격: {{ Number(product.seller_price_summary.lowest.total_krw).toLocaleString('ko-KR') }}원 (배송비 포함)
+                · {{ product.seller_price_summary.lowest.seller_name }} · 수집 시각 {{ formatPriceCheckedAt(product.seller_price_summary.lowest) }}
               </small>
               <details v-if="category === 'smartphone' && product.seller_price_summary">
                 <summary>판매처별 조회 가격 · 구매 조건 확인 필요</summary>
@@ -1037,8 +1037,8 @@ const smartphoneCategories = [
       { key: 'launch_price', label: '공식 출고가', format: formatOfficialLaunchPrice },
       { key: 'price_type', label: '가격 유형', format: formatPriceType },
       { key: 'price_source', label: '가격 출처', format: p => p.price?.source_name || '정보 없음' },
-      { key: 'danawa_link', label: '다나와 상품 링크', format: p => getDanawaUrl(p) ? '다나와 상품 보기' : '정보 없음', href: getDanawaUrl },
-      { key: 'price_date', label: '가격 조회 시각', format: formatPriceDate },
+      { key: 'danawa_link', label: '다나와 상품 링크', format: p => getDanawaUrl(p) ? '다나와에서 가격 비교하기 (다나와 상품 보기)' : '정보 없음', href: getDanawaUrl },
+      { key: 'price_date', label: '가격 수집 시각', format: formatPriceDate },
       { key: 'price_notice', label: '구매 참고사항', format: formatPriceNotice }
     ]
   }

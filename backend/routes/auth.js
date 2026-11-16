@@ -65,6 +65,7 @@ module.exports = function createAuth(config) {
   router.post('/logout', wrap(async (req, res) => {
     if (!req.body || Array.isArray(req.body) || Object.keys(req.body).length) throw fail(422, 'INVALID_INPUT');
     if (!req.session.user_id) throw fail(401, 'AUTH_REQUIRED');
+    require('../services/recommendation-conversation').clear(req);
     await callSession(req, 'destroy');
     res.clearCookie('sid', config.cookie); res.status(204).end();
   }));

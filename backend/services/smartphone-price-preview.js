@@ -150,17 +150,63 @@ function selectPrice({ candidate, observations = [], references = [], launch = n
 
 function buildCandidatePriceObject(row, observations = [], env = process.env, now = new Date(), customCurated = null) {
   const priceSummary = catalog.selectBestPrice(observations, now);
-  if (priceSummary.selected && priceSummary.selected.eligible) {
+  const latest = priceSummary.latest_by_seller.filter(price => price.retained_observation)
+    .sort((a, b) => Number(b.color_scope === 'exact_color') - Number(a.color_scope === 'exact_color') ||
+      Date.parse(b.observed_at) - Date.parse(a.observed_at) ||
+      (a.observation_id === b.observation_id ? 0 : BigInt(a.observation_id) < BigInt(b.observation_id) ? 1 : -1))[0];
+  if (latest?.eligible) {
     return {
       selected: {
-        ...priceSummary.selected,
+        ...latest,
         price_source: 'verified_sale',
-        budget_basis_krw: priceSummary.selected.total_krw,
+        budget_basis_krw: latest.total_krw,
         purchase_verified: true,
         development_only: false,
-        danawa_product_url: priceSummary.selected.danawa_product_url || null,
-        checked_at: priceSummary.selected.observed_at,
-        warning: priceSummary.selected.warning || null
+        danawa_product_url: latest.danawa_product_url || null,
+        checked_at: latest.observed_at,
+        warning: latest.warning || null
+      },
+      latest_by_seller: priceSummary.latest_by_seller
+    };
+  }
+
+  const storedDanawaRef = latest?.reference_usable ? latest : null;
+  if (storedDanawaRef) {
+    const productCode = storedDanawaRef.danawa_product_code || (typeof storedDanawaRef.source_url === 'string' ? storedDanawaRef.source_url.match(/pcode=(\d+)/)?.[1] : null) || null;
+    const danawaUrl = storedDanawaRef.danawa_product_url || storedDanawaRef.source_url || (productCode ? `https://prod.danawa.com/info/?pcode=${productCode}` : null);
+    return {
+      selected: {
+        observation_id: storedDanawaRef.observation_id || null,
+        variant_id: String(row.variant_id),
+        price_source: 'danawa_reference',
+        price_label: '다나와 수집 당시 참고 가격',
+        is_reference_price: true,
+        purchase_verified: false,
+        development_only: false,
+        eligible: false,
+        is_expired: false,
+        retained_observation: true,
+        source_name: storedDanawaRef.source_name || 'danawa-cli',
+        source_url: danawaUrl,
+        danawa_product_url: danawaUrl,
+        danawa_product_code: productCode,
+        seller_name: storedDanawaRef.seller_name || '다나와 기준 최저가',
+        amount_krw: Number(storedDanawaRef.amount_krw),
+        shipping_krw: null,
+        total_krw: null,
+        budget_basis_krw: Number(storedDanawaRef.amount_krw),
+        observed_at: storedDanawaRef.observed_at,
+        expires_at: storedDanawaRef.expires_at,
+        checked_at: storedDanawaRef.observed_at,
+        conditions_text: storedDanawaRef.conditions_text || '다나와 기준 최저가 (참고용: 판매조건·배송비 미확인)',
+        unconditional: null,
+        in_stock: null,
+        is_new: true,
+        is_unlocked: true,
+        is_mock: false,
+        warning: '다나와 수집 당시 참고 가격입니다. 판매 가격은 구매 조건에 따라 달라질 수 있습니다.',
+        color_scope: storedDanawaRef.color_scope,
+        match_details: storedDanawaRef.match_details || null,
       },
       latest_by_seller: priceSummary.latest_by_seller
     };
@@ -244,13 +290,8 @@ function buildCandidatePriceObject(row, observations = [], env = process.env, no
   return priceSummary;
 }
 
-function candidatePriceDTO(input) {
-  const pricing = selectPrice(input);
-  return { variant_id: input.candidate?.variant_id ?? null, price_source: pricing.price_source, pricing };
-}
 module.exports = {
   selectPrice,
-  candidatePriceDTO,
   getDevelopmentPricingFlags,
   resolveCuratedPriceInputsForVariant,
   buildCandidatePriceObject,

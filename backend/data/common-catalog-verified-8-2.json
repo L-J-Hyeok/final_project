@@ -1,0 +1,344 @@
+[
+  {
+    "model": {
+      "category_code": "tablet",
+      "brand": "Apple",
+      "model_name": "iPad (A16) Wi-Fi",
+      "model_number": "A3354",
+      "released_on": null,
+      "weight_g": 477,
+      "official_product_url": "https://www.apple.com/kr/ipad-11/",
+      "specs_json": {
+        "release_month": "2025-04",
+        "chipset": "Apple A16",
+        "screen_inches": 11,
+        "display": "IPS LCD 2360 × 1640",
+        "pen_supported": true,
+        "keyboard_supported": true,
+        "battery_wh": 28.6
+      },
+      "source_name": "Apple 공식 사양",
+      "source_url": "https://support.apple.com/ko-kr/122240",
+      "publication_status": "public",
+      "verification_status": "verified",
+      "verified_at": "2026-11-16T07:37:58Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "A3354-128-silver",
+          "manufacturer_part_number": null,
+          "color": "실버",
+          "connectivity": "wifi",
+          "options_json": {},
+          "storage_gb": 128,
+          "ram_gb": null,
+          "source_name": "Apple 한국 스토어",
+          "source_url": "https://www.apple.com/kr/shop/buy-ipad/ipad/128gb-%EC%8B%A4%EB%B2%84-wifi",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      },
+      {
+        "sku": {
+          "sku_code": "A3354-256-silver",
+          "manufacturer_part_number": null,
+          "color": "실버",
+          "connectivity": "wifi",
+          "options_json": {},
+          "storage_gb": 256,
+          "ram_gb": null,
+          "source_name": "Apple 한국 스토어",
+          "source_url": "https://www.apple.com/kr/shop/buy-ipad/ipad/256gb-%EC%8B%A4%EB%B2%84-wifi",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "laptop",
+      "brand": "Apple",
+      "model_name": "MacBook Air 13 (M5)",
+      "model_number": "A3449",
+      "released_on": "2026-03-11",
+      "weight_g": 1230,
+      "official_product_url": "https://www.apple.com/kr/macbook-air/",
+      "specs_json": {
+        "release_month": "2026-03",
+        "screen_inches": 13.6,
+        "display": "IPS LCD 2560 × 1664",
+        "battery_wh": 53.8,
+        "os": "macOS",
+        "ports": [
+          "Thunderbolt 4 (USB-C) × 2",
+          "MagSafe 3",
+          "3.5 mm"
+        ]
+      },
+      "source_name": "Apple 공식 사양",
+      "source_url": "https://support.apple.com/ko-kr/126320",
+      "publication_status": "public",
+      "verification_status": "verified",
+      "verified_at": "2026-11-16T07:37:58Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "A3449-16-512-8gpu-silver",
+          "manufacturer_part_number": null,
+          "color": "실버",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Apple M5 10코어",
+            "gpu": "Apple M5 8코어",
+            "storage_type": "SSD"
+          },
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "source_name": "Apple 한국 스토어",
+          "source_url": "https://www.apple.com/kr/shop/buy-mac/macbook-air/13-%EB%AA%A8%EB%8D%B8-silver-m5-%EC%B9%A9-10%EC%BD%94%EC%96%B4-cpu-8%EC%BD%94%EC%96%B4-gpu-16gb-%EB%A9%94%EB%AA%A8%EB%A6%AC-512gb-%EC%A0%80%EC%9E%A5-%EC%9E%A5%EC%B9%98",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      },
+      {
+        "sku": {
+          "sku_code": "A3449-16-512-10gpu-starlight",
+          "manufacturer_part_number": null,
+          "color": "스타라이트",
+          "connectivity": "wifi",
+          "options_json": {
+            "cpu": "Apple M5 10코어",
+            "gpu": "Apple M5 10코어",
+            "storage_type": "SSD"
+          },
+          "storage_gb": 512,
+          "ram_gb": 16,
+          "source_name": "Apple 한국 스토어",
+          "source_url": "https://www.apple.com/kr/shop/buy-mac/macbook-air/13-%EB%AA%A8%EB%8D%B8-%EC%8A%A4%ED%83%80%EB%9D%BC%EC%9D%B4%ED%8A%B8-m5-%EC%B9%A9-10%EC%BD%94%EC%96%B4-cpu-10%EC%BD%94%EC%96%B4-gpu-16gb-%EB%A9%94%EB%AA%A8%EB%A6%AC-512gb-%EC%A0%80%EC%9E%A5-%EC%9E%A5%EC%B9%98",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "smartwatch",
+      "brand": "Samsung",
+      "model_name": "Galaxy Watch7 Bluetooth 40 mm",
+      "model_number": "SM-L300",
+      "released_on": "2024-07-24",
+      "weight_g": 28.8,
+      "official_product_url": "https://www.samsung.com/sec/watches/galaxy-watch/galaxy-watch7/specs/",
+      "specs_json": {
+        "gps": true,
+        "compatible_os": [
+          "Android 11 이상 (Google 모바일 서비스 지원, RAM 1.5GB 이상)"
+        ],
+        "screen_inches": 1.31,
+        "display": "Super AMOLED 432 × 432",
+        "battery_mah": 300,
+        "water_resistance": "5 ATM / IP68",
+        "sensors": [
+          "광학 심박",
+          "전기 심박",
+          "생체전기 임피던스",
+          "적외선 온도",
+          "가속도",
+          "자이로",
+          "기압",
+          "지자기",
+          "조도"
+        ]
+      },
+      "source_name": "Samsung 공식 사양",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-L300NZGAKOO/",
+      "publication_status": "public",
+      "verification_status": "verified",
+      "verified_at": "2026-11-16T07:37:58Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SM-L300NZGAKOO",
+          "manufacturer_part_number": "SM-L300NZGAKOO",
+          "color": "그린",
+          "connectivity": "bluetooth",
+          "options_json": {
+            "case_size_mm": 40
+          },
+          "storage_gb": null,
+          "ram_gb": null,
+          "source_name": "Samsung 국내 지원",
+          "source_url": "https://www.samsung.com/sec/support/model/SM-L300NZGAKOO/",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      },
+      {
+        "sku": {
+          "sku_code": "SM-L300NZEAKOO",
+          "manufacturer_part_number": "SM-L300NZEAKOO",
+          "color": "크림",
+          "connectivity": "bluetooth",
+          "options_json": {
+            "case_size_mm": 40
+          },
+          "storage_gb": null,
+          "ram_gb": null,
+          "source_name": "Samsung 국내 제품 페이지",
+          "source_url": "https://www.samsung.com/sec/watches/galaxywatch7-l300/SM-L300NZEAKOO/",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "earbuds",
+      "brand": "Samsung",
+      "model_name": "Galaxy Buds3",
+      "model_number": "SM-R530",
+      "released_on": "2024-07-24",
+      "weight_g": null,
+      "official_product_url": "https://www.samsung.com/sec/buds/galaxy-buds3-r530/",
+      "specs_json": {
+        "anc": true,
+        "codecs": [
+          "AAC",
+          "SBC",
+          "SSC",
+          "SSC-UHQ"
+        ],
+        "battery_hours": 5,
+        "battery_condition": "ANC 켜짐, 이어버드 단독 오디오 최대 재생",
+        "driver": "11 mm 1-way",
+        "wireless_charging": true,
+        "water_resistance": "IP57 (이어버드)",
+        "bluetooth_version": "5.4"
+      },
+      "source_name": "Samsung 공식 사양",
+      "source_url": "https://www.samsung.com/sec/support/model/SM-R530NZWAKOO/",
+      "publication_status": "public",
+      "verification_status": "verified",
+      "verified_at": "2026-11-16T07:37:58Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "SM-R530NZAAKOO",
+          "manufacturer_part_number": "SM-R530NZAAKOO",
+          "color": "실버",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "storage_gb": null,
+          "ram_gb": null,
+          "source_name": "Samsung 국내 제품 페이지",
+          "source_url": "https://www.samsung.com/sec/buds/galaxy-buds3-r530/SM-R530NZAAKOO/",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      },
+      {
+        "sku": {
+          "sku_code": "SM-R530NZWAKOO",
+          "manufacturer_part_number": "SM-R530NZWAKOO",
+          "color": "화이트",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "storage_gb": null,
+          "ram_gb": null,
+          "source_name": "Samsung 국내 지원",
+          "source_url": "https://www.samsung.com/sec/support/model/SM-R530NZWAKOO/",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      }
+    ]
+  },
+  {
+    "model": {
+      "category_code": "speaker",
+      "brand": "JBL",
+      "model_name": "JBL Flip 7",
+      "model_number": "FLIP 7",
+      "released_on": null,
+      "weight_g": 560,
+      "official_product_url": "https://www.samsung.com/sec/harman-life-style-audio/jbl-speaker-flip7-d2c/JBLFLIP7BLK/",
+      "specs_json": {
+        "power_w": 35,
+        "power_supply": "내장 충전 배터리 (17.28 Wh)",
+        "bluetooth_version": "5.4",
+        "battery_hours": 14,
+        "battery_condition": "최대 음악 재생, Playtime Boost 미사용",
+        "water_resistance": "IP68",
+        "dimensions_mm": [
+          182.5,
+          69.5,
+          71.5
+        ]
+      },
+      "source_name": "JBL 공식 사양",
+      "source_url": "https://kr.jbl.com/on/demandware.static/-/Sites-masterCatalog_Harman/default/dw3c060571/pdfs/JBL_FLIP_7_Specsheet_KO.pdf",
+      "publication_status": "public",
+      "verification_status": "verified",
+      "verified_at": "2026-11-16T07:37:58Z"
+    },
+    "skus": [
+      {
+        "sku": {
+          "sku_code": "JBLFLIP7BLK",
+          "manufacturer_part_number": "JBLFLIP7BLK",
+          "color": "블랙",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "storage_gb": null,
+          "ram_gb": null,
+          "source_name": "Samsung 국내 제품 페이지",
+          "source_url": "https://www.samsung.com/sec/harman-life-style-audio/jbl-speaker-flip7-d2c/JBLFLIP7BLK/",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      },
+      {
+        "sku": {
+          "sku_code": "JBLFLIP7BLU",
+          "manufacturer_part_number": "JBLFLIP7BLU",
+          "color": "블루",
+          "connectivity": "bluetooth",
+          "options_json": {},
+          "storage_gb": null,
+          "ram_gb": null,
+          "source_name": "Samsung 국내 제품 페이지",
+          "source_url": "https://www.samsung.com/sec/harman-life-style-audio/jbl-speaker-flip7-d2c/JBLFLIP7BLU/",
+          "publication_status": "public",
+          "verification_status": "verified",
+          "verified_at": "2026-11-16T07:37:58Z"
+        },
+        "prices": []
+      }
+    ]
+  }
+]

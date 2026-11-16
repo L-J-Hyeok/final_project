@@ -22,7 +22,7 @@ test('MIXED PAINS: verifiable benefit with unverified pains still recommends ver
  assert.equal(validator.validateRecommendationOutput(output,c).valid,true);
  assert(output.items[0].uncertainties.some(u=>u.includes('카메라·배터리')));
 });
-test('>40 candidates: KEEP upgrade_decision overrides candidate cap while remaining >40 upgrade matches stay clarify',async()=>{
+test('KEEP preserves historical decision context',async()=>{
  const phones=require('../routes/smartphones'),r=require('../routes/recommendations');
  const oldSearch=phones.searchCandidatesForUser,oldDb=connection.getDatabase;
  const c=context();c.purchase_conditions.upgrade_context={replacement_intent:'low_or_keep_if_okay',satisfied_aspects:['storage'],pain_points:[]};
@@ -39,13 +39,9 @@ test('>40 candidates: KEEP upgrade_decision overrides candidate cap while remain
   assert.equal(keepOut.data.owned_variant_id,'10');
   assert.deepEqual(keepOut.data.keep_cautions,['배터리 상태 점검 권장']);
 
-  phones.searchCandidatesForUser=async()=>({status:'clarify',clarify_reason:'too_many_candidates',candidate_count:45,profile_version:1,input:{...c.purchase_conditions,replacement_device_id:'1',clarify_questions:[]},candidates:[],questions:['조건을 만족하는 교체 후보가 45개로 너무 많습니다.']});
-  const clarifyOut=await invoke(r,'post','/recommendations',{session:{user_id:'owner'},body:{}});
-  assert.equal(clarifyOut.data.status,'clarify');
-  assert.match(clarifyOut.data.questions[0],/45개/);
  }finally{phones.searchCandidatesForUser=oldSearch;connection.getDatabase=oldDb}
 });
-test('searchCandidatesForUser narrows >40 matches for storage upgrade and attaches KEEP on >40 general matches',async()=>{
+test('searchCandidatesForUser preserves all 45 matches for downstream upgrade evaluation',async()=>{
  const phones=require('../routes/smartphones'),oldDb=connection.getDatabase;
  const makeVariantRows=(count)=>Array.from({length:count},(_,idx)=>({
   variant_id:String(100+idx),smartphone_id:String(100+idx),brand:'samsung',model_name:`Model ${idx}`,domestic_model_number:`SM-T${idx}`,
@@ -81,7 +77,8 @@ test('searchCandidatesForUser narrows >40 matches for storage upgrade and attach
    upgrade_context:{replacement_intent:'low_or_keep_if_okay',satisfied_aspects:['storage'],pain_points:[]},
    hard:{budget_max_krw:1200000,usages:['work']}
   },new Date('2026-11-12T12:00:00Z'));
-  assert.equal(keepSearch.upgrade_decision?.status,'keep');
+  assert.equal(keepSearch.candidate_count,45);
+  assert.equal(advisor.evaluateUpgradeDecision(keepSearch.ai_context).status,'keep');
 
   const upgradeSearch=await phones.searchCandidatesForUser('owner',{
    expected_profile_version:2,replacement_device_id:'1',purchase_reason:'용량 부족',
@@ -89,7 +86,8 @@ test('searchCandidatesForUser narrows >40 matches for storage upgrade and attach
    hard:{budget_max_krw:1200000,usages:['work']}
   },new Date('2026-11-12T12:00:00Z'));
   assert.equal(upgradeSearch.status,'candidates_ready');
-  assert.equal(upgradeSearch.candidate_count,3);
+  assert.equal(upgradeSearch.candidate_count,45);
+  assert.equal(advisor.evaluateUpgradeDecision(upgradeSearch.ai_context).eligible_variant_ids.length,3);
  }finally{connection.getDatabase=oldDb}
 });
 test('CLARIFY: missing satisfaction/reason or unverified manual device',()=>{const c=context();c.purchase_conditions.purchase_reason='';assert.equal(advisor.evaluateUpgradeDecision(c).status,'clarify');c.purchase_conditions.purchase_reason='교체';c.replacement_device.product=null;assert.equal(advisor.evaluateUpgradeDecision(c).status,'clarify');assert.equal(advisor.evaluateUpgradeDecision({...c,replacement_device:null}),null);});
@@ -108,4 +106,36 @@ test('no-match upgrade enforces owner lookup before any history write',async()=>
  phones.searchCandidatesForUser=async()=>({status:'no_match',input:{replacement_device_id:'99'},profile_version:1,candidates:[]});
  connection.getDatabase=()=>({models:{owned_devices:{findOne:async({where})=>{assert.equal(where.user_id,'owner');return null}},recommendations:{create:async()=>writes++}}});
  try{await assert.rejects(invoke(require('../routes/recommendations'),'post','/recommendations',{session:{user_id:'owner'},body:{}}),{code:'NOT_FOUND'});assert.equal(writes,0);}finally{phones.searchCandidatesForUser=oldSearch;connection.getDatabase=oldDb}
+});
+
+test('upgrade considers measured battery gains only with comparable device-level evidence', () => {
+  const c = context();
+  c.replacement_device.product.smartphone_id = '1';
+  c.replacement_device.product.variant_id = '1';
+  c.purchase_conditions.upgrade_context.pain_points = ['battery'];
+  const measurement = { metric: 'battery_runtime', protocol_key: 'fixture-protocol',
+    verification_status: 'verified', evidence_kind: 'device_measured', measured_value: 400 };
+  const owned = { ...measurement, smartphone_id: '1' };
+  const candidate = { ...measurement, smartphone_id: '2', measured_value: 500 };
+  c.performanceMeasurements = [owned, candidate];
+  assert.equal(advisor.evaluateUpgradeDecision(c).status, 'recommend');
+  c.performanceMeasurements = [owned, { ...candidate, measured_value: 410 }];
+  assert.equal(advisor.evaluateUpgradeDecision(c).status, 'defer');
+  c.performanceMeasurements = [owned, { ...candidate, protocol_key: 'different' }];
+  assert.equal(advisor.evaluateUpgradeDecision(c).status, 'defer');
+  c.performanceMeasurements = [owned, { ...candidate, evidence_kind: 'chipset_reference' }];
+  assert.equal(advisor.evaluateUpgradeDecision(c).status, 'defer');
+});
+
+test('chipset-only gains add comparison context without claiming a device upgrade', () => {
+  const c = context();
+  c.replacement_device.product.smartphone_id = '1';
+  c.purchase_conditions.upgrade_context.pain_points = ['performance'];
+  const sample = { metric: 'gpu', protocol_key: 'chipset-reference',
+    verification_status: 'verified', evidence_kind: 'chipset_reference', measured_value: 100 };
+  c.performanceMeasurements = [{ ...sample, smartphone_id: '1' },
+    { ...sample, smartphone_id: '2', measured_value: 160 }];
+  const decision = advisor.evaluateUpgradeDecision(c);
+  assert.equal(decision.status, 'defer');
+  assert(decision.reasons.some(reason => reason.includes('칩셋 CPU·GPU')));
 });

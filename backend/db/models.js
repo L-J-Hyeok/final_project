@@ -1,6 +1,6 @@
 'use strict';
 
-// 스키마 생성은 SQL 마이그레이션 전용. 여기서는 기존 8테이블에 매핑한다.
+// 스키마 생성은 SQL 마이그레이션 전용. 여기서는 기본 테이블과 선택 마이그레이션의 모델을 매핑한다.
 module.exports = function defineModels(sequelize, D, options = {}) {
   function col(type, nullable, extra) {
     return Object.assign({ type: type, allowNull: Boolean(nullable) }, extra || {});
@@ -58,6 +58,18 @@ module.exports = function defineModels(sequelize, D, options = {}) {
     source_name: text(120, true), source_url: text(2048, true), verified_at: date(true),
     verified: col(D.BOOLEAN, false, { defaultValue: false }), updated_at: created()
   }, [{ unique: true, fields: ['smartphone_id', 'storage_gb', 'color'] }]);
+  var performance = model('smartphone_performance_measurements', {
+    id: id(), smartphone_id: fk('smartphones', false, 'RESTRICT'),
+    variant_id: fk('smartphone_variants', true, 'RESTRICT'),
+    metric: text(24), method_name: text(120), method_version: text(80),
+    test_conditions: text(500), device_settings: text(500),
+    measured_value: col(D.DECIMAL(16, 6)), unit: text(16),
+    source_name: text(120), source_url: text(2048),
+    measured_on: col(D.DATEONLY), checked_on: col(D.DATEONLY),
+    verification_status: col(D.STRING(12), false, { defaultValue: 'pending' }),
+    protocol_key: text(64), observation_key: text(64)
+  }, [{ unique: true, fields: ['observation_key'] },
+    { fields: ['smartphone_id', 'verification_status', 'protocol_key'] }]);
   var prices = model('price_observations', {
     id: id(), variant_id: fk('smartphone_variants', false, 'RESTRICT'),
     source_name: text(120), source_url: text(2048), seller_name: text(120),
@@ -109,9 +121,12 @@ module.exports = function defineModels(sequelize, D, options = {}) {
   sessions.belongsTo(users, { foreignKey: 'user_id', onDelete: 'CASCADE' });
   profiles.belongsTo(users, { foreignKey: 'user_id', onDelete: 'CASCADE' });
   variants.belongsTo(smartphones, { foreignKey: 'smartphone_id', onDelete: 'RESTRICT' });
+  performance.belongsTo(smartphones, { foreignKey: 'smartphone_id', onDelete: 'RESTRICT' });
+  performance.belongsTo(variants, { foreignKey: 'variant_id', onDelete: 'RESTRICT' });
   prices.belongsTo(variants, { foreignKey: 'variant_id', onDelete: 'RESTRICT' });
   owned.belongsTo(users, { foreignKey: 'user_id', onDelete: 'CASCADE' });
   owned.belongsTo(variants, { foreignKey: 'variant_id', onDelete: 'RESTRICT' });
   recommendations.belongsTo(users, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+  require('./catalog-models')(sequelize, D);
   return sequelize.models;
 };

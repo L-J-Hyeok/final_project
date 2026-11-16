@@ -545,3 +545,29 @@ DB 미등록 보류8개: Galaxy Z Fold Special Edition, Galaxy Z TriFold, Galaxy
 - 신규 검증: 국내 모델/용량/RAM/색상 불일치 차단, 지정 판매처/직영몰 구분, NULL 보존·참고가 예산 배제, 최신 판매처 이력 우선·최저가 변경, 만료, 가격 DTO/예산/업그레이드 비용, fingerprint 중복/이력·batch 실패 롤백(Mock).
 - 미실행: 실제 다나와 조회, MySQL005 문법·적용·이력 저장·동시 잠금, 실제 HTTP/브라우저 가격 흐름. 격리 mysqld 초기화가 signal11로 실패했으며 운영 DB로 대체하지 않았다. 기존 danawa-price-integration.test.js는 고정명 DB DROP을 포함하므로 그대로 실행하지 않았다.
 - 후속: 인가된 공급자 실응답과 저장 권한 확보 후 격리DB에서 동시 동일 관측 중복0·신규 관측 추가·FK/NULL·롤백을 확인하고 실제 API/비교 화면까지 검증한다. AI 설명전용 서버 순위 정책은 별도 미완료 항목이다.
+
+## 판매처 가격 실제 MySQL 검증 — 2026-11-13 11:53 KST
+
+- 신규 `backend/test/danawa-seller-prices.mysql.test.js`: 기본 실행은 SKIP(확인 완료), `RUN_ISOLATED_SELLER_MYSQL=1 node --test backend/test/danawa-seller-prices.mysql.test.js`로만 실제 실행.
+- 정상 로컬 MySQL8.0.45 서버 재사용. 고유 무작위 스키마/임시 계정 생성, 해당 스키마만 권한 부여, 앱 테이블 접근 거절 확인 후 테스트. 기존 DB 이름에 DROP/초기화하지 않음. 정상 dotenv 로딩만 사용하며 비밀값 출력 없음. 준비/검증/실패 후 생성한 DB·계정만 정리.
+- **실제 DB+HTTP 13시나리오 통과(상위 테스트 포함14/14)**: 제한 계정 격리, 001/002/003/005 SQL·InnoDB·unique, 판매처4곳 INSERT/FK/JSON, 동일관측 중복0, 배송비포함최저가, 변경 이력/최저가 전환, 만료, stock/shipping NULL 참고값, 중간실패 batch롤백, 동시동일관측1행, pending 적재/공개SQL 차단,005재실행거절후데이터/FK보존, 실제 Express 목록200·상세200·pending404/가격요약.
+- 가상 가격: 쿠팡800000+배송3000=803000 최저 → 쿠팡850000으로 변경 후 G마켓810000 최저. 11번가/삼성닷컴 포함. 실제 외부 수집값이 아님.
+- Mock 별도: danawa-price.test.js8 + danawa-seller-prices.test.js8 =16/16. 다른 전체 테스트/프론트 빌드/실제 Gemini 호출은 재실행하지 않음.
+- 초기 실패 수정: 테스트 계정 암호 생성이 서버 정책에 미달(ER_NOT_VALID_PASSWORD)하여 임시 생성 규칙 보강.005재실행 오류는 ER_DUP_FIELDNAME보다 ER_CHECK_CONSTRAINT_DUP_NAME이 먼저 발생할 수 있어 두 명확한 중복 오류를 허용하고 데이터/FK 불변을 추가 확인. DB/애플리케이션 보안 정책 완화 없음.
+- 미검증: 별도 mysqld 프로세스 실행 성공, 실제 외부 가격, 기존 데이터가 있는 개발 DB에005 적용, 장애 백업 복원. MySQL DDL을 트랜잭션으로 롤백할 수 있다고 간주하지 않음.
+
+## 3-4단계 실제 반영 — 2026-11-14 01:33 KST (Codex)
+
+- 53모델·352옵션·가격3건 및 기존 ID/FK 보존. 자급제 공개44모델·310옵션/97조합. 통신사7모델19옵션은 보존·비노출, 불명확 S25 Ultra 색상3옵션은 pending.
+- 94개 기존 옵션 검증 재사용, 공식 품번 확정8건. 충돌·출처 불일치 품번은 미검증 주장으로 보존. 남은26조합은 실제 공개 옵션만 대상으로 준비 완료(전체 색상 승인 아님).
+- 무게1건·카메라NULL4건·색상표기2건 정정. Apple RAM/비공개17 Pro 화면 및 기존2026 상세자료 전체 재검증은 미완료.
+- 41/41 단위·Mock 회귀, 실제MySQL/임시Express HTTP12/12. 가격수집·유료AI·브라우저·실제추천저장 미실행. 가격97조합은 자료 준비 기준이며 외부접근허가/실제매칭은 별도.
+- PRODUCT_DATA_COLLECTION_STANDARD.md 및 docs/templates의 CSV3개 작성(자동등록 없음). 상세 결과·백업·역변경은 [stage34 감사 기록](audits/stage34/README.md). 코드/DB 반영 완료, Codex 편집 종료.
+- 다음: danawa-cli 허용 접근·RAM별 정확한 가격 매칭 → TTL → 추천 백엔드 통합. Git 쓰기 없음.
+
+## 가격 공유 안전성 수정 — 2026-11-14 KST
+- smartphones.fetchPricesByVariantIds의 레거시 가격 공유 및 NULL RAM 우회 조건 제거. 명시적 capacity_common, 동일 모델·용량, 양쪽에서 확인된 동일 RAM, 공개 피어, 유효 TTL만 공유한다. exact_color나 범위 미확인 값은 원본 옵션에서만 제공한다. 응답에 임의 capacity_common 표식을 추가하지 않는다.
+- 실제 개발 DB 53모델/352옵션, 공개44모델/310옵션/97조합. 이전104는 통신사7조합을 포함한 수치. 통신사 상세·목록 제외 및 가격 없는 상세 정상 응답 확인.
+- 관측802·803·804는 다나와 URL과 pcode만 있고 공통 적용 근거가 기록되어 있지 않다. 원본 옵션90001390·90001375·90000477에 유지. 이전 백업과 전체 가격행 동일. 범위 확정은 기존 수집 원문에서 색상 공통·용량·RAM 근거가 확보될 때 별도 검토하며 이번 DB 수정0.
+- 격리 MySQL15/15(실제 HTTP로 공통 공유, exact/unknown 차단, 다른 RAM/용량 및 양쪽NULL 차단 포함), 단위·표시19/19, 개발 DB 읽기 전용 HTTP15/15 통과. 테스트 스키마·계정 정리 완료. 실제 브라우저 미실행, 비교 표시는 기존 함수 테스트로 검증.
+- 수정 코드 backend/routes/smartphones.js, backend/test/danawa-seller-prices.mysql.test.js. 최신 코드 임시 Express에서 검증. 기존 개발 서버 재시작 필요.

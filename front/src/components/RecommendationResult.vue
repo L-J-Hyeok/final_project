@@ -25,7 +25,7 @@
     <Transition name="reveal" appear>
       <div v-if="!loading && !error && result" class="result-content-wrap">
         <div class="result-header-band"><p v-if="result.validity_note">{{ result.validity_note }}</p>
-          <h2 tabindex="-1">{{ result.status==='recommend' && result.items?.some(i=>i.comparison_with_owned) ? '교체 추천 · 확인된 개선 비교' : (titles[result.status] || '추천 응답을 확인해 주세요') }}</h2>
+          <h2 tabindex="-1">{{ resultHeading }}</h2>
           <p v-if="result.status === 'no_match'" class="status-lead">
             현재 예산·필수 조건과 유효한 가격을 모두 충족하는 제품이 없어요. 조건은 자동으로 완화하지 않았습니다.
           </p>
@@ -61,7 +61,8 @@
             <!-- Top Product Showcase Header -->
             <div class="product-stage-band">
               <span class="rank-pill">추천 0{{ idx + 1 }}</span>
-              <svg viewBox="0 0 80 124" class="spotlight-phone-svg" aria-hidden="true">
+              <img v-if="selectedImage(item)" :src="selectedImage(item)" class="spotlight-phone-svg" alt="" />
+              <svg v-else viewBox="0 0 80 124" class="spotlight-phone-svg" aria-hidden="true">
                 <rect x="6" y="4" width="68" height="116" rx="14" fill="#ffffff" stroke="#71717a" stroke-width="2" />
                 <rect x="12" y="14" width="56" height="94" rx="7" fill="#f5f5f7" stroke="#d4d4d8" stroke-width="1.2" />
                 <circle cx="40" cy="9" r="2" fill="#52525b" />
@@ -72,22 +73,83 @@
             <div class="card-body-pad">
               <div class="model-head">
                 <h3>{{ item.product?.model_name || '제품 정보 없음' }}</h3>
+                <p v-if="item.recommendation_score != null">추천 점수 {{ item.recommendation_score }} / 100</p>
                 <p class="model-number">{{ item.product?.domestic_model_number || '모델번호 정보 없음' }}</p>
               </div>
 
               <!-- Key Specs Stat Strip -->
               <dl class="spec-stat-grid">
-                <div class="stat-tile">
-                  <dt>저장 용량</dt>
-                  <dd>{{ spec(item.product?.storage_gb, 'GB') }}</dd>
-                </div>
-                <div class="stat-tile">
-                  <dt>RAM</dt>
-                  <dd>{{ spec(item.product?.ram_gb, 'GB') }}</dd>
-                </div>
+                <template v-if="!item.category || item.category === 'smartphone'">
+                  <div class="stat-tile">
+                    <dt>저장 용량</dt>
+                    <dd>{{ spec(item.product?.storage_gb, 'GB') }}</dd>
+                  </div>
+                  <div class="stat-tile">
+                    <dt>RAM</dt>
+                    <dd>{{ spec(item.product?.ram_gb, 'GB') }}</dd>
+                  </div>
+                </template>
+                <template v-else-if="item.category === 'tablet'">
+                  <div class="stat-tile">
+                    <dt>화면</dt>
+                    <dd>{{ spec(item.product?.specifications?.screen_inches || item.specifications?.screen_inches, '인치') }}</dd>
+                  </div>
+                  <div class="stat-tile">
+                    <dt>저장 / RAM</dt>
+                    <dd>{{ spec(item.product?.storage_gb, 'GB') }} / {{ spec(item.product?.ram_gb, 'GB') }}</dd>
+                  </div>
+                </template>
+                <template v-else-if="item.category === 'laptop'">
+                  <div class="stat-tile">
+                    <dt>CPU</dt>
+                    <dd>{{ item.product?.options?.cpu || item.options?.cpu || item.product?.processor_model || '정보 없음' }}</dd>
+                  </div>
+                  <div class="stat-tile">
+                    <dt>RAM / 저장</dt>
+                    <dd>{{ spec(item.product?.ram_gb, 'GB') }} / {{ formatStorage(item.product?.storage_gb) }}</dd>
+                  </div>
+                </template>
+                <template v-else-if="item.category === 'smartwatch'">
+                  <div class="stat-tile">
+                    <dt>호환 OS</dt>
+                    <dd>{{ item.product?.specifications?.os_compatibility || item.specifications?.os_compatibility || (item.product?.brand === 'Apple' ? 'iOS' : 'Android') }}</dd>
+                  </div>
+                  <div class="stat-tile">
+                    <dt>연결</dt>
+                    <dd>{{ item.product?.connectivity === 'cellular' ? '셀룰러+GPS' : (item.product?.connectivity || 'Wi-Fi / 블루투스') }}</dd>
+                  </div>
+                </template>
+                <template v-else-if="item.category === 'earbuds'">
+                  <div class="stat-tile">
+                    <dt>노이즈캔슬링</dt>
+                    <dd>{{ item.product?.specifications?.anc || item.specifications?.anc ? 'ANC 지원' : '일반' }}</dd>
+                  </div>
+                  <div class="stat-tile">
+                    <dt>재생 시간</dt>
+                    <dd>{{ item.product?.specifications?.battery_hours ? `${item.product.specifications.battery_hours}시간` : '정보 없음' }}</dd>
+                  </div>
+                </template>
+                <template v-else-if="item.category === 'speaker'">
+                  <div class="stat-tile">
+                    <dt>정격 출력</dt>
+                    <dd>{{ spec(item.product?.specifications?.power_w ?? item.specifications?.power_w ?? item.power_w, 'W') }}</dd>
+                  </div>
+                  <div class="stat-tile">
+                    <dt>방수 / 배터리</dt>
+                    <dd>{{ item.product?.specifications?.water_resistance || item.specifications?.water_resistance || '정보 없음' }} / {{ (item.product?.specifications?.battery_hours || item.specifications?.battery_hours) ? `${item.product?.specifications?.battery_hours || item.specifications?.battery_hours}시간` : '정보 없음' }}</dd>
+                  </div>
+                </template>
                 <div class="stat-tile">
                   <dt>색상</dt>
-                  <dd>{{ item.product?.color || '정보 없음' }}</dd>
+                  <dd>
+                    <select v-if="item.color_options?.length > 1" aria-label="색상 선택"
+                      :value="selectedVariant(item).variant_id" @change="chooseColor(item, $event.target.value)">
+                      <option v-for="option in item.color_options" :key="option.variant_id" :value="option.variant_id">
+                        {{ option.color }}
+                      </option>
+                    </select>
+                    <span v-else>{{ selectedVariant(item).color || '정보 없음' }}</span>
+                  </dd>
                 </div>
               </dl>
 
@@ -98,7 +160,7 @@
                 </strong>
                 <p class="price-amount">{{ money(priceAmount(item.price)) }}</p>
                 <p v-if="isDanawaRef(item.price)" class="price-dev-notice">
-                  다나와 기준 최저가입니다. 실제 최종 결제가격(배송비·재고·결제 조건)과 다를 수 있으며, 예산 충족·교체 확정 근거로 사용되지 않습니다.
+                  다나와 수집 당시 참고 가격입니다. 실제 최종 결제가격과 다를 수 있으며, 판매 가격은 구매 조건에 따라 달라질 수 있습니다.
                 </p>
                 <p v-else-if="development(item.price)" class="price-dev-notice">
                   실제 구매 가능 가격이 아닙니다. 배송비·재고·구매 조건은 확인이 필요합니다.
@@ -106,7 +168,7 @@
                 <p v-if="item.price?.warning && !isDanawaRef(item.price)" class="price-warning" role="note">{{ item.price.warning }}</p>
                 <div class="price-meta-foot">
                   <p v-if="item.price?.source_name" class="price-source">출처: {{ item.price.source_name }}</p>
-                  <small class="price-date">조회 시각: {{ checkedAt(item.price) }}</small>
+                  <small class="price-date">수집 시각: {{ checkedAt(item.price) }}</small>
                   <a
                     v-if="danawaUrl(item.price)"
                     :href="danawaUrl(item.price)"
@@ -114,7 +176,7 @@
                     rel="noopener noreferrer"
                     class="compare-handoff-link"
                   >
-                    다나와 상품 보기 →
+                    다나와에서 가격 비교하기 (다나와 상품 보기) →
                   </a>
                 </div>
               </div>
@@ -125,7 +187,7 @@
                 <dl v-for="(value,key) in item.comparison_with_owned.fields" :key="key">
                   <dt>{{ comparisonLabels[key] || key }}</dt>
                   <dd v-if="value.status==='verified_comparison'">{{ value.current }} → {{ value.candidate }} {{ value.unit || '' }}</dd>
-                  <dd v-else-if="key==='price' && value.candidate_total_krw != null">{{ value.candidate_total_krw.toLocaleString('ko-KR') }}원 · {{ value.price_source === 'danawa_reference' ? '다나와 기준 최저가 (참고용)' : value.development_only ? '개발용 가격, 실제 구매가 아님' : '검증 판매가' }}</dd>
+                  <dd v-else-if="key==='price' && value.candidate_total_krw != null">{{ value.candidate_total_krw.toLocaleString('ko-KR') }}원 · {{ value.price_source === 'danawa_reference' ? '다나와 수집 당시 참고 가격' : value.development_only ? '개발용 가격, 실제 구매가 아님' : '수집 당시 참고 가격' }}</dd>
                   <dd v-else>{{ value.note || '비교 불가: 검증된 자료 부족' }}<span v-if="key==='chipset'"> ({{ value.current || '정보 없음' }} → {{ value.candidate || '정보 없음' }})</span></dd>
                 </dl>
                 <ul><li v-for="note in [...(item.comparison_with_owned.improvements || []),...(item.comparison_with_owned.tradeoffs || []),...(item.comparison_with_owned.cautions || [])]" :key="note">{{ note }}</li></ul>
@@ -140,7 +202,7 @@
                 <ul v-if="item.uncertainties?.length" class="uncertainties">
                   <li v-for="(note, i) in item.uncertainties" :key="'u-' + i">{{ note }}</li>
                 </ul>
-                <div v-if="!item.comparison_with_owned && item.variant_id" class="result-card-actions">
+                <div v-if="!item.comparison_with_owned && (item.variant_id || item.sku_id)" class="result-card-actions">
                   <router-link :to="compareUrl(item)" class="compare-handoff-link">이 제품 사양 직접 비교 →</router-link>
                 </div>
               </div>
@@ -157,7 +219,32 @@
 </template>
 
 <script setup>
+import { computed, reactive, watch } from 'vue'
+import { resolveDeviceImage } from '../utils/deviceImages.js'
+
 const props = defineProps({ result: Object, loading: Boolean, error: String, ownedVariantId: [String, Number] })
+
+const selectedColors = reactive({})
+watch(() => props.result, () => {
+  for (const key of Object.keys(selectedColors)) delete selectedColors[key]
+})
+
+function selectedVariant(item) {
+  const itemKey = item.variant_id || item.sku_id
+  return item.color_options?.find(option => (option.variant_id || option.sku_id) === selectedColors[itemKey])
+    || { variant_id: item.variant_id || item.sku_id, sku_id: item.sku_id, color: item.product?.color }
+}
+
+function chooseColor(item, variantId) {
+  const itemKey = item.variant_id || item.sku_id
+  if (item.color_options?.some(option => (option.variant_id || option.sku_id) === variantId)) {
+    selectedColors[itemKey] = variantId
+  }
+}
+
+function selectedImage(item) {
+  return resolveDeviceImage({ ...item.product, ...selectedVariant(item) })
+}
 
 function resolveOwnedVariantId() {
   const raw =
@@ -168,16 +255,37 @@ function resolveOwnedVariantId() {
 }
 
 function compareUrl(item) {
-  const candidateId = item?.variant_id ? String(item.variant_id) : ''
+  const selected = selectedVariant(item)
+  const candidateId = selected.variant_id ? String(selected.variant_id) : (selected.sku_id ? String(selected.sku_id) : '')
   const ownedId = resolveOwnedVariantId()
   const ids = []
   if (ownedId && ownedId !== candidateId) ids.push(ownedId)
   if (candidateId) ids.push(candidateId)
+
+  let peer = null
   if (!ownedId && candidateId && Array.isArray(props.result?.items)) {
-    const peer = props.result.items.find(other => other?.variant_id && String(other.variant_id) !== candidateId)
-    if (peer?.variant_id) ids.push(String(peer.variant_id))
+    peer = props.result.items.find(other => {
+      const otherId = other?.variant_id || other?.sku_id
+      const thisId = item?.variant_id || item?.sku_id
+      return otherId && String(otherId) !== String(thisId)
+    })
+    if (peer) {
+      const peerSelected = selectedVariant(peer)
+      const peerId = peerSelected.variant_id ? String(peerSelected.variant_id) : (peerSelected.sku_id ? String(peerSelected.sku_id) : '')
+      if (peerId) ids.push(peerId)
+    }
   }
+
   const params = new URLSearchParams()
+  const cat = props.result?.category || item?.category
+  if (cat && cat !== 'smartphone') params.set('category', cat)
+  if (item?.model_id) params.set('model_id', String(item.model_id))
+  if (selected?.sku_id || item?.sku_id) params.set('sku_id', String(selected?.sku_id || item.sku_id))
+  if (peer?.model_id) params.set('peer_model_id', String(peer.model_id))
+  if (peer) {
+    const peerSku = selectedVariant(peer)?.sku_id || peer.sku_id
+    if (peerSku) params.set('peer_sku_id', String(peerSku))
+  }
   if (ids.length) params.set('variants', ids.join(','))
   if (ownedId) params.set('owned_variant_id', ownedId)
   if (candidateId) params.set('variant_id', candidateId)
@@ -185,21 +293,72 @@ function compareUrl(item) {
   return qs ? `/compare?${qs}` : '/compare'
 }
 
-const comparisonLabels={screen_inches:'화면 크기',refresh_hz:'주사율',storage_gb:'저장 용량',ram_gb:'RAM',weight_g:'무게',battery_mah:'배터리 용량',wireless_charging:'무선 충전',chipset:'칩셋',camera:'카메라',usage_performance:'용도별 성능',price:'구매 비용 (위 가격 안내 참고)'}
+const formatStorage = gb => {
+  const n = Number(gb)
+  if (!Number.isFinite(n) || n <= 0) return '정보 없음'
+  if (n >= 1024 && n % 1024 === 0) return `${n / 1024}TB`
+  return `${n}GB`
+}
+
+const comparisonLabels={
+  screen_inches:'화면 크기',
+  refresh_hz:'주사율',
+  storage_gb:'저장 용량',
+  ram_gb:'RAM',
+  weight_g:'무게',
+  battery_mah:'배터리 용량',
+  battery_wh:'배터리 (Wh)',
+  battery_hours:'재생 시간',
+  wireless_charging:'무선 충전',
+  chipset:'칩셋',
+  cpu:'CPU',
+  gpu:'GPU',
+  os:'운영체제',
+  camera:'카메라',
+  pen_support:'펜 지원',
+  anc:'노이즈 캔슬링',
+  water_resistance:'방수 등급',
+  power_w:'정격 출력',
+  output_power_w:'정격 출력',
+  usage_performance:'용도별 성능',
+  price:'구매 비용 (위 가격 안내 참고)'
+}
 const titles = {
-  recommend: '나에게 맞는 스마트폰 추천',
+  recommend: '스마트폰 추천',
   no_match: '조건에 맞는 추천 결과가 없어요',
   clarify: '추천 조건을 더 알려 주세요',
   keep: '현재 기기를 유지해도 좋아요',
   defer: '구매를 잠시 보류해 보세요'
 }
 
+const categoryTitles = {
+  smartphone: '스마트폰 추천',
+  tablet: '태블릿 추천',
+  laptop: '노트북 추천',
+  smartwatch: '스마트워치 추천',
+  watch: '스마트워치 추천',
+  earbuds: '무선이어폰 추천',
+  speaker: '스피커 추천'
+}
+
+const resultHeading = computed(() => {
+  if (!props.result) return ''
+  if (props.result.status === 'recommend') {
+    if (props.result.items?.some(i => i.comparison_with_owned)) {
+      return '교체 추천 · 확인된 개선 비교'
+    }
+    const cat = props.result.category || props.result.items?.[0]?.category || 'smartphone'
+    return categoryTitles[cat] || '스마트폰 추천'
+  }
+  return titles[props.result.status] || '추천 응답을 확인해 주세요'
+})
+
 const text = x => typeof x === 'string' ? x : (x?.description || x?.message || '')
 const spec = (value, unit) => value == null ? '정보 없음' : `${value}${unit}`
 const valid = value => typeof value === 'number' && Number.isFinite(value) && value > 0
 const money = value => valid(value) ? `${value.toLocaleString('ko-KR')}원` : '현재 판매가 정보 없음'
 const isExpired = p => {
-  if (!p?.expires_at) return false
+  if (p?.retained_observation || !p?.expires_at) return false
   const expMs = new Date(p.expires_at).getTime()
   return !Number.isFinite(expMs) || Date.now() >= expMs
 }
@@ -219,7 +378,7 @@ function danawaUrl(p) {
 
 function checkedAt(p) {
   if (!p || isExpired(p)) return '정보 없음'
-  const raw = p.checked_at || p.observed_at
+  const raw = p.observed_at || p.checked_at
   if (!raw) return '정보 없음'
   const d = new Date(raw)
   return Number.isNaN(d.getTime())
@@ -236,11 +395,11 @@ function priceAmount(p) {
 
 function priceLabel(p) {
   if (!p || isExpired(p)) return '현재 판매가 정보 없음'
-  if (isDanawaRef(p)) return '다나와 기준 최저가'
+  if (isDanawaRef(p)) return '다나와 수집 당시 참고 가격'
   if (p.price_source === 'official_launch') return '개발용 공식 출고가 기준 · 현재 판매가 아님'
   if (p.price_source === 'reference_sale') return '개발용 참고 판매가 · 구매 조건 미검증'
   if (development(p)) return '개발용 가격 · 실제 판매가 아님'
-  return isVerifiedPrice(p) ? '검증된 판매가 · 배송비 포함' : '현재 판매가 정보 없음'
+  return isVerifiedPrice(p) ? '수집 당시 참고 가격 · 배송비 포함' : '현재 판매가 정보 없음'
 }
 </script>
 
@@ -386,6 +545,7 @@ function priceLabel(p) {
 .spotlight-phone-svg {
   width: 66px;
   height: 102px;
+  object-fit: contain;
 }
 
 .card-body-pad {
