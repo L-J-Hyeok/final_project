@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const wrap = require('../http/async-handler');
 const { Op, QueryTypes } = require('sequelize');
 const connection = require('../db/connection');
 const limiterFactory = require('../auth/limiter');
@@ -32,7 +33,6 @@ function db() {
   return connection.getDatabase();
 }
 
-const wrap = fn => (req, res, next) => Promise.resolve().then(() => fn(req, res, next)).catch(next);
 
 // 사용자당 AI 호출 제한: 분당 5회 및 동시 1개 (ARCHITECTURE §1)
 function acquireAiSlot(uid) {

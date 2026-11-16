@@ -1,5 +1,6 @@
 'use strict';
 var express = require('express');
+const wrap = require('../http/async-handler');
 var crypto = require('crypto');
 var connection = require('../db/connection');
 var password = require('../auth/password');
@@ -18,7 +19,6 @@ function callSession(req, method) { return new Promise((resolve, reject) => req.
 function token() { return crypto.randomBytes(32).toString('hex'); }
 module.exports = function createAuth(config) {
   var router = express.Router(), limiter = limiterFactory();
-  var wrap = fn => (req, res, next) => Promise.resolve().then(() => fn(req, res, next)).catch(next);
   router.get('/csrf', wrap(async (req, res) => {
     if (!req.session.csrf_token) { req.session.csrf_token = token(); req.session.created_at = req.session.last_seen = Date.now(); }
     await callSession(req, 'save');

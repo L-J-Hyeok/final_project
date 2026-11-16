@@ -5,7 +5,81 @@ const ai=require('../services/ai-adapter'),connection=require('../db/connection'
 function context(){return {profile_snapshot:{common:{usages:['work'],spending_style:'balanced'}},replacement_device:{id:'1',category:'smartphone',source:'catalog',product:{verified:true,model_name:'Owned',brand:'samsung',os:'android',storage_gb:128,refresh_hz:60,weight_g:200}},purchase_conditions:{hard:{budget_max_krw:1000,min_storage_gb:null,min_refresh_hz:null,max_weight_g:null,required_os:null,allowed_brands:['samsung','apple']},soft:{},purchase_reason:'저장 공간 부족',upgrade_context:{replacement_intent:'moderate',satisfied_aspects:[],pain_points:['storage']}},candidates_snapshot:[{variant_id:'2',smartphone_id:'2',model_name:'Candidate',brand:'samsung',storage_gb:256,weight_g:190,refresh_hz:120,price:{observation_id:null,total_krw:null,budget_basis_krw:900,amount_krw:900,development_only:true,price_source:'official_launch'},eligible_reasons:[{code:'budget_headroom',value:100}]}]};}
 test('KEEP: satisfied owner with known hard specs; OS mismatch cannot KEEP',()=>{const c=context();c.purchase_conditions.upgrade_context={replacement_intent:'low_or_keep_if_okay',satisfied_aspects:['storage'],pain_points:[]};assert.equal(advisor.evaluateUpgradeDecision(c).status,'keep');c.purchase_conditions.hard.required_os='ios';assert.notEqual(advisor.evaluateUpgradeDecision(c).status,'keep');});
 test('REPLACE: verified storage benefit passes Mock AI and server validation',()=>{const c=context();c.upgrade_decision=advisor.evaluateUpgradeDecision(c);assert.equal(c.upgrade_decision.status,'recommend');const output=ai.mockRecommend({aiContext:c}).output;assert.equal(validator.validateRecommendationOutput(output,c).valid,true);output.items[0].variant_id='999';assert.equal(validator.validateRecommendationOutput(output,c).valid,false);});
-test('DEFER: no eligible price candidate or only unproven camera/performance claims',()=>{const c=context();c.candidates_snapshot=[];assert.equal(advisor.evaluateUpgradeDecision(c).status,'defer');for(const pain of ['camera','performance','battery','price']){const x=context();x.purchase_conditions.upgrade_context.pain_points=[pain];assert.equal(advisor.evaluateUpgradeDecision(x).status,'defer');}const both=context();both.purchase_conditions.upgrade_context.pain_points=['battery','camera'];assert.equal(advisor.evaluateUpgradeDecision(both).status,'defer');});
+test('DEFER with no eligible priced candidate; CLARIFY with eligible candidates but missing evidence', () => {
+  const c = context();
+  assert.equal(advisor.evaluateUpgradeDecision({ ...c, candidates_snapshot: [] }).status, 'defer');
+  for (const pain of ['camera', 'performance', 'battery', 'price']) {
+    c.purchase_conditions.upgrade_context.pain_points = [pain];
+    const decision = advisor.evaluateUpgradeDecision(c);
+    assert.equal(decision.status, 'clarify');
+    assert.ok(decision.questions.some(question => question.endsWith('?') || question.endsWith('주세요.')));
+    assert.deepEqual(decision.eligible_variant_ids, []);
+  }
+});
+
+test('Galaxy S25: battery deterioration in the original request yields an actionable clarification', () => {
+  const text = '지금 기기에 만족하지만 오래돼서 배터리가 너무 빨리 닳아서 새거로 교체하려고 해요';
+  const draft = validator.validateAnalysisOutput('purchase', {
+    draft: {
+      hard: { budget_max_krw: 1500000, usages: ['work'] }, soft: {},
+      upgrade: { replacement_intent: 'high', pain_points: ['battery'], reason: text }
+    }, questions: []
+  }, text).draft;
+  const conversation = require('../services/recommendation-conversation');
+  const state = conversation.create({ text, replacement_device_id: '1' }, draft,
+    { version: 1, common: { usages: ['work'] } }, [], 256);
+  const { body, missing } = conversation.prepare(state);
+  assert.equal(missing.length, 0);
+  assert.equal(body.hard.budget_max_krw, 1500000);
+  assert.deepEqual(body.upgrade_context.pain_points, ['battery']);
+  const c = context();
+  Object.assign(c.replacement_device.product, { model_name: 'Galaxy S25', storage_gb: 256, battery_mah: 4000 });
+  Object.assign(c.candidates_snapshot[0], { battery_mah: 5000 });
+  const decision = advisor.evaluateUpgradeDecision({ ...c, purchase_conditions: body });
+  assert.equal(decision.status, 'clarify');
+  assert.ok(decision.questions.some(question => question.includes('배터리 교체 견적')));
+  assert.deepEqual(decision.eligible_variant_ids, []);
+});
+
+test('All five common categories distinguish missing evidence, verified gains and no eligible candidates', () => {
+  const { evaluateCatalogUpgradeDecision } = require('../services/catalog-upgrade-advisor');
+  for (const category of ['tablet', 'laptop', 'smartwatch', 'earbuds', 'speaker']) {
+    const owned = { model_id: '1', sku_id: '10', model_name: 'Owned', verified: true, weight_g: 200,
+      battery_mah: 4000, specifications: {} };
+    const candidate = { model_id: '2', sku_id: '20', model_name: 'Candidate', weight_g: 190,
+      battery_mah: 5000, specifications: {} };
+    const options = { category, ownedResolution: { product: owned }, rankedCandidates: [{ candidate }],
+      upgradeContext: { replacement_intent: 'high', pain_points: ['battery'] } };
+    const unclear = evaluateCatalogUpgradeDecision(options);
+    assert.equal(unclear.upgrade_decision, 'CLARIFY', category);
+    assert.ok(unclear.questions.some(question => question.includes('배터리 사용 시간')), category);
+    assert.deepEqual(unclear.eligible_sku_ids, [], category);
+    options.upgradeContext.pain_points = ['battery', 'portability'];
+    const replacement = evaluateCatalogUpgradeDecision(options);
+    assert.equal(replacement.upgrade_decision, 'REPLACE', category);
+    assert.ok(replacement.cautions.some(caution => caution.includes('배터리')), category);
+    assert.equal(evaluateCatalogUpgradeDecision({ ...options, rankedCandidates: [] }).upgrade_decision, 'DEFER', category);
+    assert.equal(evaluateCatalogUpgradeDecision({ ...options,
+      upgradeContext: { replacement_intent: 'low_or_keep_if_okay', no_pain_confirmed: true }
+    }).upgrade_decision, 'KEEP', category);
+  }
+});
+test('Speaker runtime needs matching test conditions to substantiate replacement', () => {
+  const { evaluateCatalogUpgradeDecision } = require('../services/catalog-upgrade-advisor');
+  const owned = { model_id: '1', sku_id: '10', verified: true, battery_hours: 6,
+    specifications: { battery_condition: '50% volume, Bluetooth' } };
+  const candidate = { model_id: '2', sku_id: '20', battery_hours: 12, specifications: {} };
+  const options = { category: 'speaker', ownedResolution: { product: owned },
+    rankedCandidates: [{ candidate }], upgradeContext: { replacement_intent: 'high', pain_points: ['battery'] } };
+  assert.equal(evaluateCatalogUpgradeDecision(options).upgrade_decision, 'CLARIFY');
+  candidate.specifications.battery_condition = '100% volume, Bluetooth';
+  assert.equal(evaluateCatalogUpgradeDecision(options).upgrade_decision, 'CLARIFY');
+  candidate.specifications.battery_condition = owned.specifications.battery_condition;
+  assert.equal(evaluateCatalogUpgradeDecision(options).upgrade_decision, 'REPLACE');
+  candidate.battery_hours = 6;
+  assert.equal(evaluateCatalogUpgradeDecision(options).upgrade_decision, 'DEFER');
+});
+
 test('MIXED PAINS: verifiable benefit with unverified pains still recommends verified upgrades and flags uncertainties',()=>{
  const c=context();
  c.candidates_snapshot.push({variant_id:'3',smartphone_id:'3',model_name:'SameStorage',brand:'samsung',storage_gb:128,weight_g:190,refresh_hz:120,price:{observation_id:null,total_krw:null,budget_basis_krw:850,amount_krw:850,development_only:true,price_source:'official_launch'},eligible_reasons:[{code:'budget_headroom',value:150}]});
@@ -122,9 +196,9 @@ test('upgrade considers measured battery gains only with comparable device-level
   c.performanceMeasurements = [owned, { ...candidate, measured_value: 410 }];
   assert.equal(advisor.evaluateUpgradeDecision(c).status, 'defer');
   c.performanceMeasurements = [owned, { ...candidate, protocol_key: 'different' }];
-  assert.equal(advisor.evaluateUpgradeDecision(c).status, 'defer');
+  assert.equal(advisor.evaluateUpgradeDecision(c).status, 'clarify');
   c.performanceMeasurements = [owned, { ...candidate, evidence_kind: 'chipset_reference' }];
-  assert.equal(advisor.evaluateUpgradeDecision(c).status, 'defer');
+  assert.equal(advisor.evaluateUpgradeDecision(c).status, 'clarify');
 });
 
 test('chipset-only gains add comparison context without claiming a device upgrade', () => {
@@ -136,6 +210,6 @@ test('chipset-only gains add comparison context without claiming a device upgrad
   c.performanceMeasurements = [{ ...sample, smartphone_id: '1' },
     { ...sample, smartphone_id: '2', measured_value: 160 }];
   const decision = advisor.evaluateUpgradeDecision(c);
-  assert.equal(decision.status, 'defer');
-  assert(decision.reasons.some(reason => reason.includes('칩셋 CPU·GPU')));
+  assert.equal(decision.status, 'clarify');
+  assert(decision.questions.some(question => question.includes('칩셋 CPU·GPU')));
 });

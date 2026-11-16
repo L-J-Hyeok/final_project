@@ -1,5 +1,6 @@
 'use strict';
 const publication = require('../services/product-publication');
+const wrap = require('../http/async-handler');
 
 const express = require('express');
 const { QueryTypes } = require('sequelize');
@@ -10,7 +11,6 @@ const upgradeAdvisor = require('../services/upgrade-advisor');
 const memberRouter = require('./member');
 
 const router = express.Router();
-const wrap = fn => (req, res, next) => Promise.resolve().then(() => fn(req, res, next)).catch(next);
 
 function db() {
   return connection.getDatabase();

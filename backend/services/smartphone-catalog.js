@@ -90,7 +90,6 @@ function isWithinReleaseWindow(releasedOnKr, nowInput = new Date()) {
   return releasedOnKr >= minDate && releasedOnKr <= maxDate;
 }
 
-const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
 
 function observationColorScope(conditionsText) {
   return conditionsText?.match(/\[scope:(capacity_common|exact_color)\](?: \[color_origin:[^\]]+\])?$/)?.[1] || null;

@@ -1,5 +1,6 @@
 'use strict';
 const express = require('express');
+const wrap = require('../http/async-handler');
 const { QueryTypes } = require('sequelize');
 const connection = require('../db/connection');
 const { categories } = require('../services/catalog-validation');
@@ -11,7 +12,6 @@ const { priceAvailability } = require('../services/catalog-price-availability');
 const comparisonService = require('../services/catalog-comparison');
 
 const router = express.Router();
-const wrap = fn => (req, res, next) => Promise.resolve(fn(req, res)).catch(next);
 const select = (db, sql, replacements) => db.query(sql, { replacements, type: QueryTypes.SELECT });
 const amount = value => value == null ? null : Number(value);
 const json = value => typeof value === 'string' ? JSON.parse(value) : value;

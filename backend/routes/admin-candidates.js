@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const wrap = require('../http/async-handler');
 const connection = require('../db/connection');
 const { requireAdmin, isIsolatedReviewPersistenceEnabled } = require('../auth/admin');
 const discovery = require('../services/smartphone-candidate-discovery');
@@ -29,7 +30,6 @@ function parseReviewBody(body) {
 
 function createAdminCandidatesRouter(options = {}) {
   const router = express.Router();
-  const wrap = (fn) => (req, res, next) => Promise.resolve().then(() => fn(req, res, next)).catch(next);
   const store = options.reviewStore || createCandidateReviewStore(options);
   const getEnv = options.getEnv || (() => process.env);
   const loadLiveIndex =

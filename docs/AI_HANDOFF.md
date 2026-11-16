@@ -38,7 +38,7 @@
 - **신규 33개 모델 상태:** 전원 `pending` 및 `verified = false` (비공개 유지)
   - 10개 모델: 기존 자료상 검수 후보. 이전 교차 검증에서 최종 공개 승인을 확정한 것은 아님
   - 22개 모델: `os IS NULL` 상태로 추가 공식 사양 확인 필요 (CHECK 제약상 verified 승격 불가)
-  - 1개 모델(`iPhone Duo`, A3720): 식별 불확실로 공개 보류. 실제 DB 상태는 `pending`이며 `held`로 변경한 것은 아님
+  - 1개 모델(`iPhone Duo`, A3720): 과거 11-12 기준 식별 불확실로 `pending` 보류되었으나, **2026-11-13 2단계 검수(`stage2_2026_audit`)에서 Apple 공식 발표·사양 및 RRA/KTC 인증(`R-C-APL-A3720`) 근거가 확인되어 `verified = 1`, `review_status = 'approved'`로 공식 승인 완료됨** (단, 개별 SKU의 `official_sku` KH/A 품번만 단독 페이지 미확보로 `null` 유지)
   - 미식별 8개 모델: DB 외부 파일 격리 유지
 - **price_observations:** 실제 유효 판매 관측치 0건 (개발 환경은 대체 가격 fallback 사용)
 
@@ -65,7 +65,7 @@
 
 ## 5. 핵심 보안 및 작업 제약사항
 - `backend/.env` 및 비밀정보 파일 직접 열람·수정·출력 절대 금지
-- `iPhone Duo` 등 미검증 모델의 DB 일괄 공개(approved/verified) 금지
+- `iPhone 17 Pro / Pro Max` 등 아직 `verified = 0`인 미검증 모델의 DB 일괄 공개(approved/verified) 금지 (`iPhone Duo`는 11-13 `stage2_2026_audit` 승인 완료)
 - 프론트엔드 작업 시 기존 백엔드 API 계약 및 DB 스키마 무단 수정 금지
 - Git commit 및 push는 사용자 명시적 요청 시에만 수행
 

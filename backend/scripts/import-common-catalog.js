@@ -11,9 +11,11 @@ async function main() {
   const input = JSON.parse(await readFile(file, 'utf8'));
   const prepared = importer.prepare(input);
   if (!flag) {
+    const readiness = importer.assessCatalogEntries(prepared);
     console.log(JSON.stringify({ mode: 'dry-run', models: prepared.length,
       skus: prepared.reduce((sum, entry) => sum + entry.skus.length, 0),
-      prices: prepared.flatMap(entry => entry.skus).reduce((sum, item) => sum + item.prices.length, 0) }));
+      prices: prepared.flatMap(entry => entry.skus).reduce((sum, item) => sum + item.prices.length, 0),
+      readiness }, null, 2));
     return;
   }
   const db = await connection.connect();
@@ -23,6 +25,7 @@ async function main() {
 }
 
 main().catch(error => {
-  console.error(error.original?.code || error.code || (error.message?.startsWith('Usage:') ? error.message : 'CATALOG_IMPORT_FAILED'));
+  const code = error.original?.code || error.code || (error.message?.startsWith('Usage:') ? error.message : 'CATALOG_IMPORT_FAILED');
+  console.error(error.detail ? `${code}: ${error.detail}` : code);
   process.exitCode = 1;
 }).finally(() => connection.close());

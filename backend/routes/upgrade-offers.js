@@ -1,5 +1,6 @@
 'use strict';
 const publication = require('../services/product-publication');
+const wrap = require('../http/async-handler');
 
 // 보유 기기 기반 업그레이드 제안 상태 조회·숨김/30일 억제·현재 사용 기기 지정 API 라우터
 // 주의: 상태 조회/변경 API에서는 절대 Gemini나 외부 API를 호출하지 않는다.
@@ -10,7 +11,6 @@ const catalog = require('../services/smartphone-catalog');
 const upgradeAdvisor = require('../services/upgrade-advisor');
 
 const router = express.Router();
-const wrap = fn => (req, res, next) => Promise.resolve().then(() => fn(req, res, next)).catch(next);
 
 function db() {
   return connection.getDatabase();

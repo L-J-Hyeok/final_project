@@ -5,8 +5,11 @@ const categories = Object.freeze({
   smartphone: '스마트폰', tablet: '태블릿', laptop: '노트북',
   smartwatch: '스마트워치', earbuds: '무선이어폰', speaker: '스피커'
 });
-const text = value => typeof value === 'string' && value === value.trim() && value.length > 0 &&
-  value.length <= 120 && !/[\x00-\x1f\x7f]/.test(value);
+const textMax = max => value => typeof value === 'string' && value === value.trim() && value.length > 0 &&
+  value.length <= max && !/[\x00-\x1f\x7f]/.test(value);
+const text = textMax(120);
+const dateOnly = value => typeof value === 'string' && /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(value) &&
+  Number.isFinite(Date.parse(value + 'T00:00:00Z'));
 const positive = max => value => typeof value === 'number' && Number.isFinite(value) && value > 0 && value <= max;
 const capacity = value => Number.isInteger(value) && positive(1048576)(value);
 const bool = value => typeof value === 'boolean';
@@ -47,8 +50,10 @@ const groupRequirements = {
   earbuds: ['connectivity'], speaker: ['connectivity', 'audio_configuration']
 };
 
-function invalid(field) {
-  throw Object.assign(new Error('Invalid catalog ' + field), { code: 'INVALID_INPUT' });
+function invalid(field, detail = null) {
+  const err = Object.assign(new Error('Invalid catalog ' + field), { code: 'INVALID_INPUT' });
+  if (detail) err.detail = detail;
+  throw err;
 }
 function isObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value) && Object.getPrototypeOf(value) === Object.prototype;
@@ -70,8 +75,10 @@ function approve(row) {
       row.verified_at == null || !Number.isFinite(+new Date(row.verified_at)))) invalid('publication');
 }
 function validateModel(row) {
-  if (!Object.hasOwn(categories, row.category_code) || row.category_code === 'smartphone') invalid('category');
-  if (![row.brand, row.model_name, row.model_number].every(text)) invalid('model identity');
+  if (!Object.hasOwn(categories, row.category_code) || row.category_code === 'smartphone') invalid('category', `Unsupported category_code: ${row.category_code}`);
+  if (!textMax(80)(row.brand) || !text(row.model_name) || !textMax(80)(row.model_number)) invalid('model identity', `Invalid brand/model_name/model_number for ${row.model_name || '(unknown)'}`);
+  if (row.released_on != null && !dateOnly(row.released_on)) invalid('released_on', `Invalid released_on date format (expected YYYY-MM-DD): ${row.released_on}`);
+  if (row.weight_g != null && !positive(1000000)(row.weight_g)) invalid('weight_g', `Invalid weight_g (expected 0 < weight_g <= 1000000): ${row.weight_g}`);
   fields(row.specs_json, { ...specs[row.category_code], release_month: releaseMonth });
   if (row.official_product_url != null) https(row.official_product_url);
   approve(row);
@@ -96,8 +103,8 @@ function configurationKey(category, row) {
   return createHash('sha256').update(JSON.stringify([category, entries])).digest('hex');
 }
 function validateSku(row) {
-  if (!text(row.sku_code) || (row.manufacturer_part_number != null && !text(row.manufacturer_part_number)) ||
-      (row.color != null && !text(row.color))) invalid('SKU identity');
+  if (!textMax(100)(row.sku_code) || (row.manufacturer_part_number != null && !textMax(100)(row.manufacturer_part_number)) ||
+      (row.color != null && !textMax(80)(row.color))) invalid('SKU identity', `Invalid sku_code/part_number/color for ${row.sku_code || '(unknown)'}`);
   approve(row);
   const data = validateSkuFields(row.category_code, row);
   if (row.publication_status === 'public') requireFields(data, requirements[row.category_code]);

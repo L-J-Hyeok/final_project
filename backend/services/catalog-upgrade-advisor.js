@@ -1,6 +1,5 @@
 'use strict';
 
-const { QueryTypes } = require('sequelize');
 const catalog = require('./smartphone-catalog');
 const catalogEngine = require('./catalog-recommendation-engine');
 const memberRouter = require('../routes/member');
@@ -343,6 +342,7 @@ function compareCatalogOwnedAndCandidate(category, ownedProd, candidate, ownedDe
   const fields = {};
   const improvements = [];
   const improvedNeeds = new Set();
+  const comparedNeeds = new Set();
   const tradeoffs = [];
   const cautions = [];
   const insufficientFields = [];
@@ -382,6 +382,7 @@ function compareCatalogOwnedAndCandidate(category, ownedProd, candidate, ownedDe
     if (diff > 0) direction = higherIsBetter === null ? 'larger' : (higherIsBetter ? 'improved' : 'tradeoff');
     else if (diff < 0) direction = higherIsBetter === null ? 'smaller' : (higherIsBetter ? 'tradeoff' : 'improved');
 
+    if (needCode) comparedNeeds.add(needCode);
     fields[key] = { status: 'verified_comparison', current: c, candidate: n, diff, unit, direction };
     if (direction === 'improved') {
       if (needCode) improvedNeeds.add(needCode);
@@ -399,6 +400,19 @@ function compareCatalogOwnedAndCandidate(category, ownedProd, candidate, ownedDe
     }
   }
 
+  function compareRuntime(key, label) {
+    const currentCondition = curSpecs.battery_condition;
+    const nextCondition = nextSpecs.battery_condition;
+    const sameCondition = key === 'battery_hours' && typeof currentCondition === 'string' &&
+      typeof nextCondition === 'string' && currentCondition.trim() !== '' &&
+      currentCondition.trim() === nextCondition.trim();
+    compareNumeric(key, label, ownedProd[key], candidate[key], '시간',
+      sameCondition ? true : null, sameCondition ? 'battery' : null);
+    if (!sameCondition && fields[key]?.status === 'verified_comparison') {
+      cautions.push(`${label}: 동일한 시험 조건이 확인되지 않아 실제 사용 시간 개선으로 판단하지 않았습니다.`);
+    }
+  }
+
   // Common weight comparison
   compareNumeric('weight_g', '무게', ownedProd.weight_g, candidate.weight_g, 'g', false, 'portability');
 
@@ -410,14 +424,14 @@ function compareCatalogOwnedAndCandidate(category, ownedProd, candidate, ownedDe
 
     // Battery: compare Wh with Wh, or mAh with mAh (never mix!)
     if (ownedProd.battery_wh != null || candidate.battery_wh != null) {
-      compareNumeric('battery_wh', '배터리 정격 용량(Wh)', ownedProd.battery_wh, candidate.battery_wh, 'Wh', true, 'battery');
-      if (fields.battery_wh?.direction === 'improved') {
+      compareNumeric('battery_wh', '배터리 정격 용량(Wh)', ownedProd.battery_wh, candidate.battery_wh, 'Wh', null);
+      if (fields.battery_wh?.direction === 'larger') {
         cautions.push('배터리 정격 용량(Wh)과 실제 화면 켜짐 시간은 디스플레이·칩셋 전성비에 따라 다를 수 있습니다.');
       }
     }
     if (ownedProd.battery_mah != null || candidate.battery_mah != null) {
-      compareNumeric('battery_mah', '배터리 정격 용량(mAh)', ownedProd.battery_mah, candidate.battery_mah, 'mAh', true, 'battery');
-      if (fields.battery_mah?.direction === 'improved') {
+      compareNumeric('battery_mah', '배터리 정격 용량(mAh)', ownedProd.battery_mah, candidate.battery_mah, 'mAh', null);
+      if (fields.battery_mah?.direction === 'larger') {
         cautions.push('배터리 용량(mAh) 증가가 실제 사용 시간 비례 증가를 보장하지는 않습니다.');
       }
     }
@@ -461,8 +475,8 @@ function compareCatalogOwnedAndCandidate(category, ownedProd, candidate, ownedDe
     compareNumeric('ram_gb', '메모리(RAM)', ownedProd.ram_gb, candidate.ram_gb, 'GB', true, 'ram');
     compareNumeric('storage_gb', 'SSD 저장 용량', ownedProd.storage_gb, candidate.storage_gb, 'GB', true, 'storage');
     compareNumeric('refresh_hz', '화면 주사율', ownedProd.refresh_hz, candidate.refresh_hz, 'Hz', true, 'display');
-    compareNumeric('battery_wh', '배터리 용량(Wh)', ownedProd.battery_wh, candidate.battery_wh, 'Wh', true, 'battery');
-    if (fields.battery_wh?.direction === 'improved') {
+    compareNumeric('battery_wh', '배터리 용량(Wh)', ownedProd.battery_wh, candidate.battery_wh, 'Wh', null);
+    if (fields.battery_wh?.direction === 'larger') {
       cautions.push('배터리 용량(Wh)과 실제 사용 시간은 작업 부하 및 전력 설계에 따라 차이가 있습니다.');
     }
 
@@ -508,11 +522,11 @@ function compareCatalogOwnedAndCandidate(category, ownedProd, candidate, ownedDe
 
     // Battery: keep battery_hours and battery_mah strictly separate!
     if (ownedProd.battery_hours != null || candidate.battery_hours != null) {
-      compareNumeric('battery_hours', '공식 최대 사용 시간', ownedProd.battery_hours, candidate.battery_hours, '시간', true, 'battery');
+      compareRuntime('battery_hours', '공식 최대 사용 시간');
     }
     if (ownedProd.battery_mah != null || candidate.battery_mah != null) {
-      compareNumeric('battery_mah', '배터리 용량(mAh)', ownedProd.battery_mah, candidate.battery_mah, 'mAh', true, 'battery');
-      if (fields.battery_mah?.direction === 'improved') {
+      compareNumeric('battery_mah', '배터리 용량(mAh)', ownedProd.battery_mah, candidate.battery_mah, 'mAh', null);
+      if (fields.battery_mah?.direction === 'larger') {
         cautions.push('배터리 용량(mAh)과 실제 사용 시간은 서로 다른 지표이며 AOD·센서 설정에 따라 달라집니다.');
       }
     }
@@ -571,8 +585,8 @@ function compareCatalogOwnedAndCandidate(category, ownedProd, candidate, ownedDe
       improvedNeeds.add('codec');
     }
 
-    compareNumeric('battery_hours', '이어버드 단독 재생 시간', ownedProd.battery_hours, candidate.battery_hours, '시간', true, 'battery');
-    compareNumeric('case_battery_hours', '케이스 포함 총 재생 시간', ownedProd.case_battery_hours, candidate.case_battery_hours, '시간', true, 'battery');
+    compareRuntime('battery_hours', '이어버드 단독 재생 시간');
+    compareRuntime('case_battery_hours', '케이스 포함 총 재생 시간');
 
     const curWaterRank = parseWaterResistanceRank(curSpecs.water_resistance);
     const nextWaterRank = parseWaterResistanceRank(nextSpecs.water_resistance);
@@ -582,7 +596,7 @@ function compareCatalogOwnedAndCandidate(category, ownedProd, candidate, ownedDe
     }
   } else if (category === 'speaker') {
     compareNumeric('power_w', '정격 출력', ownedProd.power_w, candidate.power_w, 'W', true, 'power');
-    compareNumeric('battery_hours', '최대 재생 시간', ownedProd.battery_hours, candidate.battery_hours, '시간', true, 'battery');
+    compareRuntime('battery_hours', '최대 재생 시간');
 
     const curWaterRank = parseWaterResistanceRank(curSpecs.water_resistance);
     const nextWaterRank = parseWaterResistanceRank(nextSpecs.water_resistance);
@@ -620,7 +634,7 @@ function compareCatalogOwnedAndCandidate(category, ownedProd, candidate, ownedDe
     cost_note: '신규 구매 가격은 다나와 수집 당시 참고 가격이며 실제 결제 금액은 판매처·배송비 조건에 따라 달라질 수 있습니다. 보유 기기의 중고 판매가는 임의 추정·차감하지 않습니다.'
   };
 
-  return {
+  return Object.defineProperty({
     comparable: true,
     fields,
     improvements,
@@ -629,7 +643,7 @@ function compareCatalogOwnedAndCandidate(category, ownedProd, candidate, ownedDe
     cautions,
     insufficient_data_fields: insufficientFields,
     cost_analysis: costAnalysis
-  };
+  }, 'compared_needs', { value: [...comparedNeeds] });
 }
 
 function checkOwnedMeetsHardRequirements(category, ownedProd, hard = {}) {
@@ -877,15 +891,21 @@ function evaluateCatalogUpgradeDecision({
     ? painPoints
     : (Array.isArray(soft.priorities) && soft.priorities.length > 0 ? soft.priorities : []);
 
-  const UNVERIFIABLE_STANDALONE_NEEDS = new Set(['camera', 'price']);
-  const verifiableTargetNeeds = targetNeeds.filter(n => !UNVERIFIABLE_STANDALONE_NEEDS.has(n));
-  const unverifiedTargetNeeds = targetNeeds.filter(n => UNVERIFIABLE_STANDALONE_NEEDS.has(n));
+  const hasComparison = (comp, need) => comp.improved_needs.includes(need) ||
+    comp.compared_needs.includes(need) ||
+    comp.fields[{
+      anc: 'anc', pen: 'pen_supported', keyboard: 'keyboard_supported',
+      codec: 'codecs', gpu: 'gpu', os_ecosystem: 'compatible_os', water_resistance: 'water_resistance'
+    }[need]]?.status === 'verified_comparison';
+  const verifiableTargetNeeds = targetNeeds.filter(need =>
+    [...comparisonsBySkuId.values()].some(comp => hasComparison(comp, need)));
+  const unverifiedTargetNeeds = targetNeeds.filter(need => !verifiableTargetNeeds.includes(need));
 
   // Filter candidates that actually provide a verified improvement for the user's needs
   const improvingEntries = distinctCandidates.filter(entry => {
     const comp = comparisonsBySkuId.get(String(entry.candidate.sku_id));
     if (!comp || comp.improvements.length === 0) return false;
-    if (verifiableTargetNeeds.length === 0) return comp.improvements.length > 0;
+    if (targetNeeds.length === 0) return true;
     return verifiableTargetNeeds.some(need => comp.improved_needs.includes(need));
   });
 
@@ -900,6 +920,25 @@ function evaluateCatalogUpgradeDecision({
   const finalEligibleEntries = fullyImprovingEntries.length > 0 ? fullyImprovingEntries : improvingEntries;
 
   if (finalEligibleEntries.length === 0) {
+    if (targetNeeds.length && ![...comparisonsBySkuId.values()].some(comp =>
+      targetNeeds.every(need => hasComparison(comp, need)))) {
+      const labels = (unverifiedTargetNeeds.length ? unverifiedTargetNeeds : targetNeeds)
+        .map(need => NEED_LABELS[need] || need).join('·');
+      return {
+        status: 'clarify',
+        upgrade_decision: 'CLARIFY',
+        questions: [
+          `현재 자료로는 요청하신 항목(${labels})을 같은 기준으로 비교하기 어렵습니다.`,
+          targetNeeds.includes('battery')
+            ? '배터리 사용 시간이 어떤 상황에서 부족한가요? 배터리 외에 함께 개선하고 싶은 기능이 있나요?'
+            : '현재 기기에서 어떤 기능이 부족한가요? 교체 후 꼭 개선되어야 하는 사양이나 기능을 구체적으로 알려 주세요.'
+        ],
+        reasons: [],
+        cautions: [],
+        eligible_sku_ids: [],
+        comparisons_by_sku_id: comparisonsBySkuId
+      };
+    }
     // If current device already meets all hard requirements and no candidate improves on it -> KEEP (if low/moderate intent) or DEFER
     if (ownedMeetsHard && (painPoints.length === 0 || replacementIntent === 'low_or_keep_if_okay')) {
       return {

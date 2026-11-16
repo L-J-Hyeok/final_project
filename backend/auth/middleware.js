@@ -1,5 +1,6 @@
 'use strict';
 var express = require('express');
+const wrap = require('../http/async-handler');
 var session = require('express-session');
 var crypto = require('crypto');
 var storeModule = require('./store');
@@ -10,7 +11,6 @@ function equal(a, b) { return typeof a === 'string' && typeof b === 'string' && 
 module.exports = function (config) {
   var router = express.Router(), limiter = limiterFactory();
   var store = new storeModule.MysqlStore(config.cookie);
-  var wrap = fn => (req, res, next) => Promise.resolve().then(() => fn(req, res, next)).catch(next);
   router.use((req, res, next) => { res.set('Cache-Control', 'no-store'); next(); });
   router.use((req, res, next) => {
     if (!['GET','HEAD','OPTIONS'].includes(req.method) && !(config.allowedOrigins || [config.origin]).includes(req.get('Origin'))) return next(fail(403, 'CSRF_INVALID'));

@@ -56,7 +56,7 @@ test('profile and owned-device HTTP CRUD, isolation, version and capacity concur
   const rec=uid=>m.recommendations.create({user_id:uid,status:'keep',profile_version:1,input_snapshot:{},candidates_snapshot:[],prompt_version:'test',as_of:new Date()});
   await rec(users[0]);await rec(users[1]);
   const converted=check(await req(a,'PUT','/owned-devices/'+id,{variant_id:String(variant.id)}),200);assert.equal(converted.device.manual_specs_json,null);assert.equal(converted.device.manual_brand,null);
-  assert.equal(await m.recommendations.count({where:{user_id:users[0]}}),0);assert.equal(await m.recommendations.count({where:{user_id:users[1]}}),1);
+  assert.equal(await m.recommendations.count({where:{user_id:users[0]}}),1);assert.equal(await m.recommendations.count({where:{user_id:users[1]}}),1);
   check(await req(a,'PUT','/owned-devices/'+id,{category:'gpu',manual_brand:'test',manual_model_name:'gpu',manual_specs_json:{vram_gb:8}}),200);
   check(await req(a,'PUT','/owned-devices/'+id,{category:'cpu',manual_brand:'test',manual_model_name:'cpu',manual_specs_json:{vram_gb:8}}),422);
   check(await req(a,'DELETE','/owned-devices/'+linked.device.id,{}),204);check(await req(a,'DELETE','/owned-devices/'+linked.device.id,{}),404);

@@ -44,8 +44,7 @@ const catalogDeviceCategories=['tablet','laptop','smartwatch','earbuds','speaker
 const manualKeys=['category','manual_brand','manual_model_name','manual_model_number','manual_storage_gb','manual_specs_json','catalog_sku_id','catalog_model_id','purchase_price_krw','purchase_date','pain_points','usages','satisfied_aspects','replacement_intent'];
 
 function toDbCategory(cat){
- if(cat==='smartwatch')return 'watch';
- if(cat==='earbuds'||cat==='speaker')return 'other';
+ if(cat==='watch')return 'smartwatch';
  return cat;
 }
 
@@ -88,7 +87,7 @@ function device(x){
   let reqCat=null;
   if(x.category!==undefined&&x.category!==null){
    if(!catalogDeviceCategories.includes(x.category))throw fail();
-   reqCat=x.category==='watch'?'smartwatch':x.category;
+   reqCat=toDbCategory(x.category);
   }
   return {
    ...blank,
@@ -128,10 +127,11 @@ function device(x){
    }
   }
  }
- if(['smartwatch','earbuds','speaker'].includes(x.category)||Object.keys(meta).length>0){
+ const canonicalCat=['watch','smartwatch'].includes(x.category)?'smartwatch':x.category;
+ if(['smartwatch','earbuds','speaker'].includes(canonicalCat)||Object.keys(meta).length>0){
   specsObj=specsObj?{...specsObj}:{};
-  if(['smartwatch','earbuds','speaker'].includes(x.category)){
-   specsObj._catalog_category=x.category;
+  if(['smartwatch','earbuds','speaker'].includes(canonicalCat)){
+   specsObj._catalog_category=canonicalCat;
   }
   if(Object.keys(meta).length>0){
    specsObj._device_meta=meta;

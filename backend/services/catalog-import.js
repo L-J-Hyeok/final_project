@@ -40,26 +40,47 @@ function validateListing(model, sku, sale, now) {
   return { price, reuseBasis: reuse_basis };
 }
 
+function failDetail(detail) {
+  const err = fail();
+  err.detail = detail;
+  return err;
+}
+
 function prepare(entries, now = new Date()) {
-  if (!Array.isArray(entries) || !entries.length || entries.length > 500) throw fail();
+  if (!Array.isArray(entries) || !entries.length || entries.length > 500) throw failDetail('entries must be a non-empty array (max 500)');
   const identities = new Set();
-  return entries.map(entry => {
+  return entries.map((entry, entryIdx) => {
     object(entry, ['model', 'skus']);
     object(entry.model, modelFields);
     validateModel(entry.model);
     const { model, skus } = entry;
     const key = [model.category_code, model.brand, model.model_number].map(value => value.toLowerCase()).join('\0');
-    if (identities.has(key) || !Array.isArray(skus) || !skus.length) throw fail();
+    if (identities.has(key)) throw failDetail(`Duplicate model identity at index ${entryIdx}: ${model.category_code}/${model.brand}/${model.model_number}`);
+    if (!Array.isArray(skus) || !skus.length) throw failDetail(`Model ${model.model_number} must include at least 1 SKU`);
     identities.add(key);
     const codes = new Set();
-    return { model, skus: skus.map(item => {
+    const parts = new Set();
+    const seenVariants = [];
+    return { model, skus: skus.map((item, skuIdx) => {
       object(item, ['sku', 'prices']);
       object(item.sku, skuFields);
       const sku = { ...item.sku, category_code: model.category_code };
       validateSku(sku);
-      if (codes.has(sku.sku_code.toLowerCase()) || !Array.isArray(item.prices) ||
-          (sku.publication_status === 'public' && model.publication_status !== 'public')) throw fail();
+      if (codes.has(sku.sku_code.toLowerCase())) throw failDetail(`Duplicate sku_code "${sku.sku_code}" in model ${model.model_number}`);
+      if (sku.manufacturer_part_number != null) {
+        const pKey = sku.manufacturer_part_number.toLowerCase();
+        if (parts.has(pKey)) throw failDetail(`Duplicate manufacturer_part_number "${sku.manufacturer_part_number}" in model ${model.model_number}`);
+        parts.add(pKey);
+      }
+      if (seenVariants.some(existing => variantFields.every(f => equivalent(f, sku[f], existing[f])))) {
+        throw failDetail(`Duplicate SKU option combination at index ${skuIdx} (${sku.sku_code}) in model ${model.model_number}`);
+      }
+      if (!Array.isArray(item.prices)) throw failDetail(`SKU ${sku.sku_code} prices must be an array`);
+      if (sku.publication_status === 'public' && model.publication_status !== 'public') {
+        throw failDetail(`Public SKU ${sku.sku_code} cannot belong to non-public model ${model.model_number}`);
+      }
       codes.add(sku.sku_code.toLowerCase());
+      seenVariants.push(sku);
       return { sku, prices: item.prices.map(sale => validateListing(model, sku, sale, now)) };
     }) };
   });
@@ -130,4 +151,62 @@ async function apply(db, entries, actorUserId = null) {
   });
 }
 
-module.exports = { prepare, apply };
+function assessInsufficientInfoFields(model, sku) {
+  const specs = model.specs_json || {};
+  const opts = sku.options_json || {};
+  const missing = [];
+  const weightG = opts.weight_g ?? model.weight_g;
+  if (weightG == null) missing.push('weight_g');
+  if (model.category_code === 'tablet') {
+    if (specs.pen_supported == null) missing.push('pen_supported');
+    if (sku.ram_gb == null) missing.push('ram_gb');
+    if (specs.screen_inches == null) missing.push('screen_inches');
+    if (specs.battery_mah == null && specs.battery_wh == null) missing.push('battery_mah|battery_wh');
+  } else if (model.category_code === 'laptop') {
+    if (specs.screen_inches == null) missing.push('screen_inches');
+    if (specs.refresh_hz == null) missing.push('refresh_hz');
+    if (specs.battery_wh == null) missing.push('battery_wh');
+    if (!specs.os) missing.push('os');
+  } else if (model.category_code === 'smartwatch') {
+    if (!Array.isArray(specs.compatible_os) || !specs.compatible_os.length) missing.push('compatible_os');
+    if (specs.gps == null) missing.push('gps');
+    if (specs.battery_mah == null) missing.push('battery_mah');
+  } else if (model.category_code === 'earbuds') {
+    if (specs.anc == null) missing.push('anc');
+    if (specs.battery_hours == null) missing.push('battery_hours');
+    if (!specs.bluetooth_version) missing.push('bluetooth_version');
+  } else if (model.category_code === 'speaker') {
+    if (specs.power_w == null) missing.push('power_w');
+    if (specs.battery_hours == null) missing.push('battery_hours');
+  }
+  return missing;
+}
+
+function assessCatalogEntries(prepared) {
+  const results = [];
+  for (const { model, skus } of prepared) {
+    const modelPublic = model.publication_status === 'public' && model.verification_status === 'verified' && model.verified_at != null;
+    for (const { sku, prices } of skus) {
+      const skuPublic = sku.publication_status === 'public' && sku.verification_status === 'verified' && sku.verified_at != null;
+      const publishable = modelPublic && skuPublic;
+      const hasKrwPrice = prices.some(({ price }) => price.currency === 'KRW' && Number(price.amount_minor) > 0);
+      const unrecommendable_reasons = [];
+      if (!modelPublic) unrecommendable_reasons.push('MODEL_NOT_PUBLIC');
+      if (!skuPublic) unrecommendable_reasons.push('SKU_NOT_PUBLIC');
+      if (!hasKrwPrice) unrecommendable_reasons.push('MISSING_PRICE');
+      results.push({
+        category_code: model.category_code,
+        model_number: model.model_number,
+        sku_code: sku.sku_code,
+        registrable: true,
+        publishable,
+        recommendable: publishable && hasKrwPrice,
+        unrecommendable_reasons,
+        insufficient_info_fields: assessInsufficientInfoFields(model, sku)
+      });
+    }
+  }
+  return results;
+}
+
+module.exports = { prepare, apply, assessCatalogEntries };

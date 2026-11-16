@@ -361,26 +361,6 @@ function candidateEffectivePriceKrw(cand) {
   return 0;
 }
 
-function scoreCandidateForMock(cand, soft, common) {
-  let score = 0;
-  if (Array.isArray(soft.preferred_brands) && soft.preferred_brands.includes(cand.brand)) score += 30;
-  if (soft.preferred_os && cand.os === soft.preferred_os) score += 20;
-  const effPrice = candidateEffectivePriceKrw(cand);
-  if (common?.spending_style === 'value') {
-    score += Math.max(0, Math.floor((2000000 - effPrice) / 50000));
-  } else if (common?.spending_style === 'premium') {
-    score += Math.floor((cand.storage_gb || 0) / 64);
-  }
-  for (const [idx, prio] of (soft.priorities || []).entries()) {
-    const weight = (3 - idx) * 5;
-    if (prio === 'battery' && cand.battery_mah) score += Math.floor(cand.battery_mah / 500) * weight;
-    if (prio === 'portability' && cand.weight_g) score += Math.max(0, Math.floor((250 - cand.weight_g) / 10)) * weight;
-    if (prio === 'display' && cand.refresh_hz) score += Math.floor(cand.refresh_hz / 60) * weight;
-    if (prio === 'performance' && cand.ram_gb) score += cand.ram_gb * weight;
-  }
-  return score;
-}
-
 function mockRecommend({ aiContext }) {
   if (aiContext?.category && catalogEngine.COMMON_CATEGORIES.includes(aiContext.category)) {
     return {
@@ -533,29 +513,64 @@ async function callGeminiJson({ apiKey, model, systemInstruction, userPayload, r
   const requestSignal = signal ? AbortSignal.any([signal, controller.signal]) : controller.signal;
   let parsed, body;
   try {
+    const requestInit = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+      body: JSON.stringify({
+        ...(tools ? { tools } : {}),
+        systemInstruction: { parts: [{ text: systemInstruction }] },
+        contents: [{ role: 'user', parts: [{ text: serializedPayload }] }],
+        generationConfig: {
+          temperature: 0.1,
+          maxOutputTokens: MAX_OUTPUT_TOKENS,
+          ...(responseSchema ? { responseMimeType: 'application/json', responseSchema } : {})
+        }
+      }),
+      signal: requestSignal
+    };
+
     let res;
-    try {
-      res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
-        body: JSON.stringify({
-          ...(tools ? { tools } : {}),
-          systemInstruction: { parts: [{ text: systemInstruction }] },
-          contents: [{ role: 'user', parts: [{ text: serializedPayload }] }],
-          generationConfig: {
-            temperature: 0.1,
-            maxOutputTokens: MAX_OUTPUT_TOKENS,
-            ...(responseSchema ? { responseMimeType: 'application/json', responseSchema } : {})
-          }
-        }),
-        signal: requestSignal
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        res = await fetch(url, requestInit);
+      } catch (fetchErr) {
+        if (requestSignal.aborted) throw fail('AI_TIMEOUT', 504);
+        console.error('[ai-adapter] Gemini network/fetch error:', {
+          model,
+          attempt: attempt + 1,
+          name: fetchErr?.name || 'Error',
+          code: fetchErr?.cause?.code || fetchErr?.code || null
+        });
+        if (attempt === 0) {
+          await new Promise(r => setTimeout(r, 500));
+          continue;
+        }
+        throw fail('AI_UNAVAILABLE', 502);
+      }
+      if (res.status >= 500 && res.status <= 504 && attempt === 0 && !requestSignal.aborted) {
+        console.error('[ai-adapter] Gemini transient 5xx, retrying once:', { model, status: res.status });
+        await new Promise(r => setTimeout(r, 500));
+        continue;
+      }
+      break;
+    }
+    if (res.status === 429) {
+      console.error('[ai-adapter] Gemini rate limited:', { model, status: res.status });
+      throw fail('RATE_LIMITED', 429);
+    }
+    if (!res.ok) {
+      let errInfo = null;
+      try {
+        const errBody = await res.json();
+        errInfo = errBody?.error?.message || errBody?.error?.status || null;
+      } catch (_) {}
+      console.error('[ai-adapter] Gemini HTTP error:', {
+        model,
+        status: res.status,
+        message: typeof errInfo === 'string' ? errInfo.slice(0, 300) : null
       });
-    } catch (_) {
-      if (requestSignal.aborted) throw fail('AI_TIMEOUT', 504);
       throw fail('AI_UNAVAILABLE', 502);
     }
-    if (res.status === 429) throw fail('RATE_LIMITED', 429);
-    if (!res.ok) throw fail('AI_UNAVAILABLE', 502);
     body = await res.json();
     const candidate = body?.candidates?.[0];
     if (candidate?.finishReason === 'MAX_TOKENS') throw fail('AI_OUTPUT_TRUNCATED', 502);

@@ -653,30 +653,38 @@ function evaluateUpgradeDecision(context) {
     ? ['동일 시험의 칩셋 CPU·GPU 자료는 기본 성능 참고값입니다. 기기의 발열·지속 성능 개선은 기기별 시험으로 확인합니다.']
     : [];
   const measuredFor = (pairs, need) => pairs.filter(pair => MEASURED_UPGRADE_METRICS[need]?.includes(pair.metric));
-  const verifiableNeeds = needs.filter(need => VERIFIABLE_UPGRADE_NEEDS.has(need) ||
-    [...measuredByCandidate.values()].some(pairs => measuredFor(pairs, need).length));
+  const comparable = (candidate, need) => {
+    const field = { storage: 'storage_gb', portability: 'weight_g', display: 'refresh_hz' }[need];
+    if (field) return current[field] != null && candidate[field] != null;
+    if (need === 'os_ecosystem') return Boolean(conditions.soft?.preferred_os && current.os && candidate.os);
+    return measuredFor(measuredByCandidate.get(String(candidate.variant_id)) || [], need).length > 0;
+  };
+  const verifiableNeeds = needs.filter(need => candidates.some(c => comparable(c, need)));
   const unverifiedNeeds = needs.filter(need => !verifiableNeeds.includes(need));
   const formatNeeds = list => list.map(need => UPGRADE_NEED_LABELS[need] || need).join('·');
+  const clarifyEvidence = () => result('clarify', [
+    `현재 자료로는 요청하신 개선 항목(${formatNeeds(unverifiedNeeds.length ? unverifiedNeeds : needs)})을 같은 기준으로 비교하기 어렵습니다.`,
+    needs.includes('battery')
+      ? '배터리 교체 견적이나 상태를 확인하셨나요? 새 기기 구매를 원하신다면 배터리 외에 저장 공간이나 무게처럼 꼭 개선할 항목도 있나요?'
+      : '교체로 해결하고 싶은 구체적인 불편이나 함께 비교할 수 있는 항목(저장 공간·무게·화면 주사율 등)을 알려 주세요.',
+    ...chipsetCautions
+  ]);
 
-  if (!verifiableNeeds.length) {
-    return result('defer', [], [
-      `선택하신 항목(${formatNeeds(unverifiedNeeds)})에 대한 동일 기준 실측·시세 비교 데이터가 없어 교체를 권장하기 어렵습니다. 수리 비용·배터리 상태 또는 용도별 성능 자료를 확인한 뒤 다시 판단해 주세요.`,
-      ...chipsetCautions
-    ]);
-  }
+  if (!verifiableNeeds.length) return clarifyEvidence();
 
   const gain = (c, field, lower = false) => current[field] != null && c[field] != null && (lower ? Number(c[field]) < Number(current[field]) : Number(c[field]) > Number(current[field]));
   const improves = (c, need) => {
     if (need === 'storage') return gain(c, 'storage_gb');
     if (need === 'portability') return gain(c, 'weight_g', true);
     if (need === 'display') return gain(c, 'refresh_hz');
-    if (need === 'os_ecosystem') return !!conditions.soft?.preferred_os && c.os === conditions.soft.preferred_os && current.os !== c.os;
+    if (need === 'os_ecosystem') return comparable(c, need) && c.os === conditions.soft.preferred_os && current.os !== c.os;
     const pairs = measuredFor(measuredByCandidate.get(String(c.variant_id)) || [], need);
     // A targeted benefit requires a meaningful gain without measured regression in that field.
     return pairs.some(pair => pair.change_percent >= 10) && pairs.every(pair => pair.change_percent >= 0);
   };
   const eligible = candidates.filter(c => verifiableNeeds.every(need => improves(c, need)));
   if (!eligible.length) {
+    if (!candidates.some(c => needs.every(need => comparable(c, need)))) return clarifyEvidence();
     return result('defer', [], [
       `말씀하신 개선 항목(${formatNeeds(verifiableNeeds)})을 객관적으로 충족하는 교체 후보를 현재 데이터에서 찾지 못했습니다. 수리 비용·배터리 상태 또는 조건을 조정한 뒤 다시 판단해 주세요.`,
       ...chipsetCautions

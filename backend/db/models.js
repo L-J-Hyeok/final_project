@@ -81,7 +81,7 @@ module.exports = function defineModels(sequelize, D, options = {}) {
   var owned = model('owned_devices', {
     id: id(), user_id: fk('users', false, 'CASCADE'),
     variant_id: fk('smartphone_variants', true, 'RESTRICT'), category: col(D.STRING(16), false, {
-      validate: { isIn: [['smartphone','laptop','tablet','watch','monitor','pc','cpu','gpu','ram','ssd','motherboard','psu','case','cooler','other']] }
+      validate: { isIn: [['smartphone','laptop','tablet','watch','smartwatch','earbuds','speaker','monitor','pc','cpu','gpu','ram','ssd','motherboard','psu','case','cooler','other']] }
     }),
     manual_brand: text(80, true), manual_model_name: text(120, true), manual_model_number: text(80, true),
     manual_storage_gb: positive(D.INTEGER, true), manual_specs_json: col(D.JSON, true),

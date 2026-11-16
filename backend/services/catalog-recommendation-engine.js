@@ -74,12 +74,6 @@ function clamp01(value) {
   return value;
 }
 
-function toFiniteNumber(value) {
-  if (value === null || value === undefined || value === '') return null;
-  const n = Number(value);
-  return Number.isFinite(n) ? n : null;
-}
-
 function detectCategoryFromText(text) {
   const t = String(text || '');
   if (/(?:스마트폰|휴대폰|핸드폰|아이폰|갤럭시\s*폰|폰)(?:만|을|도|으로)?\s*(?:추천|구매|사려|살|찾|골라)/i.test(t) || /기존\s*워치\s*호환|워치\s*호환\s*필수/i.test(t)) {

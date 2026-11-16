@@ -1,9 +1,9 @@
 'use strict';
 const publication = require('../services/product-publication');
+const wrap = require('../http/async-handler');
 const express=require('express'),{Op,QueryTypes}=require('sequelize');
 const connection=require('../db/connection'),v=require('../services/member-validation');
 const router=express.Router();
-const wrap=fn=>(req,res,next)=>Promise.resolve().then(()=>fn(req,res,next)).catch(next);
 // This router handles only member resources, leaving auth endpoints unchanged.
 router.use(['/profile','/owned-devices','/owned-device-options'],wrap(async(req,res,next)=>{
  if(!req.session||!req.session.user_id)throw v.fail('AUTH_REQUIRED',401);
@@ -12,7 +12,6 @@ router.use(['/profile','/owned-devices','/owned-device-options'],wrap(async(req,
  next();
 }));
 function db(){return connection.getDatabase();}
-function profileView(p){return {version:p.version,common:p.common_json,smartphone:p.smartphone_json,confirmed_at:p.confirmed_at};}
 function stripInternalSmartphoneKeys(s){
  if(!s||typeof s!=='object')return {};
  const copy={...s};delete copy._upgrade_state;return copy;
@@ -175,6 +174,8 @@ async function deviceView(row,t){
  }
  if(catCategory){
   x.category=catCategory;
+ }else if(x.category==='watch'){
+  x.category='smartwatch';
  }
  if(x.variant_id){
   x.source='catalog';
@@ -279,4 +280,5 @@ router.stripInternalSmartphoneKeys=stripInternalSmartphoneKeys;
 router.mergeInternalSmartphoneKeys=mergeInternalSmartphoneKeys;
 router.deviceView=deviceView;
 router.catalogVariant=catalogVariant;
+router.resolveDeviceInput=resolveDeviceInput;
 module.exports=router;
